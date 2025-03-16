@@ -158,9 +158,7 @@ AC_CONFIG_FILES([
     Bin/Makefile
     Lib/Makefile
     Lib/.Config/Makefile
-    Lib/Bar/Makefile
     Lib/Common/Makefile
-    Lib/Foo/Makefile
 ])
 
 AC_CONFIG_FILES([
@@ -172,9 +170,7 @@ dnl   Test Festures.
 dnl
 
 AC_CONFIG_FILES([
-    Lib/Bar/Tests/Makefile
     Lib/Common/Tests/Makefile
-    Lib/Foo/Tests/Makefile
 ])
 
 dnl
