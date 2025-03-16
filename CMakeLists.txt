@@ -15,7 +15,7 @@ cmake_minimum_required(VERSION  3.0.2)
 ##    パッケージの情報を指定する。
 ##
 
-set(project_name        Sample)
+set(project_name        GbDebugger)
 set(serial              "0.0.0")
 
 project(${project_name}     VERSION  1.0.0)
