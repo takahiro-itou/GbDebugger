@@ -22,7 +22,7 @@
 #include    "GbDebugger/Common/SampleSettings.h"
 
 
-SAMPLE_NAMESPACE_BEGIN
+GBDEBUGGER_NAMESPACE_BEGIN
 
 //========================================================================
 //
@@ -58,7 +58,7 @@ void  SampleSettingsTest::testNameSpace()
     return;
 }
 
-SAMPLE_NAMESPACE_END
+GBDEBUGGER_NAMESPACE_END
 
 //========================================================================
 //
