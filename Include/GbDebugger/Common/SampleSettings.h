@@ -25,7 +25,7 @@
 #if defined( SAMPLE_USE_PRE_CONFIGURED_MSVC )
 #    include    "GbDebugger/.Config/PreConfigSample.msvc.h"
 #else
-#    include    "GbDebugger/.Config/ConfiguredSample.h"
+#    include    "GbDebugger/.Config/ConfiguredDebugger.h"
 #endif
 
 SAMPLE_NAMESPACE_BEGIN

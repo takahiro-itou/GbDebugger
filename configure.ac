@@ -162,7 +162,7 @@ AC_CONFIG_FILES([
 ])
 
 AC_CONFIG_FILES([
-    Include/GbDebugger/.Config/ConfiguredSample.h
+    Include/GbDebugger/.Config/ConfiguredDebugger.h
 ])
 
 dnl
