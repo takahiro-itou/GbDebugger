@@ -16,10 +16,10 @@ dnl   パッケージの情報を指定する。
 dnl
 
 AC_INIT(
-    [Sample],
+    [GbDebugger],
     [0.0.0],
     [BUG-REPORT-ADDRESS],
-    [Sample])
+    [GbDebugger])
 
 dnl
 dnl   ツールの出力ディレクトリを指定する。
@@ -72,7 +72,7 @@ m4_include([.M4/ConfigDirectory.m4])
 myac_customize_library_dir([Lib])
 myac_customize_binary_dir([Bin])
 myac_customize_include_dir(
-    [Include], [Sample], [.Config], [Config.h])
+    [Include], [GbDebugger], [.Config], [Config.h])
 
 
 dnl ----------------------------------------------------------------
@@ -162,7 +162,7 @@ AC_CONFIG_FILES([
 ])
 
 AC_CONFIG_FILES([
-    Include/Sample/.Config/ConfiguredSample.h
+    Include/GbDebugger/.Config/ConfiguredDebugger.h
 ])
 
 dnl

@@ -1,9 +1,9 @@
 ﻿//  -*-  coding: utf-8-with-signature;  mode: c++  -*-  //
 /*************************************************************************
 **                                                                      **
-**                      ---  Library Project.  ---                      **
+**                  ----   Gb Debugger Project.   ----                  **
 **                                                                      **
-**          Copyright (C), 2016-2024, Takahiro Itou                     **
+**          Copyright (C), 2025-2025, Takahiro Itou                     **
 **          All Rights Reserved.                                        **
 **                                                                      **
 **          License: (See COPYING or LICENSE files)                     **
@@ -18,8 +18,8 @@
 **      @file       .Config/ConfiguredSample.h.in
 **/
 
-#if !defined( SAMPLE_CONFIG_INCLUDED_CONFIGURED_SAMPLE_H )
-#    define   SAMPLE_CONFIG_INCLUDED_CONFIGURED_SAMPLE_H
+#if !defined( GBDEBUGGER_CONFIG_INCLUDED_CONFIGURED_SAMPLE_H )
+#    define   GBDEBUGGER_CONFIG_INCLUDED_CONFIGURED_SAMPLE_H
 
 //========================================================================
 //
