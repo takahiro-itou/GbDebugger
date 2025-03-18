@@ -21,7 +21,7 @@
 #if !defined( GBDEBUGGER_COMMON_INCLUDED_SAMPLE_DOCUMENT_H )
 #    define   GBDEBUGGER_COMMON_INCLUDED_SAMPLE_DOCUMENT_H
 
-#include    "SampleSettings.h"
+#include    "DebuggerSettings.h"
 
 #include    <string>
 
