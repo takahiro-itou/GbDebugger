@@ -30,7 +30,7 @@
 **    スクリプトによって設定された名前空間。
 **/
 
-#define     GBDEBUGGER_CNF_NS               @SAMPLE_CNF_NAMESPACE@
+#define     GBDEBUGGER_CNF_NS               @GBDEBUGGER_CNF_NAMESPACE@
 
 /**
 **    名前空間。
