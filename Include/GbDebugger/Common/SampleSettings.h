@@ -22,7 +22,7 @@
 #    define   GBDEBUGGER_COMMON_INCLUDED_SAMPLE_SETTINGS_H
 
 //  スクリプトによる設定値が書き込まれたヘッダを読み込む。  //
-#if defined( SAMPLE_USE_PRE_CONFIGURED_MSVC )
+#if defined( GBDEBUGGER_USE_PRE_CONFIGURED_MSVC )
 #    include    "GbDebugger/.Config/PreConfigDebugger.msvc.h"
 #else
 #    include    "GbDebugger/.Config/ConfiguredDebugger.h"
