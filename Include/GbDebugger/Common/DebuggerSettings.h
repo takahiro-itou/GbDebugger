@@ -15,11 +15,11 @@
 /**
 **      プロジェクトの設定。
 **
-**      @file       Common/SampleSettings.h
+**      @file       Common/DebuggerSettings.h
 **/
 
-#if !defined( GBDEBUGGER_COMMON_INCLUDED_SAMPLE_SETTINGS_H )
-#    define   GBDEBUGGER_COMMON_INCLUDED_SAMPLE_SETTINGS_H
+#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_SETTINGS_H )
+#    define   GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_SETTINGS_H
 
 //  スクリプトによる設定値が書き込まれたヘッダを読み込む。  //
 #if defined( GBDEBUGGER_USE_PRE_CONFIGURED_MSVC )
