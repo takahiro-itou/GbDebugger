@@ -8,8 +8,8 @@ add_test(NAME   SampleDocumentTest
     COMMAND  $<TARGET_FILE:SampleDocumentTest>
 )
 
-add_test(NAME   SampleSettingsTest
-    COMMAND  $<TARGET_FILE:SampleSettingsTest>
+add_test(NAME   DebuggerSettingsTest
+    COMMAND  $<TARGET_FILE:DebuggerSettingsTest>
 )
 
 ##----------------------------------------------------------------
@@ -18,4 +18,4 @@ add_test(NAME   SampleSettingsTest
 ##
 
 add_executable(SampleDocumentTest       SampleDocumentTest.cpp)
-add_executable(SampleSettingsTest       SampleSettingsTest.cpp)
+add_executable(DebuggerSettingsTest     DebuggerSettingsTest.cpp)

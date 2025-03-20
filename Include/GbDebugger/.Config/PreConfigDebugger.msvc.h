@@ -1,9 +1,9 @@
 ﻿//  -*-  coding: utf-8-with-signature;  mode: c++  -*-  //
 /*************************************************************************
 **                                                                      **
-**                      ---  Library Project.  ---                      **
+**                  ----   Gb Debugger Project.   ----                  **
 **                                                                      **
-**          Copyright (C), 2016-2024, Takahiro Itou                     **
+**          Copyright (C), 2025-2025, Takahiro Itou                     **
 **          All Rights Reserved.                                        **
 **                                                                      **
 **          License: (See COPYING or LICENSE files)                     **
@@ -18,8 +18,8 @@
 **      @file       .Config/ConfiguredSample.h.in
 **/
 
-#if !defined( SAMPLE_CONFIG_INCLUDED_CONFIGURED_SAMPLE_H )
-#    define   SAMPLE_CONFIG_INCLUDED_CONFIGURED_SAMPLE_H
+#if !defined( GBDEBUGGER_CONFIG_INCLUDED_CONFIGURED_GBDEBUGGER_H )
+#    define   GBDEBUGGER_CONFIG_INCLUDED_CONFIGURED_GBDEBUGGER_H
 
 //========================================================================
 //
@@ -30,17 +30,17 @@
 **    スクリプトによって設定された名前空間。
 **/
 
-#define     SAMPLE_CNF_NS                   Sample
+#define     GBDEBUGGER_CNF_NS               GbDebugger
 
 /**
 **    名前空間。
 **/
 
-#define     SAMPLE_NAMESPACE                SAMPLE_CNF_NS
+#define     GBDEBUGGER_NAMESPACE            GBDEBUGGER_CNF_NS
 
-#define     SAMPLE_NAMESPACE_BEGIN          namespace  SAMPLE_CNF_NS  {
+#define     GBDEBUGGER_NAMESPACE_BEGIN      namespace  GBDEBUGGER_CNF_NS  {
 
-#define     SAMPLE_NAMESPACE_END            }
+#define     GBDEBUGGER_NAMESPACE_END        }
 
 //========================================================================
 //
@@ -53,13 +53,13 @@
 //
 
 #if ( 0 )
-#    define     SAMPLE_ENABLE_CONSTEXPR             1
+#    define     GBDEBUGGER_ENABLE_CONSTEXPR         1
 #else
-#    undef      SAMPLE_ENABLE_CONSTEXPR
+#    undef      GBDEBUGGER_ENABLE_CONSTEXPR
 #endif
 
 #if !defined( CONSTEXPR_VAR ) && !defined( CONSTEXPR_FUNC )
-#    if ( SAMPLE_ENABLE_CONSTEXPR )
+#    if ( GBDEBUGGER_ENABLE_CONSTEXPR )
 #        define     CONSTEXPR_VAR       constexpr
 #        define     CONSTEXPR_FUNC      constexpr
 #    else
@@ -74,12 +74,12 @@
 //
 
 #if ( 1 )
-#    define     SAMPLE_ENABLE_NULLPTR               1
+#    define     GBDEBUGGER_ENABLE_NULLPTR           1
 #else
 #    if !defined( nullptr )
 #        define     nullptr     NULL
 #    endif
-#    undef      SAMPLE_ENABLE_NULLPTR
+#    undef      GBDEBUGGER_ENABLE_NULLPTR
 #endif
 
 //----------------------------------------------------------------
@@ -88,12 +88,12 @@
 //
 
 #if ( 1 )
-#    define     SAMPLE_ENABLE_OVERRIDE              1
+#    define     GBDEBUGGER_ENABLE_OVERRIDE          1
 #else
 #    if !defined( override )
 #        define     override
 #    endif
-#    undef      SAMPLE_ENABLE_OVERRIDE
+#    undef      GBDEBUGGER_ENABLE_OVERRIDE
 #endif
 
 //----------------------------------------------------------------
@@ -102,9 +102,9 @@
 //
 
 #if ( 0 )
-#    define     SAMPLE_ENABLE_STATIC_ASSERT         1
+#    define     GBDEBUGGER_ENABLE_STATIC_ASSERT     1
 #else
-#    undef      SAMPLE_ENABLE_STATIC_ASSERT
+#    undef      GBDEBUGGER_ENABLE_STATIC_ASSERT
 #endif
 
 //----------------------------------------------------------------
@@ -113,9 +113,9 @@
 //
 
 #if ( 0 )
-#    define     SAMPLE_ENABLE_RVALUEREF             1
+#    define     GBDEBUGGER_ENABLE_RVALUEREF         1
 #else
-#    undef      SAMPLE_ENABLE_RVALUEREF
+#    undef      GBDEBUGGER_ENABLE_RVALUEREF
 #endif
 
 //----------------------------------------------------------------
@@ -124,9 +124,9 @@
 //
 
 #if ( 0 )
-#    define     SAMPLE_ERROR_PESSIMIZING_MOVE       1
+#    define     GBDEBUGGER_ERROR_PESSIMIZING_MOVE   1
 #else
-#    undef      SAMPLE_ERROR_PESSIMIZING_MOVE
+#    undef      GBDEBUGGER_ERROR_PESSIMIZING_MOVE
 #endif
 
 //----------------------------------------------------------------
@@ -135,9 +135,9 @@
 //
 
 #if ( 0 )
-#    define     SAMPLE_ENABLE_COPYCTOR_DEFAULT      1
+#    define     GBDEBUGGER_ENABLE_COPYCTOR_DEFAULT  1
 #else
-#    undef      SAMPLE_ENABLE_COPYCTOR_DEFAULT
+#    undef      GBDEBUGGER_ENABLE_COPYCTOR_DEFAULT
 #endif
 
 //----------------------------------------------------------------
@@ -146,9 +146,9 @@
 //
 
 #if ( 0 )
-#    define     SAMPLE_ENABLE_COPYCTOR_DELETE       1
+#    define     GBDEBUGGER_ENABLE_COPYCTOR_DELETE   1
 #else
-#    undef      SAMPLE_ENABLE_COPYCTOR_DELETE
+#    undef      GBDEBUGGER_ENABLE_COPYCTOR_DELETE
 #endif
 
 //----------------------------------------------------------------
@@ -157,9 +157,9 @@
 //
 
 #if ( 0 )
-#    define     SAMPLE_ENABLE_COPYOPEQ_DEFAULT      1
+#    define     GBDEBUGGER_ENABLE_COPYOPEQ_DEFAULT  1
 #else
-#    undef      SAMPLE_ENABLE_COPYOPEQ_DEFAULT
+#    undef      GBDEBUGGER_ENABLE_COPYOPEQ_DEFAULT
 #endif
 
 //----------------------------------------------------------------
@@ -168,9 +168,9 @@
 //
 
 #if ( 0 )
-#    define     SAMPLE_ENABLE_COPYOPEQ_DELETE       1
+#    define     GBDEBUGGER_ENABLE_COPYOPEQ_DELETE   1
 #else
-#    undef      SAMPLE_ENABLE_COPYOPEQ_DELETE
+#    undef      GBDEBUGGER_ENABLE_COPYOPEQ_DELETE
 #endif
 
 //----------------------------------------------------------------
@@ -179,9 +179,9 @@
 //
 
 #if ( 0 )
-#    define     SAMPLE_ENABLE_MOVECTOR_DECLARE      1
+#    define     GBDEBUGGER_ENABLE_MOVECTOR_DECLARE  1
 #else
-#    undef      SAMPLE_ENABLE_MOVECTOR_DECLARE
+#    undef      GBDEBUGGER_ENABLE_MOVECTOR_DECLARE
 #endif
 
 //----------------------------------------------------------------
@@ -190,9 +190,9 @@
 //
 
 #if ( 0 )
-#    define     SAMPLE_ENABLE_MOVECTOR_DEFAULT      1
+#    define     GBDEBUGGER_ENABLE_MOVECTOR_DEFAULT  1
 #else
-#    undef      SAMPLE_ENABLE_MOVECTOR_DEFAULT
+#    undef      GBDEBUGGER_ENABLE_MOVECTOR_DEFAULT
 #endif
 
 //----------------------------------------------------------------
@@ -201,9 +201,9 @@
 //
 
 #if ( 0 )
-#    define     SAMPLE_ENABLE_MOVECTOR_DELETE       1
+#    define     GBDEBUGGER_ENABLE_MOVECTOR_DELETE   1
 #else
-#    undef      SAMPLE_ENABLE_MOVECTOR_DELETE
+#    undef      GBDEBUGGER_ENABLE_MOVECTOR_DELETE
 #endif
 
 //----------------------------------------------------------------
@@ -212,9 +212,9 @@
 //
 
 #if ( 0 )
-#    define     SAMPLE_ENABLE_MOVEOPEQ_DECLARE      1
+#    define     GBDEBUGGER_ENABLE_MOVEOPEQ_DECLARE  1
 #else
-#    undef      SAMPLE_ENABLE_MOVEOPEQ_DECLARE
+#    undef      GBDEBUGGER_ENABLE_MOVEOPEQ_DECLARE
 #endif
 
 //----------------------------------------------------------------
@@ -223,9 +223,9 @@
 //
 
 #if ( 0 )
-#    define     SAMPLE_ENABLE_MOVEOPEQ_DEFAULT      1
+#    define     GBDEBUGGER_ENABLE_MOVEOPEQ_DEFAULT  1
 #else
-#    undef      SAMPLE_ENABLE_MOVEOPEQ_DEFAULT
+#    undef      GBDEBUGGER_ENABLE_MOVEOPEQ_DEFAULT
 #endif
 
 //----------------------------------------------------------------
@@ -234,9 +234,9 @@
 //
 
 #if ( 0 )
-#    define     SAMPLE_ENABLE_MOVEOPEQ_DELETE       1
+#    define     GBDEBUGGER_ENABLE_MOVEOPEQ_DELETE   1
 #else
-#    undef      SAMPLE_ENABLE_MOVEOPEQ_DELETE
+#    undef      GBDEBUGGER_ENABLE_MOVEOPEQ_DELETE
 #endif
 
 #endif

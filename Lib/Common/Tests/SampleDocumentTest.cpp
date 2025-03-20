@@ -22,7 +22,7 @@
 #include    "GbDebugger/Common/SampleDocument.h"
 
 
-SAMPLE_NAMESPACE_BEGIN
+GBDEBUGGER_NAMESPACE_BEGIN
 namespace  Common  {
 
 //========================================================================
@@ -105,7 +105,7 @@ void  SampleDocumentTest::testCountAlphabet3()
 }
 
 }   //  End of namespace  Common
-SAMPLE_NAMESPACE_END
+GBDEBUGGER_NAMESPACE_END
 
 //========================================================================
 //

@@ -21,12 +21,12 @@
 #if !defined( GBDEBUGGER_COMMON_INCLUDED_SAMPLE_DOCUMENT_H )
 #    define   GBDEBUGGER_COMMON_INCLUDED_SAMPLE_DOCUMENT_H
 
-#include    "SampleSettings.h"
+#include    "DebuggerSettings.h"
 
 #include    <string>
 
 
-SAMPLE_NAMESPACE_BEGIN
+GBDEBUGGER_NAMESPACE_BEGIN
 namespace  Common  {
 
 //========================================================================
@@ -140,6 +140,6 @@ public:
 };
 
 }   //  End of namespace  Common
-SAMPLE_NAMESPACE_END
+GBDEBUGGER_NAMESPACE_END
 
 #endif
