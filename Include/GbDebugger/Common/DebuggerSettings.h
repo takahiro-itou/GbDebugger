@@ -22,10 +22,12 @@
 #    define   GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_SETTINGS_H
 
 //  スクリプトによる設定値が書き込まれたヘッダを読み込む。  //
-#if defined( GBDEBUGGER_USE_PRE_CONFIGURED_MSVC )
-#    include    "GbDebugger/.Config/PreConfigDebugger.msvc.h"
-#else
-#    include    "GbDebugger/.Config/ConfiguredDebugger.h"
+#if !defined( GBDEBUGGER_CONFIG_INCLUDED_CONFIGURED_DEBUGGER_H )
+#    if defined( GBDEBUGGER_USE_PRE_CONFIGURED_MSVC )
+#        include    "GbDebugger/.Config/PreConfigDebugger.msvc.h"
+#    else
+#        include    "GbDebugger/.Config/ConfiguredDebugger.h"
+#    endif
 #endif
 
 GBDEBUGGER_NAMESPACE_BEGIN
