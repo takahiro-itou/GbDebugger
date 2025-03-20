@@ -29,7 +29,8 @@ library_instantiations      +=
 library_inline_files        +=
 
 dist_noinst_data_files      +=  \
-        ${inclib_source_dir}/Config.h.cmake.in  \
+        ${inclib_source_dir}/Config.h.cmake.in          \
+        ${inclib_source_dir}/PreConfigDebugger.msvc.h   \
         ${extra_noinst_data_files}
 
 dist_noinst_header_files    +=  \
@@ -39,7 +40,7 @@ inclib_header_files         +=  \
         ${extra_library_header_files}
 
 inclib_nodist_header_files  +=  \
-        ${inclib_binary_dir}/ConfiguredSample.h
+        ${inclib_binary_dir}/ConfiguredDebugger.h
 
 library_install_srcfiles    +=  \
         ${library_inline_files}

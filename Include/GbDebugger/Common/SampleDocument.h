@@ -1,9 +1,9 @@
 ﻿//  -*-  coding: utf-8-with-signature;  mode: c++  -*-  //
 /*************************************************************************
 **                                                                      **
-**                      ---  Library Project.  ---                      **
+**                  ----   Gb Debugger Project.   ----                  **
 **                                                                      **
-**          Copyright (C), 2016-2024, Takahiro Itou                     **
+**          Copyright (C), 2025-2025, Takahiro Itou                     **
 **          All Rights Reserved.                                        **
 **                                                                      **
 **          License: (See COPYING or LICENSE files)                     **
@@ -13,32 +13,61 @@
 *************************************************************************/
 
 /**
-**      An Interface of Foo class.
+**      An Interface of SampleDocument class.
 **
-**      @file       Foo/Foo.h
+**      @file       Common/SampleDocument.h
 **/
 
-#if !defined( SAMPLE_FOO_INCLUDED_FOO_H )
-#    define   SAMPLE_FOO_INCLUDED_FOO_H
+#if !defined( GBDEBUGGER_COMMON_INCLUDED_SAMPLE_DOCUMENT_H )
+#    define   GBDEBUGGER_COMMON_INCLUDED_SAMPLE_DOCUMENT_H
 
-#include    "Sample/Common/SampleSettings.h"
+#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_SETTINGS_H )
+#    include    "DebuggerSettings.h"
+#endif
 
+#if !defined( GBDEBUGGER_SYS_STL_INCLUDED_STRING )
+#    include    <string>
+#    define   GBDEBUGGER_SYS_STL_INCLUDED_STRING
+#endif
 
-SAMPLE_NAMESPACE_BEGIN
-namespace  Foo  {
+GBDEBUGGER_NAMESPACE_BEGIN
+namespace  Common  {
+
+//  クラスの前方宣言。  //
+
 
 //========================================================================
 //
-//    Foo  class.
+//    SampleDocument  class.
 //
 
-class  Foo
+class  SampleDocument
 {
+
+//========================================================================
+//
+//    Internal Type Definitions.
+//
 
 //========================================================================
 //
 //    Constructor(s) and Destructor.
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   インスタンスを初期化する
+    **  （デフォルトコンストラクタ）。
+    **
+    **/
+    SampleDocument();
+
+    //----------------------------------------------------------------
+    /**   インスタンスを破棄する
+    **  （デストラクタ）。
+    **
+    **/
+    virtual  ~SampleDocument();
 
 //========================================================================
 //
@@ -59,17 +88,36 @@ class  Foo
 //
 //    Public Member Functions (Virtual Functions).
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   入力メッセージ中に含まれるアルファベットを数える。
+    **
+    **  @return     半角アルファベット [A-Za-z] の文字数
+    **/
+    virtual  int
+    countAlphabet()  const;
 
 //========================================================================
 //
 //    Public Member Functions.
 //
+
+//========================================================================
+//
+//    Accessors.
+//
 public:
 
-    static  CommonType
-    functionFoo(
-            CommonType  x,
-            CommonType  y);
+    //----------------------------------------------------------------
+    /**   メッセージを設定する。
+    **
+    **  @param [in] message   入力データ
+    **  @return     void.
+    **/
+    void
+    setMessage(
+            const  std::string  &message);
 
 //========================================================================
 //
@@ -85,6 +133,9 @@ public:
 //
 //    Member Variables.
 //
+private:
+
+    std::string     m_message;
 
 //========================================================================
 //
@@ -92,10 +143,10 @@ public:
 //
 public:
     //  テストクラス。  //
-    friend  class   FooTest;
+    friend  class   SampleDocumentTest;
 };
 
-}   //  End of namespace  Foo
-SAMPLE_NAMESPACE_END
+}   //  End of namespace  Common
+GBDEBUGGER_NAMESPACE_END
 
 #endif

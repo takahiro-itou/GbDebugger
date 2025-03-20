@@ -15,7 +15,7 @@ cmake_minimum_required(VERSION  3.0.2)
 ##    パッケージの情報を指定する。
 ##
 
-set(project_name        Sample)
+set(project_name        GbDebugger)
 set(serial              "0.0.0")
 
 project(${project_name}     VERSION  1.0.0)
@@ -49,7 +49,7 @@ Include (${common_cmake_dir}/DefaultBuildOptions.cmake)
 ##    Project Name Space.
 ##
 
-set(SAMPLE_CNF_NAMESPACE    Sample)
+set(GBDEBUGGER_CNF_NAMESPACE    GbDebugger)
 
 
 ##----------------------------------------------------------------
@@ -117,8 +117,8 @@ Find_Package (CppUnit)
 ##
 
 configure_file(
-    "${incpkg_source_dir}/.Config/ConfiguredSample.h.in"
-    "${incpkg_binary_dir}/.Config/ConfiguredSample.h"
+    "${incpkg_source_dir}/.Config/ConfiguredDebugger.h.in"
+    "${incpkg_binary_dir}/.Config/ConfiguredDebugger.h"
 )
 
 configure_file(

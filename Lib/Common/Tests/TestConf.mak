@@ -6,7 +6,7 @@
 extra_tests             =
 TESTS                   =  \
         SampleDocumentTest      \
-        SampleSettingsTest      \
+        DebuggerSettingsTest    \
         ${extra_tests}
 
 ##
@@ -33,4 +33,4 @@ test_ldflags_common         +=
 ##
 
 SampleDocumentTest_SOURCES      =  SampleDocumentTest.cpp
-SampleSettingsTest_SOURCES      =  SampleSettingsTest.cpp
+DebuggerSettingsTest_SOURCES    =  DebuggerSettingsTest.cpp
