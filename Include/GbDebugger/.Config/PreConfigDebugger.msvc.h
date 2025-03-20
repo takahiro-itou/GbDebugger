@@ -18,8 +18,8 @@
 **      @file       .Config/ConfiguredSample.h.in
 **/
 
-#if !defined( GBDEBUGGER_CONFIG_INCLUDED_CONFIGURED_GBDEBUGGER_H )
-#    define   GBDEBUGGER_CONFIG_INCLUDED_CONFIGURED_GBDEBUGGER_H
+#if !defined( GBDEBUGGER_CONFIG_INCLUDED_CONFIGURED_DEBUGGER_H )
+#    define   GBDEBUGGER_CONFIG_INCLUDED_CONFIGURED_DEBUGGER_H
 
 //========================================================================
 //
