@@ -21,13 +21,20 @@
 #if !defined( GBDEBUGGER_COMMON_INCLUDED_SAMPLE_DOCUMENT_H )
 #    define   GBDEBUGGER_COMMON_INCLUDED_SAMPLE_DOCUMENT_H
 
-#include    "DebuggerSettings.h"
+#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_SETTINGS_H )
+#    include    "DebuggerSettings.h"
+#endif
 
-#include    <string>
-
+#if !defined( GBDEBUGGER_SYS_STL_INCLUDED_STRING )
+#    include    <string>
+#    define   GBDEBUGGER_SYS_STL_INCLUDED_STRING
+#endif
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  Common  {
+
+//  クラスの前方宣言。  //
+
 
 //========================================================================
 //
