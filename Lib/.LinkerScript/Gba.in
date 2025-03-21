@@ -1,0 +1,5 @@
+
+/*  Linker Script.  */
+INPUT( AS_NEEDED(Foo/libgbdGba.static.a) )
+
+INPUT( AS_NEEDED(-lgbdBar) )
