@@ -15,12 +15,9 @@ Include (${common_cmake_dir}/BuildCommon/ConfigTarget.cmake)
 ##
 
 set(library_source_files
-       SampleDocument.cpp
 )
 
 set(inclib_header_files
-        ${inclib_source_dir}/DebuggerSettings.h
-        ${inclib_source_dir}/SampleDocument.h
 )
 
 ##----------------------------------------------------------------

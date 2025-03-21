@@ -15,3 +15,4 @@ add_subdirectory(Tests)
 add_subdirectory(.Config)
 
 add_subdirectory(Common)
+add_subdirectory(Gba)
