@@ -11,7 +11,7 @@ TESTS                   =  \
 ##    Test Configurations.
 ##
 
-target_testee_library       +=  -lgbdGba
+target_testee_library       +=  -lgbdGbaMan
 
 dist_noinst_data_files      +=
 dist_noinst_header_files    +=

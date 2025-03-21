@@ -7,7 +7,7 @@
 ##    List of Directories.
 ##
 
-module_dir_name     =  Gba
+module_dir_name     =  GbaMan
 SUBDIRS             =  .  Tests
 
 include  $(top_srcdir)/.M4/BuildCommon/DirList.inc
@@ -50,7 +50,7 @@ library_compile_srcfiles    +=  \
 ##    List of Libraries.
 ##
 
-static_libraries_list   +=  libgbdGba.static.a
+static_libraries_list   +=  libgbdGbaMan.static.a
 shared_libraries_list   +=
 
 ##
@@ -67,5 +67,5 @@ include  $(top_srcdir)/.M4/BuildCommon/Install.inc
 ##    Build Libraries.
 ##
 
-libgbdGba_static_a_SOURCES      =  ${library_source_files}
+libgbdGbaMan_static_a_SOURCES   =  ${library_source_files}
 

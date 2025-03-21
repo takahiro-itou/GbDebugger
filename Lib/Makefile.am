@@ -3,7 +3,7 @@
 ##    List of Directories.
 ##
 
-SUBLIBS                 =  Common  Gba
+SUBLIBS                 =  Common  GbaMan
 
 SUBDIRS                 =  Tests  .Config  $(SUBLIBS)  .
 
