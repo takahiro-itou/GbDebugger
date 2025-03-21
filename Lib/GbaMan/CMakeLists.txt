@@ -4,7 +4,7 @@
 ##    モジュールの設定。
 ##
 
-set(module_title        "Gba")
+set(module_title        "GbaMan")
 
 Include (${common_cmake_dir}/BuildCommon/ConfigModule.cmake)
 Include (${common_cmake_dir}/BuildCommon/ConfigTarget.cmake)
@@ -15,9 +15,11 @@ Include (${common_cmake_dir}/BuildCommon/ConfigTarget.cmake)
 ##
 
 set(library_source_files
+       GbaManager.cpp
 )
 
 set(inclib_header_files
+        ${inclib_source_dir}/GbaManager.h
 )
 
 ##----------------------------------------------------------------

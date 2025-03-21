@@ -23,6 +23,7 @@ extra_noinst_data_files     =
 extra_noinst_header_files   =
 
 library_source_files        +=  \
+        GbaManager.cpp                 \
         ${extra_library_source_files}
 
 library_instantiations      +=
@@ -35,6 +36,7 @@ dist_noinst_header_files    +=  \
         ${extra_noinst_header_files}
 
 inclib_header_files         +=  \
+        ${inclib_source_dir}/GbaManager.h          \
         ${extra_library_header_files}
 
 inclib_nodist_header_files  +=

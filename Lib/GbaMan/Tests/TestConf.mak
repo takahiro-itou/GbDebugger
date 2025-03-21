@@ -5,13 +5,14 @@
 
 extra_tests             =
 TESTS                   =  \
+        GbaManagerTest          \
         ${extra_tests}
 
 ##
 ##    Test Configurations.
 ##
 
-target_testee_library       +=  -lgbdGbaMan
+target_testee_library       +=  -lgbdGba
 
 dist_noinst_data_files      +=
 dist_noinst_header_files    +=
@@ -29,4 +30,6 @@ test_ldflags_common         +=
 ##
 ##    Test Programs.
 ##
+
+GbaManagerTest_SOURCES          =  GbaManagerTest.cpp
 

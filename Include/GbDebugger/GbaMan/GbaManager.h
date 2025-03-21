@@ -22,7 +22,7 @@
 #    define   GBDEBUGGER_GBAMAN_INCLUDED_GBA_MANAGER_H
 
 #if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_SETTINGS_H )
-#    include    "DebuggerSettings.h"
+#    include    "GbDebugger/Common/DebuggerSettings.h"
 #endif
 
 
