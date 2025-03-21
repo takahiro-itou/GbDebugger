@@ -13,7 +13,7 @@ TESTS                   =  \
 ##    Test Configurations.
 ##
 
-target_testee_library       +=  -lsampleCommon
+target_testee_library       +=  -lgbdCommon
 
 dist_noinst_data_files      +=
 dist_noinst_header_files    +=
@@ -34,3 +34,4 @@ test_ldflags_common         +=
 
 SampleDocumentTest_SOURCES      =  SampleDocumentTest.cpp
 DebuggerSettingsTest_SOURCES    =  DebuggerSettingsTest.cpp
+
