@@ -76,6 +76,17 @@ GbaManager::~GbaManager()
 //    Public Member Functions (Virtual Functions).
 //
 
+//----------------------------------------------------------------
+//    ROM ファイルを読み込む。
+//
+
+int
+GbaManager::openRomFile(
+        const   char *  szFileName)
+{
+    return ( -1 );
+}
+
 //========================================================================
 //
 //    Public Member Functions.

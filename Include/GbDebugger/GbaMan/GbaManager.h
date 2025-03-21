@@ -84,6 +84,16 @@ public:
 //
 //    Public Member Functions (Virtual Functions).
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   ROM ファイルを読み込む。
+    **
+    **  @param [in] szFileName    ファイル名。
+    **/
+    virtual  int
+    openRomFile(
+            const   char *  szFileName);
 
 //========================================================================
 //
