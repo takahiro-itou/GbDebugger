@@ -66,6 +66,41 @@ enum class  ErrCode
     INDEX_OUT_OF_RANGE  = 4
 };
 
+
+//----------------------------------------------------------------
+//
+//    厳格な型の宣言を行うマクロ。
+//  将来デバッグ版では厳格な型を利用できるようにするため
+//  マクロを予約おく。
+//
+
+
+#if defined( _DEBUG ) && !defined( HACORE_DISABLE_STRICT_TYPES )
+#    define     DECLARE_STRICT_TYPE(BaseType, DeclType)         \
+    typedef     BaseType    DeclType
+#else
+#    define     DECLARE_STRICT_TYPE(BaseType, DeclType)         \
+    typedef     BaseType    DeclType
+#endif
+
+
+//========================================================================
+//
+//    安全なポインタ型のキャスト。
+//
+
+template  <typename  T>
+T  pointer_cast(void  *  p)
+{
+    return ( static_cast<T>(p) );
+}
+
+template  <typename  T>
+T  pointer_cast(const  void  *  p)
+{
+    return ( static_cast<T>(p) );
+}
+
 GBDEBUGGER_NAMESPACE_END
 
 #endif
