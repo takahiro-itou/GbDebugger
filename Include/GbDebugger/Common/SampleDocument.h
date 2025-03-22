@@ -21,8 +21,8 @@
 #if !defined( GBDEBUGGER_COMMON_INCLUDED_SAMPLE_DOCUMENT_H )
 #    define   GBDEBUGGER_COMMON_INCLUDED_SAMPLE_DOCUMENT_H
 
-#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_SETTINGS_H )
-#    include    "DebuggerSettings.h"
+#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_TYPES_H )
+#    include    "DebuggerTypes.h"
 #endif
 
 #if !defined( GBDEBUGGER_SYS_STL_INCLUDED_STRING )
