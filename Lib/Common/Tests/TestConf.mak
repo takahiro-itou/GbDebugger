@@ -5,8 +5,8 @@
 
 extra_tests             =
 TESTS                   =  \
-        SampleDocumentTest      \
         DebuggerProjectTest     \
+        DebuggerTypesTest       \
         ${extra_tests}
 
 ##
@@ -32,6 +32,6 @@ test_ldflags_common         +=
 ##    Test Programs.
 ##
 
-SampleDocumentTest_SOURCES      =  SampleDocumentTest.cpp
 DebuggerProjectTest_SOURCES     =  DebuggerProjectTest.cpp
+DebuggerTypesTest_SOURCES       =  DebuggerTypesTest.cpp
 
