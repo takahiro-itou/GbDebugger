@@ -77,7 +77,7 @@ void  GbaManagerTest::testOpenRomFile()
     //  retCode = testee.openRomFile("badrom.gba");
     //  CPPUNIT_ASSERT_EQUAL( ErrCode::FILE_INVALID_FORMAT, retCode );
 
-    retCode = testee.openRomFile("hello.gba");
+    retCode = testee.openRomFile(LIBTOP_SOURCE_DIR "/GbaMan/Tests/hello.gba");
     CPPUNIT_ASSERT_EQUAL( ErrCode::SUCCESS, retCode );
 
     return;
