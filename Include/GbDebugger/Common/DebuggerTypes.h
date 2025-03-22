@@ -25,8 +25,15 @@
 #    include    "DebuggerProject.h"
 #endif
 
-#include    <cstdint>
-#include    <stddef.h>
+#if !defined( GBDEBUGGER_SYS_INCLUDED_CSTDINT )
+#    include    <cstdint>
+#    define   GBDEBUGGER_SYS_INCLUDED_CSTDINT
+#endif
+
+#if !defined( GBDEBUGGER_SYS_INCLUDED_STDDEF_H )
+#    include    <stddef.h>
+#    define   GBDEBUGGER_SYS_INCLUDED_STDDEF_H
+#endif
 
 
 GBDEBUGGER_NAMESPACE_BEGIN
