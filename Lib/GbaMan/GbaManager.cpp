@@ -113,10 +113,10 @@ GbaManager::openRomFile(
     }
 
     //  メモリの各領域を確保して、テーブルに保管する。  //
-    this->m_memWorkRam  = new uint8_t[MEM_SIZE_WRAM];
-    this->m_memRom      = new uint8_t[MEM_SIZE_ROM];
+    this->m_memWorkRam      = new uint8_t[MEM_SIZE_WRAM];
+    this->m_memRom          = new uint8_t[MEM_SIZE_ROM];
 
-    this->m_memBios     = new uint8_t[MEM_SIZE_BIOS];
+    this->m_memBios         = new uint8_t[MEM_SIZE_BIOS];
     this->m_memInternalRam  = new uint8_t[MEM_SIZE_IRAM];
     this->m_memIO           = new uint8_t[MEM_SIZE_IOMEM];
     this->m_memPaletteRam   = new uint8_t[MEM_SIZE_PRAM];
@@ -165,7 +165,19 @@ GbaManager::openRomFile(
         this->m_tblMem[i].size  = (this->m_tblMem[i].mask) + 1;
     }
 
-    return ( ErrCode::FAILURE );
+    //  ROM の内容を読み込む。  **/
+    const   size_t  cbRead  = (stbuf.st_size < MEM_SIZE_ROM ?
+                               stbuf.st_size : MEM_SIZE_ROM);
+    FILE *  fp  = fopen(szFileName, "rb");
+    if ( fp == nullptr ) {
+        this->closeInstance();
+        return ( ErrCode::FILE_IO_ERROR );
+    }
+
+    fread(this->m_memRom, sizeof(uint8_t), cbRead, fp);
+    fclose(fp);
+
+    return ( ErrCode::SUCCESS );
 }
 
 //========================================================================
