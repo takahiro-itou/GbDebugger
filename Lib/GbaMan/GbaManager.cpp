@@ -113,6 +113,57 @@ GbaManager::openRomFile(
     }
 
     //  メモリの各領域を確保して、テーブルに保管する。  //
+    this->m_memWorkRam  = new uint8_t[MEM_SIZE_WRAM];
+    this->m_memRom      = new uint8_t[MEM_SIZE_ROM];
+
+    this->m_memBios     = new uint8_t[MEM_SIZE_BIOS];
+    this->m_memInternalRam  = new uint8_t[MEM_SIZE_IRAM];
+    this->m_memIO           = new uint8_t[MEM_SIZE_IOMEM];
+    this->m_memPaletteRam   = new uint8_t[MEM_SIZE_PRAM];
+    this->m_memVRam         = new uint8_t[MEM_SIZE_VRAM];
+    this->m_memOam          = new uint8_t[MEM_SIZE_OAM];
+    this->m_memSave         = new uint8_t[MEM_SIZE_SRAM];
+
+    for ( int i = 0; i < 256; ++ i ) {
+        this->m_tblMem[i].address   = nullptr;
+        this->m_tblMem[i].mask      = 0x00000000;
+    }
+
+    this->m_tblMem[ 0].address  = this->m_memBios;
+    this->m_tblMem[ 2].address  = this->m_memWorkRam;
+    this->m_tblMem[ 3].address  = this->m_memInternalRam;
+    this->m_tblMem[ 4].address  = this->m_memIO;
+    this->m_tblMem[ 5].address  = this->m_memPaletteRam;
+    this->m_tblMem[ 6].address  = this->m_memVRam;
+    this->m_tblMem[ 7].address  = this->m_memOam;
+
+    this->m_tblMem[ 8].address  = this->m_memRom;
+    this->m_tblMem[ 9].address  = this->m_memRom;
+    this->m_tblMem[10].address  = this->m_memRom;
+    this->m_tblMem[11].address  = this->m_memRom;
+    this->m_tblMem[12].address  = this->m_memRom;
+    this->m_tblMem[13].address  = this->m_memRom;
+
+    this->m_tblMem[14].address  = this->m_memSave;
+
+    this->m_tblMem[ 0].mask     = MEM_MASK_BIOS;
+    this->m_tblMem[ 2].mask     = MEM_MASK_WRAM;
+    this->m_tblMem[ 3].mask     = MEM_MASK_IRAM;
+    this->m_tblMem[ 4].mask     = MEM_MASK_IOMEM;
+    this->m_tblMem[ 5].mask     = MEM_MASK_PRAM;
+    this->m_tblMem[ 6].mask     = MEM_MASK_VRAM;
+    this->m_tblMem[ 7].mask     = MEM_MASK_OAM;
+    this->m_tblMem[ 8].mask     = MEM_MASK_ROM;
+    this->m_tblMem[ 9].mask     = MEM_MASK_ROM;
+    this->m_tblMem[10].mask     = MEM_MASK_ROM;
+    this->m_tblMem[11].mask     = MEM_MASK_ROM;
+    this->m_tblMem[12].mask     = MEM_MASK_ROM;
+    this->m_tblMem[13].mask     = MEM_MASK_ROM;
+    this->m_tblMem[14].mask     = MEM_MASK_SRAM;
+
+    for ( int i = 0; i < 256; ++ i ) {
+        this->m_tblMem[i].size  = (this->m_tblMem[i].mask) + 1;
+    }
 
     return ( ErrCode::FAILURE );
 }

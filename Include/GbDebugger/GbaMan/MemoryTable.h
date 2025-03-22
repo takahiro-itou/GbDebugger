@@ -40,6 +40,7 @@ namespace  GbaMan  {
 struct  MemoryTable
 {
     uint8_t *   address;
+    uint32_t    size;
     uint32_t    mask;
 };
 
@@ -53,11 +54,11 @@ enum  {
     MEM_SIZE_BIOS   = 0x00004000,
     MEM_MASK_BIOS   = 0x00003FFF,   /**<  アドレスのマスク用。  **/
 
-    /**   0x02000000-0x0203FFFF : 256 KiB : WRAM.   **/
+    /**   0x02000000-0x0203FFFF : 256 KiB : EWRAM.  **/
     MEM_SIZE_WRAM   = 0x00040000,
     MEM_MASK_WRAM   = 0x0003FFFF,   /**<  アドレスのマスク用。  **/
 
-    /**   0x03000000-0x03007FFF :  32 KiB : IRAM.   **/
+    /**   0x03000000-0x03007FFF :  32 KiB : IWRAM.  **/
     MEM_SIZE_IRAM   = 0x00008000,
     MEM_MASK_IRAM   = 0x00007FFF,   /**<  アドレスのマスク用。  **/
 
@@ -80,7 +81,25 @@ enum  {
     /**   0x08000000-0x09FFFFFF :  32 MiB : ROM.    **/
     MEM_SIZE_ROM    = 0x02000000,
     MEM_MASK_ROM    = 0x01FFFFFF,   /**<  アドレスのマスク用。  **/
-}
+
+    /**   0x0E000000-0x0E00FFFF :  64 KiB : SRAM.   **/
+    MEM_SIZE_SRAM   = 0x00010000,
+    MEM_MASK_SRAM   = 0x0000FFFF,   /**<  アドレスのマスク用。  **/
+};
+
+enum {
+    MEM_BLOCK_BIOS  = 0,    /**<  BIOS.     **/
+    MEM_BLOCK_WRAM  = 2,    /**<  EWRAM.    **/
+    MEM_BLOCK_IRAM  = 3,    /**<  IWRAM.    **/
+    MEM_BLOCK_IO    = 4,    /**<  I/O.      **/
+    MEM_BLOCK_PRAM  = 5,    /**<  パレット  **/
+    MEM_BLOCK_VRAM  = 6,    /**<  VRAM.     **/
+    MEM_BLOCK_OAM   = 7,    /**<  OAM.      **/
+    MEM_BLOCK_ROM0  = 8,    /**<  ROM (WaitState0)  **/
+    MEM_BLOCK_ROM1  = 10,   /**<  ROM (WaitState1)  **/
+    MEM_BLOCK_ROM2  = 12,   /**<  ROM (WaitState2)  **/
+    MEM_BLOCK_SRAM  = 14,   /**<  SRAM.     **/
+};
 
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
