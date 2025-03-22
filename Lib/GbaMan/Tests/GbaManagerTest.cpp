@@ -37,6 +37,7 @@ class  GbaManagerTest : public  TestFixture
 {
     CPPUNIT_TEST_SUITE(GbaManagerTest);
     CPPUNIT_TEST(testCtor);
+    CPPUNIT_TEST(testOpenRomFile);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -45,6 +46,7 @@ public:
 
 private:
     void  testCtor();
+    void  testOpenRomFile();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION( GbaManagerTest );
@@ -57,6 +59,26 @@ CPPUNIT_TEST_SUITE_REGISTRATION( GbaManagerTest );
 void  GbaManagerTest::testCtor()
 {
     GbaManager  testee;
+
+    return;
+}
+
+void  GbaManagerTest::testOpenRomFile()
+{
+    ErrCode     retCode;
+    GbaManager  testee;
+
+    retCode = testee.openRomFile("no-such-file");
+    CPPUNIT_ASSERT_EQUAL( ErrCode::FILE_OPEN_ERROR, retCode );
+
+    retCode = testee.openRomFile("/dev/null");
+    CPPUNIT_ASSERT_EQUAL( ErrCode::FILE_IO_ERROR, retCode );
+
+    retCode = testee.openRomFile("badrom.gba");
+    CPPUNIT_ASSERT_EQUAL( ErrCode::FILE_INVALID_FORMAT, retCode );
+
+    retCode = testee.openRomFile("hello.gba");
+    CPPUNIT_ASSERT_EQUAL( ErrCode::SUCCESS, retCode );
 
     return;
 }
