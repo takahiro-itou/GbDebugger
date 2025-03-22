@@ -45,5 +45,5 @@ dist_noinst_DATA        =  \
 ##
 
 SampleApplication_SOURCES   =  SampleApplication.cpp
-SampleApplication_LDADD     =  -lgbdCommon
+SampleApplication_LDADD     =  -lgbdGba
 
