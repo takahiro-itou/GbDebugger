@@ -21,8 +21,8 @@
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_GBA_MANAGER_H )
 #    define   GBDEBUGGER_GBAMAN_INCLUDED_GBA_MANAGER_H
 
-#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_SETTINGS_H )
-#    include    "GbDebugger/Common/DebuggerSettings.h"
+#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_TYPES_H )
+#    include    "GbDebugger/Common/DebuggerTypes.h"
 #endif
 
 
