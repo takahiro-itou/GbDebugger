@@ -112,6 +112,8 @@ GbaManager::openRomFile(
         return ( ErrCode::FILE_IO_ERROR );
     }
 
+    //  メモリの各領域を確保して、テーブルに保管する。  //
+
     return ( ErrCode::FAILURE );
 }
 
