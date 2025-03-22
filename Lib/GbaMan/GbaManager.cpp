@@ -80,11 +80,11 @@ GbaManager::~GbaManager()
 //    ROM ファイルを読み込む。
 //
 
-int
+ErrCode
 GbaManager::openRomFile(
         const   char *  szFileName)
 {
-    return ( -1 );
+    return ( ErrCode::FAILURE );
 }
 
 //========================================================================
