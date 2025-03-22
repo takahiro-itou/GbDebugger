@@ -36,7 +36,7 @@ dist_noinst_header_files    +=  \
         ${extra_noinst_header_files}
 
 inclib_header_files         +=  \
-        ${inclib_source_dir}/DebuggerSettings.h    \
+        ${inclib_source_dir}/DebuggerProject.h     \
         ${inclib_source_dir}/SampleDocument.h      \
         ${extra_library_header_files}
 

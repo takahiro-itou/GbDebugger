@@ -21,7 +21,9 @@
 #if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_TYPES_H )
 #    define   GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_TYPES_H
 
-#include    "DebuggerSettings.h"
+#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_PROJECT_H )
+#    include    "DebuggerProject.h"
+#endif
 
 #include    <cstdint>
 #include    <stddef.h>

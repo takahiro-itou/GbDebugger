@@ -13,28 +13,28 @@
 *************************************************************************/
 
 /**
-**      An Implementation of Test Case 'DebuggerSettings'.
+**      An Implementation of Test Case 'DebuggerProject'.
 **
-**      @file       Common/Tests/DebuggerSettingsTest.cpp
+**      @file       Common/Tests/DebuggerProjectTest.cpp
 **/
 
 #include    "TestDriver.h"
-#include    "GbDebugger/Common/DebuggerSettings.h"
+#include    "GbDebugger/Common/DebuggerProject.h"
 
 
 GBDEBUGGER_NAMESPACE_BEGIN
 
 //========================================================================
 //
-//    DebuggerSettingsTest  class.
+//    DebuggerProjectTest  class.
 //
 /**
-**    クラス DebuggerSettings の単体テスト。
+**    クラス DebuggerProject の単体テスト。
 **/
 
-class  DebuggerSettingsTest : public  TestFixture
+class  DebuggerProjectTest : public  TestFixture
 {
-    CPPUNIT_TEST_SUITE(DebuggerSettingsTest);
+    CPPUNIT_TEST_SUITE(DebuggerProjectTest);
     CPPUNIT_TEST(testNameSpace);
     CPPUNIT_TEST_SUITE_END();
 
@@ -46,14 +46,14 @@ private:
     void  testNameSpace();
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION( DebuggerSettingsTest );
+CPPUNIT_TEST_SUITE_REGISTRATION( DebuggerProjectTest );
 
 //========================================================================
 //
 //    Tests.
 //
 
-void  DebuggerSettingsTest::testNameSpace()
+void  DebuggerProjectTest::testNameSpace()
 {
     return;
 }
