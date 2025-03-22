@@ -14,7 +14,9 @@ TESTS                   =  \
 
 target_testee_library       +=  -lgbdGbaMan
 
-dist_noinst_data_files      +=
+dist_noinst_data_files      +=  badrom.gba
+dist_noinst_data_files      +=  hello.gba
+
 dist_noinst_header_files    +=
 extra_test_drivers          +=
 library_test_drivers        +=
