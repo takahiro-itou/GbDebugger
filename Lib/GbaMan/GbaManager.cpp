@@ -20,6 +20,9 @@
 
 #include    "GbDebugger/GbaMan/GbaManager.h"
 
+#include    <stdio.h>
+#include    <sys/stat.h>
+
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
@@ -77,6 +80,16 @@ GbaManager::~GbaManager()
 //
 
 //----------------------------------------------------------------
+//    現在動作しているインスタンスを閉じる。
+//
+
+ErrCode
+GbaManager::closeInstance()
+{
+    return ( ErrCode::SUCCESS );
+}
+
+//----------------------------------------------------------------
 //    ROM ファイルを読み込む。
 //
 
@@ -84,6 +97,21 @@ ErrCode
 GbaManager::openRomFile(
         const   char *  szFileName)
 {
+    struct stat stbuf;
+
+    //  ファイルの情報を取得する。  //
+    int rc  = stat(szFileName, &stbuf);
+    if ( rc < 0 ) {
+        perror("open rom file");
+        return ( ErrCode::FILE_OPEN_ERROR );
+    }
+
+    //  ファイルサイズが 0xC0 (192) バイト未満の時は、  //
+    //  必要なヘッダが存在していないのでエラーにする。  //
+    if ( stbuf.st_size <= 192 ) {
+        return ( ErrCode::FILE_IO_ERROR );
+    }
+
     return ( ErrCode::FAILURE );
 }
 
