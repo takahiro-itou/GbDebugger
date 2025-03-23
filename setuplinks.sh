@@ -63,6 +63,9 @@ if [ -d  Lib/${testcommondir}/Tests ] ; then
     (cd  Lib/${testcommondir}/Tests  \
       &&  ${RM_F}  CMakeLists.txt    \
       &&  ${LN_S}  ../../Tests/.TestsCommon/CMakeLists.txt)
+    (cd  Lib/${testcommondir}/Tests  \
+      &&  ${RM_F}  TestConf.h.in     \
+      &&  ${LN_S}  ../../Tests/.TestsCommon/TestConf.h.in)
 fi
 
 for  dir  in  Common  GbaMan  ; do
@@ -73,6 +76,9 @@ for  dir  in  Common  GbaMan  ; do
         (cd  Lib/${dir}/Tests          \
           &&  ${RM_F}  CMakeLists.txt  \
           &&  ${LN_H}  ../../${testcommondir}/Tests/CMakeLists.txt)
+        (cd  Lib/${dir}/Tests          \
+          &&  ${RM_F}  TestConf.h.in   \
+          &&  ${LN_H}  ../../${testcommondir}/Tests/TestConf.h.in)
     fi
 done
 

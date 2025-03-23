@@ -173,6 +173,7 @@ dnl
 AC_CONFIG_FILES([
     Lib/Common/Tests/Makefile
     Lib/GbaMan/Tests/Makefile
+    Lib/GbaMan/Tests/TestConf.h
 ])
 
 dnl

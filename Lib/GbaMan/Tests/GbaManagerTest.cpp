@@ -21,6 +21,8 @@
 #include    "TestDriver.h"
 #include    "GbDebugger/GbaMan/GbaManager.h"
 
+#include    "TestConf.h"
+
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
