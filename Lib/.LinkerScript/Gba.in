@@ -1,0 +1,5 @@
+
+/*  Linker Script.  */
+INPUT( AS_NEEDED(GbaMan/libgbdGbaMan.static.a) )
+
+INPUT( AS_NEEDED(-lgbdCommon) )

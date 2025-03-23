@@ -7,7 +7,7 @@
 ##    List of Directories.
 ##
 
-module_dir_name     =  Common
+module_dir_name     =  GbaMan
 SUBDIRS             =  .  Tests
 
 include  $(top_srcdir)/.M4/BuildCommon/DirList.inc
@@ -23,7 +23,7 @@ extra_noinst_data_files     =
 extra_noinst_header_files   =
 
 library_source_files        +=  \
-        SampleDocument.cpp             \
+        GbaManager.cpp                 \
         ${extra_library_source_files}
 
 library_instantiations      +=
@@ -36,9 +36,8 @@ dist_noinst_header_files    +=  \
         ${extra_noinst_header_files}
 
 inclib_header_files         +=  \
-        ${inclib_source_dir}/DebuggerProject.h     \
-        ${inclib_source_dir}/DebuggerTypes.h       \
-        ${inclib_source_dir}/SampleDocument.h      \
+        ${inclib_source_dir}/GbaManager.h          \
+        ${inclib_source_dir}/MemoryTable.h         \
         ${extra_library_header_files}
 
 inclib_nodist_header_files  +=
@@ -54,7 +53,7 @@ library_compile_srcfiles    +=  \
 ##    List of Libraries.
 ##
 
-static_libraries_list   +=  libgbdCommon.static.a
+static_libraries_list   +=  libgbdGbaMan.static.a
 shared_libraries_list   +=
 
 ##
@@ -71,5 +70,5 @@ include  $(top_srcdir)/.M4/BuildCommon/Install.inc
 ##    Build Libraries.
 ##
 
-libgbdCommon_static_a_SOURCES   =  ${library_source_files}
+libgbdGbaMan_static_a_SOURCES   =  ${library_source_files}
 

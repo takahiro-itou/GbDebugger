@@ -13,35 +13,35 @@
 *************************************************************************/
 
 /**
-**      An Interface of SampleDocument class.
+**      An Interface of GbaManager class.
 **
-**      @file       Common/SampleDocument.h
+**      @file       GbaMan/GbaManager.h
 **/
 
-#if !defined( GBDEBUGGER_COMMON_INCLUDED_SAMPLE_DOCUMENT_H )
-#    define   GBDEBUGGER_COMMON_INCLUDED_SAMPLE_DOCUMENT_H
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_GBA_MANAGER_H )
+#    define   GBDEBUGGER_GBAMAN_INCLUDED_GBA_MANAGER_H
 
 #if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_TYPES_H )
-#    include    "DebuggerTypes.h"
+#    include    "GbDebugger/Common/DebuggerTypes.h"
 #endif
 
-#if !defined( GBDEBUGGER_SYS_STL_INCLUDED_STRING )
-#    include    <string>
-#    define   GBDEBUGGER_SYS_STL_INCLUDED_STRING
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_MEMORY_TABLE_H )
+#    include    "MemoryTable.h"
 #endif
+
 
 GBDEBUGGER_NAMESPACE_BEGIN
-namespace  Common  {
+namespace  GbaMan  {
 
 //  クラスの前方宣言。  //
 
 
 //========================================================================
 //
-//    SampleDocument  class.
+//    GbaManager  class.
 //
 
-class  SampleDocument
+class  GbaManager
 {
 
 //========================================================================
@@ -60,14 +60,14 @@ public:
     **  （デフォルトコンストラクタ）。
     **
     **/
-    SampleDocument();
+    GbaManager();
 
     //----------------------------------------------------------------
     /**   インスタンスを破棄する
     **  （デストラクタ）。
     **
     **/
-    virtual  ~SampleDocument();
+    virtual  ~GbaManager();
 
 //========================================================================
 //
@@ -91,12 +91,28 @@ public:
 public:
 
     //----------------------------------------------------------------
-    /**   入力メッセージ中に含まれるアルファベットを数える。
+    /**   現在動作しているインスタンスを閉じる。
     **
-    **  @return     半角アルファベット [A-Za-z] の文字数
+    **  @return     エラーコードを返す。
+    **      -   異常終了の場合は、
+    **          エラーの種類を示す非ゼロ値を返す。
+    **      -   正常終了の場合は、ゼロを返す。
     **/
-    virtual  int
-    countAlphabet()  const;
+    virtual  ErrCode
+    closeInstance();
+
+    //----------------------------------------------------------------
+    /**   ROM ファイルを読み込む。
+    **
+    **  @param [in] szFileName    ファイル名。
+    **  @return     エラーコードを返す。
+    **      -   異常終了の場合は、
+    **          エラーの種類を示す非ゼロ値を返す。
+    **      -   正常終了の場合は、ゼロを返す。
+    **/
+    virtual  ErrCode
+    openRomFile(
+            const   char *  szFileName);
 
 //========================================================================
 //
@@ -107,17 +123,6 @@ public:
 //
 //    Accessors.
 //
-public:
-
-    //----------------------------------------------------------------
-    /**   メッセージを設定する。
-    **
-    **  @param [in] message   入力データ
-    **  @return     void.
-    **/
-    void
-    setMessage(
-            const  std::string  &message);
 
 //========================================================================
 //
@@ -135,18 +140,42 @@ public:
 //
 private:
 
-    std::string     m_message;
+    /**   BIOS.     **/
+    uint8_t *       m_memBios;
+
+    uint8_t *       m_memWorkRam;
+
+    uint8_t *       m_memInternalRam;
+
+    uint8_t *       m_memPaletteRam;
+
+    uint8_t *       m_memIO;
+
+    uint8_t *       m_memVRam;
+
+    uint8_t *       m_memOam;
+
+    uint8_t *       m_memRom;
+
+    uint8_t *       m_memSave;
+
+    /**   メモリ空間。  **/
+    MemoryTable     m_tblMem[256];
 
 //========================================================================
 //
 //    Other Features.
 //
+private:
+    typedef     GbaManager      This;
+    GbaManager          (const  This  &);
+    This &  operator =  (const  This  &);
 public:
     //  テストクラス。  //
-    friend  class   SampleDocumentTest;
+    friend  class   GbaManagerTest;
 };
 
-}   //  End of namespace  Common
+}   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
 
 #endif
