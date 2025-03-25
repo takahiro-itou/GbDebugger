@@ -1,4 +1,7 @@
 
+
+set(module_title        "Bin")
+
 Include (${common_cmake_dir}/BuildCommon/ConfigTarget.cmake)
 
 add_executable       (SampleApplication     SampleApplication.cpp)
