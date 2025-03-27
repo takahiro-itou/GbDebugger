@@ -13,7 +13,7 @@
 *************************************************************************/
 
 /**
-**      An Implementation of SampleDocument class.
+**      An Implementation of GbaManager class.
 **
 **      @file       GbaMan/GbaManager.cpp
 **/
@@ -47,6 +47,15 @@ namespace  {
 //  （デフォルトコンストラクタ）。
 
 GbaManager::GbaManager()
+    : m_memBios(nullptr),
+      m_memWorkRam(nullptr),
+      m_memInternalRam(nullptr),
+      m_memPaletteRam (nullptr),
+      m_memIO(nullptr),
+      m_memVRam(nullptr),
+      m_memOam (nullptr),
+      m_memRom (nullptr),
+      m_memSave(nullptr)
 {
 }
 
