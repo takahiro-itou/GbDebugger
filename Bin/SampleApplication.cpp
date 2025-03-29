@@ -43,5 +43,13 @@ int  main(int argc, char * argv[])
         return ( 1 );
     }
 
+    //  最初のレジスタをダンプ。    //
+    manGba.printRegisters(std::cout)
+            <<  std::endl;
+
+    //  最初の命令を逆アセンブル。  //
+    manGba.disassembleArm(std::cout, 0x08000000)
+            <<  std::endl;
+
     return ( 0 );
 }

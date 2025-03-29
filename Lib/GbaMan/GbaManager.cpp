@@ -48,9 +48,10 @@ const char * conditions[16] = {
 
 const Opecodes armOpecodes[] = {
     //  Branch
-    { 0x0F000000, 0x0A000000, "b%c %r0" },
-    { 0x0F000000, 0x0B000000, "bl%c %o" },
-    { 0x0F000000, 0x0F000000, "swi%c %q" }
+    { 0x0FF000F0, 0x01200010, "BX.%c %r0" },
+    { 0x0F000000, 0x0A000000, "B.%c %o" },
+    { 0x0F000000, 0x0B000000, "BL.%c %o" },
+    { 0x0F000000, 0x0F000000, "SWI.%c %q" }
 };
 
 }   //  End of (Unnamed) namespace.
@@ -189,6 +190,7 @@ GbaManager::disassembleArm(
                 }
                 break;
             }
+            ++  src;
         }
         dst += len;
     }
