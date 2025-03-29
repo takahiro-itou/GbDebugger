@@ -48,10 +48,10 @@ const char * conditions[16] = {
 
 const Opecodes armOpecodes[] = {
     //  Branch
-    { 0x0FF000F0, 0x01200010, "BX.%c %r0" },
-    { 0x0F000000, 0x0A000000, "B.%c %o" },
-    { 0x0F000000, 0x0B000000, "BL.%c %o" },
-    { 0x0F000000, 0x0F000000, "SWI.%c %q" }
+    { 0x0FF000F0, 0x01200010, "BX.%c\t%r0" },
+    { 0x0F000000, 0x0A000000, "B.%c\t%o" },
+    { 0x0F000000, 0x0B000000, "BL.%c\t%o" },
+    { 0x0F000000, 0x0F000000, "SWI.%c\t%q" }
 };
 
 }   //  End of (Unnamed) namespace.
@@ -157,7 +157,7 @@ GbaManager::disassembleArm(
     const Opecodes * oc = armOpecodes;
     for ( ; (opecode & oc->mask) != oc->cval; ++ oc ) ;
 
-    sprintf(buf, "%08x %08x ", addr, opecode);
+    sprintf(buf, "%08x:   %08x\t", addr, opecode);
     outStr  <<  buf;
 
     int             reg_id  = 0;
@@ -186,7 +186,7 @@ GbaManager::disassembleArm(
                     off |= 0xFF000000;
                 }
                 off <<= 2;
-                len = sprintf(dst, "%08x", addr + 8 + off);
+                len = sprintf(dst, "%08x ; (%08x)", off, addr + 8 + off);
                 }
                 break;
             }
