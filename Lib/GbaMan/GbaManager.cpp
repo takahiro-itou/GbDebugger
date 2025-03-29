@@ -220,6 +220,11 @@ GbaManager::disassembleThumb(
 ErrCode
 GbaManager::doHardReset()
 {
+    for ( int i = 0; i < 16; ++ i ) {
+        this->m_regs[ i].dw = 0x00000000;
+    }
+    this->m_regs[15].dw = 0x08000000;
+
     return ( ErrCode::SUCCESS );
 }
 
