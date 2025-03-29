@@ -99,6 +99,30 @@ GbaManager::closeInstance()
 }
 
 //----------------------------------------------------------------
+//    ニーモニックを表示する。
+//
+
+std::ostream  &
+GbaManager::disassembleArm(
+        std::ostream  & outStr,
+        const uint32_t  addr)
+{
+    return ( outStr );
+}
+
+//----------------------------------------------------------------
+//    ニーモニックを表示する。
+//
+
+std::ostream  &
+GbaManager::disassembleThumb(
+        std::ostream  & outStr,
+        const uint32_t  addr)
+{
+    return ( outStr );
+}
+
+//----------------------------------------------------------------
 //    リセットを行う。
 //
 

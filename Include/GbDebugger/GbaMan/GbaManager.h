@@ -113,6 +113,24 @@ public:
     closeInstance();
 
     //----------------------------------------------------------------
+    /**   ニーモニックを表示する。
+    **
+    **/
+    virtual  std::ostream  &
+    disassembleArm(
+            std::ostream  & outStr,
+            const uint32_t  addr);
+
+    //----------------------------------------------------------------
+    /**   ニーモニックを表示する。
+    **
+    **/
+    virtual  std::ostream  &
+    disassembleThumb(
+            std::ostream  & outStr,
+            const uint32_t  addr);
+
+    //----------------------------------------------------------------
     /**   リセットを行う。
     **
     **  @return     エラーコードを返す。
