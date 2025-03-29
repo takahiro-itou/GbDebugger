@@ -29,6 +29,11 @@
 #    include    "MemoryTable.h"
 #endif
 
+#if !defined( GBDEBUGGER_SYS_STL_INCLUDED_IOSFWD )
+#    include    <iosfwd>
+#    define   GBDEBUGGER_SYS_STL_INCLUDED_IOSFWD
+#endif
+
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
@@ -130,6 +135,14 @@ public:
     virtual  ErrCode
     openRomFile(
             const   char *  szFileName);
+
+    //----------------------------------------------------------------
+    /**   レジスタの内容をダンプする。
+    **
+    **/
+    virtual  std::ostream  &
+    printRegisters(
+            std::ostream  & outStr)  const;
 
 //========================================================================
 //

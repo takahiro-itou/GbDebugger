@@ -199,6 +199,17 @@ GbaManager::openRomFile(
     return ( ErrCode::SUCCESS );
 }
 
+//----------------------------------------------------------------
+//    レジスタの内容をダンプする。
+//
+
+std::ostream  &
+GbaManager::printRegisters(
+        std::ostream  & outStr)  const
+{
+    return ( outStr );
+}
+
 //========================================================================
 //
 //    Public Member Functions.
