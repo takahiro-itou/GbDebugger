@@ -327,6 +327,16 @@ std::ostream  &
 GbaManager::printRegisters(
         std::ostream  & outStr)  const
 {
+    char    buf[256];
+
+    for ( int i = 0; i < 16; ++ i ) {
+        sprintf(buf, "%3s: %08x ", regs[i], this->m_regs[i].dw);
+        outStr  <<  buf;
+        if ( (i & 3) == 3 ) {
+            outStr  <<  std::endl;
+        }
+    }
+
     return ( outStr );
 }
 
