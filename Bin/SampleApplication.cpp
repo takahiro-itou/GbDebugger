@@ -43,6 +43,9 @@ int  main(int argc, char * argv[])
         return ( 1 );
     }
 
+    //  ハードリセットを行う。      //
+    manGba.doHardReset();
+
     //  最初のレジスタをダンプ。    //
     manGba.printRegisters(std::cout)
             <<  std::endl;
