@@ -151,7 +151,7 @@ GbaManager::disassembleArm(
         std::ostream  & outStr,
         const uint32_t  addr)
 {
-    char    buf[256];
+    char    buf[256] = { 0 };
     uint32_t    opecode = readMemory<uint32_t>(this->m_tblMem, addr);
 
     const Opecodes * oc = armOpecodes;
