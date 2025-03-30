@@ -13,7 +13,7 @@
 *************************************************************************/
 
 /**
-**      An Interface of CpuArm.
+**      An Interface of CpuArm class.
 **
 **      @file       GbaMan/CpuArm.h
 **/

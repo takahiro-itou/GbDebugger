@@ -13,13 +13,13 @@
 *************************************************************************/
 
 /**
-**      An Interface of CpuThumb class.
+**      An Interface of DisArm class.
 **
-**      @file       GbaMan/CpuThumb.h
+**      @file       GbaMan/DisArm.h
 **/
 
-#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_CPU_THUMB_H )
-#    define   GBDEBUGGER_GBAMAN_INCLUDED_CPU_THUMB_H
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_DIS_ARM_H )
+#    define   GBDEBUGGER_GBAMAN_INCLUDED_DIS_ARM_H
 
 #if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_TYPES_H )
 #    include    "GbDebugger/Common/DebuggerTypes.h"
