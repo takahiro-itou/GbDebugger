@@ -16,6 +16,8 @@ Include (${common_cmake_dir}/BuildCommon/ConfigTarget.cmake)
 
 set(library_source_files
        GbaManager.cpp
+       CpuArm/CpuArm.cpp
+       CpuThumb/CpuThumb.cpp
 )
 
 set(inclib_header_files
