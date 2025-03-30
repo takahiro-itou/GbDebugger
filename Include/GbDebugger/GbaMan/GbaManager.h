@@ -29,6 +29,11 @@
 #    include    "MemoryTable.h"
 #endif
 
+#if !defined( GBDEBUGGER_SYS_STL_INCLUDED_IOSFWD )
+#    include    <iosfwd>
+#    define   GBDEBUGGER_SYS_STL_INCLUDED_IOSFWD
+#endif
+
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
@@ -48,6 +53,12 @@ class  GbaManager
 //
 //    Internal Type Definitions.
 //
+public:
+
+    struct  RegPair
+    {
+        uint32_t    dw;
+    };
 
 //========================================================================
 //
@@ -102,6 +113,35 @@ public:
     closeInstance();
 
     //----------------------------------------------------------------
+    /**   ニーモニックを表示する。
+    **
+    **/
+    virtual  std::ostream  &
+    disassembleArm(
+            std::ostream  & outStr,
+            const uint32_t  addr);
+
+    //----------------------------------------------------------------
+    /**   ニーモニックを表示する。
+    **
+    **/
+    virtual  std::ostream  &
+    disassembleThumb(
+            std::ostream  & outStr,
+            const uint32_t  addr);
+
+    //----------------------------------------------------------------
+    /**   リセットを行う。
+    **
+    **  @return     エラーコードを返す。
+    **      -   異常終了の場合は、
+    **          エラーの種類を示す非ゼロ値を返す。
+    **      -   正常終了の場合は、ゼロを返す。
+    **/
+    virtual  ErrCode
+    doHardReset();
+
+    //----------------------------------------------------------------
     /**   ROM ファイルを読み込む。
     **
     **  @param [in] szFileName    ファイル名。
@@ -113,6 +153,14 @@ public:
     virtual  ErrCode
     openRomFile(
             const   char *  szFileName);
+
+    //----------------------------------------------------------------
+    /**   レジスタの内容をダンプする。
+    **
+    **/
+    virtual  std::ostream  &
+    printRegisters(
+            std::ostream  & outStr)  const;
 
 //========================================================================
 //
@@ -161,6 +209,9 @@ private:
 
     /**   メモリ空間。  **/
     MemoryTable     m_tblMem[256];
+
+    /**   レジスタ。    **/
+    RegPair         m_regs[16];
 
 //========================================================================
 //

@@ -43,5 +43,18 @@ int  main(int argc, char * argv[])
         return ( 1 );
     }
 
+    //  ハードリセットを行う。      //
+    manGba.doHardReset();
+
+    //  最初のレジスタをダンプ。    //
+    std::cout   <<  "REGS\n";
+    manGba.printRegisters(std::cout)
+            <<  std::endl;
+
+    //  最初の命令を逆アセンブル。  //
+    std::cout   <<  "Mnemonic:\n";
+    manGba.disassembleArm(std::cout, 0x08000000)
+            <<  std::endl;
+
     return ( 0 );
 }
