@@ -3,6 +3,8 @@
 ##    ライブラリのビルドとインストール。
 ##
 
+AUTOMAKE_OPTIONS    =  subdir-objects
+
 ##
 ##    List of Directories.
 ##
