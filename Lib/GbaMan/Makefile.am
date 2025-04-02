@@ -26,6 +26,7 @@ extra_noinst_header_files   =
 
 library_source_files        +=  \
         GbaManager.cpp                 \
+        MemoryManager.cpp              \
         CpuArm/CpuArm.cpp              \
         CpuArm/DisArm.cpp              \
         CpuThumb/CpuThumb.cpp          \
@@ -47,6 +48,7 @@ dist_noinst_header_files    +=  \
 
 inclib_header_files         +=  \
         ${inclib_source_dir}/GbaManager.h          \
+        ${inclib_source_dir}/MemoryManager.h       \
         ${inclib_source_dir}/MemoryTable.h         \
         ${extra_library_header_files}
 
