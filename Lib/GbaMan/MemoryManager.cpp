@@ -81,6 +81,17 @@ MemoryManager::~MemoryManager()
 //    Public Member Functions.
 //
 
+//----------------------------------------------------------------
+//    メモリアドレスを計算する。
+//
+
+void  *
+MemoryManager::getMemoryAdress(
+        const  uint32_t gmAddr)  const
+{
+    return ( nullptr );
+}
+
 //========================================================================
 //
 //    Accessors.
