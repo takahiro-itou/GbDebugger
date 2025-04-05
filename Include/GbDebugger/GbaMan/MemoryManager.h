@@ -97,6 +97,20 @@ public:
     getMemoryAdress(
             const  uint32_t gmAddr)  const;
 
+    //----------------------------------------------------------------
+    /**   メモリの内容を読みだす。
+    **
+    **/
+    template  <typename  T>
+    inline  const  T
+    readMemory(
+            const  uint32_t gmAddr)  const
+    {
+        const T  *  ptr = static_cast<const T *>(getMemoryAddress(gmAddr));
+        return ( *ptr );
+    }
+
+
 //========================================================================
 //
 //    Accessors.
