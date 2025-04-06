@@ -25,8 +25,8 @@
 #    include    "GbDebugger/Common/DebuggerTypes.h"
 #endif
 
-#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_MEMORY_TABLE_H )
-#    include    "MemoryTable.h"
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_MEMORY_MANAGER_H )
+#    include    "MemoryManager.h"
 #endif
 
 #if !defined( GBDEBUGGER_SYS_STL_INCLUDED_IOSFWD )

@@ -25,6 +25,10 @@
 #    include    "GbDebugger/Common/DebuggerTypes.h"
 #endif
 
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_MEMORY_TABLE_H )
+#    include    "MemoryTable.h"
+#endif
+
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
