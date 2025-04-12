@@ -57,27 +57,6 @@ const Opecodes armOpecodes[] = {
 }   //  End of (Unnamed) namespace.
 
 
-inline  void *
-getMemoryAddress(
-        const  MemoryTable (&map)[256],
-        const  uint32_t     addr)
-{
-    const uint32_t  pg  = (addr >> 24);
-    const uint32_t  ofs = addr & (map[pg].mask);
-    return ( map[pg].address + ofs );
-}
-
-template <typename T>
-inline  const  T
-readMemory(
-        const  MemoryTable (&map)[256],
-        const  uint32_t     addr)
-{
-    const T  *  ptr = static_cast<const T *>(getMemoryAddress(map, addr));
-    return ( *ptr );
-}
-
-
 //----------------------------------------------------------------
 //    ニーモニックを表示する。
 //

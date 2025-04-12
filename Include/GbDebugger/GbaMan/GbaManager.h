@@ -203,28 +203,6 @@ private:
     /**   メモリ空間。  **/
     MemoryManager   m_manMem;
 
-    /**   BIOS.     **/
-    uint8_t *       m_memBios;
-
-    uint8_t *       m_memWorkRam;
-
-    uint8_t *       m_memInternalRam;
-
-    uint8_t *       m_memPaletteRam;
-
-    uint8_t *       m_memIO;
-
-    uint8_t *       m_memVRam;
-
-    uint8_t *       m_memOam;
-
-    uint8_t *       m_memRom;
-
-    uint8_t *       m_memSave;
-
-    /**   メモリ空間。  **/
-    MemoryTable     m_tblMem[256];
-
     /**   レジスタ。    **/
     RegPair         m_regs[16];
 
