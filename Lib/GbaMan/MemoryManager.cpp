@@ -44,6 +44,16 @@ namespace  {
 //  （デフォルトコンストラクタ）。
 
 MemoryManager::MemoryManager()
+    : m_memBios(nullptr),
+      m_memWRam(nullptr),
+      m_memIRam(nullptr),
+      m_memIO  (nullptr),
+      m_memPRam(nullptr),
+      m_memVRam(nullptr),
+      m_memOam (nullptr),
+      m_memRom (nullptr),
+      m_memSave(nullptr),
+      m_tblMem()
 {
 }
 
