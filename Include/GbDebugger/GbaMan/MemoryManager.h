@@ -98,7 +98,7 @@ public:
     **  @param [in] gmAddr    ゲストのメモリアドレス。
     **/
     void  *
-    getMemoryAdress(
+    getMemoryAddress(
             const  uint32_t gmAddr)  const;
 
     //----------------------------------------------------------------

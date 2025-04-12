@@ -86,7 +86,7 @@ MemoryManager::~MemoryManager()
 //
 
 void  *
-MemoryManager::getMemoryAdress(
+MemoryManager::getMemoryAddress(
         const  uint32_t gmAddr)  const
 {
     return ( nullptr );
