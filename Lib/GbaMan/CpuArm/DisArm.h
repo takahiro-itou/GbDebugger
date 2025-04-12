@@ -86,11 +86,15 @@ public:
     //----------------------------------------------------------------
     /**   ニーモニックを表示する。
     **
+    **  @param [in,out] outStr    出力ストリーム
+    **  @param [in]     gmAddr    ゲスト上のアドレス
+    **  @param [in]     opeCode   オペコード
     **/
     virtual  std::ostream  &
-    disassembleArm(
-            std::ostream  & outStr,
-            const uint32_t  addr);
+    writeMnemonic(
+            std::ostream       &outStr,
+            GuestMemoryAddress  gmAddr,
+            const  OpeCode      opeCode)  const;
 
 //========================================================================
 //

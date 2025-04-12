@@ -128,6 +128,12 @@ typedef     BtByte  *           LpByteWriteBuf;
 
 DECLARE_STRICT_TYPE(uint32_t,   GuestMemoryAddress);
 
+//----------------------------------------------------------------
+/**
+**    オペコード型。
+**/
+
+DECLARE_STRICT_TYPE(uint32_t,   OpeCode);
 
 //========================================================================
 //

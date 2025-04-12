@@ -65,54 +65,10 @@ GbaManager::disassembleArm(
         std::ostream  & outStr,
         const uint32_t  addr)
 {
-    char    buf[256] = { 0 };
     uint32_t    opecode = readMemory<uint32_t>(addr);
 
-    const Opecodes * oc = armOpecodes;
-    for ( ; (opecode & oc->mask) != oc->cval; ++ oc ) ;
-
-    sprintf(buf, "%08x:   %08x\t", addr, opecode);
-    outStr  <<  buf;
-
-    int             reg_id  = 0;
-    size_t          len = 0;
-    const  char  *  src = oc->mnemonic;
-    char  *         dst = buf;
-
-    while (*src) {
-        len = 0;
-        if ( *src != '%' ) {
-            *(dst ++)   = *(src ++);
-        } else {
-            ++  src;
-            switch ( *src ) {
-            case  'c':
-                len = sprintf(dst, "%s", conditions[opecode >> 28]);
-                break;
-            case  'r':
-                reg_id  = (opecode >> ((*(++ src) - '0') * 4)) & 15;
-                len = sprintf(dst, "%s", regs[reg_id]);
-                break;
-            case  'o':  {
-                * (dst ++)  = '$';
-                int off = opecode & 0x00FFFFFF;
-                if ( off & 0x00800000 ) {
-                    off |= 0xFF000000;
-                }
-                off <<= 2;
-                len = sprintf(dst, "%08x ; (%08x)", off, addr + 8 + off);
-                }
-                break;
-            }
-            ++  src;
-        }
-        dst += len;
-    }
-
-    *(dst ++)   = '\0';
-    outStr  <<  buf;
-
-    return ( outStr );
+    DisArm  dis;
+    return  dis.writeMnemonic(outStr, addr, opecode);
 }
 
 
@@ -169,10 +125,57 @@ DisArm::~DisArm()
 //
 
 std::ostream  &
-DisArm::disassembleArm(
-        std::ostream      & outStr,
-        GuestMemoryAddress  gmAddr)
+DisArm::writeMnemonic(
+        std::ostream       &outStr,
+        GuestMemoryAddress  gmAddr,
+        const  OpeCode      opeCode)  const
 {
+    char    buf[256] = { 0 };
+
+    const Opecodes * oc = armOpecodes;
+    for ( ; (opeCode & oc->mask) != oc->cval; ++ oc ) ;
+
+    sprintf(buf, "%08x:   %08x\t", gmAddr, opeCode);
+    outStr  <<  buf;
+
+    int             reg_id  = 0;
+    size_t          len = 0;
+    const  char  *  src = oc->mnemonic;
+    char  *         dst = buf;
+
+    while (*src) {
+        len = 0;
+        if ( *src != '%' ) {
+            *(dst ++)   = *(src ++);
+        } else {
+            ++  src;
+            switch ( *src ) {
+            case  'c':
+                len = sprintf(dst, "%s", conditions[opeCode >> 28]);
+                break;
+            case  'r':
+                reg_id  = (opeCode >> ((*(++ src) - '0') * 4)) & 15;
+                len = sprintf(dst, "%s", regs[reg_id]);
+                break;
+            case  'o':  {
+                * (dst ++)  = '$';
+                int off = opeCode & 0x00FFFFFF;
+                if ( off & 0x00800000 ) {
+                    off |= 0xFF000000;
+                }
+                off <<= 2;
+                len = sprintf(dst, "%08x ; (%08x)", off, gmAddr + 8 + off);
+                }
+                break;
+            }
+            ++  src;
+        }
+        dst += len;
+    }
+
+    *(dst ++)   = '\0';
+    outStr  <<  buf;
+
     return ( outStr );
 }
 
