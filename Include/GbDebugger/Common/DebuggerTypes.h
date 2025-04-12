@@ -77,7 +77,7 @@ enum class  ErrCode
 //  マクロを予約しておく。
 //
 
-#if defined( _DEBUG ) && !defined( HACORE_DISABLE_STRICT_TYPES )
+#if defined( _DEBUG ) && !defined( GBDEBUGGER_DISABLE_STRICT_TYPES )
 #    define     DECLARE_STRICT_TYPE(BaseType, DeclType)         \
     typedef     BaseType    DeclType
 #else
@@ -104,6 +104,14 @@ typedef     const  BtByte  *    LpcByteReadBuf;
 **/
 
 typedef     BtByte  *           LpByteWriteBuf;
+
+
+//----------------------------------------------------------------
+/**
+**    ゲスト上のアドレスを示す整数値。
+**/
+
+DECLARE_STRICT_TYPE(uint32_t,   GuestMemoryAddress);
 
 
 //========================================================================
