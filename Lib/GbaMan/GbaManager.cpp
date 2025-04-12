@@ -155,6 +155,9 @@ GbaManager::openRomFile(
     }
 
     //  メモリの各領域を確保して、テーブルに保管する。  //
+    this->m_manMem.allocateMemory();
+    this->m_manMem.buildMemoryTable();
+
     this->m_memWorkRam      = new uint8_t[MEM_SIZE_WRAM];
     this->m_memRom          = new uint8_t[MEM_SIZE_ROM];
 
@@ -216,7 +219,8 @@ GbaManager::openRomFile(
         return ( ErrCode::FILE_IO_ERROR );
     }
 
-    fread(this->m_memRom, sizeof(uint8_t), cbRead, fp);
+    LpByteWriteBuf  memRom  = this->m_manMem.getHostAddressOfGuestRom();
+    fread(memRom, sizeof(uint8_t), cbRead, fp);
     fclose(fp);
 
     return ( ErrCode::SUCCESS );
