@@ -143,7 +143,7 @@ private:
     MemoryManager  &        m_manMem;
 
     /**   レジスタ。            **/
-    RegPair                 m_cpuRegs[16];
+    RegPair                 m_cpuRegs[85];
 
     /**   次の命令のアドレス。  **/
     GuestMemoryAddress      m_nextPC;
