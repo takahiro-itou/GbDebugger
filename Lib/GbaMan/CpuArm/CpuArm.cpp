@@ -21,6 +21,7 @@
 #include    "CpuArm.h"
 
 #include    "GbDebugger/GbaMan/GbaManager.h"
+#include    "GbDebugger/GbaMan/MemoryManager.h"
 
 #include    <ostream>
 
@@ -48,7 +49,12 @@ namespace  {
 //  （デフォルトコンストラクタ）。
 //
 
-CpuArm::CpuArm()
+CpuArm::CpuArm(
+        MemoryManager & manMem)
+    : m_manMem(manMem),
+      m_cpuRegs(),
+      m_nextPC (),
+      m_prefOpeCodes()
 {
 }
 
@@ -86,6 +92,23 @@ CpuArm::~CpuArm()
 //    Public Member Functions.
 //
 
+//----------------------------------------------------------------
+//    現在の命令を実行する。
+//
+
+int
+CpuArm::executeNextInst()
+{
+    const  OpeCode  opeCode = this->m_prefOpeCodes[0];
+    this->m_prefOpeCodes[0] = this->m_prefOpeCodes[1];
+
+    this->m_nextPC  = this->m_cpuRegs[15].dw;
+    this->m_cpuRegs[15].dw  += 4;
+    prefetchNext();
+
+    return ( 0 );
+}
+
 //========================================================================
 //
 //    Accessors.
@@ -100,6 +123,41 @@ CpuArm::~CpuArm()
 //
 //    For Internal Use Only.
 //
+
+//----------------------------------------------------------------
+//    命令を実行する。
+//
+
+int
+CpuArm::executeInst(
+        const  OpeCode  opeCode)
+{
+    return ( 0 );
+}
+
+//----------------------------------------------------------------
+//    命令をプリフェッチする。
+//
+
+inline  void
+CpuArm::prefetchAll()
+{
+    this->m_prefOpeCodes[0] =
+            this->m_manMem.readMemory<OpeCode>(this->m_nextPC);
+    this->m_prefOpeCodes[1] =
+            this->m_manMem.readMemory<OpeCode>(this->m_nextPC + 4);
+}
+
+//----------------------------------------------------------------
+//    次の命令をプリフェッチする。
+//
+
+inline  void
+CpuArm::prefetchNext()
+{
+    this->m_prefOpeCodes[1] =
+            this->m_manMem.readMemory<OpeCode>(this->m_nextPC + 4);
+}
 
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
