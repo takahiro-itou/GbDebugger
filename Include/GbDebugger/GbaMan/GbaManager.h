@@ -55,11 +55,6 @@ class  GbaManager
 //
 public:
 
-    struct  RegPair
-    {
-        uint32_t    dw;
-    };
-
 //========================================================================
 //
 //    Constructor(s) and Destructor.
