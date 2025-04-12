@@ -167,6 +167,18 @@ public:
 //    Public Member Functions.
 //
 
+    //----------------------------------------------------------------
+    /**   メモリの内容を読みだす。
+    **
+    **/
+    template  <typename  T>
+    inline  const  T
+    readMemory(
+            const   GuestMemoryAddress  gmAddr)  const
+    {
+        return  this->m_manMem.readMemory<T>(gmAddr);
+    }
+
 //========================================================================
 //
 //    Accessors.
