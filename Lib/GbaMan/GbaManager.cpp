@@ -137,6 +137,27 @@ GbaManager::doHardReset()
 }
 
 //----------------------------------------------------------------
+//    現在の命令を実行する。
+//
+
+ErrCode
+GbaManager::executeCurrentInst()
+{
+    this->m_cpuArm->executeNextInst();
+    return ( ErrCode::SUCCESS );
+}
+
+//----------------------------------------------------------------
+//    プログラムカウンタを取得する。
+//
+
+GuestMemoryAddress
+GbaManager::getNextPC()  const
+{
+    return  this->m_cpuArm->getNextPC();
+}
+
+//----------------------------------------------------------------
 //    ROM ファイルを読み込む。
 //
 

@@ -50,7 +50,8 @@ const Opecodes armOpecodes[] = {
     { 0x0FF000F0, 0x01200010, "BX.%c\t%r0" },
     { 0x0F000000, 0x0A000000, "B.%c\t%o" },
     { 0x0F000000, 0x0B000000, "BL.%c\t%o" },
-    { 0x0F000000, 0x0F000000, "SWI.%c\t%q" }
+    { 0x0F000000, 0x0F000000, "SWI.%c\t%q" },
+    { 0x00000000, 0x00000000, "[ ??? ]" }
 };
 
 }   //  End of (Unnamed) namespace.

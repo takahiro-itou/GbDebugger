@@ -23,6 +23,7 @@
 #include    "GbDebugger/GbaMan/GbaManager.h"
 #include    "GbDebugger/GbaMan/MemoryManager.h"
 
+#include    <iostream>
 #include    <ostream>
 
 
@@ -218,6 +219,11 @@ CpuArm::executeNextInst()
             break;
         }
     }
+
+    std::cerr   <<  "opecode = "    <<  opeCode
+                <<  ", cond = "     <<  opCond
+                <<  ", condResult = "   <<  condResult
+                <<  std::endl;
 
     if ( condResult ) {
     }

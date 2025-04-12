@@ -53,8 +53,21 @@ int  main(int argc, char * argv[])
 
     //  最初の命令を逆アセンブル。  //
     std::cout   <<  "Mnemonic:\n";
-    manGba.disassembleArm(std::cout, 0x08000000)
+    manGba.disassembleArm(std::cout, manGba.getNextPC())
             <<  std::endl;
 
-    return ( 0 );
+    //  最初の命令を実行。  //
+    manGba.executeCurrentInst();
+
+    //  レジスタをダンプ。  //
+    std::cout   <<  "REGS\n";
+    manGba.printRegisters(std::cout)
+            <<  std::endl;
+
+    //  次の命令を逆アセンブル。    //
+    std::cout   <<  "Mnemonic:\n";
+    manGba.disassembleArm(std::cout, manGba.getNextPC())
+            <<  std::endl;
+
+        return ( 0 );
 }
