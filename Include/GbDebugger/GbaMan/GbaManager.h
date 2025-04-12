@@ -188,6 +188,9 @@ public:
 //
 private:
 
+    /**   メモリ空間。  **/
+    MemoryManager   m_manMem;
+
     /**   BIOS.     **/
     uint8_t *       m_memBios;
 
