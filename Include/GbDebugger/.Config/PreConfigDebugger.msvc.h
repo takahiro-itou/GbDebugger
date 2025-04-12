@@ -52,7 +52,7 @@
 //    キーワード constexpr  の検査。
 //
 
-#if ( 0 )
+#if ( 1 )
 #    define     GBDEBUGGER_ENABLE_CONSTEXPR         1
 #else
 #    undef      GBDEBUGGER_ENABLE_CONSTEXPR

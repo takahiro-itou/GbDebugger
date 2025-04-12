@@ -18,6 +18,8 @@
 **      @file       GbaMan/GbaManager.cpp
 **/
 
+#include    "CpuArm/DisArm.h"
+
 #include    "GbDebugger/GbaMan/GbaManager.h"
 
 #include    <ostream>
@@ -95,6 +97,21 @@ ErrCode
 GbaManager::closeInstance()
 {
     return ( ErrCode::SUCCESS );
+}
+
+//----------------------------------------------------------------
+//    ニーモニックを表示する。
+//
+
+std::ostream  &
+GbaManager::disassembleArm(
+        std::ostream       &outStr,
+        GuestMemoryAddress  gmAddr)
+{
+    const  OpeCode  opeCode = readMemory<uint32_t>(gmAddr);
+
+    DisArm  dis;
+    return  dis.writeMnemonic(outStr, gmAddr, opeCode);
 }
 
 //----------------------------------------------------------------

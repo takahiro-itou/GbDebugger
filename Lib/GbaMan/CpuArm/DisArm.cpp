@@ -56,22 +56,6 @@ const Opecodes armOpecodes[] = {
 }   //  End of (Unnamed) namespace.
 
 
-//----------------------------------------------------------------
-//    ニーモニックを表示する。
-//
-
-std::ostream  &
-GbaManager::disassembleArm(
-        std::ostream  & outStr,
-        const uint32_t  addr)
-{
-    uint32_t    opecode = readMemory<uint32_t>(addr);
-
-    DisArm  dis;
-    return  dis.writeMnemonic(outStr, addr, opecode);
-}
-
-
 //========================================================================
 //
 //    DisArm  class.
