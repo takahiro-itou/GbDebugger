@@ -204,7 +204,7 @@ private:
     LpByteWriteBuf      m_memSave;
 
     /**   メモリ空間のマップ。  **/
-    MemoryTable         m_tblMem[256];
+    MemoryTable         m_tblMem[NUM_MEM_BLOCKS];
 
 //========================================================================
 //

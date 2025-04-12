@@ -113,8 +113,7 @@ MemoryManager::allocateMemory()
 ErrCode
 MemoryManager::buildMemoryTable()
 {
-    const  int  TABLE_SIZE  = getArraySize(m_tblMem);
-    for ( int i = 0; i < TABLE_SIZE; ++ i ) {
+    for ( int i = 0; i < NUM_MEM_BLOCKS; ++ i ) {
         this->m_tblMem[i].address   = nullptr;
         this->m_tblMem[i].mask      = 0x00000000;
     }
