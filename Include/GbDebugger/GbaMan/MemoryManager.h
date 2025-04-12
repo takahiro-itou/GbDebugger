@@ -99,7 +99,7 @@ public:
     **/
     void  *
     getMemoryAddress(
-            const  uint32_t gmAddr)  const;
+            const   GuestMemoryAddress  gmAddr)  const;
 
     //----------------------------------------------------------------
     /**   メモリの内容を読みだす。
@@ -108,7 +108,7 @@ public:
     template  <typename  T>
     inline  const  T
     readMemory(
-            const  uint32_t gmAddr)  const
+            const   GuestMemoryAddress  gmAddr)  const
     {
         const T  *  ptr = static_cast<const T *>(getMemoryAddress(gmAddr));
         return ( *ptr );
@@ -137,34 +137,34 @@ public:
 private:
 
     /**   0x00000000-0x00003FFF :  16 KiB : BIOS.    **/
-    uint8_t *       m_memBios;
+    LpByteWriteBuf      m_memBios;
 
     /**   0x02000000-0x0203FFFF : 256 KiB : EWRAM.  **/
-    uint8_t *       m_memWRam;
+    LpByteWriteBuf      m_memWRam;
 
     /**   0x03000000-0x03007FFF :  32 KiB : IWRAM.  **/
-    uint8_t *       m_memIRam;
+    LpByteWriteBuf      m_memIRam;
 
     /**   0x04000000-0x040003FE :   1 KiB : I/O.    **/
-    uint8_t *       m_memIO;
+    LpByteWriteBuf      m_memIO;
 
     /**   0x05000000-0x050003FF :   1 KiB : パレット。  **/
-    uint8_t *       m_memPRam;
+    LpByteWriteBuf      m_memPRam;
 
     /**   0x06000000-0x06017FFF :  96 KiB : VRAM.   **/
-    uint8_t *       m_memVRam;
+    LpByteWriteBuf      m_memVRam;
 
     /**   0x07000000-0x070003FF :   1 KiB : OAM.    **/
-    uint8_t *       m_memOam;
+    LpByteWriteBuf      m_memOam;
 
     /**   0x08000000-0x09FFFFFF :  32 MiB : ROM.    **/
-    uint8_t *       m_memRom;
+    LpByteWriteBuf      m_memRom;
 
     /**   0x0E000000-0x0E00FFFF :  64 KiB : SRAM.   **/
-    uint8_t *       m_memSave;
+    LpByteWriteBuf      m_memSave;
 
     /**   メモリ空間のマップ。  **/
-    MemoryTable     m_tblMem[256];
+    MemoryTable         m_tblMem[256];
 
 //========================================================================
 //

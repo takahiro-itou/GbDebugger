@@ -39,9 +39,9 @@ namespace  GbaMan  {
 
 struct  MemoryTable
 {
-    uint8_t *   address;
-    uint32_t    size;
-    uint32_t    mask;
+    LpByteWriteBuf      address;
+    GuestMemoryAddress  size;
+    GuestMemoryAddress  mask;
 };
 
 //========================================================================

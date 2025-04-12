@@ -97,7 +97,7 @@ MemoryManager::~MemoryManager()
 
 void  *
 MemoryManager::getMemoryAddress(
-        const  uint32_t gmAddr)  const
+        const   GuestMemoryAddress  gmAddr)  const
 {
     return ( nullptr );
 }
