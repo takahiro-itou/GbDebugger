@@ -18,9 +18,10 @@
 **      @file       GbaMan/GbaManager.cpp
 **/
 
-#include    "CpuArm/DisArm.h"
-
 #include    "GbDebugger/GbaMan/GbaManager.h"
+
+#include    "CpuArm/CpuArm.h"
+#include    "CpuArm/DisArm.h"
 
 #include    <ostream>
 #include    <stdio.h>
@@ -56,8 +57,10 @@ const char * regs[16] = {
 
 GbaManager::GbaManager()
     : m_manMem(),
+      m_cpuArm(nullptr),
       m_regs()
 {
+    this->m_cpuArm  = new CpuArm(this->m_manMem);
 }
 
 //----------------------------------------------------------------
