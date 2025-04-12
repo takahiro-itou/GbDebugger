@@ -74,9 +74,8 @@ enum class  ErrCode
 //
 //    厳格な型の宣言を行うマクロ。
 //  将来デバッグ版では厳格な型を利用できるようにするため
-//  マクロを予約おく。
+//  マクロを予約しておく。
 //
-
 
 #if defined( _DEBUG ) && !defined( HACORE_DISABLE_STRICT_TYPES )
 #    define     DECLARE_STRICT_TYPE(BaseType, DeclType)         \
@@ -85,6 +84,26 @@ enum class  ErrCode
 #    define     DECLARE_STRICT_TYPE(BaseType, DeclType)         \
     typedef     BaseType    DeclType
 #endif
+
+
+//----------------------------------------------------------------
+/**
+**    バイト型。
+**/
+
+typedef     uint8_t             BtByte;
+
+/**
+**    バイト型の読み取り専用バッファ。
+**/
+
+typedef     const  BtByte  *    LpcByteReadBuf;
+
+/**
+**    バイト型の読み書き両用バッファ。
+**/
+
+typedef     BtByte  *           LpByteWriteBuf;
 
 
 //========================================================================
