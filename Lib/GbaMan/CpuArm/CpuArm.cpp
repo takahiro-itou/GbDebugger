@@ -88,7 +88,7 @@ GbaManager::disassembleArm(
         const uint32_t  addr)
 {
     char    buf[256] = { 0 };
-    uint32_t    opecode = readMemory<uint32_t>(this->m_tblMem, addr);
+    uint32_t    opecode = readMemory<uint32_t>(addr);
 
     const Opecodes * oc = armOpecodes;
     for ( ; (opecode & oc->mask) != oc->cval; ++ oc ) ;

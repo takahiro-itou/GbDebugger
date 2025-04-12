@@ -190,7 +190,10 @@ LpWriteBuf
 MemoryManager::getMemoryAddress(
         const   GuestMemoryAddress  gmAddr)  const
 {
-    return ( nullptr );
+    const   GuestMemoryAddress  gmPage  = (gmAddr >> 24);
+    const   MemoryTable  *      map     = this->m_tblMem + gmPage;
+    const   GuestMemoryAddress  gmOffs  = gmAddr & (map->mask);
+    return ( map->address + gmOffs );
 }
 
 //========================================================================
@@ -203,7 +206,7 @@ MemoryManager::getMemoryAddress(
 //
 
 LpByteWriteBuf
-getHostAddressOfGuestRom()  const
+MemoryManager::getHostAddressOfGuestRom()  const
 {
     return ( this->m_memRom );
 }
