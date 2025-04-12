@@ -25,6 +25,11 @@
 #    include    "GbDebugger/Common/DebuggerTypes.h"
 #endif
 
+#if !defined( GBDEBUGGER_SYS_STL_INCLUDED_IOSFWD )
+#    include    <iosfwd>
+#    define   GBDEBUGGER_SYS_STL_INCLUDED_IOSFWD
+#endif
+
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
@@ -81,6 +86,26 @@ public:
 //
 //    Public Member Functions (Virtual Functions).
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   レジスタをリセットする。
+    **
+    **  @return     エラーコードを返す。
+    **      -   異常終了の場合は、
+    **          エラーの種類を示す非ゼロ値を返す。
+    **      -   正常終了の場合は、ゼロを返す。
+    **/
+    virtual  ErrCode
+    doHardReset();
+
+    //----------------------------------------------------------------
+    /**   レジスタの内容をダンプする。
+    **
+    **/
+    virtual  std::ostream  &
+    printRegisters(
+            std::ostream  & outStr)  const;
 
 //========================================================================
 //
@@ -99,6 +124,7 @@ public:
 //
 //    Accessors.
 //
+public:
 
 //========================================================================
 //

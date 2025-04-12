@@ -33,11 +33,6 @@ namespace  GbaMan  {
 
 namespace  {
 
-const char * regs[16] = {
-    "R0" , "R1" , "R2" , "R3" , "R4" , "R5", "R6", "R7",
-    "R8" , "R9" , "R10", "R11", "R12", "SP", "LR", "PC"
-};
-
 }   //  End of (Unnamed) namespace.
 
 
@@ -136,10 +131,7 @@ GbaManager::disassembleThumb(
 ErrCode
 GbaManager::doHardReset()
 {
-    for ( int i = 0; i < 16; ++ i ) {
-        this->m_regs[ i].dw = 0x00000000;
-    }
-    this->m_regs[15].dw = 0x08000000;
+    this->m_cpuArm->doHardReset();
 
     return ( ErrCode::SUCCESS );
 }
@@ -197,17 +189,7 @@ std::ostream  &
 GbaManager::printRegisters(
         std::ostream  & outStr)  const
 {
-    char    buf[256];
-
-    for ( int i = 0; i < 16; ++ i ) {
-        sprintf(buf, "%3s: %08x ", regs[i], this->m_regs[i].dw);
-        outStr  <<  buf;
-        if ( (i & 3) == 3 ) {
-            outStr  <<  std::endl;
-        }
-    }
-
-    return ( outStr );
+    return  this->m_cpuArm->printRegisters(outStr);
 }
 
 //========================================================================
