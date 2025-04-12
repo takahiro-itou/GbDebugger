@@ -97,7 +97,7 @@ public:
     **
     **  @param [in] gmAddr    ゲストのメモリアドレス。
     **/
-    void  *
+    LpWriteBuf
     getMemoryAddress(
             const   GuestMemoryAddress  gmAddr)  const;
 

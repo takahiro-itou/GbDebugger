@@ -95,7 +95,7 @@ MemoryManager::~MemoryManager()
 //    メモリアドレスを計算する。
 //
 
-void  *
+LpWriteBuf
 MemoryManager::getMemoryAddress(
         const   GuestMemoryAddress  gmAddr)  const
 {
