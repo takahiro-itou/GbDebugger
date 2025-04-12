@@ -162,7 +162,7 @@ GbaManager::openRomFile(
 
     LpByteWriteBuf  memRom  = this->m_manMem.getHostAddressOfGuestRom();
     size_t  retRead = fread(memRom, sizeof(uint8_t), cbRead, fp);
-    (void)retRead;
+    GBDEBUGGER_UNUSED_VAR(retRead);
 
     fclose(fp);
 
