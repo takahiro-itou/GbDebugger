@@ -198,6 +198,16 @@ MemoryManager::getMemoryAddress(
 //    Accessors.
 //
 
+//----------------------------------------------------------------
+//    ROM の先頭アドレスを取得する。
+//
+
+LpByteWriteBuf
+getHostAddressOfGuestRom()  const
+{
+    return ( this->m_memRom );
+}
+
 //========================================================================
 //
 //    Protected Member Functions.
