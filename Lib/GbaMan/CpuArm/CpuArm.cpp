@@ -106,6 +106,73 @@ CpuArm::executeNextInst()
     this->m_cpuRegs[15].dw  += 4;
     prefetchNext();
 
+    const  OpeCode  opCond  = (opeCode >> 28);
+    bool        condResult  = true;
+
+    //  フラグを展開する。
+    uint32_t    cpsr    = this->m_cpuRegs[16].dw;
+    bool        cpuFlgN = (cpsr & 0x80000000) ? true : false;
+    bool        cpuFlgZ = (cpsr & 0x40000000) ? true : false;
+    bool        cpuFlgC = (cpsr & 0x20000000) ? true : false;
+    bool        cpuFlgV = (cpsr & 0x10000000) ? true : false;
+
+    if ( UNLIKELY(opCond != 0x0E) ) {
+        switch ( opCond ) {
+        case  0x00:     //  EQ
+            condResult  = cpuFlgZ;
+            break;
+        case  0x01:     //  NE
+            condResult  = !cpuFlgZ;
+            break;
+        case  0x02:     //  CS
+            condResult  = cpuFlgC;
+            break;
+        case  0x03:     //  CC
+            condResult  = !cpuFlgC;
+            break;
+        case  0x04:     //  MI
+            condResult  = cpuFlgN;
+            break;
+        case  0x05:     //  PL
+            condResult  = !cpuFlgN;
+            break;
+        case  0x06:     //  VS
+            condResult  = cpuFlgV;
+            break;
+        case  0x07:     //  VC
+            condResult  = !cpuFlgV;
+            break;
+        case  0x08:     //  HI
+            condResult  = cpuFlgC && !cpuFlgZ;
+            break;
+        case  0x09:     //  LS
+            condResult  = !cpuFlgC || cpuFlgZ;
+            break;
+        case  0x0A:     //  GE
+            condResult  = (cpuFlgN == cpuFlgV);
+            break;
+        case  0x0B:     //  LT
+            condResult  = (cpuFlgN != cpuFlgV);
+            break;
+        case  0x0C:     //  GT
+            condResult  = !cpuFlgZ && (cpuFlgN == cpuFlgV);
+            break;
+        case  0x0D:     //  LE
+            condResult  = cpuFlgZ || (cpuFlgN != cpuFlgV);
+            break;
+        case  0x0E:     //  AL
+            condResult  = true;
+            break;
+        case  0x0F:     //  NV (Never)
+        default:
+            condResult  = false;
+            break;
+        }
+    }
+
+    if ( condResult ) {
+    }
+
     return ( 0 );
 }
 
