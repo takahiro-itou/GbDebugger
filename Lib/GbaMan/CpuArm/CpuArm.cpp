@@ -166,7 +166,7 @@ CpuArm::printRegisters(
         }
     }
 
-    sprintf(buf, "CPSR: %08x ", this->m_cpuRegs[16]);
+    sprintf(buf, "CPSR: %08x ", this->m_cpuRegs[16].dw);
     outStr  <<  buf;
     sprintf(buf, "Next: %08x\n", this->m_nextPC);
     outStr  <<  buf;
@@ -183,7 +183,7 @@ CpuArm::printRegisters(
 //    現在の命令を実行する。
 //
 
-int
+InstExecResult
 CpuArm::executeNextInst()
 {
     char    buf[256];
@@ -219,11 +219,11 @@ CpuArm::executeNextInst()
                     "Undefined ARM instruction %08x(%08x) at %08x\n",
                     opeCode, idx, oldPC);
             std::cerr   <<  buf;
-            return ( 0 );
+            return ( InstExecResult::UNDEFINED_OPECODE );
         }
     }
 
-    return ( 0 );
+    return ( InstExecResult::SUCCESS_BREAKPOINT );
 }
 
 //========================================================================
@@ -249,6 +249,7 @@ GBD_REGPARM     InstExecResult
 CpuArm::armA00_B(
         const  OpeCode  opeCode)
 {
+    return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
 GBD_REGPARM     InstExecResult
