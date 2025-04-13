@@ -142,11 +142,10 @@ GbaManager::doHardReset()
 //    現在の命令を実行する。
 //
 
-ErrCode
+InstExecResult
 GbaManager::executeCurrentInst()
 {
-    this->m_cpuArm->executeNextInst();
-    return ( ErrCode::SUCCESS );
+    return  this->m_cpuArm->executeNextInst();
 }
 
 //----------------------------------------------------------------

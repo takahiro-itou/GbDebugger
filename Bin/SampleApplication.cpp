@@ -57,17 +57,21 @@ int  main(int argc, char * argv[])
             <<  std::endl;
 
     //  最初の命令を実行。  //
-    manGba.executeCurrentInst();
+    GbaMan::InstExecResult  ret = GbaMan::InstExecResult::SUCCESS_CONTINUE;
 
-    //  レジスタをダンプ。  //
-    std::cout   <<  "REGS\n";
-    manGba.printRegisters(std::cout)
-            <<  std::endl;
+    while ( ret != GbaMan::InstExecResult::UNDEFINED_OPECODE ) {
+        ret = manGba.executeCurrentInst();
 
-    //  次の命令を逆アセンブル。    //
-    std::cout   <<  "Mnemonic:\n";
-    manGba.disassembleArm(std::cout, manGba.getNextPC())
-            <<  std::endl;
+        //  レジスタをダンプ。  //
+        std::cout   <<  "REGS\n";
+        manGba.printRegisters(std::cout)
+                <<  std::endl;
 
-        return ( 0 );
+        //  次の命令を逆アセンブル。    //
+        std::cout   <<  "Mnemonic:\n";
+        manGba.disassembleArm(std::cout, manGba.getNextPC())
+                <<  std::endl;
+    }
+
+    return ( 0 );
 }

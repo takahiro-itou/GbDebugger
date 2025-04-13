@@ -25,6 +25,10 @@
 #    include    "GbDebugger/Common/DebuggerTypes.h"
 #endif
 
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_CPU_UTILS_H )
+#    include    "CpuUtils.h"
+#endif
+
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_MEMORY_MANAGER_H )
 #    include    "MemoryManager.h"
 #endif
@@ -141,7 +145,7 @@ public:
     /**   現在の命令を実行する。
     **
     **/
-    virtual  ErrCode
+    virtual  InstExecResult
     executeCurrentInst();
 
     //----------------------------------------------------------------
