@@ -164,6 +164,10 @@ private:
     //    命令の実行を行う関数たち。
 
     GBD_REGPARM     InstExecResult
+    arm3A0_Mov(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
     armA00_B(
             const  OpeCode  opeCode);
 

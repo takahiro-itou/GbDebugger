@@ -246,6 +246,13 @@ CpuArm::executeNextInst()
 //
 
 GBD_REGPARM     InstExecResult
+CpuArm::arm3A0_Mov(
+        const  OpeCode  opeCode)
+{
+    return ( InstExecResult::SUCCESS_CONTINUE );
+}
+
+GBD_REGPARM     InstExecResult
 CpuArm::armA00_B(
         const  OpeCode  opeCode)
 {
@@ -317,6 +324,7 @@ CpuArm::prefetchNext()
 /**   命令テーブル。        **/
 
 #define     arm_UI  &CpuArm::armUnknownInstruction
+#define     arm3A0  &CpuArm::arm3A0_Mov
 #define     armA00  &CpuArm::armA00_B
 
 #define     REPEAT_16(inst)     \
@@ -335,7 +343,24 @@ CpuArm::s_armInstTable[4096] = {
     REPEAT256(arm_UI),      //  00.0 -- 0F.F
     REPEAT256(arm_UI),      //  10.0 -- 1F.F
     REPEAT256(arm_UI),      //  20.0 -- 2F.F
-    REPEAT256(arm_UI),      //  30.0 -- 3F.F
+
+    REPEAT_16(arm_UI),      //  30.0 -- 30.F
+    REPEAT_16(arm_UI),      //  31.0 -- 31.F
+    REPEAT_16(arm_UI),      //  32.0 -- 32.F
+    REPEAT_16(arm_UI),      //  33.0 -- 33.F
+    REPEAT_16(arm_UI),      //  34.0 -- 34.F
+    REPEAT_16(arm_UI),      //  35.0 -- 35.F
+    REPEAT_16(arm_UI),      //  36.0 -- 36.F
+    REPEAT_16(arm_UI),      //  37.0 -- 37.F
+    REPEAT_16(arm_UI),      //  38.0 -- 38.F
+    REPEAT_16(arm_UI),      //  39.0 -- 39.F
+    REPEAT_16(arm3A0),      //  3A.0 -- 3A.F
+    REPEAT_16(arm_UI),      //  3B.0 -- 3B.F
+    REPEAT_16(arm_UI),      //  3C.0 -- 3C.F
+    REPEAT_16(arm_UI),      //  3D.0 -- 3D.F
+    REPEAT_16(arm_UI),      //  3E.0 -- 3E.F
+    REPEAT_16(arm_UI),      //  3F.0 -- 3F.F
+
     REPEAT256(arm_UI),      //  40.0 -- 4F.F
     REPEAT256(arm_UI),      //  50.0 -- 5F.F
     REPEAT256(arm_UI),      //  60.0 -- 6F.F
