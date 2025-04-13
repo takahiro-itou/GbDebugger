@@ -37,6 +37,41 @@ const char * regs[16] = {
     "R8" , "R9" , "R10", "R11", "R12", "SP", "LR", "PC"
 };
 
+/**
+**    条件判定用のテーブル。
+**
+**    フラグは NZCV の 4bit あるから 0...15 の整数値とみなして
+**  各条件についてどの数値だったら真とみなすかをテーブルにする。
+**
+**  例えば EQ (Z==1) であれば
+**  0100, 0101, 0110, 0111, 1100, 1101, 1110, 1111
+**  のいずれかであれば真になるから、
+**  配列の 4, 5, 6, 7, 12, 13, 14, 15 に真を、それ以外に偽を書き込んだ
+**  テーブルを用意する。
+**/
+
+CONSTEXPR_VAR   int
+g_condTable[16][16] = {
+    // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F
+    {  0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1 },    //  EQ (F0F0)
+    {  1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0 },    //  NE (0F0F)
+    {  0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1 },    //  CS (CCCC)
+    {  1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0 },    //  CC (3333)
+    {  0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1 },    //  MI (FF00)
+    {  1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 },    //  PL (00FF)
+    {  0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 },    //  VS (AAAA)
+    {  1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 },    //  VC (5555)
+    {  0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0 },    //  HI (0C0C)
+    {  1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1 },    //  LS (F3F3)
+    {  1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1 },    //  GE (AA55)
+    {  0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0 },    //  LT (55AA)
+    {  1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0 },    //  GT (0A05)
+    {  0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1 },    //  LE (F5FA)
+    {  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },    //  AL (FFFF)
+    {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }     //  NV (0000)
+};
+
+
 }   //  End of (Unnamed) namespace.
 
 
@@ -156,69 +191,9 @@ CpuArm::executeNextInst()
     this->m_cpuRegs[15].dw  += 4;
     prefetchNext();
 
-    const  OpeCode  opCond  = (opeCode >> 28);
-    bool        condResult  = true;
-
-    //  フラグを展開する。
-    uint32_t    cpsr    = this->m_cpuRegs[16].dw;
-    bool        cpuFlgN = (cpsr & 0x80000000) ? true : false;
-    bool        cpuFlgZ = (cpsr & 0x40000000) ? true : false;
-    bool        cpuFlgC = (cpsr & 0x20000000) ? true : false;
-    bool        cpuFlgV = (cpsr & 0x10000000) ? true : false;
-
-    if ( UNLIKELY(opCond != 0x0E) ) {
-        switch ( opCond ) {
-        case  0x00:     //  EQ
-            condResult  = cpuFlgZ;
-            break;
-        case  0x01:     //  NE
-            condResult  = !cpuFlgZ;
-            break;
-        case  0x02:     //  CS
-            condResult  = cpuFlgC;
-            break;
-        case  0x03:     //  CC
-            condResult  = !cpuFlgC;
-            break;
-        case  0x04:     //  MI
-            condResult  = cpuFlgN;
-            break;
-        case  0x05:     //  PL
-            condResult  = !cpuFlgN;
-            break;
-        case  0x06:     //  VS
-            condResult  = cpuFlgV;
-            break;
-        case  0x07:     //  VC
-            condResult  = !cpuFlgV;
-            break;
-        case  0x08:     //  HI
-            condResult  = cpuFlgC && !cpuFlgZ;
-            break;
-        case  0x09:     //  LS
-            condResult  = !cpuFlgC || cpuFlgZ;
-            break;
-        case  0x0A:     //  GE
-            condResult  = (cpuFlgN == cpuFlgV);
-            break;
-        case  0x0B:     //  LT
-            condResult  = (cpuFlgN != cpuFlgV);
-            break;
-        case  0x0C:     //  GT
-            condResult  = !cpuFlgZ && (cpuFlgN == cpuFlgV);
-            break;
-        case  0x0D:     //  LE
-            condResult  = cpuFlgZ || (cpuFlgN != cpuFlgV);
-            break;
-        case  0x0E:     //  AL
-            condResult  = true;
-            break;
-        case  0x0F:     //  NV (Never)
-        default:
-            condResult  = false;
-            break;
-        }
-    }
+    const  OpeCode  opCond  = (opeCode >> 28) & 0x0F;
+    const  uint32_t    flg  = (this->m_cpuRegs[16].dw >> 28) & 0x0F;
+    const  bool  condResult = g_condTable[opCond][flg];
 
     std::cerr   <<  "opecode = "    <<  opeCode
                 <<  ", cond = "     <<  opCond
