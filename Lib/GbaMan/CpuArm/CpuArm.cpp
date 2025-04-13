@@ -277,6 +277,22 @@ CpuArm::executeNextInst()
 //
 
 //----------------------------------------------------------------
+//    命令の実行を行う関数たち。
+//
+
+GBD_REGPARM     InstExecResult
+CpuArm::armA00_B(
+        const  OpeCode  opeCode)
+{
+}
+
+GBD_REGPARM     InstExecResult
+CpuArm::armUnknownInstruction(
+        const  OpeCode  opeCode)
+{
+}
+
+//----------------------------------------------------------------
 //    命令を実行する。
 //
 
@@ -310,6 +326,22 @@ CpuArm::prefetchNext()
     this->m_prefOpeCodes[1] =
             this->m_manMem.readMemory<OpeCode>(this->m_nextPC + 4);
 }
+
+//========================================================================
+//
+//    Member Variables.
+//
+
+/**   命令テーブル。        **/
+
+#define     arm_UI  &CpuArm::armUnknownInstruction
+#define     armA00  &CpuArm::armA00_B
+
+const   CpuArm::FnInst
+CpuArm::s_armInstTable[4096] = {
+    arm_UI,
+    armA00,
+};
 
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END

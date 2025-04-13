@@ -56,7 +56,8 @@ class  CpuArm
 //
 
     typedef     GBD_REGPARM     InstExecResult
-    (CpuArm ::* FnInst)(const  OpeCode  opeCode);
+    (CpuArm::* FnInst)(
+            const  OpeCode  opeCode);
 
 //========================================================================
 //
@@ -160,6 +161,17 @@ public:
 private:
 
     //----------------------------------------------------------------
+    //    命令の実行を行う関数たち。
+
+    GBD_REGPARM     InstExecResult
+    armA00_B(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
+    armUnknownInstruction(
+            const  OpeCode  opeCode);
+
+    //----------------------------------------------------------------
     /**   命令を実行する。
     **
     **/
@@ -198,6 +210,9 @@ private:
 
     /**   プリフェッチ。        **/
     OpeCode                 m_prefOpeCodes[2];
+
+    /**   命令テーブル。        **/
+    static  const   FnInst  s_armInstTable[4096];
 
 //========================================================================
 //
