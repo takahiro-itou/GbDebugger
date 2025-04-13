@@ -26,6 +26,34 @@
 #endif
 
 
+//================================================================
+//
+//    補助マクロ
+//
+
+//
+//    分岐予測に関するマクロ
+//
+
+#if defined( __GNUC__ )
+#    define     LIKELY(x)       __builtin_expect(!!(x), 1)
+#    define     UNLIKELY(x)     __builtin_expect(!!(x), 0)
+#else
+#    define     LIKELY(x)       (x)
+#    define     UNLIKELY(x)     (x)
+#endif
+
+
+/**
+**    引数を可能な限りレジスタで渡すようにする。
+**/
+
+#if defined(__i386__) || defined(__x86_64__)
+#    define     GBD_REGPARM     __attribute__((regparm(2)))
+#else
+#    define     GBD_REGPARM
+#endif
+
 GBDEBUGGER_NAMESPACE_BEGIN
 
 GBDEBUGGER_NAMESPACE_END

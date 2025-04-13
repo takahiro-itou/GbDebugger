@@ -20,18 +20,13 @@
 
 #include    "CpuArm.h"
 
-#include    "GbDebugger/GbaMan/GbaManager.h"
 #include    "GbDebugger/GbaMan/MemoryManager.h"
+
+#include    "GbDebugger/Common/DebuggerUtils.h"
 
 #include    <iostream>
 #include    <ostream>
 
-
-#if defined(__i386__) || defined(__x86_64__)
-#    define     GBD_REGPARM     __attribute__((regparm(1)))
-#else
-#    define     GBD_REGPARM
-#endif
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
