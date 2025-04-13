@@ -54,7 +54,38 @@
 #    define     GBD_REGPARM
 #endif
 
+
+//=========================================================================
+//
+//    未使用の変数と引数の警告対応。
+//
+
+/**
+**    未使用の変数に対する警告を抑制するマクロ。
+**/
+
+#define     GBDEBUGGER_UNUSED_VAR(var)      (void)(var)
+
+/**
+**    未使用の仮引数に対する警告を抑制するマクロ。
+**/
+
+#define     GBDEBUGGER_UNUSED_ARG(var)      (void)(var)
+
+
 GBDEBUGGER_NAMESPACE_BEGIN
+
+//========================================================================
+/**
+**    配列の要素数を取得する。
+**/
+
+template  <typename  T,  size_t  N>
+CONSTEXPR_FUNC
+size_t  getArraySize(T  (&)[N])
+{
+    return ( N );
+}
 
 GBDEBUGGER_NAMESPACE_END
 

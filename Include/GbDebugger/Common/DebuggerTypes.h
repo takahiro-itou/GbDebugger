@@ -163,19 +163,6 @@ T  pointer_cast(const  void  *  p)
 }
 
 
-//========================================================================
-/**
-**    配列の要素数を取得する。
-**/
-
-template  <typename  T,  size_t  N>
-CONSTEXPR_FUNC
-size_t  getArraySize(T  (&)[N])
-{
-    return ( N );
-}
-
-
 GBDEBUGGER_NAMESPACE_END
 
 #endif

@@ -33,15 +33,6 @@
 GBDEBUGGER_NAMESPACE_BEGIN
 
 
-//=========================================================================
-//
-//    未使用の変数と引数の警告対応。
-//
-
-#define     GBDEBUGGER_UNUSED_VAR(var)      (void)(var)
-#define     GBDEBUGGER_UNUSED_ARG(var)      (void)(var)
-
-
 GBDEBUGGER_NAMESPACE_END
 
 #endif

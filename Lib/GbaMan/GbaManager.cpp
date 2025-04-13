@@ -23,6 +23,8 @@
 #include    "CpuArm/CpuArm.h"
 #include    "CpuArm/DisArm.h"
 
+#include    "GbDebugger/Common/DebuggerUtils.h"
+
 #include    <ostream>
 #include    <stdio.h>
 #include    <sys/stat.h>
