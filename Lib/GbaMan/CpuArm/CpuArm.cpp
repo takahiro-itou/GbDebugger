@@ -32,7 +32,7 @@ namespace  GbaMan  {
 
 namespace  {
 
-const char * regs[16] = {
+const char * regNames[16] = {
     "R0" , "R1" , "R2" , "R3" , "R4" , "R5", "R6", "R7",
     "R8" , "R9" , "R10", "R11", "R12", "SP", "LR", "PC"
 };
@@ -157,7 +157,7 @@ CpuArm::printRegisters(
     char    buf[256];
 
     for ( int i = 0; i < 16; ++ i ) {
-        sprintf(buf, "%4s: %08x ", regs[i], this->m_cpuRegs[i].dw);
+        sprintf(buf, "%4s: %08x ", regNames[i], this->m_cpuRegs[i].dw);
         outStr  <<  buf;
         if ( (i & 3) == 3 ) {
             outStr  <<  std::endl;
@@ -184,6 +184,8 @@ CpuArm::printRegisters(
 int
 CpuArm::executeNextInst()
 {
+    char    buf[256];
+
     const  OpeCode  opeCode = this->m_prefOpeCodes[0];
     this->m_prefOpeCodes[0] = this->m_prefOpeCodes[1];
 
@@ -195,10 +197,10 @@ CpuArm::executeNextInst()
     const  uint32_t    flg  = (this->m_cpuRegs[16].dw >> 28) & 0x0F;
     const  bool  condResult = g_condTable[opCond][flg];
 
-    std::cerr   <<  "opecode = "    <<  opeCode
-                <<  ", cond = "     <<  opCond
-                <<  ", condResult = "   <<  condResult
-                <<  std::endl;
+    sprintf(buf,
+            "opecode = %08x, Cond = %1x, Flag = %x, CondResult = %d\n",
+            opeCode, opCond, flg, condResult);
+    std::cerr   <<  buf;
 
     if ( condResult ) {
     }
