@@ -27,8 +27,16 @@
 #include    <ostream>
 
 
+#if defined(__i386__) || defined(__x86_64__)
+#    define     GBD_REGPARM     __attribute__((regparm(1)))
+#else
+#    define     GBD_REGPARM
+#endif
+
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
+
+typedef     GBD_REGPARM     int (* FnInst)(OpeCode opeCode);
 
 namespace  {
 
@@ -71,6 +79,40 @@ g_condTable[16][16] = {
     {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }     //  NV (0000)
 };
 
+int
+armUnknownInstruction(OpeCode opeCode)
+{
+    return ( 0 );
+}
+
+#define     REPEAT_16(inst)     \
+    inst, inst, inst, inst, inst, inst, inst, inst,     \
+    inst, inst, inst, inst, inst, inst, inst, inst
+
+#define     REPEAT256(inst)     \
+    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
+    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
+    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
+    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst)
+
+FnInst  g_armInstTable[4096] = {
+    REPEAT256(armUnknownInstruction),   //  00.0 - 0F.F
+    REPEAT256(armUnknownInstruction),   //  10.0 - 1F.F
+    REPEAT256(armUnknownInstruction),   //  20.0 - 2F.F
+    REPEAT256(armUnknownInstruction),   //  30.0 - 3F.F
+    REPEAT256(armUnknownInstruction),   //  40.0 - 4F.F
+    REPEAT256(armUnknownInstruction),   //  50.0 - 5F.F
+    REPEAT256(armUnknownInstruction),   //  60.0 - 6F.F
+    REPEAT256(armUnknownInstruction),   //  70.0 - 7F.F
+    REPEAT256(armUnknownInstruction),   //  80.0 - 8F.F
+    REPEAT256(armUnknownInstruction),   //  90.0 - 9F.F
+    REPEAT256(armUnknownInstruction),   //  A0.0 - AF.F
+    REPEAT256(armUnknownInstruction),   //  B0.0 - BF.F
+    REPEAT256(armUnknownInstruction),   //  C0.0 - CF.F
+    REPEAT256(armUnknownInstruction),   //  D0.0 - DF.F
+    REPEAT256(armUnknownInstruction),   //  E0.0 - EF.F
+    REPEAT256(armUnknownInstruction),   //  F0.0 - FF.F
+};
 
 }   //  End of (Unnamed) namespace.
 
@@ -186,6 +228,7 @@ CpuArm::executeNextInst()
 {
     char    buf[256];
 
+    const  GuestMemoryAddress oldPC = this->m_nextPC;
     const  OpeCode  opeCode = this->m_prefOpeCodes[0];
     this->m_prefOpeCodes[0] = this->m_prefOpeCodes[1];
 
@@ -203,6 +246,21 @@ CpuArm::executeNextInst()
     std::cerr   <<  buf;
 
     if ( condResult ) {
+        //  オペコードのビット 20--27 とビット 04--07 を取り出す。  //
+        //  ビット 20--27 がビット 04--11 に来るようにするので、    //
+        //  ((opeCode >> 20) & 0x0FF) << 4  は、事前に計算して、    //
+        //  ((opeCode >> 16) & 0xFF0) となる。                      //
+        const  OpeCode  idx =
+            ((opeCode >> 16) & 0xFF0) | ((opeCode >> 4) & 0x0F);
+        FnInst  pfInst  = g_armInstTable[idx];
+        int ret = (* pfInst)(opeCode);
+        if ( ret == 0 ) {
+            sprintf(buf,
+                    "Undefined ARM instruction %08x at %08x\n",
+                    opeCode, oldPC);
+            std::cerr   <<  buf;
+            return ( 0 );
+        }
     }
 
     return ( 0 );
