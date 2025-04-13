@@ -74,41 +74,6 @@ g_condTable[16][16] = {
     {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }     //  NV (0000)
 };
 
-int
-armUnknownInstruction(OpeCode opeCode)
-{
-    return ( 0 );
-}
-
-#define     REPEAT_16(inst)     \
-    inst, inst, inst, inst, inst, inst, inst, inst,     \
-    inst, inst, inst, inst, inst, inst, inst, inst
-
-#define     REPEAT256(inst)     \
-    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
-    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
-    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
-    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst)
-
-G_FnInst  g_armInstTable[4096] = {
-    REPEAT256(armUnknownInstruction),   //  00.0 - 0F.F
-    REPEAT256(armUnknownInstruction),   //  10.0 - 1F.F
-    REPEAT256(armUnknownInstruction),   //  20.0 - 2F.F
-    REPEAT256(armUnknownInstruction),   //  30.0 - 3F.F
-    REPEAT256(armUnknownInstruction),   //  40.0 - 4F.F
-    REPEAT256(armUnknownInstruction),   //  50.0 - 5F.F
-    REPEAT256(armUnknownInstruction),   //  60.0 - 6F.F
-    REPEAT256(armUnknownInstruction),   //  70.0 - 7F.F
-    REPEAT256(armUnknownInstruction),   //  80.0 - 8F.F
-    REPEAT256(armUnknownInstruction),   //  90.0 - 9F.F
-    REPEAT256(armUnknownInstruction),   //  A0.0 - AF.F
-    REPEAT256(armUnknownInstruction),   //  B0.0 - BF.F
-    REPEAT256(armUnknownInstruction),   //  C0.0 - CF.F
-    REPEAT256(armUnknownInstruction),   //  D0.0 - DF.F
-    REPEAT256(armUnknownInstruction),   //  E0.0 - EF.F
-    REPEAT256(armUnknownInstruction),   //  F0.0 - FF.F
-};
-
 }   //  End of (Unnamed) namespace.
 
 
@@ -247,12 +212,12 @@ CpuArm::executeNextInst()
         //  ((opeCode >> 16) & 0xFF0) となる。                      //
         const  OpeCode  idx =
             ((opeCode >> 16) & 0xFF0) | ((opeCode >> 4) & 0x0F);
-        G_FnInst  pfInst  = g_armInstTable[idx];
-        int ret = (* pfInst)(opeCode);
-        if ( ret == 0 ) {
+        FnInst  pfInst  = s_armInstTable[idx];
+        InstExecResult  ret = (this ->* pfInst)(opeCode);
+        if ( ret == InstExecResult::UNDEFINED_OPECODE ) {
             sprintf(buf,
-                    "Undefined ARM instruction %08x at %08x\n",
-                    opeCode, oldPC);
+                    "Undefined ARM instruction %08x(%08x) at %08x\n",
+                    opeCode, idx, oldPC);
             std::cerr   <<  buf;
             return ( 0 );
         }
@@ -290,6 +255,7 @@ GBD_REGPARM     InstExecResult
 CpuArm::armUnknownInstruction(
         const  OpeCode  opeCode)
 {
+    return ( InstExecResult::UNDEFINED_OPECODE );
 }
 
 //----------------------------------------------------------------
@@ -337,10 +303,35 @@ CpuArm::prefetchNext()
 #define     arm_UI  &CpuArm::armUnknownInstruction
 #define     armA00  &CpuArm::armA00_B
 
+#define     REPEAT_16(inst)     \
+    inst, inst, inst, inst, inst, inst, inst, inst,     \
+    inst, inst, inst, inst, inst, inst, inst, inst
+
+#define     REPEAT256(inst)     \
+    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
+    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
+    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
+    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst)
+
+
 const   CpuArm::FnInst
 CpuArm::s_armInstTable[4096] = {
-    arm_UI,
-    armA00,
+    REPEAT256(arm_UI),      //  00.0 -- 0F.F
+    REPEAT256(arm_UI),      //  10.0 -- 1F.F
+    REPEAT256(arm_UI),      //  20.0 -- 2F.F
+    REPEAT256(arm_UI),      //  30.0 -- 3F.F
+    REPEAT256(arm_UI),      //  40.0 -- 4F.F
+    REPEAT256(arm_UI),      //  50.0 -- 5F.F
+    REPEAT256(arm_UI),      //  60.0 -- 6F.F
+    REPEAT256(arm_UI),      //  70.0 -- 7F.F
+    REPEAT256(arm_UI),      //  80.0 -- 8F.F
+    REPEAT256(arm_UI),      //  90.0 -- 9F.F
+    REPEAT256(arm_UI),      //  A0.0 -- AF.F
+    REPEAT256(arm_UI),      //  B0.0 -- BF.F
+    REPEAT256(arm_UI),      //  C0.0 -- CF.F
+    REPEAT256(arm_UI),      //  D0.0 -- DF.F
+    REPEAT256(arm_UI),      //  E0.0 -- EF.F
+    REPEAT256(arm_UI),      //  F0.0 -- FF.F
 };
 
 }   //  End of namespace  GbaMan
