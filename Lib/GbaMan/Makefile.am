@@ -47,6 +47,7 @@ dist_noinst_header_files    +=  \
         ${extra_noinst_header_files}
 
 inclib_header_files         +=  \
+        ${inclib_source_dir}/CpuUtils.h            \
         ${inclib_source_dir}/GbaManager.h          \
         ${inclib_source_dir}/MemoryManager.h       \
         ${inclib_source_dir}/MemoryTable.h         \
