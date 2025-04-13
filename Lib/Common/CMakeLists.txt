@@ -20,6 +20,8 @@ set(library_source_files
 
 set(inclib_header_files
         ${inclib_source_dir}/DebuggerProject.h
+        ${inclib_source_dir}/DebuggerTypes.h
+        ${inclib_source_dir}/DebuggerUtils.h
         ${inclib_source_dir}/SampleDocument.h
 )
 
