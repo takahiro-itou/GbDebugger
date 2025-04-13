@@ -216,7 +216,7 @@ CpuArm::executeNextInst()
         InstExecResult  ret = (this ->* pfInst)(opeCode);
         if ( ret == InstExecResult::UNDEFINED_OPECODE ) {
             sprintf(buf,
-                    "Undefined ARM instruction %08x(%08x) at %08x\n",
+                    "Undefined ARM instruction %08x (%03x) at %08x\n",
                     opeCode, idx, oldPC);
             std::cerr   <<  buf;
             return ( InstExecResult::UNDEFINED_OPECODE );
@@ -249,6 +249,21 @@ GBD_REGPARM     InstExecResult
 CpuArm::armA00_B(
         const  OpeCode  opeCode)
 {
+    //  符号拡張
+    //  以下のコードと等価
+    //  ofs = (opeCode & 0x00FFFFFF);
+    //  if ( ofs & 0x00800000 ) ofs |= 0xFF000000;
+    //  ofs <<= 2;
+    int32_t ofs = (static_cast<int32_t>(opeCode & 0x00FFFFFF) << 8) >> 6;
+
+    this->m_nextPC  = this->m_cpuRegs[15].dw  += ofs;
+
+    //  プリフェッチを行う。    //
+    prefetchAll();
+
+    //  プリフェッチによりカウンタが１命令分進む。  //
+    this->m_cpuRegs[15].dw  += 4;
+
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
@@ -327,7 +342,7 @@ CpuArm::s_armInstTable[4096] = {
     REPEAT256(arm_UI),      //  70.0 -- 7F.F
     REPEAT256(arm_UI),      //  80.0 -- 8F.F
     REPEAT256(arm_UI),      //  90.0 -- 9F.F
-    REPEAT256(arm_UI),      //  A0.0 -- AF.F
+    REPEAT256(armA00),      //  A0.0 -- AF.F
     REPEAT256(arm_UI),      //  B0.0 -- BF.F
     REPEAT256(arm_UI),      //  C0.0 -- CF.F
     REPEAT256(arm_UI),      //  D0.0 -- DF.F
