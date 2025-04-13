@@ -31,7 +31,7 @@
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
 
-typedef     GBD_REGPARM     int (* FnInst)(OpeCode opeCode);
+typedef     GBD_REGPARM     int (* G_FnInst)(OpeCode opeCode);
 
 namespace  {
 
@@ -90,7 +90,7 @@ armUnknownInstruction(OpeCode opeCode)
     REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
     REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst)
 
-FnInst  g_armInstTable[4096] = {
+G_FnInst  g_armInstTable[4096] = {
     REPEAT256(armUnknownInstruction),   //  00.0 - 0F.F
     REPEAT256(armUnknownInstruction),   //  10.0 - 1F.F
     REPEAT256(armUnknownInstruction),   //  20.0 - 2F.F
@@ -247,7 +247,7 @@ CpuArm::executeNextInst()
         //  ((opeCode >> 16) & 0xFF0) となる。                      //
         const  OpeCode  idx =
             ((opeCode >> 16) & 0xFF0) | ((opeCode >> 4) & 0x0F);
-        FnInst  pfInst  = g_armInstTable[idx];
+        G_FnInst  pfInst  = g_armInstTable[idx];
         int ret = (* pfInst)(opeCode);
         if ( ret == 0 ) {
             sprintf(buf,
