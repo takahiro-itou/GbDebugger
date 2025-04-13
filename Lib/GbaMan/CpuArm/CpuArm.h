@@ -21,8 +21,12 @@
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_CPU_ARM_H )
 #    define   GBDEBUGGER_GBAMAN_INCLUDED_CPU_ARM_H
 
-#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_TYPES_H )
-#    include    "GbDebugger/Common/DebuggerTypes.h"
+#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_UTILS_H )
+#    include    "GbDebugger/Common/DebuggerUtils.h"
+#endif
+
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_CPU_UTILS_H )
+#    include    "GbDebugger/GbaMan/CpuUtils.h"
 #endif
 
 #if !defined( GBDEBUGGER_SYS_STL_INCLUDED_IOSFWD )
@@ -45,6 +49,14 @@ class   MemoryManager;
 
 class  CpuArm
 {
+
+//========================================================================
+//
+//    Internal Type Definitions.
+//
+
+    typedef     GBD_REGPARM     InstExecResult
+    (CpuArm ::* FnInst)(const  OpeCode  opeCode);
 
 //========================================================================
 //

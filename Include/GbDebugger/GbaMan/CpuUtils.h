@@ -27,7 +27,40 @@
 
 
 GBDEBUGGER_NAMESPACE_BEGIN
+namespace  GbaMan  {
 
+
+//========================================================================
+//
+//    Type Definitions.
+//
+
+/**
+**    命令の実行結果。
+**/
+
+enum class  InstExecResult
+{
+    /**
+    **    正常に実行された。
+    **
+    **    インタープリターは引き続き次の命令を実行する。
+    **/
+    SUCCESS_CONTINUE    = 0,
+
+    /**
+    **    未定義の命令が実行され、プロセッサが停止した。
+    **/
+    UNDEFINED_OPECODE   = 1,
+
+    /**
+    **    正常に実行されたが、ブレークポイントにヒットした。
+    **/
+    SUCCESS_BREAKPOINT  = 2,
+};
+
+
+}   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
 
 #endif
