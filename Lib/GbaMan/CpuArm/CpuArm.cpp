@@ -245,8 +245,9 @@ CpuArm::executeNextInst()
 //    命令の実行を行う関数たち。
 //
 
+template  <int BIT25, int CODE, int BIT20, int BIT4>
 GBD_REGPARM     InstExecResult
-CpuArm::arm3A0_Mov(
+CpuArm::armALUInstruction(
         const  OpeCode  opeCode)
 {
     return ( InstExecResult::SUCCESS_CONTINUE );
@@ -324,7 +325,7 @@ CpuArm::prefetchNext()
 /**   命令テーブル。        **/
 
 #define     arm_UI  &CpuArm::armUnknownInstruction
-#define     arm3A0  &CpuArm::arm3A0_Mov
+#define     arm3A0  &CpuArm::armALUInstruction<1, 13, 0, 0>
 #define     armA00  &CpuArm::armA00_B
 
 #define     REPEAT_16(inst)     \
