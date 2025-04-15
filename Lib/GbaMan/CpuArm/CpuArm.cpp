@@ -325,6 +325,7 @@ CpuArm::prefetchNext()
 /**   命令テーブル。        **/
 
 #define     arm_UI  &CpuArm::armUnknownInstruction
+#define     arm1A0  &CpuArm::armALUInstruction<0, 13, 0, 0>
 #define     arm3A0  &CpuArm::armALUInstruction<1, 13, 0, 0>
 #define     armA00  &CpuArm::armA00_B
 
@@ -342,9 +343,29 @@ CpuArm::prefetchNext()
 const   CpuArm::FnInst
 CpuArm::s_armInstTable[4096] = {
     REPEAT256(arm_UI),      //  00.0 -- 0F.F
-    REPEAT256(arm_UI),      //  10.0 -- 1F.F
-    REPEAT256(arm_UI),      //  20.0 -- 2F.F
 
+    REPEAT_16(arm_UI),      //  10.0 -- 10.F
+    REPEAT_16(arm_UI),      //  11.0 -- 11.F
+    REPEAT_16(arm_UI),      //  12.0 -- 12.F
+    REPEAT_16(arm_UI),      //  13.0 -- 13.F
+    REPEAT_16(arm_UI),      //  14.0 -- 14.F
+    REPEAT_16(arm_UI),      //  15.0 -- 15.F
+    REPEAT_16(arm_UI),      //  16.0 -- 16.F
+    REPEAT_16(arm_UI),      //  17.0 -- 17.F
+    REPEAT_16(arm_UI),      //  18.0 -- 18.F
+    REPEAT_16(arm_UI),      //  19.0 -- 19.F
+
+    //  1A.0 -- 1A.F
+    arm1A0, arm1A0, arm1A0, arm1A0,     arm1A0, arm1A0, arm1A0, arm1A0,
+    arm1A0, arm1A0, arm1A0, arm1A0,     arm1A0, arm1A0, arm1A0, arm1A0,
+
+    REPEAT_16(arm_UI),      //  1B.0 -- 1B.F
+    REPEAT_16(arm_UI),      //  1C.0 -- 1C.F
+    REPEAT_16(arm_UI),      //  1D.0 -- 1D.F
+    REPEAT_16(arm_UI),      //  1E.0 -- 1E.F
+    REPEAT_16(arm_UI),      //  1F.0 -- 1F.F
+
+    REPEAT256(arm_UI),      //  20.0 -- 2F.F
     REPEAT_16(arm_UI),      //  30.0 -- 30.F
     REPEAT_16(arm_UI),      //  31.0 -- 31.F
     REPEAT_16(arm_UI),      //  32.0 -- 32.F
