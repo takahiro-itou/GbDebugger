@@ -163,7 +163,7 @@ private:
     //----------------------------------------------------------------
     //    命令の実行を行う関数たち。
 
-    template  <int BIT25, int CODE, int BIT20, int BIT4>
+    template  <int BIT25, int CODE, int BIT20, int SFTTYPE, int BIT4>
     GBD_REGPARM     InstExecResult
     armALUInstruction(
             const  OpeCode  opeCode);

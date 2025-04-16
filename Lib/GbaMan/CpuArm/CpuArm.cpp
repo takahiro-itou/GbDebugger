@@ -245,13 +245,13 @@ CpuArm::executeNextInst()
 //    命令の実行を行う関数たち。
 //
 
-template  <int BIT25, int CODE, int BIT20, int BIT4>
+template  <int BIT25, int CODE, int BIT20, int SFTTYPE, int BIT4>
 GBD_REGPARM     InstExecResult
 CpuArm::armALUInstruction(
         const  OpeCode  opeCode)
 {
     const  int      dst = (opeCode >> 12) & 0x0F;
-    const  uint32_t lhs = this->m_cpuRegs[(opeCode >> 16) & 0x0F];
+    const  uint32_t lhs = this->m_cpuRegs[(opeCode >> 16) & 0x0F].dw;
     uint32_t        rhs;
 
     if ( BIT25 == 0 ) {
@@ -263,7 +263,14 @@ CpuArm::armALUInstruction(
             sft = (opeCode >> 7) & 0x1F;
         } else {
             //  シフト量の指定はレジスタ。  //
-            sft = this->m_cpuRegs[(opeCode >> 8) & 0x0F]
+            sft = this->m_cpuRegs[(opeCode >> 8) & 0x0F].dw;
+        }
+        switch ( SFTTYPE ) {
+        case  0:    //  LSL
+        case  1:    //  LSR
+        case  2:    //  ASR
+        case  3:    //  ROR
+            break;
         }
         rhs <<= sft;
     } else {
@@ -352,8 +359,8 @@ CpuArm::prefetchNext()
 /**   命令テーブル。        **/
 
 #define     arm_UI  &CpuArm::armUnknownInstruction
-#define     arm1A0  &CpuArm::armALUInstruction<0, 13, 0, 0>
-#define     arm3A0  &CpuArm::armALUInstruction<1, 13, 0, 0>
+#define     arm1A0  &CpuArm::armALUInstruction<0, 13, 0, 0, 0>
+#define     arm3A0  &CpuArm::armALUInstruction<1, 13, 0, 0, 0>
 #define     armA00  &CpuArm::armA00_B
 
 #define     REPEAT_16(inst)     \
