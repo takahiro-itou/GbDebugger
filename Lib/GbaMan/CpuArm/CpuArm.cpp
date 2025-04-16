@@ -250,6 +250,33 @@ GBD_REGPARM     InstExecResult
 CpuArm::armALUInstruction(
         const  OpeCode  opeCode)
 {
+    const  int      dst = (opeCode >> 12) & 0x0F;
+    const  uint32_t lhs = this->m_cpuRegs[(opeCode >> 16) & 0x0F];
+    uint32_t        rhs;
+
+    if ( BIT25 == 0 ) {
+        //  第二オペランドはレジスタ。  //
+        rhs = (opeCode & 0x0F);
+        int sft;
+        if ( BIT4 == 0 ) {
+            //  シフト量の指定は即値。      //
+            sft = (opeCode >> 7) & 0x1F;
+        } else {
+            //  シフト量の指定はレジスタ。  //
+            sft = this->m_cpuRegs[(opeCode >> 8) & 0x0F]
+        }
+        rhs <<= sft;
+    } else {
+        //  第二オペランドは即値指定。  //
+        const  uint32_t imm = (opeCode & 0xFF);
+        const  int      ror = (opeCode & 0xF00) >> 7;
+        rhs = ((imm << (32 - ror)) | (imm >> ror));
+    }
+
+    if ( BIT20 == 0 ) {
+        //  フラグレジスタを更新する。  //
+    }
+
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
