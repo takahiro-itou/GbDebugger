@@ -27,6 +27,7 @@ extra_noinst_header_files   =
 library_source_files        +=  \
         GbaManager.cpp                 \
         MemoryManager.cpp              \
+        CpuArm/ArmALU.cpp              \
         CpuArm/CpuArm.cpp              \
         CpuArm/DisArm.cpp              \
         CpuThumb/CpuThumb.cpp          \
@@ -40,6 +41,7 @@ dist_noinst_data_files      +=  \
         ${extra_noinst_data_files}
 
 dist_noinst_header_files    +=  \
+        CpuArm/ArmALU.h                \
         CpuArm/CpuArm.h                \
         CpuArm/DisArm.h                \
         CpuThumb/CpuThumb.h            \
