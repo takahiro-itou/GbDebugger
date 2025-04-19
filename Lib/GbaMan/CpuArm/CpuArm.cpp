@@ -250,31 +250,46 @@ GBD_REGPARM     InstExecResult
 CpuArm::armALUInstruction(
         const  OpeCode  opeCode)
 {
+    //  結果を格納するレジスタはビット 12..15 で指定。  //
     const  int      dst = (opeCode >> 12) & 0x0F;
+
+    //  第一オペランドレジスタはビット 16..19 で指定。  //
     const  uint32_t lhs = this->m_cpuRegs[(opeCode >> 16) & 0x0F].dw;
+
     uint32_t        rhs;
 
     if ( BIT25 == 0 ) {
-        //  第二オペランドはレジスタ。  //
+        //  第二オペランドはレジスタ。ビット 00..07 で指定される。  //
         rhs = (opeCode & 0x0F);
         int sft;
         if ( BIT4 == 0 ) {
-            //  シフト量の指定は即値。      //
+            //  シフト量の指定は即値。ビット 07..11 で指定。    //
             sft = (opeCode >> 7) & 0x1F;
+
+            //  ビット 05..06 はシフトの種類。  //
+            switch ( SFTTYPE ) {
+            case  0:    //  LSL
+            case  1:    //  LSR
+            case  2:    //  ASR
+            case  3:    //  ROR
+                break;
+            }
         } else {
-            //  シフト量の指定はレジスタ。  //
+            //  シフト量指定はレジスタ。ビット 08..11 で指定。  //
             sft = this->m_cpuRegs[(opeCode >> 8) & 0x0F].dw;
-        }
-        switch ( SFTTYPE ) {
-        case  0:    //  LSL
-        case  1:    //  LSR
-        case  2:    //  ASR
-        case  3:    //  ROR
-            break;
+
+            //  ビット 05..06 はシフトの種類。  //
+            switch ( SFTTYPE ) {
+            case  0:    //  LSL
+            case  1:    //  LSR
+            case  2:    //  ASR
+            case  3:    //  ROR
+                break;
+            }
         }
         rhs <<= sft;
     } else {
-        //  第二オペランドは即値指定。  //
+        //  第二オペランドは即値指定。ビット 00..07 で指定される。  //
         const  uint32_t imm = (opeCode & 0xFF);
         const  int      ror = (opeCode & 0xF00) >> 7;
         rhs = ((imm << (32 - ror)) | (imm >> ror));
