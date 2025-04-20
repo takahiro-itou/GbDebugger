@@ -238,7 +238,7 @@ struct  ArmALUImmRor
     {
         RegType rhs;
         if ( UNLIKELY(shift) ) {
-            flag_cy = armRorFlg(vImm, shift);
+            fout_cy = armRorFlg(vImm, shift);
             rhs     = armRorVal(vImm, shift);
         }
         return ( rhs );
@@ -313,7 +313,7 @@ armALUInstruction(
         //  第二オペランドは即値指定。ビット 00..07 で指定される。  //
         const  RegType  imm = (opeCode & 0xFF);
         const  int      ror = (opeCode & 0xF00) >> 7;
-        rhs = ArmALUImmRor()(shift, imm, fout_cy, flag_cy);
+        rhs = ArmALUImmRor()(ror, imm, fout_cy, flag_cy);
     }
 
     if ( BIT20 == 0 ) {
