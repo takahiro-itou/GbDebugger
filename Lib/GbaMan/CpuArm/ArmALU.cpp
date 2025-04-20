@@ -27,6 +27,22 @@ namespace  GbaMan  {
 
 namespace  {
 
+CONSTEXPR_FUNC  inline  bool
+armRorFlg(
+        const  RegType  v,
+        const  int      shift)
+{
+    return ( (v >> (shift - 1)) & 1 ? true : false );
+}
+
+CONSTEXPR_FUNC  inline  RegType
+armRorVal(
+        const  RegType  v,
+        const  int      shift)
+{
+    return  ((v << (32 - shift)) | (v >> shift));
+}
+
 typedef     GBD_REGPARM     InstExecResult
 (* FnALUInst)(
         const  OpeCode  opeCode,
@@ -192,8 +208,10 @@ struct  ArmALURmRorReg
     {
         RegType rhs = vRm;
         if ( LIKELY(shift & 0x1F) ) {
-            fout_cy = (vRm >> (shift - 1)) & 1 ? true : false;
-            rhs = ((vRm < (32 - shift)) | (vRm >> shift));
+            //fout_cy = (vRm >> (shift - 1)) & 1 ? true : false;
+            fout_cy = armRorFlg(vRm, shift);
+            rhs     = armRorVal(vRm, shift);
+            //rhs = ((vRm < (32 - shift)) | (vRm >> shift));
         } else {
             if ( shift ) {
                 fout_cy = (vRm & 0x80000000 ? true : false);
@@ -214,8 +232,9 @@ struct  ArmALURmRorImm
     {
         RegType rhs;
         if ( LIKELY(shift) ) {
-            fout_cy = (vRm >> (shift - 1)) & 1 ? true : false;
-            rhs     = ((vRm << (32 - shift)) | (vRm >> shift));
+//            fout_cy = (vRm >> (shift - 1)) & 1 ? true : false;
+            fout_cy = armRorFlg(vRm, shift);
+            rhs     = armRorVal(vRm, shift);   //((vRm << (32 - shift)) | (vRm >> shift));
         } else {
             //  ROR#0 は RCR#1  として解釈される。  //
             fout_cy = (vRm & 1) ? true : false;
