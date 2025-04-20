@@ -42,7 +42,6 @@ struct  ArmALURmLslReg
             const  bool     flag_cy)
     {
         RegType rhs = vRm;
-
         if ( LIKELY(shift) ) {
             if ( shift == 32 ) {
                 fout_cy = (vRm & 1 ? true : false);
@@ -54,6 +53,85 @@ struct  ArmALURmLslReg
                 fout_cy = false;
                 rhs     = 0;
             }
+        }
+        return ( rhs );
+    }
+};
+
+struct  ArmALURmLsrReg
+{
+    RegType operator()(
+            const  int      shift,
+            const  RegType  vRm,
+            bool          & fout_cy,
+            const  bool     flag_cy)
+    {
+        RegType rhs = vRm;
+        if ( LIKELY(shift) ) {
+            if ( shift == 32 ) {
+                fout_cy = (vRm & 0x80000000) ? true : false;
+                rhs     = 0;
+            } else if ( LIKELY(shift < 32) ) {
+                fout_cy = (vRm >> (shift - 1)) & 1 ? true : false;
+                rhs     = (vRm >> shift);
+            } else {
+                fout_cy = false;
+                rhs     = 0;
+            }
+        } else {
+            rhs = vRm;
+        }
+        return ( rhs );
+    }
+};
+
+struct  ArmALURmAsrReg
+{
+    RegType operator()(
+            const  int      shift,
+            const  RegType  vRm,
+            bool          & fout_cy,
+            const  bool     flag_cy)
+    {
+        RegType rhs = vRm;
+        if ( LIKELY(shift < 32) ) {
+            if ( LIKELY(shift) ) {
+                int32_t v = static_cast<int32_t>(vRm);
+                fout_cy = (v >> (int)(shift - 1)) & 1 ? true : false;
+                rhs     = v >> (int)(shift);
+            } else {
+                rhs     = vRm;
+            }
+        } else {
+            if ( vRm & 0x80000000 ) {
+                fout_cy = true;
+                rhs     = 0xFFFFFFFF;
+            } else {
+                fout_cy = false;
+                rhs     = 0;
+            }
+        }
+        return ( rhs );
+    }
+};
+
+struct  ArmALURmRorReg
+{
+    RegType operator()(
+            const  int      shift,
+            const  RegType  vRm,
+            bool          & fout_cy,
+            const  bool     flag_cy)
+    {
+        RegType rhs = vRm;
+        if ( LIKELY(shift & 0x1F) ) {
+            fout_cy = (vRm >> (shift - 1)) & 1 ? true : false;
+            rhs = ((vRm < (32 - shift)) | (vRm >> shift));
+        } else {
+            if ( shift ) {
+                fout_cy = (vRm & 0x80000000 ? true : false);
+            }
+            rhs = vRm;
         }
         return ( rhs );
     }
@@ -106,50 +184,13 @@ armALUInstruction(
                 rhs = ArmALURmLslReg()(shift, vRm, fout_cy, flag_cy);
                 break;
             case  1:    //  LSR
-                if ( LIKELY(shift) ) {
-                    if ( shift == 32 ) {
-                        rhs     = 0;
-                        fout_cy = (vRm & 0x80000000) ? true : false;
-                    } else if ( LIKELY(shift < 32) ) {
-                        fout_cy = (vRm >> (shift - 1)) & 1 ? true : false;
-                        rhs     = (vRm >> shift);
-                    } else {
-                        rhs     = 0;
-                        fout_cy = false;
-                    }
-                } else {
-                    rhs = vRm;
-                }
+                rhs = ArmALURmLsrReg()(shift, vRm, fout_cy, flag_cy);
                 break;
             case  2:    //  ASR
-                if ( LIKELY(shift < 32) ) {
-                    if ( LIKELY(shift) ) {
-                        int32_t v = static_cast<int32_t>(vRm);
-                        fout_cy = (v >> (int)(shift - 1)) & 1 ? true : false;
-                        rhs     = v >> (int)(shift);
-                    } else {
-                        rhs     = vRm;
-                    }
-                } else {
-                    if ( vRm & 0x80000000 ) {
-                        rhs     = 0xFFFFFFFF;
-                        fout_cy = true;
-                    } else {
-                        rhs     = 0;
-                        fout_cy = false;
-                    }
-                }
+                rhs = ArmALURmAsrReg()(shift, vRm, fout_cy, flag_cy);
                 break;
             case  3:    //  ROR
-                if ( LIKELY(shift & 0x1F) ) {
-                    fout_cy = (vRm >> (shift - 1)) & 1 ? true : false;
-                    rhs = ((vRm < (32 - shift)) | (vRm >> shift));
-                } else {
-                    if ( shift ) {
-                        fout_cy = (vRm & 0x80000000 ? true : false);
-                    }
-                    rhs = vRm;
-                }
+                rhs = ArmALURmRorReg()(shift, vRm, fout_cy, flag_cy);
                 break;
             }
         }
