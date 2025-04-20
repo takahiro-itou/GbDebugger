@@ -255,6 +255,10 @@ armALUInstruction(
         RegPair         cpuRegs[],
         RegType       & cpuFlag)
 {
+#if defined( __GNUC__ )
+    std::cerr   <<  __PRETTY_FUNCTION__;
+#endif
+
     //  結果を格納するレジスタはビット 12..15 で指定。  //
     const  int      dst = (opeCode >> 12) & 0x0F;
 
