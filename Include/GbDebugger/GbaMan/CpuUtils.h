@@ -60,6 +60,27 @@ enum class  InstExecResult
 };
 
 
+//========================================================================
+//
+//    Rotate Instruction.
+//
+
+CONSTEXPR_FUNC  inline  bool
+armRorFlg(
+        const  RegType  v,
+        const  int      shift)
+{
+    return ( (v >> (shift - 1)) & 1 ? true : false );
+}
+
+CONSTEXPR_FUNC  inline  RegType
+armRorVal(
+        const  RegType  v,
+        const  int      shift)
+{
+    return  ((v << (32 - shift)) | (v >> shift));
+}
+
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
 
