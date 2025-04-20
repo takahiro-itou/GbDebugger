@@ -31,22 +31,21 @@ typedef     GBD_REGPARM     InstExecResult
 (* FnALUInst)(
         const  OpeCode  opeCode,
         RegPair         cpuRegs[],
-        uint32_t      & cpuFlag);
+        RegType       & cpuFlag);
 
 template  <int  BIT25, int CODE, int BIT20, int SHIFTTYPE, int BIT4>
 GBD_REGPARM     InstExecResult
 armALUInstruction(
         const  OpeCode  opeCode,
         RegPair         cpuRegs[],
-        uint32_t      & cpuFlag)
+        RegType       & cpuFlag)
 {
     //  結果を格納するレジスタはビット 12..15 で指定。  //
     const  int      dst = (opeCode >> 12) & 0x0F;
 
     //  第一オペランドレジスタはビット 16..19 で指定。  //
-    const  uint32_t lhs = cpuRegs[(opeCode >> 16) & 0x0F].dw;
-
-    uint32_t        rhs;
+    const  RegType  lhs = cpuRegs[(opeCode >> 16) & 0x0F].dw;
+    RegType         rhs;
 
     const   bool    flag_cy = (cpuFlag & 0x20000000) ? true : false;
     bool            fout_cy = flag_cy;
@@ -83,7 +82,7 @@ armALUInstruction(
         rhs <<= sft;
     } else {
         //  第二オペランドは即値指定。ビット 00..07 で指定される。  //
-        const  uint32_t imm = (opeCode & 0xFF);
+        const  RegType  imm = (opeCode & 0xFF);
         const  int      ror = (opeCode & 0xF00) >> 7;
         rhs = ((imm << (32 - ror)) | (imm >> ror));
     }

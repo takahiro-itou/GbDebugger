@@ -197,7 +197,7 @@ CpuArm::executeNextInst()
     prefetchNext();
 
     const  OpeCode  opCond  = (opeCode >> 28) & 0x0F;
-    const  uint32_t    flg  = (this->m_cpuRegs[16].dw >> 28) & 0x0F;
+    const  RegType  flg  = (this->m_cpuRegs[16].dw >> 28) & 0x0F;
     const  bool  condResult = g_condTable[opCond][flg];
 
     sprintf(buf,
