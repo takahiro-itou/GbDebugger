@@ -382,9 +382,24 @@ armALUInstruction(
         flg = setCondAdd(res, lhs, rhs, fout_cy, cur);
         break;
     case  0x0C:     //  ORR (OR)    Rd = Rn OR Op2
+        res = lhs | rhs;
+        flg = setCondLogical(res, lhs, rhs, fout_cy, cur);
+        cpuRegs[dst].dw = res;
+        break;
     case  0x0D:     //  MOV         Rd = Op2
+        res = rhs;
+        flg = setCondLogical(res, lhs, rhs, fout_cy, cur);
+        cpuRegs[dst].dw = res;
+        break;
     case  0x0E:     //  BIC         Rd = Rnn AND NOT Op2
+        res = lhs & ~rhs;
+        flg = setCondLogical(res, lhs, rhs, fout_cy, cur);
+        cpuRegs[dst].dw = res;
+        break;
     case  0x0F:     //  MVN         Rd = Not Op2
+        res = ~rhs;
+        flg = setCondLogical(res, lhs, rhs, fout_cy, cur);
+        cpuRegs[dst].dw = res;
         break;
     }
 
