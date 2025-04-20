@@ -21,6 +21,9 @@
 #include    "ArmALU.h"
 #include    "CpuArm.h"
 
+#include    <iostream>
+#include    <stdio.h>
+
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
@@ -417,7 +420,7 @@ armALUInstruction(
 
 CONSTEXPR_VAR   FnALUInst
 g_armALUInstTable[512] = {
-    armALUInstruction<0, 0, 0, 0, 0>
+    armALUInstruction<0, 0, 0, 0, 0>,
 };
 
 }   //  End of (Unnamed) namespace.
@@ -441,6 +444,12 @@ CpuArm::armALUInstruction(
     const  OpeCode  idx =
         ((opeCode >> 17) & 0x01F8) | ((opeCode >> 4) & 0x07);
     FnALUInst   pfInst  = g_armALUInstTable[idx];
+
+    char    buf[512];
+    sprintf(buf,
+            "opeCode = %08x, idx = %03x, pfInst = %p\n",
+            opeCode, idx, pfInst);
+    std::cerr   <<  buf;
 
     return  (* pfInst)(opeCode, this->m_cpuRegs, this->m_cpuRegs[16].dw);
 }
