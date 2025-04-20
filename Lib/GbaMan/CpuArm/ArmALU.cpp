@@ -239,7 +239,7 @@ struct  ArmALUImmRor
             bool          & fout_cy,
             const  bool     flag_cy)
     {
-        RegType rhs;
+        RegType rhs = vImm;
         if ( UNLIKELY(shift) ) {
             fout_cy = armRorFlg(vImm, shift);
             rhs     = armRorVal(vImm, shift);
@@ -260,15 +260,16 @@ armALUInstruction(
 
     char    buf[512];
 #if defined( __GNUC__ )
-    std::cerr   <<  __PRETTY_FUNCTION__;
+    std::cerr   <<  __PRETTY_FUNCTION__ <<  std::endl;
 #endif
     sprintf(buf,
-            "Op2 = %d, CODE = %x, S = %d, SHIFT = %d, BIT4 = %d\n",
+            "Op2(I/R) = %d, CODE = %x, S = %d, SHIFT = %d, BIT4(R) = %d\n",
             BIT25, CODE, BIT20, SHIFTTYPE, BIT4);
     std::cerr   <<  buf;
     sprintf(buf,
             "OpeCode = %08x, dst = %d\n",
-            dst);
+            opeCode, dst);
+    std::cerr   <<  buf;
 
     //  第一オペランドレジスタはビット 16..19 で指定。  //
     const  RegType  lhs = cpuRegs[(opeCode >> 16) & 0x0F].dw;
