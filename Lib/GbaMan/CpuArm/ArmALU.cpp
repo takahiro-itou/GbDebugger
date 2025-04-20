@@ -31,6 +31,20 @@ namespace  {
 
 //========================================================================
 //
+//    ArmALU  Instructions.
+//
+
+GBD_REGPARM     InstExecResult
+armALUInstruction(
+        const  OpeCode  opeCode,
+        RegPair         cpuRegs,
+        uint32_t        cpuFlag)
+{
+    return ( InstExecResult::UNDEFINED_OPECODE );
+}
+
+//========================================================================
+//
 //    ArmALU  class.
 //
 

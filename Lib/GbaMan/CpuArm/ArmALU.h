@@ -31,8 +31,14 @@ class   MemoryManager;
 
 //========================================================================
 //
-//    ArmALU  class.
+//    ArmALU  Instructions.
 //
+
+GBD_REGPARM     InstExecResult
+armALUInstruction(
+        const  OpeCode  opeCode,
+        RegPair         cpuRegs,
+        uint32_t        cpuFlag);
 
 class  ArmALU
 {
