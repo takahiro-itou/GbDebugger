@@ -26,27 +26,81 @@ namespace  GbaMan  {
 
 namespace  {
 
-}   //  End of (Unnamed) namespace.
-
+typedef     GBD_REGPARM     InstExecResult
+(* FnALUInst)(
+        const  OpeCode  opeCode,
+        RegPair         cpuRegs[],
+        uint32_t      & cpuFlag);
 
 template  <int  BIT25, int CODE, int BIT20, int SHIFTTYPE, int BIT4>
 GBD_REGPARM     InstExecResult
-CpuArm::armALUInstruction(
+armALUInstruction(
         const  OpeCode  opeCode,
-        RegPair         cpuRegs,
+        RegPair         cpuRegs[],
         uint32_t      & cpuFlag)
 {
     //  結果を格納するレジスタはビット 12..15 で指定。  //
     const  int      dst = (opeCode >> 12) & 0x0F;
 
     //  第一オペランドレジスタはビット 16..19 で指定。  //
-    const  uint32_t lhs = this->m_cpuRegs[(opeCode >> 16) & 0x0F].dw;
+    const  uint32_t lhs = cpuRegs[(opeCode >> 16) & 0x0F].dw;
 
     uint32_t        rhs;
 
     const   bool    flag_cy = (cpuFlag & 0x20000000) ? true : false;
     bool            fout_cy = flag_cy;
+
+    if ( BIT25 == 0 ) {
+        //  第二オペランドはレジスタ。ビット 00..07 で指定される。  //
+        rhs = (opeCode & 0x0F);
+        int sft;
+        if ( BIT4 == 0 ) {
+            //  シフト量の指定は即値。ビット 07..11 で指定。    //
+            sft = (opeCode >> 7) & 0x1F;
+
+            //  ビット 05..06 はシフトの種類。  //
+            switch ( SHIFTTYPE ) {
+            case  0:    //  LSL
+            case  1:    //  LSR
+            case  2:    //  ASR
+            case  3:    //  ROR
+                break;
+            }
+        } else {
+            //  シフト量指定はレジスタ。ビット 08..11 で指定。  //
+            sft = cpuRegs[(opeCode >> 8) & 0x0F].dw;
+
+            //  ビット 05..06 はシフトの種類。  //
+            switch ( SHIFTTYPE ) {
+            case  0:    //  LSL
+            case  1:    //  LSR
+            case  2:    //  ASR
+            case  3:    //  ROR
+                break;
+            }
+        }
+        rhs <<= sft;
+    } else {
+        //  第二オペランドは即値指定。ビット 00..07 で指定される。  //
+        const  uint32_t imm = (opeCode & 0xFF);
+        const  int      ror = (opeCode & 0xF00) >> 7;
+        rhs = ((imm << (32 - ror)) | (imm >> ror));
+    }
+
+    if ( BIT20 == 0 ) {
+        //  フラグレジスタを更新する。  //
+    }
+
+    return ( InstExecResult::SUCCESS_CONTINUE );
 }
+
+CONSTEXPR_VAR   FnALUInst
+g_armALUInstTable[256] = {
+    armALUInstruction<0, 0, 0, 0, 0>
+};
+
+}   //  End of (Unnamed) namespace.
+
 
 //========================================================================
 //
@@ -56,7 +110,7 @@ CpuArm::armALUInstruction(
 GBD_REGPARM     InstExecResult
 armALUInstruction(
         const  OpeCode  opeCode,
-        RegPair         cpuRegs,
+        RegPair         cpuRegs[],
         uint32_t      & cpuFlag)
 {
     return ( InstExecResult::UNDEFINED_OPECODE );

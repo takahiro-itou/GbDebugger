@@ -21,6 +21,14 @@
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_ARM_ALU_H )
 #    define   GBDEBUGGER_GBAMAN_INCLUDED_ARM_ALU_H
 
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_CPU_UTILS_H )
+#    include    "GbDebugger/GbaMan/CpuUtils.h"
+#endif
+
+#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_UTILS_H )
+#    include    "GbDebugger/Common/DebuggerUtils.h"
+#endif
+
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
@@ -37,7 +45,7 @@ class   MemoryManager;
 GBD_REGPARM     InstExecResult
 armALUInstruction(
         const  OpeCode  opeCode,
-        RegPair         cpuRegs,
+        RegPair         cpuRegs[],
         uint32_t      & cpuFlag);
 
 class  ArmALU
