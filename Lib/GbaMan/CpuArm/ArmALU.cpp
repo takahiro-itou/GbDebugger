@@ -102,6 +102,26 @@ struct  ArmALURmLsrReg
     }
 };
 
+struct  ArmALURmLsrImm
+{
+    RegType operator()(
+            const  int      shift,
+            const  RegType  vRm,
+            bool          & fout_cy,
+            const  bool     flag_cy)
+    {
+        RegType rhs = vRm;
+        if ( LIKELY(shift) ) {
+            fout_cy = (vRm >> (shift - 1)) & 1 ? true : false;
+            rhs     >>= shift;
+        } else {
+            fout_cy = (vRm & 0x80000000) ? true : false;
+            rhs     = 0;
+        }
+        return ( rhs );
+    }
+};
+
 struct  ArmALURmAsrReg
 {
     RegType operator()(
@@ -184,7 +204,10 @@ armALUInstruction(
             switch ( SHIFTTYPE ) {
             case  0:    //  LSL
                 rhs = ArmALURmLslImm()(shift, vRm, fout_cy, flag_cy);
+                break;
             case  1:    //  LSR
+                rhs = ArmALURmLsrImm()(shift, vRm, flag_cy, flag_cy);
+                break;
             case  2:    //  ASR
             case  3:    //  ROR
                 break;
