@@ -38,7 +38,7 @@ GBD_REGPARM     InstExecResult
 armALUInstruction(
         const  OpeCode  opeCode,
         RegPair         cpuRegs,
-        uint32_t        cpuFlag);
+        uint32_t      & cpuFlag);
 
 class  ArmALU
 {
