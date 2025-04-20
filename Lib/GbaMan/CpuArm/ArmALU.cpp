@@ -71,6 +71,8 @@ struct  ArmALURmLslImm
             fout_cy = (vRm >> (32 - shift)) & 1 ? true : false;
             rhs     <<= shift;
         }
+        //  LSL#0 はシフトを行わない。  //
+
         return ( rhs );
     }
 };
@@ -115,6 +117,7 @@ struct  ArmALURmLsrImm
             fout_cy = (vRm >> (shift - 1)) & 1 ? true : false;
             rhs     >>= shift;
         } else {
+            //  LSR#0 は LSR#32 として解釈される。  //
             fout_cy = (vRm & 0x80000000) ? true : false;
             rhs     = 0;
         }
@@ -140,6 +143,33 @@ struct  ArmALURmAsrReg
                 rhs     = vRm;
             }
         } else {
+            if ( vRm & 0x80000000 ) {
+                fout_cy = true;
+                rhs     = 0xFFFFFFFF;
+            } else {
+                fout_cy = false;
+                rhs     = 0;
+            }
+        }
+        return ( rhs );
+    }
+};
+
+struct  ArmALURmAsrImm
+{
+    RegType operator()(
+            const  int      shift,
+            const  RegType  vRm,
+            bool          & fout_cy,
+            const  bool     flag_cy)
+    {
+        RegType rhs;
+        if ( LIKELY(shift) ) {
+            int32_t v = static_cast<int32_t>(vRm);
+            fout_cy = (v >> (int)(shift - 1)) & 1 ? true : false;
+            rhs     = v >> (int)(shift);
+        } else {
+            //  ASR#0 は ASR#32 として解釈される。  //
             if ( vRm & 0x80000000 ) {
                 fout_cy = true;
                 rhs     = 0xFFFFFFFF;
@@ -206,9 +236,11 @@ armALUInstruction(
                 rhs = ArmALURmLslImm()(shift, vRm, fout_cy, flag_cy);
                 break;
             case  1:    //  LSR
-                rhs = ArmALURmLsrImm()(shift, vRm, flag_cy, flag_cy);
+                rhs = ArmALURmLsrImm()(shift, vRm, fout_cy, flag_cy);
                 break;
             case  2:    //  ASR
+                rhs = ArmALURmAsrImm()(shift, vRm, fout_cy, flag_cy);
+                break;
             case  3:    //  ROR
                 break;
             }
