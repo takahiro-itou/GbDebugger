@@ -58,6 +58,23 @@ struct  ArmALURmLslReg
     }
 };
 
+struct  ArmALURmLslImm
+{
+    RegType operator()(
+            const  int      shift,
+            const  RegType  vRm,
+            bool          & fout_cy,
+            const  bool     flag_cy)
+    {
+        RegType rhs = vRm;
+        if ( UNLIKELY(!shift) ) {
+            fout_cy = (vRm >> (32 - shift)) & 1 ? true : false;
+            rhs     <<= shift;
+        }
+        return ( rhs );
+    }
+};
+
 struct  ArmALURmLsrReg
 {
     RegType operator()(
@@ -166,6 +183,7 @@ armALUInstruction(
             //  ビット 05..06 はシフトの種類。  //
             switch ( SHIFTTYPE ) {
             case  0:    //  LSL
+                rhs = ArmALURmLslImm()(shift, vRm, fout_cy, flag_cy);
             case  1:    //  LSR
             case  2:    //  ASR
             case  3:    //  ROR
