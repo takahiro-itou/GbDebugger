@@ -96,7 +96,7 @@ armALUInstruction(
 }
 
 CONSTEXPR_VAR   FnALUInst
-g_armALUInstTable[256] = {
+g_armALUInstTable[512] = {
     armALUInstruction<0, 0, 0, 0, 0>
 };
 
@@ -119,7 +119,7 @@ CpuArm::armALUInstruction(
     //  bit  6-- 5  シフトの種類 (LSL, LSR, ASR, ROR)   //
     //  bit      4  シフト量指定がレジスタか即値か。    //
     const  OpeCode  idx =
-        ((opeCode >> 20) & 0x3F) << 3 | ((opeCode >> 4) & 0x07);
+        ((opeCode >> 17) & 0x01F8) | ((opeCode >> 4) & 0x07);
     FnALUInst   pfInst  = g_armALUInstTable[idx];
 
     return  (* pfInst)(opeCode, this->m_cpuRegs, this->m_cpuRegs[16].dw);
