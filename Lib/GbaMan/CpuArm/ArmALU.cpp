@@ -256,7 +256,12 @@ armALUInstruction(
         RegType       & cpuFlag)
 {
 #if defined( __GNUC__ )
+    char    buf[512];
     std::cerr   <<  __PRETTY_FUNCTION__;
+    sprintf(buf,
+            "Op2 = %d, CODE = %x, S = %d, SHIFT = %d, BIT4 = %d\n",
+            BIT25, CODE, BIT20, SHIFTTYPE, BIT4);
+    std::cerr   <<  buf;
 #endif
 
     //  結果を格納するレジスタはビット 12..15 で指定。  //
@@ -422,9 +427,59 @@ armALUInstruction(
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
+#define     ARMALU_INST_TABLE(RN2, OP)          \
+    armALUInstruction<RN2, OP, 0, 0, 0>,        \
+    armALUInstruction<RN2, OP, 0, 0, 1>,        \
+    armALUInstruction<RN2, OP, 0, 1, 0>,        \
+    armALUInstruction<RN2, OP, 0, 1, 1>,        \
+    armALUInstruction<RN2, OP, 0, 2, 0>,        \
+    armALUInstruction<RN2, OP, 0, 2, 1>,        \
+    armALUInstruction<RN2, OP, 0, 3, 0>,        \
+    armALUInstruction<RN2, OP, 0, 3, 1>,        \
+    armALUInstruction<RN2, OP, 1, 0, 0>,        \
+    armALUInstruction<RN2, OP, 1, 0, 1>,        \
+    armALUInstruction<RN2, OP, 1, 1, 0>,        \
+    armALUInstruction<RN2, OP, 1, 1, 1>,        \
+    armALUInstruction<RN2, OP, 1, 2, 0>,        \
+    armALUInstruction<RN2, OP, 1, 2, 1>,        \
+    armALUInstruction<RN2, OP, 1, 3, 0>,        \
+    armALUInstruction<RN2, OP, 1, 3, 1>
+
 CONSTEXPR_VAR   FnALUInst
 g_armALUInstTable[512] = {
-    armALUInstruction<0, 0, 0, 0, 0>,
+    ARMALU_INST_TABLE(0, 0x00),
+    ARMALU_INST_TABLE(0, 0x01),
+    ARMALU_INST_TABLE(0, 0x02),
+    ARMALU_INST_TABLE(0, 0x03),
+    ARMALU_INST_TABLE(0, 0x04),
+    ARMALU_INST_TABLE(0, 0x05),
+    ARMALU_INST_TABLE(0, 0x06),
+    ARMALU_INST_TABLE(0, 0x07),
+    ARMALU_INST_TABLE(0, 0x08),
+    ARMALU_INST_TABLE(0, 0x09),
+    ARMALU_INST_TABLE(0, 0x0A),
+    ARMALU_INST_TABLE(0, 0x0B),
+    ARMALU_INST_TABLE(0, 0x0C),
+    ARMALU_INST_TABLE(0, 0x0D),
+    ARMALU_INST_TABLE(0, 0x0E),
+    ARMALU_INST_TABLE(0, 0x0F),
+
+    ARMALU_INST_TABLE(1, 0x00),
+    ARMALU_INST_TABLE(1, 0x01),
+    ARMALU_INST_TABLE(1, 0x02),
+    ARMALU_INST_TABLE(1, 0x03),
+    ARMALU_INST_TABLE(1, 0x04),
+    ARMALU_INST_TABLE(1, 0x05),
+    ARMALU_INST_TABLE(1, 0x06),
+    ARMALU_INST_TABLE(1, 0x07),
+    ARMALU_INST_TABLE(1, 0x08),
+    ARMALU_INST_TABLE(1, 0x09),
+    ARMALU_INST_TABLE(1, 0x0A),
+    ARMALU_INST_TABLE(1, 0x0B),
+    ARMALU_INST_TABLE(1, 0x0C),
+    ARMALU_INST_TABLE(1, 0x0D),
+    ARMALU_INST_TABLE(1, 0x0E),
+    ARMALU_INST_TABLE(1, 0x0F),
 };
 
 }   //  End of (Unnamed) namespace.
