@@ -108,7 +108,7 @@ GbaManager::disassembleArm(
         std::ostream       &outStr,
         GuestMemoryAddress  gmAddr)
 {
-    const  OpeCode  opeCode = readMemory<uint32_t>(gmAddr);
+    const  OpeCode  opeCode = readMemory<OpeCode>(gmAddr);
 
     DisArm  dis;
     return  dis.writeMnemonic(outStr, gmAddr, opeCode);
@@ -120,8 +120,8 @@ GbaManager::disassembleArm(
 
 std::ostream  &
 GbaManager::disassembleThumb(
-        std::ostream  & outStr,
-        const uint32_t  addr)
+        std::ostream       &outStr,
+        GuestMemoryAddress  gmAddr)
 {
     return ( outStr );
 }

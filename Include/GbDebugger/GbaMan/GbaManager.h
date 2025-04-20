@@ -118,8 +118,8 @@ public:
     **/
     virtual  std::ostream  &
     disassembleArm(
-            std::ostream  & outStr,
-            const uint32_t  addr);
+            std::ostream       &outStr,
+            GuestMemoryAddress  gmAddr);
 
     //----------------------------------------------------------------
     /**   ニーモニックを表示する。
@@ -127,8 +127,8 @@ public:
     **/
     virtual  std::ostream  &
     disassembleThumb(
-            std::ostream  & outStr,
-            const uint32_t  addr);
+            std::ostream       &outStr,
+            GuestMemoryAddress  gmAddr);
 
     //----------------------------------------------------------------
     /**   リセットを行う。
