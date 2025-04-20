@@ -33,6 +33,32 @@ typedef     GBD_REGPARM     InstExecResult
         RegPair         cpuRegs[],
         RegType       & cpuFlag);
 
+struct  ArmALURmLslReg
+{
+    RegType operator()(
+            const  int      shift,
+            const  RegType  vRm,
+            bool          & fout_cy,
+            const  bool     flag_cy)
+    {
+        RegType rhs = vRm;
+
+        if ( LIKELY(shift) ) {
+            if ( shift == 32 ) {
+                fout_cy = (vRm & 1 ? true : false);
+                rhs     = 0;
+            } else if ( LIKELY(shift < 32) ) {
+                fout_cy = (vRm >> (32 - shift)) & 1 ? true : false;
+                rhs     = (vRm << shift);
+            } else {
+                fout_cy = false;
+                rhs     = 0;
+            }
+        }
+        return ( rhs );
+    }
+};
+
 template  <int  BIT25, int CODE, int BIT20, int SHIFTTYPE, int BIT4>
 GBD_REGPARM     InstExecResult
 armALUInstruction(
@@ -77,20 +103,7 @@ armALUInstruction(
             //  ビット 05..06 はシフトの種類。  //
             switch ( SHIFTTYPE ) {
             case  0:    //  LSL
-                if ( LIKELY(shift) ) {
-                    if ( shift == 32 ) {
-                        rhs     = 0;
-                        fout_cy = (vRm & 1 ? true : false);
-                    } else if ( LIKELY(shift < 32) ) {
-                        fout_cy = (vRm >> (32 - shift)) & 1 ? true : false;
-                        rhs     = (vRm << shift);
-                    } else {
-                        rhs     = 0;
-                        fout_cy = false;
-                    }
-                } else {
-                    rhs = vRm;
-                }
+                rhs = ArmALURmLslReg()(shift, vRm, fout_cy, flag_cy);
                 break;
             case  1:    //  LSR
                 if ( LIKELY(shift) ) {
