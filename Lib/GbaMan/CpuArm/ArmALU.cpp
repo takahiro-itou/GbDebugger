@@ -228,6 +228,23 @@ struct  ArmALURmRorImm
     }
 };
 
+struct  ArmALUImmRor
+{
+    RegType operator()(
+            const  int      shift,
+            const  RegType  vImm,
+            bool          & fout_cy,
+            const  bool     flag_cy)
+    {
+        RegType rhs;
+        if ( UNLIKELY(shift) ) {
+            flag_cy = armRorFlg(vImm, shift);
+            rhs     = armRorVal(vImm, shift);
+        }
+        return ( rhs );
+    }
+};
+
 template  <int  BIT25, int CODE, int BIT20, int SHIFTTYPE, int BIT4>
 GBD_REGPARM     InstExecResult
 armALUInstruction(
@@ -296,7 +313,7 @@ armALUInstruction(
         //  第二オペランドは即値指定。ビット 00..07 で指定される。  //
         const  RegType  imm = (opeCode & 0xFF);
         const  int      ror = (opeCode & 0xF00) >> 7;
-        rhs = ((imm << (32 - ror)) | (imm >> ror));
+        rhs = ArmALUImmRor()(shift, imm, fout_cy, flag_cy);
     }
 
     if ( BIT20 == 0 ) {
