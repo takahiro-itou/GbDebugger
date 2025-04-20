@@ -85,7 +85,7 @@ armRorVal(
 
 inline  RegType
 setCondLogical(
-        const  RegType  res,
+        const  uint64_t res,
         const  RegType  lhs,
         const  RegType  rhs,
         const  bool     fout_cy,
@@ -101,7 +101,7 @@ setCondLogical(
 
 inline  RegType
 setCondAdd(
-        const  RegType  res,
+        const  uint64_t res,
         const  RegType  lhs,
         const  RegType  rhs,
         const  bool     fout_cy,
@@ -110,13 +110,14 @@ setCondAdd(
     const  RegType  flag_n  = (res & 0x80000000);
     const  RegType  flag_z  = (res == 0) ? 0x40000000 : 0;
     const  RegType  flag_c  = (fout_cy)  ? 0x20000000 : 0;
-    const  RegType  flag_v  = 0;
+    const  RegType  work_v  = ~(lhs ^ rhs) & (lhs ^ res) & 0x80000000;
+    const  RegType  flag_v  = (work_v >> 3);
     return ( (cur & 0x0FFFFFFF) | flag_n | flag_z | flag_c | flag_v );
 }
 
 inline  RegType
 setCondSub(
-        const  RegType  res,
+        const  uint64_t res,
         const  RegType  lhs,
         const  RegType  rhs,
         const  bool     fout_cy,
@@ -125,7 +126,8 @@ setCondSub(
     const  RegType  flag_n  = (res & 0x80000000);
     const  RegType  flag_z  = (res == 0) ? 0x40000000 : 0;
     const  RegType  flag_c  = (fout_cy)  ? 0x20000000 : 0;
-    const  RegType  flag_v  = 0;
+    const  RegType  work_v  = (lhs ^ rhs) & (lhs ^ res) & 0x80000000;
+    const  RegType  flag_v  = (work_v > 0) ? 0x10000000 : 0;
     return ( (cur & 0x0FFFFFFF) | flag_n | flag_z | flag_c | flag_v );
 }
 
