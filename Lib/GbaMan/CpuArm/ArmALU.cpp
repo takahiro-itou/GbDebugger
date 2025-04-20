@@ -19,6 +19,7 @@
 **/
 
 #include    "ArmALU.h"
+#include    "CpuArm.h"
 
 
 GBDEBUGGER_NAMESPACE_BEGIN
@@ -108,10 +109,8 @@ g_armALUInstTable[256] = {
 //
 
 GBD_REGPARM     InstExecResult
-armALUInstruction(
-        const  OpeCode  opeCode,
-        RegPair         cpuRegs[],
-        uint32_t      & cpuFlag)
+CpuArm::armALUInstruction(
+        const  OpeCode  opeCode)
 {
     //  オペコードから下記のビットを取り出す。          //
     //  bit     25  第二オペランドがレジスタか即値か。  //
@@ -122,7 +121,8 @@ armALUInstruction(
     const  OpeCode  idx =
         ((opeCode >> 20) & 0x3F) << 3 | ((opeCode >> 4) & 0x07);
     FnALUInst   pfInst  = g_armALUInstTable[idx];
-    return  (* pfInst)(opeCode, cpuRegs, cpuFlag);
+
+    return  (* pfInst)(opeCode, this->m_cpuRegs, this->m_cpuRegs[16].dw);
 }
 
 //========================================================================

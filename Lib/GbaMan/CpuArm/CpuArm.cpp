@@ -245,63 +245,6 @@ CpuArm::executeNextInst()
 //    命令の実行を行う関数たち。
 //
 
-template  <int BIT25, int CODE, int BIT20, int SFTTYPE, int BIT4>
-GBD_REGPARM     InstExecResult
-CpuArm::armALUInstruction(
-        const  OpeCode  opeCode)
-{
-    //  結果を格納するレジスタはビット 12..15 で指定。  //
-    const  int      dst = (opeCode >> 12) & 0x0F;
-
-    //  第一オペランドレジスタはビット 16..19 で指定。  //
-    const  uint32_t lhs = this->m_cpuRegs[(opeCode >> 16) & 0x0F].dw;
-
-    uint32_t        rhs;
-
-    if ( BIT25 == 0 ) {
-        //  第二オペランドはレジスタ。ビット 00..07 で指定される。  //
-        rhs = (opeCode & 0x0F);
-        int sft;
-        if ( BIT4 == 0 ) {
-            //  シフト量の指定は即値。ビット 07..11 で指定。    //
-            sft = (opeCode >> 7) & 0x1F;
-
-            //  ビット 05..06 はシフトの種類。  //
-            switch ( SFTTYPE ) {
-            case  0:    //  LSL
-            case  1:    //  LSR
-            case  2:    //  ASR
-            case  3:    //  ROR
-                break;
-            }
-        } else {
-            //  シフト量指定はレジスタ。ビット 08..11 で指定。  //
-            sft = this->m_cpuRegs[(opeCode >> 8) & 0x0F].dw;
-
-            //  ビット 05..06 はシフトの種類。  //
-            switch ( SFTTYPE ) {
-            case  0:    //  LSL
-            case  1:    //  LSR
-            case  2:    //  ASR
-            case  3:    //  ROR
-                break;
-            }
-        }
-        rhs <<= sft;
-    } else {
-        //  第二オペランドは即値指定。ビット 00..07 で指定される。  //
-        const  uint32_t imm = (opeCode & 0xFF);
-        const  int      ror = (opeCode & 0xF00) >> 7;
-        rhs = ((imm << (32 - ror)) | (imm >> ror));
-    }
-
-    if ( BIT20 == 0 ) {
-        //  フラグレジスタを更新する。  //
-    }
-
-    return ( InstExecResult::SUCCESS_CONTINUE );
-}
-
 GBD_REGPARM     InstExecResult
 CpuArm::armA00_B(
         const  OpeCode  opeCode)
@@ -374,7 +317,7 @@ CpuArm::prefetchNext()
 /**   命令テーブル。        **/
 
 #define     arm_UI  &CpuArm::armUnknownInstruction
-#define     arm1A0  &CpuArm::armALUInstruction<0, 13, 0, 0, 0>
+#define     armALU  &CpuArm::armALUInstruction
 #define     arm3A0  &CpuArm::armALUInstruction<1, 13, 0, 0, 0>
 #define     armA00  &CpuArm::armA00_B
 
@@ -404,10 +347,7 @@ CpuArm::s_armInstTable[4096] = {
     REPEAT_16(arm_UI),      //  18.0 -- 18.F
     REPEAT_16(arm_UI),      //  19.0 -- 19.F
 
-    //  1A.0 -- 1A.F
-    arm1A0, arm1A0, arm1A0, arm1A0,     arm1A0, arm1A0, arm1A0, arm1A0,
-    arm1A0, arm1A0, arm1A0, arm1A0,     arm1A0, arm1A0, arm1A0, arm1A0,
-
+    REPEAT_16(armALU),      //  1A.0 -- 1A.F
     REPEAT_16(arm_UI),      //  1B.0 -- 1B.F
     REPEAT_16(arm_UI),      //  1C.0 -- 1C.F
     REPEAT_16(arm_UI),      //  1D.0 -- 1D.F
@@ -425,7 +365,7 @@ CpuArm::s_armInstTable[4096] = {
     REPEAT_16(arm_UI),      //  37.0 -- 37.F
     REPEAT_16(arm_UI),      //  38.0 -- 38.F
     REPEAT_16(arm_UI),      //  39.0 -- 39.F
-    REPEAT_16(arm3A0),      //  3A.0 -- 3A.F
+    REPEAT_16(armALU),      //  3A.0 -- 3A.F
     REPEAT_16(arm_UI),      //  3B.0 -- 3B.F
     REPEAT_16(arm_UI),      //  3C.0 -- 3C.F
     REPEAT_16(arm_UI),      //  3D.0 -- 3D.F
