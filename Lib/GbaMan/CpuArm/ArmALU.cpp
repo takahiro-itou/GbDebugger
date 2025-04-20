@@ -403,8 +403,13 @@ armALUInstruction(
         break;
     }
 
-    if ( BIT20 == 0 ) {
-        //  フラグレジスタを更新する。  //
+    if ( LIKELY(dst) == 0x0F ) {
+        if ( BIT20 == 1 ) {
+            //  フラグレジスタを更新する。  //
+            cpuFlag = flg;
+        }
+    } else {
+        //  モードの変更処理。  //
     }
 
     return ( InstExecResult::SUCCESS_CONTINUE );
