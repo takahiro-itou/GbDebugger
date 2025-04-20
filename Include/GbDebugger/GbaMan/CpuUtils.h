@@ -81,6 +81,21 @@ armRorVal(
     return  ((v << (32 - shift)) | (v >> shift));
 }
 
+
+inline  RegType
+setCondLogical(
+        const  RegType  res,
+        const  bool     fout_cy,
+        const  RegType  cur)
+
+{
+    const  RegType  flag_n  = (res & 0x80000000);
+    const  RegType  flag_z  = (res == 0) ? 0x40000000 : 0;
+    const  RegType  flag_c  = (fout_cy)  ? 0x20000000 : 0;
+
+    return ( (cur & 0x1FFFFFFF) | flag_n | flag_z | flag_c );
+}
+
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
 
