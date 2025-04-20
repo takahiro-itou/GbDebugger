@@ -255,17 +255,20 @@ armALUInstruction(
         RegPair         cpuRegs[],
         RegType       & cpuFlag)
 {
-#if defined( __GNUC__ )
+    //  結果を格納するレジスタはビット 12..15 で指定。  //
+    const  int      dst = (opeCode >> 12) & 0x0F;
+
     char    buf[512];
+#if defined( __GNUC__ )
     std::cerr   <<  __PRETTY_FUNCTION__;
+#endif
     sprintf(buf,
             "Op2 = %d, CODE = %x, S = %d, SHIFT = %d, BIT4 = %d\n",
             BIT25, CODE, BIT20, SHIFTTYPE, BIT4);
     std::cerr   <<  buf;
-#endif
-
-    //  結果を格納するレジスタはビット 12..15 で指定。  //
-    const  int      dst = (opeCode >> 12) & 0x0F;
+    sprintf(buf,
+            "OpeCode = %08x, dst = %d\n",
+            dst);
 
     //  第一オペランドレジスタはビット 16..19 で指定。  //
     const  RegType  lhs = cpuRegs[(opeCode >> 16) & 0x0F].dw;
@@ -481,6 +484,8 @@ g_armALUInstTable[512] = {
     ARMALU_INST_TABLE(1, 0x0E),
     ARMALU_INST_TABLE(1, 0x0F),
 };
+
+#undef  ARMALU_INST_TABLE
 
 }   //  End of (Unnamed) namespace.
 
