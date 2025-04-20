@@ -113,7 +113,16 @@ armALUInstruction(
         RegPair         cpuRegs[],
         uint32_t      & cpuFlag)
 {
-    return ( InstExecResult::UNDEFINED_OPECODE );
+    //  オペコードから下記のビットを取り出す。          //
+    //  bit     25  第二オペランドがレジスタか即値か。  //
+    //  bit 24--21  演算の種類 (0x00--0x0f) 。          //
+    //  bit     20  フラグレジスタを更新するか否か。    //
+    //  bit  6-- 5  シフトの種類 (LSL, LSR, ASR, ROR)   //
+    //  bit      4  シフト量指定がレジスタか即値か。    //
+    const  OpeCode  idx =
+        ((opeCode >> 20) & 0x3F) << 3 | ((opeCode >> 4) & 0x07);
+    FnALUInst   pfInst  = g_armALUInstTable[idx];
+    return  (* pfInst)(opeCode, cpuRegs, cpuFlag);
 }
 
 //========================================================================
