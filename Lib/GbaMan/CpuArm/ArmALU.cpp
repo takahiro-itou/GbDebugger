@@ -204,6 +204,27 @@ struct  ArmALURmRorReg
     }
 };
 
+struct  ArmALURmRorImm
+{
+    RegType operator()(
+            const  int      shift,
+            const  RegType  vRm,
+            bool          & fout_cy,
+            const  bool     flag_cy)
+    {
+        RegType rhs;
+        if ( LIKELY(shift) ) {
+            fout_cy = (vRm >> (shift - 1)) & 1 ? true : false;
+            rhs     = ((vRm << (32 - shift)) | (vRm >> shift));
+        } else {
+            //  ROR#0 は RCR#1  として解釈される。  //
+            fout_cy = (vRm & 1) ? true : false;
+            rhs     = ((vRm >> 1) | (flag_cy << 31));
+        }
+        return ( rhs );
+    }
+};
+
 template  <int  BIT25, int CODE, int BIT20, int SHIFTTYPE, int BIT4>
 GBD_REGPARM     InstExecResult
 armALUInstruction(
@@ -242,6 +263,7 @@ armALUInstruction(
                 rhs = ArmALURmAsrImm()(shift, vRm, fout_cy, flag_cy);
                 break;
             case  3:    //  ROR
+                rhs = ArmALURmRorImm()(shift, vRm, fout_cy, flag_cy);
                 break;
             }
         } else {
