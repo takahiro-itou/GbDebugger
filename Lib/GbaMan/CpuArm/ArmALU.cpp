@@ -52,11 +52,12 @@ armALUInstruction(
 
     if ( BIT25 == 0 ) {
         //  第二オペランドはレジスタ。ビット 00..07 で指定される。  //
-        rhs = (opeCode & 0x0F);
-        int sft;
+        OpeCode iRm = (opeCode & 0x0F);
+        RegType vRm = cpuRegs[iRm].dw;
+
         if ( BIT4 == 0 ) {
             //  シフト量の指定は即値。ビット 07..11 で指定。    //
-            sft = (opeCode >> 7) & 0x1F;
+            const int shift = (opeCode >> 7) & 0x1F;
 
             //  ビット 05..06 はシフトの種類。  //
             switch ( SHIFTTYPE ) {
@@ -68,18 +69,77 @@ armALUInstruction(
             }
         } else {
             //  シフト量指定はレジスタ。ビット 08..11 で指定。  //
-            sft = cpuRegs[(opeCode >> 8) & 0x0F].dw;
+            const int shift = cpuRegs[(opeCode >> 8) & 0x0F].dw;
+            if ( iRm == 15 ) {
+                vRm += 4;       //  オペランド Rm が R15 (PC) の時  //
+            }
 
             //  ビット 05..06 はシフトの種類。  //
             switch ( SHIFTTYPE ) {
             case  0:    //  LSL
+                if ( LIKELY(shift) ) {
+                    if ( shift == 32 ) {
+                        rhs     = 0;
+                        fout_cy = (vRm & 1 ? true : false);
+                    } else if ( LIKELY(shift < 32) ) {
+                        fout_cy = (vRm >> (32 - shift)) & 1 ? true : false;
+                        rhs     = (vRm << shift);
+                    } else {
+                        rhs     = 0;
+                        fout_cy = false;
+                    }
+                } else {
+                    rhs = vRm;
+                }
+                break;
             case  1:    //  LSR
+                if ( LIKELY(shift) ) {
+                    if ( shift == 32 ) {
+                        rhs     = 0;
+                        fout_cy = (vRm & 0x80000000) ? true : false;
+                    } else if ( LIKELY(shift < 32) ) {
+                        fout_cy = (vRm >> (shift - 1)) & 1 ? true : false;
+                        rhs     = (vRm >> shift);
+                    } else {
+                        rhs     = 0;
+                        fout_cy = false;
+                    }
+                } else {
+                    rhs = vRm;
+                }
+                break;
             case  2:    //  ASR
+                if ( LIKELY(shift < 32) ) {
+                    if ( LIKELY(shift) ) {
+                        int32_t v = static_cast<int32_t>(vRm);
+                        fout_cy = (v >> (int)(shift - 1)) & 1 ? true : false;
+                        rhs     = v >> (int)(shift);
+                    } else {
+                        rhs     = vRm;
+                    }
+                } else {
+                    if ( vRm & 0x80000000 ) {
+                        rhs     = 0xFFFFFFFF;
+                        fout_cy = true;
+                    } else {
+                        rhs     = 0;
+                        fout_cy = false;
+                    }
+                }
+                break;
             case  3:    //  ROR
+                if ( LIKELY(shift & 0x1F) ) {
+                    fout_cy = (vRm >> (shift - 1)) & 1 ? true : false;
+                    rhs = ((vRm < (32 - shift)) | (vRm >> shift));
+                } else {
+                    if ( shift ) {
+                        fout_cy = (vRm & 0x80000000 ? true : false);
+                    }
+                    rhs = vRm;
+                }
                 break;
             }
         }
-        rhs <<= sft;
     } else {
         //  第二オペランドは即値指定。ビット 00..07 で指定される。  //
         const  RegType  imm = (opeCode & 0xFF);
