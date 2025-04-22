@@ -65,14 +65,32 @@ const Opecodes armOpecodes[] = {
     { 0x0ff00000, 0x00A00000, "ADC.%c%s\t%r12, %16, %Rs" },
     { 0x0ff00000, 0x00C00000, "SBC.%c%s\t%r12, %16, %Rs" },
     { 0x0ff00000, 0x00E00000, "RSC.%c%s\t%r12, %16, %Rs" },
-    { 0x0ff00000, 0x01000000, "TST.%c%s\t%%16, %Rm" },
-    { 0x0ff00000, 0x01200000, "TEQ.%c%s\t%%16, %Rm" },
-    { 0x0ff00000, 0x01400000, "CMP.%c%s\t%%16, %Rm" },
-    { 0x0ff00000, 0x01600000, "CMN.%c%s\t%%16, %Rm" },
+    { 0x0ff00000, 0x01000000, "TST.%c%s\t%%16, %Rs" },
+    { 0x0ff00000, 0x01200000, "TEQ.%c%s\t%%16, %Rs" },
+    { 0x0ff00000, 0x01400000, "CMP.%c%s\t%%16, %Rs" },
+    { 0x0ff00000, 0x01600000, "CMN.%c%s\t%%16, %Rs" },
     { 0x0ff00000, 0x01800000, "ORR.%c%s\t%r12, %16, %Rs" },
-    { 0x0ff00000, 0x01A00000, "MOV.%c%s\t%r12, %Rm" },
+    { 0x0ff00000, 0x01A00000, "MOV.%c%s\t%r12, %Rs" },
     { 0x0ff00000, 0x01C00000, "BIC.%c%s\t%r12, %16, %Rs" },
-    { 0x0ff00000, 0x01E00000, "MVN.%c%s\t%r12, %Rm" },
+    { 0x0ff00000, 0x01E00000, "MVN.%c%s\t%r12, %Rs" },
+
+    //  ALU (Bit25==0 : 第二オペランドはレジスタ)   //
+    { 0x0ff00000, 0x02000000, "AND.%c%s\t%r12, %16, %i" },
+    { 0x0ff00000, 0x02200000, "EOR.%c%s\t%r12, %16, %i" },
+    { 0x0ff00000, 0x02400000, "SUB.%c%s\t%r12, %16, %i" },
+    { 0x0ff00000, 0x02600000, "RSB.%c%s\t%r12, %16, %i" },
+    { 0x0ff00000, 0x02800000, "ADD.%c%s\t%r12, %16, %i" },
+    { 0x0ff00000, 0x02A00000, "ADC.%c%s\t%r12, %16, %i" },
+    { 0x0ff00000, 0x02C00000, "SBC.%c%s\t%r12, %16, %i" },
+    { 0x0ff00000, 0x02E00000, "RSC.%c%s\t%r12, %16, %i" },
+    { 0x0ff00000, 0x03000000, "TST.%c%s\t%%16, %i" },
+    { 0x0ff00000, 0x03200000, "TEQ.%c%s\t%%16, %i" },
+    { 0x0ff00000, 0x03400000, "CMP.%c%s\t%%16, %i" },
+    { 0x0ff00000, 0x03600000, "CMN.%c%s\t%%16, %i" },
+    { 0x0ff00000, 0x03800000, "ORR.%c%s\t%r12, %16, %i" },
+    { 0x0ff00000, 0x03A00000, "MOV.%c%s\t%r12, %i" },
+    { 0x0ff00000, 0x03C00000, "BIC.%c%s\t%r12, %16, %i" },
+    { 0x0ff00000, 0x03E00000, "MVN.%c%s\t%r12, %i" },
 
     //  Unknown
     { 0x00000000, 0x00000000, "[ ??? ]" },
@@ -128,6 +146,22 @@ writeRegister(
     const  int  reg_bit = ((reg_id0 * 10) + reg_id1);
     const  int  reg_id  = (opeCode >> reg_bit) & 0x0F;
     return  sprintf(dst, "%s", regNames[reg_id]);
+}
+
+//----------------------------------------------------------------
+//  %i - シフトされた即値 (ALU)
+
+inline  size_t
+writeOp2ImmWithRor(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src,
+        GuestMemoryAddress  gmAddr)
+{
+    const  RegType  imm = (opeCode & 0xFF);
+    const  int      rot = (opeCode & 0xF00) >> 7;
+    const  RegType  val = armRorVal(imm, rot);
+    return  sprintf(dst, "#0x%08x", val);
 }
 
 //----------------------------------------------------------------
