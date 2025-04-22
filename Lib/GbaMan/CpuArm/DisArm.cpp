@@ -35,7 +35,7 @@ struct  Opecodes  {
     const char *    mnemonic;
 };
 
-const char * regs[16] = {
+const char * regNames[16] = {
     "R0" , "R1" , "R2" , "R3" , "R4" , "R5", "R6", "R7",
     "R8" , "R9" , "R10", "R11", "R12", "SP", "LR", "PC"
 };
@@ -140,7 +140,7 @@ DisArm::writeMnemonic(
                 break;
             case  'r':
                 reg_id  = (opeCode >> ((*(++ src) - '0') * 4)) & 15;
-                len = sprintf(dst, "%s", regs[reg_id]);
+                len = sprintf(dst, "%s", regNames[reg_id]);
                 break;
             case  'o':  {
                 * (dst ++)  = '$';
