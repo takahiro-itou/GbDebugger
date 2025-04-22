@@ -293,6 +293,9 @@ DisArm::writeMnemonic(
                 //  len = sprintf(dst, "%s", conditions[opeCode >> 28]);
                 len = writeCondition(opeCode, dst, src, gmAddr);
                 break;
+            case  'i':
+                len = writeOp2ImmWithRor(opeCode, dst, src, gmAddr);
+                break;
             case  'r':
                 // reg_id  = (opeCode >> ((*(++ src) - '0') * 4)) & 15;
                 // len = sprintf(dst, "%s", regNames[reg_id]);
