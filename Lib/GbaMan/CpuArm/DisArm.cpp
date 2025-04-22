@@ -87,6 +87,26 @@ writeOffset(
     return   sprintf(dst, "$%08x ; (%08x)", ofs, gmAddr + 8 + ofs);
 }
 
+//----------------------------------------------------------------
+//  %rxx - Register.
+//  xx : オペコードのどのビットからレジスタ番号を読みだすか
+//
+
+inline  size_t
+writeRegister(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src,
+        GuestMemoryAddress  gmAddr)
+
+{
+    const  int  reg_id0 = (*(++ src) - '0');
+    const  int  reg_id1 = (*(++ src) - '0');
+    const  int  reg_bit = ((reg_id0 * 10) + reg_id1);
+    const  int  reg_id  = (opeCode >> reg_bit) & 0x0F;
+    return  sprintf(dst, "%s", regNames[reg_id]);
+}
+
 }   //  End of (Unnamed) namespace.
 
 
