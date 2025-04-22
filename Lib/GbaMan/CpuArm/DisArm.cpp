@@ -54,6 +54,16 @@ const Opecodes armOpecodes[] = {
     { 0x00000000, 0x00000000, "[ ??? ]" }
 };
 
+inline  size_t
+writeCondition(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src,
+        GuestMemoryAddress  gmAddr)
+{
+    return  sprintf(dst, "%s", conditions[opeCode >> 28]);
+}
+
 }   //  End of (Unnamed) namespace.
 
 
@@ -136,7 +146,8 @@ DisArm::writeMnemonic(
             ++  src;
             switch ( *src ) {
             case  'c':
-                len = sprintf(dst, "%s", conditions[opeCode >> 28]);
+                //  len = sprintf(dst, "%s", conditions[opeCode >> 28]);
+                len = writeCondition(opeCode, dst, src, gmAddr);
                 break;
             case  'r':
                 reg_id  = (opeCode >> ((*(++ src) - '0') * 4)) & 15;
