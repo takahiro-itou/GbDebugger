@@ -54,6 +54,10 @@ const Opecodes armOpecodes[] = {
     { 0x00000000, 0x00000000, "[ ??? ]" }
 };
 
+//----------------------------------------------------------------
+//  %c - condition (bit 28-31)
+//
+
 inline  size_t
 writeCondition(
         const   OpeCode     opeCode,
@@ -62,6 +66,25 @@ writeCondition(
         GuestMemoryAddress  gmAddr)
 {
     return  sprintf(dst, "%s", conditions[opeCode >> 28]);
+}
+
+//----------------------------------------------------------------
+//  %o - offset (branch instruction)
+//
+
+inline  size_t
+writeOffset(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src,
+        GuestMemoryAddress  gmAddr)
+{
+    int ofs = opeCode & 0x00FFFFFF;
+    if ( ofs & 0x00800000 ) {
+        ofs |= 0xFF000000;
+    }
+    ofs <<= 2;
+    return   sprintf(dst, "$%08x ; (%08x)", ofs, gmAddr + 8 + ofs);
 }
 
 }   //  End of (Unnamed) namespace.
@@ -153,15 +176,16 @@ DisArm::writeMnemonic(
                 reg_id  = (opeCode >> ((*(++ src) - '0') * 4)) & 15;
                 len = sprintf(dst, "%s", regNames[reg_id]);
                 break;
-            case  'o':  {
-                * (dst ++)  = '$';
-                int off = opeCode & 0x00FFFFFF;
-                if ( off & 0x00800000 ) {
-                    off |= 0xFF000000;
-                }
-                off <<= 2;
-                len = sprintf(dst, "%08x ; (%08x)", off, gmAddr + 8 + off);
-                }
+            case  'o': //{
+                // * (dst ++)  = '$';
+                // int off = opeCode & 0x00FFFFFF;
+                // if ( off & 0x00800000 ) {
+                //     off |= 0xFF000000;
+                // }
+                // off <<= 2;
+                // len = sprintf(dst, "%08x ; (%08x)", off, gmAddr + 8 + off);
+                // }
+                len = writeOffset(opeCode, dst, src, gmAddr);
                 break;
             }
             ++  src;
