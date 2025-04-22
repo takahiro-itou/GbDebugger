@@ -47,7 +47,7 @@ const char * conditions[16] = {
 
 const Opecodes armOpecodes[] = {
     //  Branch
-    { 0x0FF000F0, 0x01200010, "BX.%c\t%r0" },
+    { 0x0FF000F0, 0x01200010, "BX.%c\t%r00" },
     { 0x0F000000, 0x0A000000, "B.%c\t%o" },
     { 0x0F000000, 0x0B000000, "BL.%c\t%o" },
     { 0x0F000000, 0x0F000000, "SWI.%c\t%q" },
@@ -193,8 +193,9 @@ DisArm::writeMnemonic(
                 len = writeCondition(opeCode, dst, src, gmAddr);
                 break;
             case  'r':
-                reg_id  = (opeCode >> ((*(++ src) - '0') * 4)) & 15;
-                len = sprintf(dst, "%s", regNames[reg_id]);
+                // reg_id  = (opeCode >> ((*(++ src) - '0') * 4)) & 15;
+                // len = sprintf(dst, "%s", regNames[reg_id]);
+                len = writeRegister(opeCode, dst, src, gmAddr);
                 break;
             case  'o': //{
                 // * (dst ++)  = '$';
