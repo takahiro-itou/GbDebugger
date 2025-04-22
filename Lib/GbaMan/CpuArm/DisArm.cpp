@@ -45,6 +45,10 @@ const char * conditions[16] = {
     "HI", "LS", "GE", "LT", "GT", "LE", "AL", "NV"
 };
 
+CONSTEXPR_VAR   const  char  *  shiftTypes[5] = {
+    "LSL", "LSR", "ASR", "ROR", "RRX",
+};
+
 const Opecodes armOpecodes[] = {
     //  Branch
     { 0x0FF000F0, 0x01200010, "BX.%c\t%r00" },
@@ -137,6 +141,32 @@ writeOpe2RegisterWithShift(
         const  char  *    & src,
         GuestMemoryAddress  gmAddr)
 {
+    int st  = (opeCode >> 5) & 0x03;    //  シフトタイプ。  //
+    int sw  = (opeCode >> 7) & 0x1F;    //  シフト幅。      //
+    if ( opeCode & 0x10 ) {
+        return  sprintf(dst, "%s, %s %s",
+                        regNames[opeCode & 0x0F],
+                        shiftTypes[st],
+                        regNames[(opeCode >> 8) & 0x0F]);
+    }
+    if ( (sw == 0) && (st == 3) ) {
+        st  = 4;
+    }
+    if ( sw == 0 ) {
+        if ( st == 3 ) {
+            st  = 4;
+            sw  = 1;
+        } else if ( (st == 1) || (st == 2) ) {
+            sw  = 32;
+        }
+    }
+    if ( (sw) || (st) ) {
+        return  sprintf(dst, "%s, %s #0x%08x",
+                        regNames[opeCode & 0x0F],
+                        shiftTypes[st],
+                        sw);
+    }
+    return  sprintf(dst, "%s", regNames[opeCode % 0x0F]);
 }
 
 }   //  End of (Unnamed) namespace.
@@ -220,6 +250,11 @@ DisArm::writeMnemonic(
         } else {
             ++  src;
             switch ( *src ) {
+            case  'R':
+                if ( *(++ src) == 's' ) {
+                    len = writeOpe2RegisterWithShift(opeCode, dst, src, gmAddr);
+                }
+                break;
             case  'c':
                 //  len = sprintf(dst, "%s", conditions[opeCode >> 28]);
                 len = writeCondition(opeCode, dst, src, gmAddr);
@@ -239,6 +274,11 @@ DisArm::writeMnemonic(
                 // len = sprintf(dst, "%08x ; (%08x)", off, gmAddr + 8 + off);
                 // }
                 len = writeOffset(opeCode, dst, src, gmAddr);
+                break;
+            case  's':
+                if ( opeCode & 0x00100000 ) {
+                    *(dst ++)   = 's';
+                }
                 break;
             }
             ++  src;
