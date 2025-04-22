@@ -29,9 +29,9 @@ namespace  GbaMan  {
 
 namespace  {
 
-struct  Opecodes  {
-    uint32_t    mask;
-    uint32_t    cval;
+struct  MnemonicMap  {
+    OpeCode         mask;
+    OpeCode         cval;
     const char *    mnemonic;
 };
 
@@ -49,7 +49,8 @@ CONSTEXPR_VAR   const  char  *  shiftTypes[5] = {
     "LSL", "LSR", "ASR", "ROR", "RRX",
 };
 
-const Opecodes armOpecodes[] = {
+CONSTEXPR_VAR   const  MnemonicMap
+armMnemonics[] = {
     //  Branch
     { 0x0FF000F0, 0x01200010, "BX.%c\t%r00" },
     { 0x0F000000, 0x0A000000, "B.%c\t%o" },
@@ -266,7 +267,7 @@ DisArm::writeMnemonic(
 {
     char    buf[256] = { 0 };
 
-    const Opecodes * oc = armOpecodes;
+    const MnemonicMap *  oc = armMnemonics;
     for ( ; (opeCode & oc->mask) != oc->cval; ++ oc ) ;
 
     sprintf(buf, "%08x:   %08x\t", gmAddr, opeCode);
