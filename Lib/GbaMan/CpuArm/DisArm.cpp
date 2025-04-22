@@ -51,7 +51,27 @@ const Opecodes armOpecodes[] = {
     { 0x0F000000, 0x0A000000, "B.%c\t%o" },
     { 0x0F000000, 0x0B000000, "BL.%c\t%o" },
     { 0x0F000000, 0x0F000000, "SWI.%c\t%q" },
-    { 0x00000000, 0x00000000, "[ ??? ]" }
+
+    //  ALU (Bit25==0 : 第二オペランドはレジスタ)   //
+    { 0x0ff00000, 0x00000000, "AND.%c%s\t%r12, %16, %Rs" },
+    { 0x0ff00000, 0x00200000, "EOR.%c%s\t%r12, %16, %Rs" },
+    { 0x0ff00000, 0x00400000, "SUB.%c%s\t%r12, %16, %Rs" },
+    { 0x0ff00000, 0x00600000, "RSB.%c%s\t%r12, %16, %Rs" },
+    { 0x0ff00000, 0x00800000, "ADD.%c%s\t%r12, %16, %Rs" },
+    { 0x0ff00000, 0x00A00000, "ADC.%c%s\t%r12, %16, %Rs" },
+    { 0x0ff00000, 0x00C00000, "SBC.%c%s\t%r12, %16, %Rs" },
+    { 0x0ff00000, 0x00E00000, "RSC.%c%s\t%r12, %16, %Rs" },
+    { 0x0ff00000, 0x01000000, "TST.%c%s\t%%16, %Rm" },
+    { 0x0ff00000, 0x01200000, "TEQ.%c%s\t%%16, %Rm" },
+    { 0x0ff00000, 0x01400000, "CMP.%c%s\t%%16, %Rm" },
+    { 0x0ff00000, 0x01600000, "CMN.%c%s\t%%16, %Rm" },
+    { 0x0ff00000, 0x01800000, "ORR.%c%s\t%r12, %16, %Rs" },
+    { 0x0ff00000, 0x01A00000, "MOV.%c%s\t%r12, %Rm" },
+    { 0x0ff00000, 0x01C00000, "BIC.%c%s\t%r12, %16, %Rs" },
+    { 0x0ff00000, 0x01E00000, "MVN.%c%s\t%r12, %Rm" },
+
+    //  Unknown
+    { 0x00000000, 0x00000000, "[ ??? ]" },
 };
 
 //----------------------------------------------------------------
@@ -98,13 +118,25 @@ writeRegister(
         char  *  const      dst,
         const  char  *    & src,
         GuestMemoryAddress  gmAddr)
-
 {
     const  int  reg_id0 = (*(++ src) - '0');
     const  int  reg_id1 = (*(++ src) - '0');
     const  int  reg_bit = ((reg_id0 * 10) + reg_id1);
     const  int  reg_id  = (opeCode >> reg_bit) & 0x0F;
     return  sprintf(dst, "%s", regNames[reg_id]);
+}
+
+//----------------------------------------------------------------
+//  %Rs - シフトされたレジスタ (ALU)
+//
+
+inline  size_t
+writeOpe2RegisterWithShift(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src,
+        GuestMemoryAddress  gmAddr)
+{
 }
 
 }   //  End of (Unnamed) namespace.
