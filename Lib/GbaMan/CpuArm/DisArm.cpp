@@ -302,15 +302,7 @@ DisArm::writeMnemonic(
                 // len = sprintf(dst, "%s", regNames[reg_id]);
                 len = writeRegister(opeCode, dst, src, gmAddr);
                 break;
-            case  'o': //{
-                // * (dst ++)  = '$';
-                // int off = opeCode & 0x00FFFFFF;
-                // if ( off & 0x00800000 ) {
-                //     off |= 0xFF000000;
-                // }
-                // off <<= 2;
-                // len = sprintf(dst, "%08x ; (%08x)", off, gmAddr + 8 + off);
-                // }
+            case  'o':
                 len = writeOffset(opeCode, dst, src, gmAddr);
                 break;
             case  's':
