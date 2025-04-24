@@ -136,11 +136,14 @@ setCondAdd(
         const  bool     fout_cy,
         const  RegType  cur)
 {
+    const  RegType  work_c  = (lhs & rhs) | ((lhs | rhs) & ~res);
+    const  RegType  work_v  = ~(lhs ^ rhs) & (lhs ^ res);
+
     const  RegType  flag_n  = (res & CPSR::FLAG_N);
     const  RegType  flag_z  = (res ? 0 : CPSR::FLAG_Z);
-    const  RegType  flag_c  = (fout_cy)  ? 0x20000000 : 0;
-    const  RegType  work_v  = ~(lhs ^ rhs) & (lhs ^ res);
+    const  RegType  flag_c  = (work_c >> 2) & CPSR::FLAG_C;
     const  RegType  flag_v  = (work_v >> 3) & CPSR::FLAG_V;
+
     return ( (cur & 0x0FFFFFFF) | flag_n | flag_z | flag_c | flag_v );
 }
 
