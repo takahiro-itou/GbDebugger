@@ -122,7 +122,7 @@ setCondLogical(
 
 {
     const  RegType  flag_n  = (res & CPSR::FLAG_N);
-    const  RegType  flag_z  = (res == 0) ? 0x40000000 : 0;
+    const  RegType  flag_z  = (res ? 0 : CPSR::FLAG_Z);
     const  RegType  flag_c  = (fout_cy)  ? 0x20000000 : 0;
 
     return ( (cur & 0x1FFFFFFF) | flag_n | flag_z | flag_c );
@@ -137,7 +137,7 @@ setCondAdd(
         const  RegType  cur)
 {
     const  RegType  flag_n  = (res & CPSR::FLAG_N);
-    const  RegType  flag_z  = (res == 0) ? 0x40000000 : 0;
+    const  RegType  flag_z  = (res ? 0 : CPSR::FLAG_Z);
     const  RegType  flag_c  = (fout_cy)  ? 0x20000000 : 0;
     const  RegType  work_v  = ~(lhs ^ rhs) & (lhs ^ res) & 0x80000000;
     const  RegType  flag_v  = (work_v >> 3);
@@ -153,7 +153,7 @@ setCondSub(
         const  RegType  cur)
 {
     const  RegType  flag_n  = (res & CPSR::FLAG_N);
-    const  RegType  flag_z  = (res == 0) ? 0x40000000 : 0;
+    const  RegType  flag_z  = (res ? 0 : CPSR::FLAG_Z);
     const  RegType  flag_c  = (fout_cy)  ? 0x20000000 : 0;
     const  RegType  work_v  = (lhs ^ rhs) & (lhs ^ res) & 0x80000000;
     const  RegType  flag_v  = (work_v > 0) ? 0x10000000 : 0;
