@@ -332,7 +332,7 @@ CpuArm::prefetchNext()
     REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst)
 
 
-#define     INST_TABLE_000_3FF(CODE1, CODE2, ALU_OP)                        \
+#define     INST_TABLE_000_1FF(CODE1, CODE2, ALU_OP)                        \
     armALU, armALU, armALU, armALU,     armALU, armALU, armALU, armALU,     \
     armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,     \
     armALU, armALU, armALU, armALU,     armALU, armALU, armALU, armALU,     \
@@ -340,23 +340,23 @@ CpuArm::prefetchNext()
 
 const   CpuArm::FnInst
 CpuArm::s_armInstTable[4096] = {
-    INST_TABLE_000_3FF(00, 01, AND),        //  00.0 -- 01.F
-    INST_TABLE_000_3FF(02, 03, EOR),        //  02.0 -- 03.F
-    INST_TABLE_000_3FF(04, 05, SUB),        //  04.0 -- 05.F
-    INST_TABLE_000_3FF(06, 07, RSB),        //  06.0 -- 07.F
-    INST_TABLE_000_3FF(08, 09, ADD),        //  08.0 -- 09.F
-    INST_TABLE_000_3FF(0A, 0B, ADC),        //  0A.0 -- 0B.F
-    INST_TABLE_000_3FF(0C, 0D, SBC),        //  0C.0 -- 0D.F
-    INST_TABLE_000_3FF(0E, 0F, RSC),        //  0E.0 -- 0F.F
+    INST_TABLE_000_1FF(00, 01, AND),        //  00.0 -- 01.F
+    INST_TABLE_000_1FF(02, 03, EOR),        //  02.0 -- 03.F
+    INST_TABLE_000_1FF(04, 05, SUB),        //  04.0 -- 05.F
+    INST_TABLE_000_1FF(06, 07, RSB),        //  06.0 -- 07.F
+    INST_TABLE_000_1FF(08, 09, ADD),        //  08.0 -- 09.F
+    INST_TABLE_000_1FF(0A, 0B, ADC),        //  0A.0 -- 0B.F
+    INST_TABLE_000_1FF(0C, 0D, SBC),        //  0C.0 -- 0D.F
+    INST_TABLE_000_1FF(0E, 0F, RSC),        //  0E.0 -- 0F.F
 
-    INST_TABLE_000_3FF(10, 11, TST),        //  10.0 -- 11.F
-    INST_TABLE_000_3FF(12, 13, TEQ),        //  12.0 -- 13.F
-    INST_TABLE_000_3FF(14, 15, CMP),        //  14.0 -- 15.F
-    INST_TABLE_000_3FF(16, 17, CMN),        //  16.0 -- 17.F
-    INST_TABLE_000_3FF(18, 19, ORR),        //  18.0 -- 19.F
-    INST_TABLE_000_3FF(1A, 1B, MOV),        //  1A.0 -- 1B.F
-    INST_TABLE_000_3FF(1C, 1D, BIC),        //  1C.0 -- 1D.F
-    INST_TABLE_000_3FF(1E, 1F, MVN),        //  1E.0 -- 1F.F
+    INST_TABLE_000_1FF(10, 11, TST),        //  10.0 -- 11.F
+    INST_TABLE_000_1FF(12, 13, TEQ),        //  12.0 -- 13.F
+    INST_TABLE_000_1FF(14, 15, CMP),        //  14.0 -- 15.F
+    INST_TABLE_000_1FF(16, 17, CMN),        //  16.0 -- 17.F
+    INST_TABLE_000_1FF(18, 19, ORR),        //  18.0 -- 19.F
+    INST_TABLE_000_1FF(1A, 1B, MOV),        //  1A.0 -- 1B.F
+    INST_TABLE_000_1FF(1C, 1D, BIC),        //  1C.0 -- 1D.F
+    INST_TABLE_000_1FF(1E, 1F, MVN),        //  1E.0 -- 1F.F
 
     REPEAT256(arm_UI),      //  20.0 -- 2F.F
     REPEAT_16(arm_UI),      //  30.0 -- 30.F
