@@ -62,6 +62,35 @@ enum class  InstExecResult
 
 //========================================================================
 //
+//    CPSR (Flag) Register.
+//
+
+struct  CPSR  {
+    enum  {
+        FLAG_N      = 0x80000000,
+        FLAG_Z      = 0x40000000,
+        FLAG_C      = 0x20000000,
+        FLAG_V      = 0x10000000,
+        FLAG_Q      = 0x08000000,   //  bit  27 : GBA では未使用
+        RESERVED    = 0x07FFFF00,   //  bit26-8 : 予約
+        FLAG_I      = 0x00000080,   //  bit   7 : 1=IRQ 無効
+        FLAG_F      = 0x00000040,   //  bit   6 : 1=FIQ 無効
+        FLAG_T      = 0x00000020,   //  bit   5 : THUMB (0=ARM, 1=THUMB)
+        MODE_MASK   = 0x0000001F,   //  bit 0-4 : モード
+
+        //  モード  //
+        MODE_USER   = 0x10,
+        MODE_FIQ    = 0x11,
+        MODE_IRQ    = 0x12,
+        MODE_SWI    = 0x13, //  Supervisor
+        MODE_ABORT  = 0x17,
+        MODE_UNDEF  = 0x1B,
+        MODE_SYSTEM = 0x1F,
+    };
+};
+
+//========================================================================
+//
 //    Rotate Instruction.
 //
 
