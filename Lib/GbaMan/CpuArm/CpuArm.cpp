@@ -332,27 +332,90 @@ CpuArm::prefetchNext()
     REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst)
 
 
+#define     INST_TABLE_ARM_ALU(inst)        \
+    REPEAT_16(inst),                        \
+
 const   CpuArm::FnInst
 CpuArm::s_armInstTable[4096] = {
-    REPEAT256(arm_UI),      //  00.0 -- 0F.F
+    //  00.0 -- 01.F
+    REPEAT_16(armALU),      //  ALU.AND
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
 
-    REPEAT_16(arm_UI),      //  10.0 -- 10.F
-    REPEAT_16(arm_UI),      //  11.0 -- 11.F
-    REPEAT_16(arm_UI),      //  12.0 -- 12.F
-    REPEAT_16(arm_UI),      //  13.0 -- 13.F
-    REPEAT_16(arm_UI),      //  14.0 -- 14.F
-    REPEAT_16(arm_UI),      //  15.0 -- 15.F
-    REPEAT_16(arm_UI),      //  16.0 -- 16.F
-    REPEAT_16(arm_UI),      //  17.0 -- 17.F
-    REPEAT_16(arm_UI),      //  18.0 -- 18.F
-    REPEAT_16(arm_UI),      //  19.0 -- 19.F
+    //  02.0 -- 03.F
+    REPEAT_16(armALU),      //  ALU.EOR
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
 
-    REPEAT_16(armALU),      //  1A.0 -- 1A.F
-    REPEAT_16(arm_UI),      //  1B.0 -- 1B.F
-    REPEAT_16(arm_UI),      //  1C.0 -- 1C.F
-    REPEAT_16(arm_UI),      //  1D.0 -- 1D.F
-    REPEAT_16(arm_UI),      //  1E.0 -- 1E.F
-    REPEAT_16(arm_UI),      //  1F.0 -- 1F.F
+    //  04.0 -- 05.F
+    REPEAT_16(armALU),      //  ALU.SUB
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+
+    //  06.0 -- 07.F
+    REPEAT_16(armALU),      //  ALU.RSB
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+
+    //  08.0 -- 09.F
+    REPEAT_16(armALU),      //  ALU.ADD
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+
+    //  0A.0 -- 0B.F
+    REPEAT_16(armALU),      //  ALU.ADC
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+
+    //  0C.0 -- 0D.F
+    REPEAT_16(armALU),      //  ALU.SBC
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+
+    //  0E.0 -- 0F.F
+    REPEAT_16(armALU),      //  ALU.RSC
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+
+    //  10.0 -- 11.F
+    REPEAT_16(armALU),      //  ALU.TST
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+
+    //  12.0 -- 13.F
+    REPEAT_16(armALU),      //  ALU.TEQ
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+
+    //  14.0 -- 15.F
+    REPEAT_16(armALU),      //  ALU.CMP
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+
+    //  16.0 -- 17.F
+    REPEAT_16(armALU),      //  ALU.CMN
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+
+    //  18.0 -- 19.F
+    REPEAT_16(armALU),      //  ALU.ORR
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+
+    //  1A.0 -- 1B.F
+    REPEAT_16(armALU),      //  ALU.MOV
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+
+    //  1C.0 -- 1D.F
+    REPEAT_16(armALU),      //  ALU.BIC
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+
+    //  1E.0 -- 1F.F
+    REPEAT_16(armALU),      //  ALU.MVN
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
 
     REPEAT256(arm_UI),      //  20.0 -- 2F.F
     REPEAT_16(arm_UI),      //  30.0 -- 30.F
