@@ -273,7 +273,6 @@ DisArm::writeMnemonic(
     sprintf(buf, "%08x:   %08x\t", gmAddr, opeCode);
     outStr  <<  buf;
 
-    int             reg_id  = 0;
     size_t          len = 0;
     const  char  *  src = oc->mnemonic;
     char  *         dst = buf;
