@@ -338,6 +338,9 @@ CpuArm::prefetchNext()
     armALU, armALU, armALU, armALU,     armALU, armALU, armALU, armALU,     \
     armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI
 
+#define     INST_TABLE_200_3FF(CODE1, CODE2, ALU_OP)                        \
+    REPEAT_16(armALU),  REPEAT_16(armALU)
+
 const   CpuArm::FnInst
 CpuArm::s_armInstTable[4096] = {
     INST_TABLE_000_1FF(00, 01, AND),        //  00.0 -- 01.F
@@ -358,23 +361,23 @@ CpuArm::s_armInstTable[4096] = {
     INST_TABLE_000_1FF(1C, 1D, BIC),        //  1C.0 -- 1D.F
     INST_TABLE_000_1FF(1E, 1F, MVN),        //  1E.0 -- 1F.F
 
-    REPEAT256(arm_UI),      //  20.0 -- 2F.F
-    REPEAT_16(arm_UI),      //  30.0 -- 30.F
-    REPEAT_16(arm_UI),      //  31.0 -- 31.F
-    REPEAT_16(arm_UI),      //  32.0 -- 32.F
-    REPEAT_16(arm_UI),      //  33.0 -- 33.F
-    REPEAT_16(arm_UI),      //  34.0 -- 34.F
-    REPEAT_16(arm_UI),      //  35.0 -- 35.F
-    REPEAT_16(arm_UI),      //  36.0 -- 36.F
-    REPEAT_16(arm_UI),      //  37.0 -- 37.F
-    REPEAT_16(arm_UI),      //  38.0 -- 38.F
-    REPEAT_16(arm_UI),      //  39.0 -- 39.F
-    REPEAT_16(armALU),      //  3A.0 -- 3A.F
-    REPEAT_16(arm_UI),      //  3B.0 -- 3B.F
-    REPEAT_16(arm_UI),      //  3C.0 -- 3C.F
-    REPEAT_16(arm_UI),      //  3D.0 -- 3D.F
-    REPEAT_16(arm_UI),      //  3E.0 -- 3E.F
-    REPEAT_16(arm_UI),      //  3F.0 -- 3F.F
+    INST_TABLE_200_3FF(20, 21, AND),        //  20.0 -- 21.F
+    INST_TABLE_200_3FF(22, 23, EOR),        //  22.0 -- 23.F
+    INST_TABLE_200_3FF(24, 25, SUB),        //  24.0 -- 25.F
+    INST_TABLE_200_3FF(26, 27, RSB),        //  26.0 -- 27.F
+    INST_TABLE_200_3FF(28, 29, ADD),        //  28.0 -- 29.F
+    INST_TABLE_200_3FF(2A, 2B, ADC),        //  2A.0 -- 2B.F
+    INST_TABLE_200_3FF(2C, 2D, SBC),        //  2C.0 -- 2D.F
+    INST_TABLE_200_3FF(2E, 2F, RSC),        //  2E.0 -- 2F.F
+
+    INST_TABLE_200_3FF(30, 31, TST),        //  30.0 -- 31.F
+    INST_TABLE_200_3FF(32, 33, TEQ),        //  32.0 -- 33.F
+    INST_TABLE_200_3FF(34, 35, CMP),        //  34.0 -- 35.F
+    INST_TABLE_200_3FF(36, 37, CMN),        //  36.0 -- 37.F
+    INST_TABLE_200_3FF(38, 39, ORR),        //  38.0 -- 39.F
+    INST_TABLE_200_3FF(3A, 3B, MOV),        //  3A.0 -- 3B.F
+    INST_TABLE_200_3FF(3C, 3D, BIC),        //  3C.0 -- 3D.F
+    INST_TABLE_200_3FF(3E, 3F, MVN),        //  3E.0 -- 3F.F
 
     REPEAT256(arm_UI),      //  40.0 -- 4F.F
     REPEAT256(arm_UI),      //  50.0 -- 5F.F
