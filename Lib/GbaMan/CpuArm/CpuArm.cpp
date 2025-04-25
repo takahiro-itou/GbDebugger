@@ -20,123 +20,378 @@
 
 #include    "CpuArm.h"
 
-#include    "GbDebugger/GbaMan/GbaManager.h"
+#include    "GbDebugger/GbaMan/MemoryManager.h"
 
+#include    "GbDebugger/Common/DebuggerUtils.h"
+
+#include    <iostream>
 #include    <ostream>
 
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
 
+typedef     GBD_REGPARM     int (* G_FnInst)(OpeCode opeCode);
+
 namespace  {
 
-struct  Opecodes  {
-    uint32_t    mask;
-    uint32_t    cval;
-    const char *    mnemonic;
-};
-
-const char * regs[16] = {
+const char * regNames[16] = {
     "R0" , "R1" , "R2" , "R3" , "R4" , "R5", "R6", "R7",
     "R8" , "R9" , "R10", "R11", "R12", "SP", "LR", "PC"
 };
 
-const char * conditions[16] = {
-    "EQ", "NE", "CS", "CC", "MI", "PL", "VS", "VC",
-    "HI", "LS", "GE", "LT", "GT", "LE", "AL", "NV"
-};
+/**
+**    条件判定用のテーブル。
+**
+**    フラグは NZCV の 4bit あるから 0...15 の整数値とみなして
+**  各条件についてどの数値だったら真とみなすかをテーブルにする。
+**
+**  例えば EQ (Z==1) であれば
+**  0100, 0101, 0110, 0111, 1100, 1101, 1110, 1111
+**  のいずれかであれば真になるから、
+**  配列の 4, 5, 6, 7, 12, 13, 14, 15 に真を、それ以外に偽を書き込んだ
+**  テーブルを用意する。
+**/
 
-const Opecodes armOpecodes[] = {
-    //  Branch
-    { 0x0FF000F0, 0x01200010, "BX.%c\t%r0" },
-    { 0x0F000000, 0x0A000000, "B.%c\t%o" },
-    { 0x0F000000, 0x0B000000, "BL.%c\t%o" },
-    { 0x0F000000, 0x0F000000, "SWI.%c\t%q" }
+CONSTEXPR_VAR   int
+g_condTable[16][16] = {
+    // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F
+    {  0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1 },    //  EQ (F0F0)
+    {  1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0 },    //  NE (0F0F)
+    {  0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1 },    //  CS (CCCC)
+    {  1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0 },    //  CC (3333)
+    {  0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1 },    //  MI (FF00)
+    {  1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 },    //  PL (00FF)
+    {  0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 },    //  VS (AAAA)
+    {  1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 },    //  VC (5555)
+    {  0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0 },    //  HI (0C0C)
+    {  1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1 },    //  LS (F3F3)
+    {  1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1 },    //  GE (AA55)
+    {  0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0 },    //  LT (55AA)
+    {  1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0 },    //  GT (0A05)
+    {  0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1 },    //  LE (F5FA)
+    {  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },    //  AL (FFFF)
+    {  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }     //  NV (0000)
 };
 
 }   //  End of (Unnamed) namespace.
 
 
-inline  void *
-getMemoryAddress(
-        const  MemoryTable (&map)[256],
-        const  uint32_t     addr)
-{
-    const uint32_t  pg  = (addr >> 24);
-    const uint32_t  ofs = addr & (map[pg].mask);
-    return ( map[pg].address + ofs );
-}
+//========================================================================
+//
+//    CpuArm  class.
+//
 
-template <typename T>
-inline  const  T
-readMemory(
-        const  MemoryTable (&map)[256],
-        const  uint32_t     addr)
-{
-    const T  *  ptr = static_cast<const T *>(getMemoryAddress(map, addr));
-    return ( *ptr );
-}
-
+//========================================================================
+//
+//    Constructor(s) and Destructor.
+//
 
 //----------------------------------------------------------------
-//    ニーモニックを表示する。
+//    インスタンスを初期化する
+//  （デフォルトコンストラクタ）。
+//
+
+CpuArm::CpuArm(
+        MemoryManager & manMem)
+    : m_manMem(manMem),
+      m_cpuRegs(),
+      m_nextPC (),
+      m_prefOpeCodes()
+{
+}
+
+//----------------------------------------------------------------
+//    インスタンスを破棄する
+//  （デストラクタ）。
+//
+
+CpuArm::~CpuArm()
+{
+}
+
+//========================================================================
+//
+//    Public Member Functions (Implement Pure Virtual).
+//
+
+//========================================================================
+//
+//    Public Member Functions (Overrides).
+//
+
+//========================================================================
+//
+//    Public Member Functions (Pure Virtual Functions).
+//
+
+//========================================================================
+//
+//    Public Member Functions (Virtual Functions).
+//
+
+//----------------------------------------------------------------
+//    レジスタをリセットする。
+//
+
+ErrCode
+CpuArm::doHardReset()
+{
+    for ( int i = 0; i < 48; ++ i ) {
+        this->m_cpuRegs[ i].dw  = 0x00000000;
+    }
+    this->m_nextPC  = 0x08000000;
+
+    prefetchAll();
+    this->m_cpuRegs[15].dw  = this->m_nextPC + 4;
+
+    return ( ErrCode::SUCCESS );
+}
+
+//----------------------------------------------------------------
+//    レジスタの内容をダンプする。
 //
 
 std::ostream  &
-GbaManager::disassembleArm(
-        std::ostream  & outStr,
-        const uint32_t  addr)
+CpuArm::printRegisters(
+        std::ostream  & outStr)  const
 {
-    char    buf[256] = { 0 };
-    uint32_t    opecode = readMemory<uint32_t>(this->m_tblMem, addr);
+    char    buf[256];
 
-    const Opecodes * oc = armOpecodes;
-    for ( ; (opecode & oc->mask) != oc->cval; ++ oc ) ;
-
-    sprintf(buf, "%08x:   %08x\t", addr, opecode);
-    outStr  <<  buf;
-
-    int             reg_id  = 0;
-    size_t          len = 0;
-    const  char  *  src = oc->mnemonic;
-    char  *         dst = buf;
-
-    while (*src) {
-        len = 0;
-        if ( *src != '%' ) {
-            *(dst ++)   = *(src ++);
-        } else {
-            ++  src;
-            switch ( *src ) {
-            case  'c':
-                len = sprintf(dst, "%s", conditions[opecode >> 28]);
-                break;
-            case  'r':
-                reg_id  = (opecode >> ((*(++ src) - '0') * 4)) & 15;
-                len = sprintf(dst, "%s", regs[reg_id]);
-                break;
-            case  'o':  {
-                * (dst ++)  = '$';
-                int off = opecode & 0x00FFFFFF;
-                if ( off & 0x00800000 ) {
-                    off |= 0xFF000000;
-                }
-                off <<= 2;
-                len = sprintf(dst, "%08x ; (%08x)", off, addr + 8 + off);
-                }
-                break;
-            }
-            ++  src;
+    for ( int i = 0; i < 16; ++ i ) {
+        sprintf(buf, "%4s: %08x ", regNames[i], this->m_cpuRegs[i].dw);
+        outStr  <<  buf;
+        if ( (i & 3) == 3 ) {
+            outStr  <<  std::endl;
         }
-        dst += len;
     }
 
-    *(dst ++)   = '\0';
+    sprintf(buf, "CPSR: %08x ", this->m_cpuRegs[16].dw);
+    outStr  <<  buf;
+    sprintf(buf, "Next: %08x\n", this->m_nextPC);
     outStr  <<  buf;
 
     return ( outStr );
 }
 
+//========================================================================
+//
+//    Public Member Functions.
+//
+
+//----------------------------------------------------------------
+//    現在の命令を実行する。
+//
+
+InstExecResult
+CpuArm::executeNextInst()
+{
+    char    buf[256];
+
+    const  GuestMemoryAddress oldPC = this->m_nextPC;
+    const  OpeCode  opeCode = this->m_prefOpeCodes[0];
+    this->m_prefOpeCodes[0] = this->m_prefOpeCodes[1];
+
+    this->m_nextPC  = this->m_cpuRegs[15].dw;
+    this->m_cpuRegs[15].dw  += 4;
+    prefetchNext();
+
+    const  OpeCode  opCond  = (opeCode >> 28) & 0x0F;
+    const  RegType  flg  = (this->m_cpuRegs[16].dw >> 28) & 0x0F;
+    const  bool  condResult = g_condTable[opCond][flg];
+
+    sprintf(buf,
+            "opecode = %08x, Cond = %1x, Flag = %x, CondResult = %d\n",
+            opeCode, opCond, flg, condResult);
+    std::cerr   <<  buf;
+
+    if ( condResult ) {
+        //  オペコードのビット 20--27 とビット 04--07 を取り出す。  //
+        //  ビット 20--27 がビット 04--11 に来るようにするので、    //
+        //  ((opeCode >> 20) & 0x0FF) << 4  は、事前に計算して、    //
+        //  ((opeCode >> 16) & 0xFF0) となる。                      //
+        const  OpeCode  idx =
+            ((opeCode >> 16) & 0xFF0) | ((opeCode >> 4) & 0x0F);
+        FnInst  pfInst  = s_armInstTable[idx];
+        InstExecResult  ret = (this ->* pfInst)(opeCode);
+        if ( ret == InstExecResult::UNDEFINED_OPECODE ) {
+            sprintf(buf,
+                    "Undefined ARM instruction %08x (%03x) at %08x\n",
+                    opeCode, idx, oldPC);
+            std::cerr   <<  buf;
+            return ( InstExecResult::UNDEFINED_OPECODE );
+        }
+    }
+
+    return ( InstExecResult::SUCCESS_BREAKPOINT );
+}
+
+//========================================================================
+//
+//    Accessors.
+//
+
+//========================================================================
+//
+//    Protected Member Functions.
+//
+
+//========================================================================
+//
+//    For Internal Use Only.
+//
+
+//----------------------------------------------------------------
+//    命令の実行を行う関数たち。
+//
+
+GBD_REGPARM     InstExecResult
+CpuArm::armA00_B(
+        const  OpeCode  opeCode)
+{
+    //  符号拡張
+    //  以下のコードと等価
+    //  ofs = (opeCode & 0x00FFFFFF);
+    //  if ( ofs & 0x00800000 ) ofs |= 0xFF000000;
+    //  ofs <<= 2;
+    int32_t ofs = (static_cast<int32_t>(opeCode & 0x00FFFFFF) << 8) >> 6;
+
+    this->m_nextPC  = this->m_cpuRegs[15].dw  += ofs;
+
+    //  プリフェッチを行う。    //
+    prefetchAll();
+
+    //  プリフェッチによりカウンタが１命令分進む。  //
+    this->m_cpuRegs[15].dw  += 4;
+
+    return ( InstExecResult::SUCCESS_CONTINUE );
+}
+
+GBD_REGPARM     InstExecResult
+CpuArm::armUnknownInstruction(
+        const  OpeCode  opeCode)
+{
+    return ( InstExecResult::UNDEFINED_OPECODE );
+}
+
+//----------------------------------------------------------------
+//    命令を実行する。
+//
+
+int
+CpuArm::executeInst(
+        const  OpeCode  opeCode)
+{
+    return ( 0 );
+}
+
+//----------------------------------------------------------------
+//    命令をプリフェッチする。
+//
+
+inline  void
+CpuArm::prefetchAll()
+{
+    this->m_prefOpeCodes[0] =
+            this->m_manMem.readMemory<OpeCode>(this->m_nextPC);
+    this->m_prefOpeCodes[1] =
+            this->m_manMem.readMemory<OpeCode>(this->m_nextPC + 4);
+}
+
+//----------------------------------------------------------------
+//    次の命令をプリフェッチする。
+//
+
+inline  void
+CpuArm::prefetchNext()
+{
+    this->m_prefOpeCodes[1] =
+            this->m_manMem.readMemory<OpeCode>(this->m_nextPC + 4);
+}
+
+//========================================================================
+//
+//    Member Variables.
+//
+
+/**   命令テーブル。        **/
+
+#define     arm_UI  &CpuArm::armUnknownInstruction
+#define     armALU  &CpuArm::armALUInstruction
+#define     arm3A0  &CpuArm::armALUInstruction<1, 13, 0, 0, 0>
+#define     armA00  &CpuArm::armA00_B
+
+#define     REPEAT_16(inst)     \
+    inst, inst, inst, inst, inst, inst, inst, inst,     \
+    inst, inst, inst, inst, inst, inst, inst, inst
+
+#define     REPEAT256(inst)     \
+    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
+    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
+    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
+    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst)
+
+
+#define     INST_TABLE_000_1FF(CODE1, CODE2, ALU_OP)                        \
+    armALU, armALU, armALU, armALU,     armALU, armALU, armALU, armALU,     \
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,     \
+    armALU, armALU, armALU, armALU,     armALU, armALU, armALU, armALU,     \
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI
+
+#define     INST_TABLE_200_3FF(CODE1, CODE2, ALU_OP)                        \
+    REPEAT_16(armALU),  REPEAT_16(armALU)
+
+const   CpuArm::FnInst
+CpuArm::s_armInstTable[4096] = {
+    INST_TABLE_000_1FF(00, 01, AND),        //  00.0 -- 01.F
+    INST_TABLE_000_1FF(02, 03, EOR),        //  02.0 -- 03.F
+    INST_TABLE_000_1FF(04, 05, SUB),        //  04.0 -- 05.F
+    INST_TABLE_000_1FF(06, 07, RSB),        //  06.0 -- 07.F
+    INST_TABLE_000_1FF(08, 09, ADD),        //  08.0 -- 09.F
+    INST_TABLE_000_1FF(0A, 0B, ADC),        //  0A.0 -- 0B.F
+    INST_TABLE_000_1FF(0C, 0D, SBC),        //  0C.0 -- 0D.F
+    INST_TABLE_000_1FF(0E, 0F, RSC),        //  0E.0 -- 0F.F
+
+    INST_TABLE_000_1FF(10, 11, TST),        //  10.0 -- 11.F
+    INST_TABLE_000_1FF(12, 13, TEQ),        //  12.0 -- 13.F
+    INST_TABLE_000_1FF(14, 15, CMP),        //  14.0 -- 15.F
+    INST_TABLE_000_1FF(16, 17, CMN),        //  16.0 -- 17.F
+    INST_TABLE_000_1FF(18, 19, ORR),        //  18.0 -- 19.F
+    INST_TABLE_000_1FF(1A, 1B, MOV),        //  1A.0 -- 1B.F
+    INST_TABLE_000_1FF(1C, 1D, BIC),        //  1C.0 -- 1D.F
+    INST_TABLE_000_1FF(1E, 1F, MVN),        //  1E.0 -- 1F.F
+
+    INST_TABLE_200_3FF(20, 21, AND),        //  20.0 -- 21.F
+    INST_TABLE_200_3FF(22, 23, EOR),        //  22.0 -- 23.F
+    INST_TABLE_200_3FF(24, 25, SUB),        //  24.0 -- 25.F
+    INST_TABLE_200_3FF(26, 27, RSB),        //  26.0 -- 27.F
+    INST_TABLE_200_3FF(28, 29, ADD),        //  28.0 -- 29.F
+    INST_TABLE_200_3FF(2A, 2B, ADC),        //  2A.0 -- 2B.F
+    INST_TABLE_200_3FF(2C, 2D, SBC),        //  2C.0 -- 2D.F
+    INST_TABLE_200_3FF(2E, 2F, RSC),        //  2E.0 -- 2F.F
+
+    INST_TABLE_200_3FF(30, 31, TST),        //  30.0 -- 31.F
+    INST_TABLE_200_3FF(32, 33, TEQ),        //  32.0 -- 33.F
+    INST_TABLE_200_3FF(34, 35, CMP),        //  34.0 -- 35.F
+    INST_TABLE_200_3FF(36, 37, CMN),        //  36.0 -- 37.F
+    INST_TABLE_200_3FF(38, 39, ORR),        //  38.0 -- 39.F
+    INST_TABLE_200_3FF(3A, 3B, MOV),        //  3A.0 -- 3B.F
+    INST_TABLE_200_3FF(3C, 3D, BIC),        //  3C.0 -- 3D.F
+    INST_TABLE_200_3FF(3E, 3F, MVN),        //  3E.0 -- 3F.F
+
+    REPEAT256(arm_UI),      //  40.0 -- 4F.F
+    REPEAT256(arm_UI),      //  50.0 -- 5F.F
+    REPEAT256(arm_UI),      //  60.0 -- 6F.F
+    REPEAT256(arm_UI),      //  70.0 -- 7F.F
+    REPEAT256(arm_UI),      //  80.0 -- 8F.F
+    REPEAT256(arm_UI),      //  90.0 -- 9F.F
+    REPEAT256(armA00),      //  A0.0 -- AF.F
+    REPEAT256(arm_UI),      //  B0.0 -- BF.F
+    REPEAT256(arm_UI),      //  C0.0 -- CF.F
+    REPEAT256(arm_UI),      //  D0.0 -- DF.F
+    REPEAT256(arm_UI),      //  E0.0 -- EF.F
+    REPEAT256(arm_UI),      //  F0.0 -- FF.F
+};
 
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END

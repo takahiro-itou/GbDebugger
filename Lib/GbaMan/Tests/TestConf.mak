@@ -6,6 +6,7 @@
 extra_tests             =
 TESTS                   =  \
         GbaManagerTest          \
+        MemoryManagerTest       \
         ${extra_tests}
 
 ##
@@ -34,4 +35,5 @@ test_ldflags_common         +=
 ##
 
 GbaManagerTest_SOURCES          =  GbaManagerTest.cpp
+MemoryManagerTest_SOURCES       =  MemoryManagerTest.cpp
 

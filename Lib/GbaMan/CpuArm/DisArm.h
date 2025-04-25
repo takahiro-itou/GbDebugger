@@ -13,49 +13,54 @@
 *************************************************************************/
 
 /**
-**      An Implementation of CpuThumb class.
+**      An Interface of DisArm class.
 **
-**      @file       GbaMan/CpuThumb.cpp
+**      @file       GbaMan/DisArm.h
 **/
 
-#include    "CpuThumb.h"
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_DIS_ARM_H )
+#    define   GBDEBUGGER_GBAMAN_INCLUDED_DIS_ARM_H
+
+#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_TYPES_H )
+#    include    "GbDebugger/Common/DebuggerTypes.h"
+#endif
+
+#include    <ostream>
 
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
 
-namespace  {
-
-}   //  End of (Unnamed) namespace.
+//  クラスの前方宣言。  //
 
 
 //========================================================================
 //
-//    CpuThumb  class.
+//    DisArm  class.
 //
+
+class  DisArm
+{
 
 //========================================================================
 //
 //    Constructor(s) and Destructor.
 //
+public:
 
-//----------------------------------------------------------------
-//    インスタンスを初期化する
-//  （デフォルトコンストラクタ）。
-//
+    //----------------------------------------------------------------
+    /**   インスタンスを初期化する
+    **  （デフォルトコンストラクタ）。
+    **
+    **/
+    DisArm();
 
-CpuThumb::CpuThumb()
-{
-}
-
-//----------------------------------------------------------------
-//    インスタンスを破棄する
-//  （デストラクタ）。
-//
-
-CpuThumb::~CpuThumb()
-{
-}
+    //----------------------------------------------------------------
+    /**   インスタンスを破棄する
+    **  （デストラクタ）。
+    **
+    **/
+    virtual  ~DisArm();
 
 //========================================================================
 //
@@ -76,6 +81,20 @@ CpuThumb::~CpuThumb()
 //
 //    Public Member Functions (Virtual Functions).
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   ニーモニックを表示する。
+    **
+    **  @param [in,out] outStr    出力ストリーム
+    **  @param [in]     gmAddr    ゲスト上のアドレス
+    **  @param [in]     opeCode   オペコード
+    **/
+    virtual  std::ostream  &
+    writeMnemonic(
+            std::ostream       &outStr,
+            GuestMemoryAddress  gmAddr,
+            const  OpeCode      opeCode)  const;
 
 //========================================================================
 //
@@ -97,5 +116,25 @@ CpuThumb::~CpuThumb()
 //    For Internal Use Only.
 //
 
+//========================================================================
+//
+//    Member Variables.
+//
+
+//========================================================================
+//
+//    Other Features.
+//
+private:
+    typedef     DisArm          This;
+    DisArm              (const  This  &);
+    This &  operator =  (const  This  &);
+public:
+    //  テストクラス。  //
+    friend  class   DisArmTest;
+};
+
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
+
+#endif

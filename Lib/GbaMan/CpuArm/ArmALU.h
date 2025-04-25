@@ -13,49 +13,48 @@
 *************************************************************************/
 
 /**
-**      An Implementation of CpuThumb class.
+**      An Interface of ArmALU class.
 **
-**      @file       GbaMan/CpuThumb.cpp
+**      @file       GbaMan/ArmALU.h
 **/
 
-#include    "CpuThumb.h"
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_ARM_ALU_H )
+#    define   GBDEBUGGER_GBAMAN_INCLUDED_ARM_ALU_H
+
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_CPU_UTILS_H )
+#    include    "GbDebugger/GbaMan/CpuUtils.h"
+#endif
+
+#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_UTILS_H )
+#    include    "GbDebugger/Common/DebuggerUtils.h"
+#endif
 
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
 
-namespace  {
-
-}   //  End of (Unnamed) namespace.
+//  クラスの前方宣言。  //
+class   MemoryManager;
 
 
 //========================================================================
 //
-//    CpuThumb  class.
+//    ArmALU  Instructions.
 //
+
+GBD_REGPARM     InstExecResult
+armALUInstruction(
+        const  OpeCode  opeCode,
+        RegPair         cpuRegs[],
+        uint32_t      & cpuFlag);
+
+class  ArmALU
+{
 
 //========================================================================
 //
 //    Constructor(s) and Destructor.
 //
-
-//----------------------------------------------------------------
-//    インスタンスを初期化する
-//  （デフォルトコンストラクタ）。
-//
-
-CpuThumb::CpuThumb()
-{
-}
-
-//----------------------------------------------------------------
-//    インスタンスを破棄する
-//  （デストラクタ）。
-//
-
-CpuThumb::~CpuThumb()
-{
-}
 
 //========================================================================
 //
@@ -97,5 +96,25 @@ CpuThumb::~CpuThumb()
 //    For Internal Use Only.
 //
 
+//========================================================================
+//
+//    Member Variables.
+//
+
+//========================================================================
+//
+//    Other Features.
+//
+private:
+    typedef     ArmALU          This;
+    ArmALU              (const  This  &);
+    This &  operator =  (const  This  &);
+public:
+    //  テストクラス。  //
+    friend  class   ArmALUTest;
+};
+
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
+
+#endif

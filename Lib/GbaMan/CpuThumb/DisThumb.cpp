@@ -13,12 +13,12 @@
 *************************************************************************/
 
 /**
-**      An Implementation of CpuThumb class.
+**      An Implementation of DisThumb class.
 **
-**      @file       GbaMan/CpuThumb.cpp
+**      @file       GbaMan/DisThumb.cpp
 **/
 
-#include    "CpuThumb.h"
+#include    "DisThumb.h"
 
 
 GBDEBUGGER_NAMESPACE_BEGIN
@@ -31,7 +31,7 @@ namespace  {
 
 //========================================================================
 //
-//    CpuThumb  class.
+//    DisThumb  class.
 //
 
 //========================================================================
@@ -44,7 +44,7 @@ namespace  {
 //  （デフォルトコンストラクタ）。
 //
 
-CpuThumb::CpuThumb()
+DisThumb::DisThumb()
 {
 }
 
@@ -53,7 +53,7 @@ CpuThumb::CpuThumb()
 //  （デストラクタ）。
 //
 
-CpuThumb::~CpuThumb()
+DisThumb::~DisThumb()
 {
 }
 

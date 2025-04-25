@@ -32,11 +32,6 @@
 
 GBDEBUGGER_NAMESPACE_BEGIN
 
-/**
-**    ダミーの型宣言。
-**/
-
-typedef     int     CommonType;
 
 GBDEBUGGER_NAMESPACE_END
 

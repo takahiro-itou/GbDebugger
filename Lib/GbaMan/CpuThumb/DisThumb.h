@@ -13,49 +13,52 @@
 *************************************************************************/
 
 /**
-**      An Implementation of CpuThumb class.
+**      An Interface of DisThumb class.
 **
-**      @file       GbaMan/CpuThumb.cpp
+**      @file       GbaMan/DisThumb.h
 **/
 
-#include    "CpuThumb.h"
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_DIS_THUMB_H )
+#    define   GBDEBUGGER_GBAMAN_INCLUDED_DIS_THUMB_H
+
+#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_TYPES_H )
+#    include    "GbDebugger/Common/DebuggerTypes.h"
+#endif
 
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
 
-namespace  {
-
-}   //  End of (Unnamed) namespace.
+//  クラスの前方宣言。  //
 
 
 //========================================================================
 //
-//    CpuThumb  class.
+//    DisThumb  class.
 //
+
+class  DisThumb
+{
 
 //========================================================================
 //
 //    Constructor(s) and Destructor.
 //
+public:
 
-//----------------------------------------------------------------
-//    インスタンスを初期化する
-//  （デフォルトコンストラクタ）。
-//
+    //----------------------------------------------------------------
+    /**   インスタンスを初期化する
+    **  （デフォルトコンストラクタ）。
+    **
+    **/
+    DisThumb();
 
-CpuThumb::CpuThumb()
-{
-}
-
-//----------------------------------------------------------------
-//    インスタンスを破棄する
-//  （デストラクタ）。
-//
-
-CpuThumb::~CpuThumb()
-{
-}
+    //----------------------------------------------------------------
+    /**   インスタンスを破棄する
+    **  （デストラクタ）。
+    **
+    **/
+    virtual  ~DisThumb();
 
 //========================================================================
 //
@@ -97,5 +100,25 @@ CpuThumb::~CpuThumb()
 //    For Internal Use Only.
 //
 
+//========================================================================
+//
+//    Member Variables.
+//
+
+//========================================================================
+//
+//    Other Features.
+//
+private:
+    typedef     DisThumb        This;
+    DisThumb            (const  This  &);
+    This &  operator =  (const  This  &);
+public:
+    //  テストクラス。  //
+    friend  class   DisThumbTest;
+};
+
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
+
+#endif

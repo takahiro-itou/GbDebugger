@@ -13,29 +13,20 @@
 *************************************************************************/
 
 /**
-**      An Interface of GbaManager class.
+**      An Interface of MemoryManager class.
 **
-**      @file       GbaMan/GbaManager.h
+**      @file       GbaMan/MemoryManager.h
 **/
 
-#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_GBA_MANAGER_H )
-#    define   GBDEBUGGER_GBAMAN_INCLUDED_GBA_MANAGER_H
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_MEMORY_MANAGER_H )
+#    define   GBDEBUGGER_GBAMAN_INCLUDED_MEMORY_MANAGER_H
 
 #if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_TYPES_H )
 #    include    "GbDebugger/Common/DebuggerTypes.h"
 #endif
 
-#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_CPU_UTILS_H )
-#    include    "CpuUtils.h"
-#endif
-
-#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_MEMORY_MANAGER_H )
-#    include    "MemoryManager.h"
-#endif
-
-#if !defined( GBDEBUGGER_SYS_STL_INCLUDED_IOSFWD )
-#    include    <iosfwd>
-#    define   GBDEBUGGER_SYS_STL_INCLUDED_IOSFWD
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_MEMORY_TABLE_H )
+#    include    "MemoryTable.h"
 #endif
 
 
@@ -43,22 +34,15 @@ GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
 
 //  クラスの前方宣言。  //
-class   CpuArm;
-class   CpuThumb;
 
 
 //========================================================================
 //
-//    GbaManager  class.
+//    MemoryManager  class.
 //
 
-class  GbaManager
+class  MemoryManager
 {
-
-//========================================================================
-//
-//    Internal Type Definitions.
-//
 
 //========================================================================
 //
@@ -71,14 +55,14 @@ public:
     **  （デフォルトコンストラクタ）。
     **
     **/
-    GbaManager();
+    MemoryManager();
 
     //----------------------------------------------------------------
     /**   インスタンスを破棄する
     **  （デストラクタ）。
     **
     **/
-    virtual  ~GbaManager();
+    virtual  ~MemoryManager();
 
 //========================================================================
 //
@@ -102,7 +86,7 @@ public:
 public:
 
     //----------------------------------------------------------------
-    /**   現在動作しているインスタンスを閉じる。
+    /**   メモリを確保する。
     **
     **  @return     エラーコードを返す。
     **      -   異常終了の場合は、
@@ -110,28 +94,17 @@ public:
     **      -   正常終了の場合は、ゼロを返す。
     **/
     virtual  ErrCode
-    closeInstance();
+    allocateMemory();
 
     //----------------------------------------------------------------
-    /**   ニーモニックを表示する。
+    /**   メモリマップを構築する。
     **
     **/
-    virtual  std::ostream  &
-    disassembleArm(
-            std::ostream       &outStr,
-            GuestMemoryAddress  gmAddr);
+    virtual  ErrCode
+    buildMemoryTable();
 
     //----------------------------------------------------------------
-    /**   ニーモニックを表示する。
-    **
-    **/
-    virtual  std::ostream  &
-    disassembleThumb(
-            std::ostream       &outStr,
-            GuestMemoryAddress  gmAddr);
-
-    //----------------------------------------------------------------
-    /**   リセットを行う。
+    /**   メモリを解放する。
     **
     **  @return     エラーコードを返す。
     **      -   異常終了の場合は、
@@ -139,47 +112,24 @@ public:
     **      -   正常終了の場合は、ゼロを返す。
     **/
     virtual  ErrCode
-    doHardReset();
-
-    //----------------------------------------------------------------
-    /**   現在の命令を実行する。
-    **
-    **/
-    virtual  InstExecResult
-    executeCurrentInst();
-
-    //----------------------------------------------------------------
-    /**   プログラムカウンタを取得する。
-    **
-    **/
-    virtual  GuestMemoryAddress
-    getNextPC()  const;
-
-    //----------------------------------------------------------------
-    /**   ROM ファイルを読み込む。
-    **
-    **  @param [in] szFileName    ファイル名。
-    **  @return     エラーコードを返す。
-    **      -   異常終了の場合は、
-    **          エラーの種類を示す非ゼロ値を返す。
-    **      -   正常終了の場合は、ゼロを返す。
-    **/
-    virtual  ErrCode
-    openRomFile(
-            const   char *  szFileName);
-
-    //----------------------------------------------------------------
-    /**   レジスタの内容をダンプする。
-    **
-    **/
-    virtual  std::ostream  &
-    printRegisters(
-            std::ostream  & outStr)  const;
+    releaseMemory();
 
 //========================================================================
 //
 //    Public Member Functions.
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   メモリアドレスを計算する。
+    **
+    **    ゲストのアドレスに対応するホストのアドレスを計算する。
+    **
+    **  @param [in] gmAddr    ゲストのメモリアドレス。
+    **/
+    LpWriteBuf
+    getMemoryAddress(
+            const   GuestMemoryAddress  gmAddr)  const;
 
     //----------------------------------------------------------------
     /**   メモリの内容を読みだす。
@@ -190,13 +140,25 @@ public:
     readMemory(
             const   GuestMemoryAddress  gmAddr)  const
     {
-        return  this->m_manMem.readMemory<T>(gmAddr);
+        const T  *  ptr = static_cast<const T *>(getMemoryAddress(gmAddr));
+        return ( *ptr );
     }
 
 //========================================================================
 //
 //    Accessors.
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   ゲストの ROM  の先頭アドレスを取得する。
+    **
+    **  @return   ゲストのメモリ空間おける  ROM 領域の
+    **      先頭アドレス、すなわち 0x08000000 に該当する、
+    **      ホスト上のアドレスを返す。
+    **/
+    LpByteWriteBuf
+    getHostAddressOfGuestRom()  const;
 
 //========================================================================
 //
@@ -214,26 +176,47 @@ public:
 //
 private:
 
-    /**   メモリ空間。  **/
-    MemoryManager   m_manMem;
+    /**   0x00000000-0x00003FFF :  16 KiB : BIOS.    **/
+    LpByteWriteBuf      m_memBios;
 
-    /**   プロセッサ。  **/
-    CpuArm  *       m_cpuArm;
+    /**   0x02000000-0x0203FFFF : 256 KiB : EWRAM.  **/
+    LpByteWriteBuf      m_memWRam;
 
-    /**   レジスタ。    **/
-    RegPair         m_regs[16];
+    /**   0x03000000-0x03007FFF :  32 KiB : IWRAM.  **/
+    LpByteWriteBuf      m_memIRam;
+
+    /**   0x04000000-0x040003FE :   1 KiB : I/O.    **/
+    LpByteWriteBuf      m_memIO;
+
+    /**   0x05000000-0x050003FF :   1 KiB : パレット。  **/
+    LpByteWriteBuf      m_memPRam;
+
+    /**   0x06000000-0x06017FFF :  96 KiB : VRAM.   **/
+    LpByteWriteBuf      m_memVRam;
+
+    /**   0x07000000-0x070003FF :   1 KiB : OAM.    **/
+    LpByteWriteBuf      m_memOam;
+
+    /**   0x08000000-0x09FFFFFF :  32 MiB : ROM.    **/
+    LpByteWriteBuf      m_memRom;
+
+    /**   0x0E000000-0x0E00FFFF :  64 KiB : SRAM.   **/
+    LpByteWriteBuf      m_memSave;
+
+    /**   メモリ空間のマップ。  **/
+    MemoryTable         m_tblMem[NUM_MEM_BLOCKS];
 
 //========================================================================
 //
 //    Other Features.
 //
 private:
-    typedef     GbaManager      This;
-    GbaManager          (const  This  &);
+    typedef     MemoryManager       This;
+    MemoryManager       (const  This  &);
     This &  operator =  (const  This  &);
 public:
     //  テストクラス。  //
-    friend  class   GbaManagerTest;
+    friend  class   MemoryManagerTest;
 };
 
 }   //  End of namespace  GbaMan

@@ -3,6 +3,8 @@
 ##    ライブラリのビルドとインストール。
 ##
 
+AUTOMAKE_OPTIONS    =  subdir-objects
+
 ##
 ##    List of Directories.
 ##
@@ -24,8 +26,12 @@ extra_noinst_header_files   =
 
 library_source_files        +=  \
         GbaManager.cpp                 \
+        MemoryManager.cpp              \
+        CpuArm/ArmALU.cpp              \
         CpuArm/CpuArm.cpp              \
+        CpuArm/DisArm.cpp              \
         CpuThumb/CpuThumb.cpp          \
+        CpuThumb/DisThumb.cpp          \
         ${extra_library_source_files}
 
 library_instantiations      +=
@@ -35,12 +41,17 @@ dist_noinst_data_files      +=  \
         ${extra_noinst_data_files}
 
 dist_noinst_header_files    +=  \
+        CpuArm/ArmALU.h                \
         CpuArm/CpuArm.h                \
+        CpuArm/DisArm.h                \
         CpuThumb/CpuThumb.h            \
+        CpuThumb/DisThumb.h            \
         ${extra_noinst_header_files}
 
 inclib_header_files         +=  \
+        ${inclib_source_dir}/CpuUtils.h            \
         ${inclib_source_dir}/GbaManager.h          \
+        ${inclib_source_dir}/MemoryManager.h       \
         ${inclib_source_dir}/MemoryTable.h         \
         ${extra_library_header_files}
 

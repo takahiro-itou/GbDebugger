@@ -39,9 +39,9 @@ namespace  GbaMan  {
 
 struct  MemoryTable
 {
-    uint8_t *   address;
-    uint32_t    size;
-    uint32_t    mask;
+    LpByteWriteBuf      address;
+    GuestMemoryAddress  size;
+    GuestMemoryAddress  mask;
 };
 
 //========================================================================
@@ -99,6 +99,8 @@ enum {
     MEM_BLOCK_ROM1  = 10,   /**<  ROM (WaitState1)  **/
     MEM_BLOCK_ROM2  = 12,   /**<  ROM (WaitState2)  **/
     MEM_BLOCK_SRAM  = 14,   /**<  SRAM.     **/
+
+    NUM_MEM_BLOCKS  = 256,
 };
 
 }   //  End of namespace  GbaMan
