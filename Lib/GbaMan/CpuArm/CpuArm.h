@@ -172,6 +172,10 @@ private:
             const  OpeCode  opeCode);
 
     GBD_REGPARM     InstExecResult
+    armLdrStrInstruction(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
     armUnknownInstruction(
             const  OpeCode  opeCode);
 
