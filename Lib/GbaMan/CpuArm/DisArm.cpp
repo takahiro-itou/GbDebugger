@@ -114,11 +114,20 @@ writeAddressingImmediate(
         const  char  *    & src,
         GuestMemoryAddress  gmAddr)
 {
-    return  sprintf(dst, "");
+    const  OpeCode  ofs = (opeCode & 0x0FFF);
+    const  char     sgn = (opeCode & 0x00800000) ? '+' : '-';
+    return  sprintf(dst, "%c#0x%0x", sgn, ofs);
 }
 
 //----------------------------------------------------------------
 //  %ar - Addressing Register
+
+inline  size_t
+writeOpe2RegisterWithShift(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src,
+        GuestMemoryAddress  gmAddr);
 
 inline  size_t
 writeAddressingRegister(
@@ -127,7 +136,11 @@ writeAddressingRegister(
         const  char  *    & src,
         GuestMemoryAddress  gmAddr)
 {
-    return  sprintf(dst, "");
+    char    buf[512];
+
+    const  OpeCode  reg = (opeCode & 0x0F);
+    writeOpe2RegisterWithShift(opeCode, buf, src, gmAddr);
+    return  sprintf(dst, "%s", regNames[reg]);
 }
 
 //----------------------------------------------------------------
@@ -148,8 +161,10 @@ writeAddressing(
     switch ( fi ) {
     case  'i':
         writeAddressingImmediate(opeCode, buf, src, gmAddr);
+        break;
     case  'r':
         writeAddressingRegister(opeCode, buf, src, gmAddr);
+        break;
     }
 
     if ( !(opeCode & 0x01000000) ) {
