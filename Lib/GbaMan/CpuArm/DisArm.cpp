@@ -57,6 +57,12 @@ armMnemonics[] = {
     { 0x0F000000, 0x0B000000, "BL.%c\t%o" },
     { 0x0F000000, 0x0F000000, "SWI.%c\t%q" },
 
+    //  LDR / STR   //
+    { 0x0E100000, 0x04000000, "STR.%c%b%t\t%r12, %ai" },
+    { 0x0E100000, 0x04100000, "LDR.%c%b%t\t%r12, %ai" },
+    { 0x0E100000, 0x05000000, "STR.%c%b%t\t%r12, %ar" },
+    { 0x0E100000, 0x05100000, "LDR.%c%b%t\t%r12, %ar" },
+
     //  ALU (Bit25==0 : 第二オペランドはレジスタ)   //
     { 0x0ff00000, 0x00000000, "AND.%c%s\t%r12, %16, %Rs" },
     { 0x0ff00000, 0x00200000, "EOR.%c%s\t%r12, %16, %Rs" },
@@ -96,6 +102,67 @@ armMnemonics[] = {
     //  Unknown
     { 0x00000000, 0x00000000, "[ ??? ]" },
 };
+
+//----------------------------------------------------------------
+//  %ai - Addressing Immediate
+//
+
+inline  size_t
+writeAddressingImmediate(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src,
+        GuestMemoryAddress  gmAddr)
+{
+    return  sprintf(dst, "");
+}
+
+//----------------------------------------------------------------
+//  %ar - Addressing Register
+
+inline  size_t
+writeAddressingRegister(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src,
+        GuestMemoryAddress  gmAddr)
+{
+    return  sprintf(dst, "");
+}
+
+//----------------------------------------------------------------
+//  %a? - Addressing
+
+inline  size_t
+writeAddressing(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src,
+        GuestMemoryAddress  gmAddr)
+{
+    char    buf[256];
+
+    const  OpeCode  reg = (opeCode >> 16) & 0x0F;
+    const  char  fi = (*(++ src));
+
+    switch ( fi ) {
+    case  'i':
+        writeAddressingImmediate(opeCode, buf, src, gmAddr);
+    case  'r':
+        writeAddressingRegister(opeCode, buf, src, gmAddr);
+    }
+
+    if ( !(opeCode & 0x01000000) ) {
+        //  Bit 24 P=0 (Post)
+        return  sprintf(dst, "[%s], %s", regNames[reg], buf);
+    }
+    //  Bit 24 P=1 (Pre)
+    if ( (opeCode & 0x00200000) ) {
+        //  Bit 20. Write Back. //
+        return  sprintf(dst, "[%s, %s]!", regNames[reg], buf);
+    }
+    return  sprintf(dst, "[%s, %s]", regNames[reg], buf);
+}
 
 //----------------------------------------------------------------
 //  %c - condition (bit 28-31)
@@ -288,6 +355,9 @@ DisArm::writeMnemonic(
                 if ( *(++ src) == 's' ) {
                     len = writeOpe2RegisterWithShift(opeCode, dst, src, gmAddr);
                 }
+                break;
+            case  'a':
+                len = writeAddressing(opeCode, dst, src, gmAddr);
                 break;
             case  'c':
                 //  len = sprintf(dst, "%s", conditions[opeCode >> 28]);
