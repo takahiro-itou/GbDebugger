@@ -176,6 +176,30 @@ private:
             const  OpeCode  opeCode);
 
     GBD_REGPARM     InstExecResult
+    execArm100_MsrCpsr(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
+    execArm120_MrsCpsrReg(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
+    execArm140_MsrSpsr(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
+    execArm160_MrsSpsrReg(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
+    execArm320_MrsCpsrImm(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
+    execArm360_MrsSpsrImm(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
     execUnknownInstruction(
             const  OpeCode  opeCode);
 
