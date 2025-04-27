@@ -35,7 +35,7 @@ typedef     GBD_REGPARM     InstExecResult
         Memorymanager & manMem,
         RegType       & cpuFlag);
 
-template  <int I, int P, int U, int B, int BIT21, int OP, int SHIFTTYPE,>
+template  <int I, int P, int U, int B, int BIT21, int OP, int SHIFTTYPE>
 GBD_REGPARM     InstExecResult
 armLdrStrInstruction(
         const  OpeCode  opeCode,
@@ -91,6 +91,10 @@ armLdrStrInstruction(
 
 }
 
+CONSTEXPR_VAR   FnALUInst
+g_armLdrStrInstTable[256] = {
+}
+
 }   //  End of (Unnamed) namespace.
 
 
@@ -103,7 +107,29 @@ GBD_REGPARM     InstExecResult
 CpuArm::armLdrStrInstruction(
         const  OpeCode  opeCode)
 {
-    return ( InstExecResult::UNDEFINED_OPECODE );
+    //  オペコードから下記のビットを取り出す。          //
+    //  bit     25  オフセットがレジスタか即値か。      //
+    //  bit     24  Post/Pre  フラグ。                  //
+    //  bit     23  オフセットがプラスかマイナスか。    //
+    //  bit     22  アクセスがバイト単位か。            //
+    //  bit     21                                      //
+    //  bit     20  ストアかロードか。                  //
+    //  bit  6-- 5  シフトの種類 (LSL, LSR, ASR, ROR)   //
+    const  OpeCode  idx =
+        ((opeCode >> 18) & 0x00FC) | ((opeCode >> 5) & 0x03);
+    FnALUInst   pfInst  = g_armLdrStrInstTable[idx];
+
+    char    buf[512];
+    sprintf(buf,
+            "opeCode = %08x, idx = %03x, pfInst = %p\n",
+            opeCode, idx, pfInst);
+    std::cerr   <<  buf;
+
+    if ( pfInst == nullptr ) {
+        return ( InstExecResult::UNDEFINED_OPECODE );
+    }
+
+    return  (* pfInst)(opeCode, this->m_cpuRegs, this->m_cpuRegs[16].dw);
 }
 
 }   //  End of namespace  GbaMan
