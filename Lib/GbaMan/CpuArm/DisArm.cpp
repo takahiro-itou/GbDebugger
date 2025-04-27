@@ -58,10 +58,19 @@ armMnemonics[] = {
     { 0x0F000000, 0x0F000000, "SWI.%c\t%q" },
 
     //  LDR / STR   //
-    { 0x0E100000, 0x04000000, "STR.%c%b%t\t%r12, %ai" },
-    { 0x0E100000, 0x04100000, "LDR.%c%b%t\t%r12, %ai" },
-    { 0x0E100000, 0x05000000, "STR.%c%b%t\t%r12, %ar" },
-    { 0x0E100000, 0x05100000, "LDR.%c%b%t\t%r12, %ar" },
+    { 0x0FF00000, 0x04000000, "STR.%c\t%r12, [%r16], -%ai" },
+    { 0x0FF00000, 0x04100000, "LDR.%c\t%r12, [%r16], -%ai" },
+    { 0x0FF00000, 0x05000000, "STR.%c\t%r12, [%r16], -%ai" },
+    { 0x0FF00000, 0x05100000, "LDR.%c\t%r12, [%r16], -%ai" },
+
+    { 0x0FF00000, 0x04800000, "STR.%c\t%r12, [%r16], +%ai" },
+    { 0x0FF00000, 0x04900000, "LDR.%c\t%r12, [%r16], +%ai" },
+    { 0x0FF00000, 0x05800000, "STR.%c\t%r12, [%r16], +%ai" },
+    { 0x0FF00000, 0x05900000, "LDR.%c\t%r12, [%r16], +%ai" },
+    // { 0x0E100000, 0x04000000, "STR.%c%b%t\t%r12, %ai" },
+    // { 0x0E100000, 0x04100000, "LDR.%c%b%t\t%r12, %ai" },
+    // { 0x0E100000, 0x05000000, "STR.%c%b%t\t%r12, %ar" },
+    // { 0x0E100000, 0x05100000, "LDR.%c%b%t\t%r12, %ar" },
 
     //  ALU (Bit25==0 : 第二オペランドはレジスタ)   //
     { 0x0ff00000, 0x00000000, "AND.%c%s\t%r12, %16, %Rs" },
@@ -160,10 +169,10 @@ writeAddressing(
 
     switch ( fi ) {
     case  'i':
-        writeAddressingImmediate(opeCode, buf, src, gmAddr);
+        return  writeAddressingImmediate(opeCode, buf, src, gmAddr);
         break;
     case  'r':
-        writeAddressingRegister(opeCode, buf, src, gmAddr);
+        return  writeAddressingRegister(opeCode, buf, src, gmAddr);
         break;
     }
 
