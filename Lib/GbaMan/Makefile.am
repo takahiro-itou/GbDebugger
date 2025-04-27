@@ -29,6 +29,7 @@ library_source_files        +=  \
         MemoryManager.cpp              \
         CpuArm/ArmALU.cpp              \
         CpuArm/ArmLdrStr.cpp           \
+        CpuArm/ArmPsr.cpp              \
         CpuArm/CpuArm.cpp              \
         CpuArm/DisArm.cpp              \
         CpuThumb/CpuThumb.cpp          \

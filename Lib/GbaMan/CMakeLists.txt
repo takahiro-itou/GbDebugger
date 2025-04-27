@@ -19,6 +19,7 @@ set(library_source_files
        MemoryManager.cpp
        CpuArm/ArmALU.cpp
        CpuArm/ArmLdrStr.cpp
+       CpuArm/ArmPsrr.cpp
        CpuArm/CpuArm.cpp
        CpuArm/DisArm.cpp
        CpuThumb/CpuThumb.cpp
