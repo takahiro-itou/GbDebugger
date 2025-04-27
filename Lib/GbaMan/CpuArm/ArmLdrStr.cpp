@@ -65,17 +65,30 @@ armLdrStrInstruction(
         ofs = - ofs;
     }
 
+    GuestMemoryAddress  gmAddr  = cpuRegs[rn].dw;
+
+    if ( P == 1 ) {
+        //  PRE.    //
+        gmAddr  += ofs;
+    }
+
     char    buf[512];
     if ( OP == 0 ) {
         //  STR 命令。  //
         sprintf(buf, "Write to address %08x from %d (%08x)",
-                cpuRegs[rn] + ofs, rd, cpuRegs[rd]);
+                gmAddr, rd, cpuRegs[rd].dw);
     } else {
-        //  LDR 命令。  /
+        //  LDR 命令。  //
         sprintf(buf, "Read from address %08x to %d",
-                cpuRegs[rn] + ofs, rd);
+                gmAddr, rd);
     }
     std::cerr   <<  buf <<  std::endl;
+
+    if ( (P == 0) || (BIT21 == 1) ) {
+        //  ライトバック。  //
+        cpuRegs[rn].dw  = gmAddr;
+    }
+
 }
 
 }   //  End of (Unnamed) namespace.
