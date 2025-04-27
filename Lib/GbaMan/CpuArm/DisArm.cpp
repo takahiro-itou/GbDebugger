@@ -57,6 +57,14 @@ armMnemonics[] = {
     { 0x0F000000, 0x0B000000, "BL.%c\t%o" },
     { 0x0F000000, 0x0F000000, "SWI.%c\t%q" },
 
+    //  PSR 命令。  //
+    { 0x0FFF0FFF, 0x010F0000, "MRS%c\t%r12, CPSR" },
+    { 0x0FF0F000, 0x0120F000, "MSR%c\tCPSR%p, %r00" },
+    { 0x0FFF0FFF, 0x014F0000, "MRS%c\t%r12, SPSR" },
+    { 0x0FF0F000, 0x0160F000, "MSR%c\tSPSR%p, %r00" },
+    { 0x0FF0F000, 0x0320F000, "MSR%c\tCPSR%p, %i" },
+    { 0x0FF0F000, 0x0360F000, "MSR%c\tSPSR%p, %i" },
+
     //  LDR / STR   //
     { 0x0F700000, 0x04000000, "STR.%c \t%r12, [%r16], %ai" },
     { 0x0F700000, 0x04100000, "LDR.%c \t%r12, [%r16], %ai" },
@@ -179,6 +187,37 @@ writeOffset(
     }
     ofs <<= 2;
     return   sprintf(dst, "$%08x ; (%08x)", ofs, gmAddr + 8 + ofs);
+}
+
+//----------------------------------------------------------------
+//  %p - PSR
+//  PSR 命令のビット 19-16 のフラグ。
+//
+
+inline  size_t
+writePsrFlags(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src,
+        GuestMemoryAddress  gmAddr)
+{
+    char  *  p  = dst;
+
+    *(p ++) = '_';
+    if ( opeCode & 0x00080000 ) {
+        *(p ++) = 'f';
+    }
+    if ( opeCode & 0x00040000 ) {
+        *(p ++) = 's';
+    }
+    if ( opeCode & 0x00020000 ) {
+        *(p ++) = 'x';
+    }
+    if ( opeCode & 0x00010000 ) {
+        *(p ++) = 'c';
+    }
+
+    return ( p - dst );
 }
 
 //----------------------------------------------------------------
@@ -359,6 +398,9 @@ DisArm::writeMnemonic(
                 break;
             case  'o':
                 len = writeOffset(opeCode, dst, src, gmAddr);
+                break;
+            case  'p':
+                len = writePsrFlags(opeCode, dst, src, gmAddr);
                 break;
             case  's':
                 if ( opeCode & 0x00100000 ) {
