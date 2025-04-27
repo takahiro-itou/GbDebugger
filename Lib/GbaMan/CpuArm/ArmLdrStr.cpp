@@ -53,26 +53,8 @@ armLdrStrInstruction(
         ofs = (opeCode & 0x0FFF);
     } else {
         //  オフセットはシフトされたレジスタ。  //
-        OpeCode iRm = (opeCode & 0x0F);
-        RegType vRm = cpuRegs[iRm].dw;
-
-        const int shift = (opeCode >> 7) & 0x1F;
-
-        //  ビット 05..06 はシフトの種類。  //
-        switch ( SHIFTTYPE ) {
-        case  0:    //  LSL
-            ofs = ArmALURmLslImm()(shift, vRm, fout_cy, flag_cy);
-            break;
-        case  1:    //  LSR
-            ofs = ArmALURmLsrImm()(shift, vRm, fout_cy, flag_cy);
-            break;
-        case  2:    //  ASR
-            ofs = ArmALURmAsrImm()(shift, vRm, fout_cy, flag_cy);
-            break;
-        case  3:    //  ROR
-            ofs = ArmALURmRorImm()(shift, vRm, fout_cy, flag_cy);
-            break;
-        }
+        ofs = getAluOp2Register<SHIFTTYPE, 0>(
+                opeCode, cpuRegs, fout_cy, flag_cy);
     }
 
     //  U フラグ (BIT 23)   //
