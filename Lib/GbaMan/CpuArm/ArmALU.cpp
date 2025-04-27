@@ -242,7 +242,7 @@ g_armALUInstTable[512] = {
 //
 
 GBD_REGPARM     InstExecResult
-CpuArm::armALUInstruction(
+CpuArm::execALUInstruction(
         const  OpeCode  opeCode)
 {
     //  オペコードから下記のビットを取り出す。          //

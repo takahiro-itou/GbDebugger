@@ -246,7 +246,7 @@ CpuArm::executeNextInst()
 //
 
 GBD_REGPARM     InstExecResult
-CpuArm::armA00_B(
+CpuArm::execArmA00_B(
         const  OpeCode  opeCode)
 {
     //  符号拡張
@@ -268,7 +268,7 @@ CpuArm::armA00_B(
 }
 
 GBD_REGPARM     InstExecResult
-CpuArm::armUnknownInstruction(
+CpuArm::execUnknownInstruction(
         const  OpeCode  opeCode)
 {
     return ( InstExecResult::UNDEFINED_OPECODE );
@@ -316,12 +316,11 @@ CpuArm::prefetchNext()
 
 /**   命令テーブル。        **/
 
-#define     arm_UI  &CpuArm::armUnknownInstruction
-#define     armALU  &CpuArm::armALUInstruction
-#define     armSTR  &CpuArm::armLdrStrInstruction
-#define     armLDR  &CpuArm::armLdrStrInstruction
-#define     arm3A0  &CpuArm::armALUInstruction<1, 13, 0, 0, 0>
-#define     armA00  &CpuArm::armA00_B
+#define     arm_UI  &CpuArm::execUnknownInstruction
+#define     armALU  &CpuArm::execALUInstruction
+#define     armSTR  &CpuArm::execLdrStrInstruction
+#define     armLDR  &CpuArm::execLdrStrInstruction
+#define     armA00  &CpuArm::execArmA00_B
 
 #define     REPEAT_16(inst)     \
     inst, inst, inst, inst, inst, inst, inst, inst,     \

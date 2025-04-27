@@ -109,7 +109,7 @@ g_armLdrStrInstTable[256] = {
 //
 
 GBD_REGPARM     InstExecResult
-CpuArm::armLdrStrInstruction(
+CpuArm::execLdrStrInstruction(
         const  OpeCode  opeCode)
 {
     //  オペコードから下記のビットを取り出す。          //
