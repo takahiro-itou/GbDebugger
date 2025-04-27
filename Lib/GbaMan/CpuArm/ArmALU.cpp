@@ -70,51 +70,8 @@ armALUInstruction(
 
     if ( BIT25 == 0 ) {
         //  第二オペランドはレジスタ。ビット 00..07 で指定される。  //
-        OpeCode iRm = (opeCode & 0x0F);
-        RegType vRm = cpuRegs[iRm].dw;
-
-        if ( BIT4 == 0 ) {
-            //  シフト量の指定は即値。ビット 07..11 で指定。    //
-            const int shift = (opeCode >> 7) & 0x1F;
-
-            //  ビット 05..06 はシフトの種類。  //
-            switch ( SHIFTTYPE ) {
-            case  0:    //  LSL
-                rhs = ArmALURmLslImm()(shift, vRm, fout_cy, flag_cy);
-                break;
-            case  1:    //  LSR
-                rhs = ArmALURmLsrImm()(shift, vRm, fout_cy, flag_cy);
-                break;
-            case  2:    //  ASR
-                rhs = ArmALURmAsrImm()(shift, vRm, fout_cy, flag_cy);
-                break;
-            case  3:    //  ROR
-                rhs = ArmALURmRorImm()(shift, vRm, fout_cy, flag_cy);
-                break;
-            }
-        } else {
-            //  シフト量指定はレジスタ。ビット 08..11 で指定。  //
-            const int shift = cpuRegs[(opeCode >> 8) & 0x0F].dw;
-            if ( iRm == 15 ) {
-                vRm += 4;       //  オペランド Rm が R15 (PC) の時  //
-            }
-
-            //  ビット 05..06 はシフトの種類。  //
-            switch ( SHIFTTYPE ) {
-            case  0:    //  LSL
-                rhs = ArmALURmLslReg()(shift, vRm, fout_cy, flag_cy);
-                break;
-            case  1:    //  LSR
-                rhs = ArmALURmLsrReg()(shift, vRm, fout_cy, flag_cy);
-                break;
-            case  2:    //  ASR
-                rhs = ArmALURmAsrReg()(shift, vRm, fout_cy, flag_cy);
-                break;
-            case  3:    //  ROR
-                rhs = ArmALURmRorReg()(shift, vRm, fout_cy, flag_cy);
-                break;
-            }
-        }
+        rhs = getAluOp2Register<SHIFTTYPE, BIT4>(
+                opeCode, cpuRegs, fout_cy, flag_cy);
     } else {
         //  第二オペランドは即値指定。ビット 00..07 で指定される。  //
         const  RegType  imm = (opeCode & 0xFF);
