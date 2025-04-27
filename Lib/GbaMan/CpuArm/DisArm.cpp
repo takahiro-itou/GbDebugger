@@ -149,66 +149,6 @@ writeAddressingImmediate(
 }
 
 //----------------------------------------------------------------
-//  %ar - Addressing Register
-
-inline  size_t
-writeOpe2RegisterWithShift(
-        const   OpeCode     opeCode,
-        char  *  const      dst,
-        const  char  *    & src,
-        GuestMemoryAddress  gmAddr);
-
-inline  size_t
-writeAddressingRegister(
-        const   OpeCode     opeCode,
-        char  *  const      dst,
-        const  char  *    & src,
-        GuestMemoryAddress  gmAddr)
-{
-    char    buf[512];
-
-    const  OpeCode  reg = (opeCode & 0x0F);
-    writeOpe2RegisterWithShift(opeCode, buf, src, gmAddr);
-    return  sprintf(dst, "%s", regNames[reg]);
-}
-
-//----------------------------------------------------------------
-//  %a? - Addressing
-
-inline  size_t
-writeAddressing(
-        const   OpeCode     opeCode,
-        char  *  const      dst,
-        const  char  *    & src,
-        GuestMemoryAddress  gmAddr)
-{
-    char    buf[256];
-
-    const  OpeCode  reg = (opeCode >> 16) & 0x0F;
-    const  char  fi = (*(++ src));
-
-    switch ( fi ) {
-    case  'i':
-        return  writeAddressingImmediate(opeCode, dst, src, gmAddr);
-        break;
-    case  'r':
-        return  writeAddressingRegister(opeCode, dst, src, gmAddr);
-        break;
-    }
-
-    if ( !(opeCode & 0x01000000) ) {
-        //  Bit 24 P=0 (Post)
-        return  sprintf(dst, "[%s], %s", regNames[reg], buf);
-    }
-    //  Bit 24 P=1 (Pre)
-    if ( (opeCode & 0x00200000) ) {
-        //  Bit 20. Write Back. //
-        return  sprintf(dst, "[%s, %s]!", regNames[reg], buf);
-    }
-    return  sprintf(dst, "[%s, %s]", regNames[reg], buf);
-}
-
-//----------------------------------------------------------------
 //  %c - condition (bit 28-31)
 //
 
@@ -401,7 +341,9 @@ DisArm::writeMnemonic(
                 }
                 break;
             case  'a':
-                len = writeAddressing(opeCode, dst, src, gmAddr);
+                if ( *(++ src) == 'i' ) {
+                    len = writeAddressingImmediate(opeCode, dst, src, gmAddr);
+                }
                 break;
             case  'c':
                 //  len = sprintf(dst, "%s", conditions[opeCode >> 28]);
