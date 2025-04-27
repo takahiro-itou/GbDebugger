@@ -19,6 +19,9 @@
 **/
 
 #include    "CpuArm.h"
+#include    "ArmALU.h"
+
+#include    "GbDebugger/GbaMan/MemoryManager.h"
 
 #include    <iostream>
 
@@ -32,7 +35,7 @@ typedef     GBD_REGPARM     InstExecResult
 (* FnLdrStrInst)(
         const  OpeCode  opeCode,
         RegPair         cpuRegs[],
-        Memorymanager & manMem,
+        MemoryManager & manMem,
         RegType       & cpuFlag);
 
 template  <int I, int P, int U, int B, int BIT21, int OP, int SHIFTTYPE>
@@ -40,7 +43,7 @@ GBD_REGPARM     InstExecResult
 armLdrStrInstruction(
         const  OpeCode  opeCode,
         RegPair         cpuRegs[],
-        Memorymanager & manMem,
+        MemoryManager & manMem,
         RegType       & cpuFlag)
 {
     const  int  rd  = (opeCode >> 12) & 0x0F;
@@ -91,9 +94,10 @@ armLdrStrInstruction(
 
 }
 
-CONSTEXPR_VAR   FnALUInst
+CONSTEXPR_VAR   FnLdrStrInst
 g_armLdrStrInstTable[256] = {
-}
+    nullptr,
+};
 
 }   //  End of (Unnamed) namespace.
 
@@ -117,7 +121,7 @@ CpuArm::armLdrStrInstruction(
     //  bit  6-- 5  シフトの種類 (LSL, LSR, ASR, ROR)   //
     const  OpeCode  idx =
         ((opeCode >> 18) & 0x00FC) | ((opeCode >> 5) & 0x03);
-    FnALUInst   pfInst  = g_armLdrStrInstTable[idx];
+    FnLdrStrInst    pfInst  = g_armLdrStrInstTable[idx];
 
     char    buf[512];
     sprintf(buf,
@@ -129,7 +133,7 @@ CpuArm::armLdrStrInstruction(
         return ( InstExecResult::UNDEFINED_OPECODE );
     }
 
-    return  (* pfInst)(opeCode, this->m_cpuRegs, this->m_cpuRegs[16].dw);
+    return  (* pfInst)(opeCode, this->m_cpuRegs, this->m_manMem, this->m_cpuRegs[16].dw);
 }
 
 }   //  End of namespace  GbaMan
