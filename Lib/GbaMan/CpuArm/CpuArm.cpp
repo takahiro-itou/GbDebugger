@@ -339,6 +339,12 @@ CpuArm::prefetchNext()
     armALU, armALU, armALU, armALU,     armALU, armALU, armALU, armALU,     \
     armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI
 
+#define     INST_TABLE_ALU_TEST(CODE1, CODE2, ALU_OP)                       \
+    arm_UI, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,     \
+    arm_UI, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,     \
+    armALU, armALU, armALU, armALU,     armALU, armALU, armALU, armALU,     \
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI
+
 #define     INST_TABLE_200_3FF(CODE1, CODE2, ALU_OP)                        \
     REPEAT_16(armALU),  REPEAT_16(armALU)
 
@@ -356,10 +362,11 @@ CpuArm::s_armInstTable[4096] = {
     INST_TABLE_000_1FF(0C, 0D, SBC),        //  0C.0 -- 0D.F
     INST_TABLE_000_1FF(0E, 0F, RSC),        //  0E.0 -- 0F.F
 
-    INST_TABLE_000_1FF(10, 11, TST),        //  10.0 -- 11.F
-    INST_TABLE_000_1FF(12, 13, TEQ),        //  12.0 -- 13.F
-    INST_TABLE_000_1FF(14, 15, CMP),        //  14.0 -- 15.F
-    INST_TABLE_000_1FF(16, 17, CMN),        //  16.0 -- 17.F
+    //  10.0 -- 11.F
+    INST_TABLE_ALU_TEST(10, 11, TST),       //  10.0 -- 11.F
+    INST_TABLE_ALU_TEST(12, 13, TEQ),       //  12.0 -- 13.F
+    INST_TABLE_ALU_TEST(14, 15, CMP),       //  14.0 -- 15.F
+    INST_TABLE_ALU_TEST(16, 17, CMN),       //  16.0 -- 17.F
     INST_TABLE_000_1FF(18, 19, ORR),        //  18.0 -- 19.F
     INST_TABLE_000_1FF(1A, 1B, MOV),        //  1A.0 -- 1B.F
     INST_TABLE_000_1FF(1C, 1D, BIC),        //  1C.0 -- 1D.F
@@ -374,10 +381,10 @@ CpuArm::s_armInstTable[4096] = {
     INST_TABLE_200_3FF(2C, 2D, SBC),        //  2C.0 -- 2D.F
     INST_TABLE_200_3FF(2E, 2F, RSC),        //  2E.0 -- 2F.F
 
-    INST_TABLE_200_3FF(30, 31, TST),        //  30.0 -- 31.F
-    INST_TABLE_200_3FF(32, 33, TEQ),        //  32.0 -- 33.F
-    INST_TABLE_200_3FF(34, 35, CMP),        //  34.0 -- 35.F
-    INST_TABLE_200_3FF(36, 37, CMN),        //  36.0 -- 37.F
+    INST_TABLE_ALU_TEST(30, 31, TST),       //  30.0 -- 31.F
+    INST_TABLE_ALU_TEST(32, 33, TEQ),       //  32.0 -- 33.F
+    INST_TABLE_ALU_TEST(34, 35, CMP),       //  34.0 -- 35.F
+    INST_TABLE_ALU_TEST(36, 37, CMN),       //  36.0 -- 37.F
     INST_TABLE_200_3FF(38, 39, ORR),        //  38.0 -- 39.F
     INST_TABLE_200_3FF(3A, 3B, MOV),        //  3A.0 -- 3B.F
     INST_TABLE_200_3FF(3C, 3D, BIC),        //  3C.0 -- 3D.F
