@@ -92,6 +92,7 @@ armLdrStrInstruction(
         cpuRegs[rn].dw  = gmAddr;
     }
 
+    return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
 CONSTEXPR_VAR   FnLdrStrInst
