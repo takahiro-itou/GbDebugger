@@ -60,13 +60,13 @@ armMnemonics[] = {
     //  LDR / STR   //
     { 0x0FF00000, 0x04000000, "STR.%c\t%r12, [%r16], -%ai" },
     { 0x0FF00000, 0x04100000, "LDR.%c\t%r12, [%r16], -%ai" },
-    { 0x0FF00000, 0x05000000, "STR.%c\t%r12, [%r16], -%ai" },
-    { 0x0FF00000, 0x05100000, "LDR.%c\t%r12, [%r16], -%ai" },
+    { 0x0FF00000, 0x05000000, "STR.%c\t%r12, [%r16, -%ai]" },
+    { 0x0FF00000, 0x05100000, "LDR.%c\t%r12, [%r16, -%ai]" },
 
     { 0x0FF00000, 0x04800000, "STR.%c\t%r12, [%r16], +%ai" },
     { 0x0FF00000, 0x04900000, "LDR.%c\t%r12, [%r16], +%ai" },
-    { 0x0FF00000, 0x05800000, "STR.%c\t%r12, [%r16], +%ai" },
-    { 0x0FF00000, 0x05900000, "LDR.%c\t%r12, [%r16], +%ai" },
+    { 0x0FF00000, 0x05800000, "STR.%c\t%r12, [%r16, +%ai]" },
+    { 0x0FF00000, 0x05900000, "LDR.%c\t%r12, [%r16, +%ai]" },
     // { 0x0E100000, 0x04000000, "STR.%c%b%t\t%r12, %ai" },
     // { 0x0E100000, 0x04100000, "LDR.%c%b%t\t%r12, %ai" },
     // { 0x0E100000, 0x05000000, "STR.%c%b%t\t%r12, %ar" },
@@ -124,8 +124,7 @@ writeAddressingImmediate(
         GuestMemoryAddress  gmAddr)
 {
     const  OpeCode  ofs = (opeCode & 0x0FFF);
-    const  char     sgn = (opeCode & 0x00800000) ? '+' : '-';
-    return  sprintf(dst, "%c#0x%0x", sgn, ofs);
+    return  sprintf(dst, "#0x%0x", ofs);
 }
 
 //----------------------------------------------------------------
@@ -169,10 +168,10 @@ writeAddressing(
 
     switch ( fi ) {
     case  'i':
-        return  writeAddressingImmediate(opeCode, buf, src, gmAddr);
+        return  writeAddressingImmediate(opeCode, dst, src, gmAddr);
         break;
     case  'r':
-        return  writeAddressingRegister(opeCode, buf, src, gmAddr);
+        return  writeAddressingRegister(opeCode, dst, src, gmAddr);
         break;
     }
 
