@@ -73,6 +73,32 @@ CpuArm::execArm120_MrsCpsrReg(
     if ( UNLIKELY((opeCode & 0x0FF0FFF0) != 0x0120F000) ) {
         return ( InstExecResult::UNDEFINED_OPECODE );
     }
+
+    RegType vRm = this->m_cpuRegs[(opeCode & 0x0F)].dw;
+    RegType val = this->m_cpuRegs[16].dw;
+    RegType maskVal = 0;
+
+    if ( opeCode & 0x00010000) {
+        maskVal |= 0x000000FF;
+    }
+    if ( opeCode & 0x00020000 ) {
+        maskVal |= 0x0000FF00;
+    }
+    if ( opeCode & 0x00040000 ) {
+        maskVal |= 0x00FF0000;
+    }
+    if ( opeCode & 0x00080000 ) {
+        maskVal |= 0xFF000000;
+    }
+
+    //  制御ビットを変更できるのは特権モードの時。  //
+    val = (val & ~maskVal) | (vRm & maskVal);
+    val |= 0x00000010;
+
+    //  @TODO   CPU モードのスイッチを実装。    //
+
+    this->m_cpuRegs[16].dw  = val;
+    return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
 GBD_REGPARM     InstExecResult
