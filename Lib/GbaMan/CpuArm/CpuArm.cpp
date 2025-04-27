@@ -317,6 +317,14 @@ CpuArm::prefetchNext()
 /**   命令テーブル。        **/
 
 #define     arm_UI  &CpuArm::execUnknownInstruction
+#define     arm100  arm_UI
+#define     arm120  arm_UI
+#define     arm140  arm_UI
+#define     arm160  arm_UI
+#define     arm300  arm_UI
+#define     arm320  arm_UI
+#define     arm340  arm_UI
+#define     arm360  arm_UI
 #define     armALU  &CpuArm::execALUInstruction
 #define     armSTR  &CpuArm::execLdrStrInstruction
 #define     armLDR  &CpuArm::execLdrStrInstruction
@@ -340,8 +348,7 @@ CpuArm::prefetchNext()
     armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI
 
 #define     INST_TABLE_ALU_TEST(CODE1, CODE2, ALU_OP)                       \
-    arm_UI, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,     \
-    arm_UI, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,     \
+    REPEAT_16(arm##CODE1##0),                                               \
     armALU, armALU, armALU, armALU,     armALU, armALU, armALU, armALU,     \
     armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI
 
