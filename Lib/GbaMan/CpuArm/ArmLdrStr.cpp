@@ -95,9 +95,43 @@ armLdrStrInstruction(
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
+#define     ARMSTRLDR_INST_TABLE(I, P, U, B)    \
+    armLdrStrInstruction<I, P, U, B, 0, 0, 0>,  \
+    armLdrStrInstruction<I, P, U, B, 0, 0, 1>,  \
+    armLdrStrInstruction<I, P, U, B, 0, 0, 2>,  \
+    armLdrStrInstruction<I, P, U, B, 0, 0, 3>,  \
+    armLdrStrInstruction<I, P, U, B, 0, 1, 0>,  \
+    armLdrStrInstruction<I, P, U, B, 0, 1, 1>,  \
+    armLdrStrInstruction<I, P, U, B, 0, 1, 2>,  \
+    armLdrStrInstruction<I, P, U, B, 0, 1, 3>,  \
+    armLdrStrInstruction<I, P, U, B, 1, 0, 0>,  \
+    armLdrStrInstruction<I, P, U, B, 1, 0, 1>,  \
+    armLdrStrInstruction<I, P, U, B, 1, 0, 2>,  \
+    armLdrStrInstruction<I, P, U, B, 1, 0, 3>,  \
+    armLdrStrInstruction<I, P, U, B, 1, 1, 0>,  \
+    armLdrStrInstruction<I, P, U, B, 1, 1, 1>,  \
+    armLdrStrInstruction<I, P, U, B, 1, 1, 2>,  \
+    armLdrStrInstruction<I, P, U, B, 1, 1, 3>
+
 CONSTEXPR_VAR   FnLdrStrInst
 g_armLdrStrInstTable[256] = {
-    nullptr,
+    ARMSTRLDR_INST_TABLE(0, 0, 0, 0),
+    ARMSTRLDR_INST_TABLE(0, 0, 0, 1),
+    ARMSTRLDR_INST_TABLE(0, 0, 1, 0),
+    ARMSTRLDR_INST_TABLE(0, 0, 1, 1),
+    ARMSTRLDR_INST_TABLE(0, 1, 0, 0),
+    ARMSTRLDR_INST_TABLE(0, 1, 0, 1),
+    ARMSTRLDR_INST_TABLE(0, 1, 1, 0),
+    ARMSTRLDR_INST_TABLE(0, 1, 1, 1),
+
+    ARMSTRLDR_INST_TABLE(1, 0, 0, 0),
+    ARMSTRLDR_INST_TABLE(1, 0, 0, 1),
+    ARMSTRLDR_INST_TABLE(1, 0, 1, 0),
+    ARMSTRLDR_INST_TABLE(1, 0, 1, 1),
+    ARMSTRLDR_INST_TABLE(1, 1, 0, 0),
+    ARMSTRLDR_INST_TABLE(1, 1, 0, 1),
+    ARMSTRLDR_INST_TABLE(1, 1, 1, 0),
+    ARMSTRLDR_INST_TABLE(1, 1, 1, 1),
 };
 
 }   //  End of (Unnamed) namespace.
