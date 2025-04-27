@@ -36,7 +36,7 @@ typedef     GBD_REGPARM     InstExecResult
         RegPair         cpuRegs[],
         RegType       & cpuFlag);
 
-template  <int  BIT25, int CODE, int BIT20, int SHIFTTYPE, int BIT4>
+template  <int BIT25, int CODE, int BIT20, int SHIFTTYPE, int BIT4>
 GBD_REGPARM     InstExecResult
 armALUInstruction(
         const  OpeCode  opeCode,
