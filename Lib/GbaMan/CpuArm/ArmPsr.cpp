@@ -19,12 +19,35 @@
 **/
 
 #include    "CpuArm.h"
+#include    "ArmALU.h"
 
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
 
 namespace  {
+
+inline  const   RegType
+generatePsrMask(
+        const  OpeCode  opeCode)
+{
+    RegType maskVal = 0;
+
+    if ( opeCode & 0x00010000) {
+        maskVal |= 0x000000FF;
+    }
+    if ( opeCode & 0x00020000 ) {
+        maskVal |= 0x0000FF00;
+    }
+    if ( opeCode & 0x00040000 ) {
+        maskVal |= 0x00FF0000;
+    }
+    if ( opeCode & 0x00080000 ) {
+        maskVal |= 0xFF000000;
+    }
+
+    return ( maskVal );
+}
 
 }   //  End of (Unnamed) namespace.
 
@@ -74,29 +97,15 @@ CpuArm::execArm120_MrsCpsrReg(
         return ( InstExecResult::UNDEFINED_OPECODE );
     }
 
-    RegType vRm = this->m_cpuRegs[(opeCode & 0x0F)].dw;
+    RegType rhs = this->m_cpuRegs[(opeCode & 0x0F)].dw;
     RegType val = this->m_cpuRegs[16].dw;
-    RegType maskVal = 0;
-
-    if ( opeCode & 0x00010000) {
-        maskVal |= 0x000000FF;
-    }
-    if ( opeCode & 0x00020000 ) {
-        maskVal |= 0x0000FF00;
-    }
-    if ( opeCode & 0x00040000 ) {
-        maskVal |= 0x00FF0000;
-    }
-    if ( opeCode & 0x00080000 ) {
-        maskVal |= 0xFF000000;
-    }
+    RegType maskVal = generatePsrMask(opeCode);
 
     //  制御ビットを変更できるのは特権モードの時。  //
-    val = (val & ~maskVal) | (vRm & maskVal);
+    val = (val & ~maskVal) | (rhs & maskVal);
     val |= 0x00000010;
 
     //  @TODO   CPU モードのスイッチを実装。    //
-
     this->m_cpuRegs[16].dw  = val;
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
@@ -109,6 +118,17 @@ CpuArm::execArm160_MrsSpsrReg(
         return ( InstExecResult::UNDEFINED_OPECODE );
     }
 
+    RegType rhs = this->m_cpuRegs[(opeCode & 0x0F)].dw;
+    RegType val = this->m_cpuRegs[17].dw;
+    RegType maskVal = generatePsrMask(opeCode);
+
+    //  制御ビットを変更できるのは特権モードの時。  //
+    val = (val & ~maskVal) | (rhs & maskVal);
+    val |= 0x00000010;
+
+    //  @TODO   CPU モードのスイッチを実装。    //
+    this->m_cpuRegs[17].dw  = val;
+    return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
 GBD_REGPARM     InstExecResult
@@ -118,6 +138,19 @@ CpuArm::execArm320_MrsCpsrImm(
     if ( UNLIKELY((opeCode & 0x0FF0F000) != 0x0320F000) ) {
         return ( InstExecResult::UNDEFINED_OPECODE );
     }
+
+    //  第二オペランドは即値指定。ビット 00..07 で指定される。  //
+    RegType rhs = armImmRor((opeCode & 0xF00) >> 7, (opeCode & 0xFF));
+    RegType val = this->m_cpuRegs[16].dw;
+    RegType maskVal = generatePsrMask(opeCode);
+
+    //  制御ビットを変更できるのは特権モードの時。  //
+    val = (val & ~maskVal) | (rhs & maskVal);
+    val |= 0x00000010;
+
+    //  @TODO   CPU モードのスイッチを実装。    //
+    this->m_cpuRegs[16].dw  = val;
+    return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
 GBD_REGPARM     InstExecResult
@@ -127,6 +160,19 @@ CpuArm::execArm360_MrsSpsrImm(
     if ( UNLIKELY((opeCode & 0x0FF0F000) != 0x0360F000) ) {
         return ( InstExecResult::UNDEFINED_OPECODE );
     }
+
+    //  第二オペランドは即値指定。ビット 00..07 で指定される。  //
+    RegType rhs = armImmRor((opeCode & 0xF00) >> 7, (opeCode & 0xFF));
+    RegType val = this->m_cpuRegs[17].dw;
+    RegType maskVal = generatePsrMask(opeCode);
+
+    //  制御ビットを変更できるのは特権モードの時。  //
+    val = (val & ~maskVal) | (rhs & maskVal);
+    val |= 0x00000010;
+
+    //  @TODO   CPU モードのスイッチを実装。    //
+    this->m_cpuRegs[17].dw  = val;
+    return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
 }   //  End of namespace  GbaMan

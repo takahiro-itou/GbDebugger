@@ -274,6 +274,17 @@ struct  ArmALUImmRor
     }
 };
 
+inline  const   RegType
+armImmRor(
+        const  int      shift,
+        const  RegType  vImm)
+{
+    if ( UNLIKELY(shift) ) {
+        return  armRorVal(vImm, shift);
+    }
+    return ( vImm );
+}
+
 //========================================================================
 //
 //    第二オペランドを決定する。
