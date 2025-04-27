@@ -194,6 +194,30 @@ armALUInstruction(
     armALUInstruction<RN2, OP, 1, 3, 0>,        \
     armALUInstruction<RN2, OP, 1, 3, 1>
 
+//  演算の種類 OP (bit24-21) が 08-0b の時、        //
+//  つまり TST, TEQ, CMP, CMN 命令の時は、          //
+//  演算の結果、フラグをセットしないといけない。    //
+//  よってビット 20 をセットしないといけない。      //
+//  そうでないビット列は、別の命令に解釈される。    //
+
+#define     ARMALU_TEST_INST_TABLE(RN2, OP)     \
+    nullptr,                                    \
+    nullptr,                                    \
+    nullptr,                                    \
+    nullptr,                                    \
+    nullptr,                                    \
+    nullptr,                                    \
+    nullptr,                                    \
+    nullptr,                                    \
+    armALUInstruction<RN2, OP, 1, 0, 0>,        \
+    armALUInstruction<RN2, OP, 1, 0, 1>,        \
+    armALUInstruction<RN2, OP, 1, 1, 0>,        \
+    armALUInstruction<RN2, OP, 1, 1, 1>,        \
+    armALUInstruction<RN2, OP, 1, 2, 0>,        \
+    armALUInstruction<RN2, OP, 1, 2, 1>,        \
+    armALUInstruction<RN2, OP, 1, 3, 0>,        \
+    armALUInstruction<RN2, OP, 1, 3, 1>
+
 CONSTEXPR_VAR   FnALUInst
 g_armALUInstTable[512] = {
     ARMALU_INST_TABLE(0, 0x00),
@@ -204,10 +228,10 @@ g_armALUInstTable[512] = {
     ARMALU_INST_TABLE(0, 0x05),
     ARMALU_INST_TABLE(0, 0x06),
     ARMALU_INST_TABLE(0, 0x07),
-    ARMALU_INST_TABLE(0, 0x08),
-    ARMALU_INST_TABLE(0, 0x09),
-    ARMALU_INST_TABLE(0, 0x0A),
-    ARMALU_INST_TABLE(0, 0x0B),
+    ARMALU_TEST_INST_TABLE(0, 0x08),
+    ARMALU_TEST_INST_TABLE(0, 0x09),
+    ARMALU_TEST_INST_TABLE(0, 0x0A),
+    ARMALU_TEST_INST_TABLE(0, 0x0B),
     ARMALU_INST_TABLE(0, 0x0C),
     ARMALU_INST_TABLE(0, 0x0D),
     ARMALU_INST_TABLE(0, 0x0E),
@@ -221,10 +245,10 @@ g_armALUInstTable[512] = {
     ARMALU_INST_TABLE(1, 0x05),
     ARMALU_INST_TABLE(1, 0x06),
     ARMALU_INST_TABLE(1, 0x07),
-    ARMALU_INST_TABLE(1, 0x08),
-    ARMALU_INST_TABLE(1, 0x09),
-    ARMALU_INST_TABLE(1, 0x0A),
-    ARMALU_INST_TABLE(1, 0x0B),
+    ARMALU_TEST_INST_TABLE(1, 0x08),
+    ARMALU_TEST_INST_TABLE(1, 0x09),
+    ARMALU_TEST_INST_TABLE(1, 0x0A),
+    ARMALU_TEST_INST_TABLE(1, 0x0B),
     ARMALU_INST_TABLE(1, 0x0C),
     ARMALU_INST_TABLE(1, 0x0D),
     ARMALU_INST_TABLE(1, 0x0E),
@@ -232,6 +256,7 @@ g_armALUInstTable[512] = {
 };
 
 #undef  ARMALU_INST_TABLE
+#undef  ARMALU_TEST_INST_TABLE
 
 }   //  End of (Unnamed) namespace.
 
