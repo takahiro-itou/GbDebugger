@@ -317,14 +317,14 @@ CpuArm::prefetchNext()
 /**   命令テーブル。        **/
 
 #define     arm_UI  &CpuArm::execUnknownInstruction
-#define     arm100  arm_UI
-#define     arm120  arm_UI
-#define     arm140  arm_UI
-#define     arm160  arm_UI
+#define     arm100  &CpuArm::execArm100_MsrCpsr
+#define     arm120  &CpuArm::execArm120_MrsCpsrReg
+#define     arm140  &CpuArm::execArm140_MsrSpsr
+#define     arm160  &CpuArm::execArm160_MrsSpsrReg
 #define     arm300  arm_UI
-#define     arm320  arm_UI
+#define     arm320  &CpuArm::execArm320_MrsCpsrImm
 #define     arm340  arm_UI
-#define     arm360  arm_UI
+#define     arm360  &CpuArm::execArm360_MrsSpsrImm
 #define     armALU  &CpuArm::execALUInstruction
 #define     armSTR  &CpuArm::execLdrStrInstruction
 #define     armLDR  &CpuArm::execLdrStrInstruction
