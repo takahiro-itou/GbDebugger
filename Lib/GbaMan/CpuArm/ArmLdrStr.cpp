@@ -38,7 +38,7 @@ typedef     GBD_REGPARM     InstExecResult
         MemoryManager & manMem,
         RegType       & cpuFlag);
 
-template  <int I, int P, int U, int B, int BIT21, int OP, int SHIFTTYPE>
+template  <int I, int P, int U, typename B, int BIT21, int OP, int SHIFTTYPE>
 GBD_REGPARM     InstExecResult
 armLdrStrInstruction(
         const  OpeCode  opeCode,
@@ -82,20 +82,22 @@ armLdrStrInstruction(
         //  STR 命令。  //
         sprintf(buf, "Write to address %08x from %d (%08x)",
                 gmAddr, rd, cpuRegs[rd].dw);
-        if ( B == 1 ) {
-            *(pointer_cast<BtByte *>(ptr)) = static_cast<BtByte>(cpuRegs[rd].dw);
-        } else {
-            *(pointer_cast<BtWord *>(ptr)) = static_cast<BtWord>(cpuRegs[rd].dw);
-        }
+        // if ( B == 1 ) {
+        //     *(pointer_cast<BtByte *>(ptr)) = static_cast<BtByte>(cpuRegs[rd].dw);
+        // } else {
+        //     *(pointer_cast<BtWord *>(ptr)) = static_cast<BtWord>(cpuRegs[rd].dw);
+        // }
+        *( pointer_cast<B *>(ptr) ) = static_cast<B>(cpuRegs[rd].dw);
     } else {
         //  LDR 命令。  //
         sprintf(buf, "Read from address %08x to %d",
                 gmAddr, rd);
-        if ( B == 1 ) {
-            cpuRegs[rd].dw  = *(pointer_cast<BtByte *>(ptr));
-        } else {
-            cpuRegs[rd].dw  = *(pointer_cast<BtWord *>(ptr));
-        }
+        // if ( B == 1 ) {
+        //     cpuRegs[rd].dw  = *(pointer_cast<BtByte *>(ptr));
+        // } else {
+        //     cpuRegs[rd].dw  = *(pointer_cast<BtWord *>(ptr));
+        // }
+        cpuRegs[rd].dw  = *( pointer_cast<B *>(ptr) );
     }
     std::cerr   <<  buf <<  std::endl;
 
@@ -127,23 +129,23 @@ armLdrStrInstruction(
 
 CONSTEXPR_VAR   FnLdrStrInst
 g_armLdrStrInstTable[256] = {
-    ARMSTRLDR_INST_TABLE(0, 0, 0, 0),
-    ARMSTRLDR_INST_TABLE(0, 0, 0, 1),
-    ARMSTRLDR_INST_TABLE(0, 0, 1, 0),
-    ARMSTRLDR_INST_TABLE(0, 0, 1, 1),
-    ARMSTRLDR_INST_TABLE(0, 1, 0, 0),
-    ARMSTRLDR_INST_TABLE(0, 1, 0, 1),
-    ARMSTRLDR_INST_TABLE(0, 1, 1, 0),
-    ARMSTRLDR_INST_TABLE(0, 1, 1, 1),
+    ARMSTRLDR_INST_TABLE(0, 0, 0, BtWord),
+    ARMSTRLDR_INST_TABLE(0, 0, 0, BtByte),
+    ARMSTRLDR_INST_TABLE(0, 0, 1, BtWord),
+    ARMSTRLDR_INST_TABLE(0, 0, 1, BtByte),
+    ARMSTRLDR_INST_TABLE(0, 1, 0, BtWord),
+    ARMSTRLDR_INST_TABLE(0, 1, 0, BtByte),
+    ARMSTRLDR_INST_TABLE(0, 1, 1, BtWord),
+    ARMSTRLDR_INST_TABLE(0, 1, 1, BtByte),
 
-    ARMSTRLDR_INST_TABLE(1, 0, 0, 0),
-    ARMSTRLDR_INST_TABLE(1, 0, 0, 1),
-    ARMSTRLDR_INST_TABLE(1, 0, 1, 0),
-    ARMSTRLDR_INST_TABLE(1, 0, 1, 1),
-    ARMSTRLDR_INST_TABLE(1, 1, 0, 0),
-    ARMSTRLDR_INST_TABLE(1, 1, 0, 1),
-    ARMSTRLDR_INST_TABLE(1, 1, 1, 0),
-    ARMSTRLDR_INST_TABLE(1, 1, 1, 1),
+    ARMSTRLDR_INST_TABLE(1, 0, 0, BtWord),
+    ARMSTRLDR_INST_TABLE(1, 0, 0, BtByte),
+    ARMSTRLDR_INST_TABLE(1, 0, 1, BtWord),
+    ARMSTRLDR_INST_TABLE(1, 0, 1, BtByte),
+    ARMSTRLDR_INST_TABLE(1, 1, 0, BtWord),
+    ARMSTRLDR_INST_TABLE(1, 1, 0, BtByte),
+    ARMSTRLDR_INST_TABLE(1, 1, 1, BtWord),
+    ARMSTRLDR_INST_TABLE(1, 1, 1, BtByte),
 };
 
 }   //  End of (Unnamed) namespace.
