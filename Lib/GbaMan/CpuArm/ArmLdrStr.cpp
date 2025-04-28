@@ -76,10 +76,17 @@ armLdrStrInstruction(
     }
 
     char    buf[512];
+    LpWriteBuf  ptr = manMem.getMemoryAddress(gmAddr);
+
     if ( OP == 0 ) {
         //  STR 命令。  //
         sprintf(buf, "Write to address %08x from %d (%08x)",
                 gmAddr, rd, cpuRegs[rd].dw);
+        if ( B == 0 ) {
+            *(pointer_cast<BtByte *>(ptr)) = static_cast<BtByte>(cpuRegs[rd].dw);
+        } else {
+            *(pointer_cast<BtWord *>(ptr)) = static_cast<BtWord>(cpuRegs[rd].dw);
+        }
     } else {
         //  LDR 命令。  //
         sprintf(buf, "Read from address %08x to %d",
@@ -168,7 +175,8 @@ CpuArm::execLdrStrInstruction(
         return ( InstExecResult::UNDEFINED_OPECODE );
     }
 
-    return  (* pfInst)(opeCode, this->m_cpuRegs, this->m_manMem, this->m_cpuRegs[16].dw);
+    return  (* pfInst)(
+            opeCode, this->m_cpuRegs, this->m_manMem, this->m_cpuRegs[16].dw);
 }
 
 }   //  End of namespace  GbaMan
