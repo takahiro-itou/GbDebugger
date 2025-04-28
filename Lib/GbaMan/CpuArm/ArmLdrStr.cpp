@@ -63,13 +63,9 @@ armLdrStrInstruction(
     }
 
     //  U フラグ (BIT 23)   //
-    if ( U == 0 ) {
-        //  オフセットはマイナス。  //
-        ofs = - ofs;
-    }
+    ofs *= U;
 
     GuestMemoryAddress  gmAddr  = cpuRegs[rn].dw;
-
     if ( P == 1 ) {
         //  PRE.    //
         gmAddr  += ofs;
@@ -129,23 +125,23 @@ armLdrStrInstruction(
 
 CONSTEXPR_VAR   FnLdrStrInst
 g_armLdrStrInstTable[256] = {
-    ARMSTRLDR_INST_TABLE(0, 0, 0, BtWord),
-    ARMSTRLDR_INST_TABLE(0, 0, 0, BtByte),
-    ARMSTRLDR_INST_TABLE(0, 0, 1, BtWord),
-    ARMSTRLDR_INST_TABLE(0, 0, 1, BtByte),
-    ARMSTRLDR_INST_TABLE(0, 1, 0, BtWord),
-    ARMSTRLDR_INST_TABLE(0, 1, 0, BtByte),
-    ARMSTRLDR_INST_TABLE(0, 1, 1, BtWord),
-    ARMSTRLDR_INST_TABLE(0, 1, 1, BtByte),
+    ARMSTRLDR_INST_TABLE(0, 0, -1, BtWord),
+    ARMSTRLDR_INST_TABLE(0, 0, -1, BtByte),
+    ARMSTRLDR_INST_TABLE(0, 0,  1, BtWord),
+    ARMSTRLDR_INST_TABLE(0, 0,  1, BtByte),
+    ARMSTRLDR_INST_TABLE(0, 1, -1, BtWord),
+    ARMSTRLDR_INST_TABLE(0, 1, -1, BtByte),
+    ARMSTRLDR_INST_TABLE(0, 1,  1, BtWord),
+    ARMSTRLDR_INST_TABLE(0, 1,  1, BtByte),
 
-    ARMSTRLDR_INST_TABLE(1, 0, 0, BtWord),
-    ARMSTRLDR_INST_TABLE(1, 0, 0, BtByte),
-    ARMSTRLDR_INST_TABLE(1, 0, 1, BtWord),
-    ARMSTRLDR_INST_TABLE(1, 0, 1, BtByte),
-    ARMSTRLDR_INST_TABLE(1, 1, 0, BtWord),
-    ARMSTRLDR_INST_TABLE(1, 1, 0, BtByte),
-    ARMSTRLDR_INST_TABLE(1, 1, 1, BtWord),
-    ARMSTRLDR_INST_TABLE(1, 1, 1, BtByte),
+    ARMSTRLDR_INST_TABLE(1, 0, -1, BtWord),
+    ARMSTRLDR_INST_TABLE(1, 0, -1, BtByte),
+    ARMSTRLDR_INST_TABLE(1, 0,  1, BtWord),
+    ARMSTRLDR_INST_TABLE(1, 0,  1, BtByte),
+    ARMSTRLDR_INST_TABLE(1, 1, -1, BtWord),
+    ARMSTRLDR_INST_TABLE(1, 1, -1, BtByte),
+    ARMSTRLDR_INST_TABLE(1, 1,  1, BtWord),
+    ARMSTRLDR_INST_TABLE(1, 1,  1, BtByte),
 };
 
 }   //  End of (Unnamed) namespace.
