@@ -82,7 +82,7 @@ armLdrStrInstruction(
         //  STR 命令。  //
         sprintf(buf, "Write to address %08x from %d (%08x)",
                 gmAddr, rd, cpuRegs[rd].dw);
-        if ( B == 0 ) {
+        if ( B == 1 ) {
             *(pointer_cast<BtByte *>(ptr)) = static_cast<BtByte>(cpuRegs[rd].dw);
         } else {
             *(pointer_cast<BtWord *>(ptr)) = static_cast<BtWord>(cpuRegs[rd].dw);
@@ -91,6 +91,11 @@ armLdrStrInstruction(
         //  LDR 命令。  //
         sprintf(buf, "Read from address %08x to %d",
                 gmAddr, rd);
+        if ( B == 1 ) {
+            cpuRegs[rd].dw  = *(pointer_cast<BtByte *>(ptr));
+        } else {
+            cpuRegs[rd].dw  = *(pointer_cast<BtWord *>(ptr));
+        }
     }
     std::cerr   <<  buf <<  std::endl;
 
