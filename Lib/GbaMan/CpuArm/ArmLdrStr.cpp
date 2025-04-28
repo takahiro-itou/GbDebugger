@@ -76,13 +76,13 @@ armLdrStrInstruction(
 
     if ( OP == 0 ) {
         //  STR 命令。  //
-        sprintf(buf, "Write to address %08x from %d (%08x)",
+        sprintf(buf, "Write to address %08x from R%d (%08x)",
                 gmAddr, rd, cpuRegs[rd].dw);
         *( pointer_cast<B *>(ptr) ) = static_cast<B>(cpuRegs[rd].dw);
     } else {
         //  LDR 命令。  //
         cpuRegs[rd].dw  = *( pointer_cast<B *>(ptr) );
-        sprintf(buf, "Read from address %08x to %d (%08x)",
+        sprintf(buf, "Read from address %08x to R%d (%08x)",
                 gmAddr, rd, cpuRegs[rd].dw);
     }
     std::cerr   <<  buf <<  std::endl;
