@@ -140,6 +140,8 @@ DECLARE_STRICT_TYPE(uint32_t,   OpeCode);
 **    レジスタの値型。
 **/
 
+DECLARE_STRICT_TYPE(uint32_t,   BtWord);
+
 DECLARE_STRICT_TYPE(uint32_t,   RegType);
 
 //----------------------------------------------------------------
