@@ -109,7 +109,7 @@ BaseCpuCore::doHardReset()
     }
     this->m_nextPC  = 0x08000000;
 
-    prefetchAll();
+    prefetchAutoAll();
     this->m_cpuRegs[15].dw  = this->m_nextPC + 4;
 
     return ( ErrCode::SUCCESS );
@@ -166,17 +166,14 @@ BaseCpuCore::printRegisters(
 //
 
 void
-BaseCpuCore::prefetchAll()
+BaseCpuCore::prefetchAutoAll()
 {
-}
-
-//----------------------------------------------------------------
-//    次の命令をプリフェッチする。
-//
-
-void
-BaseCpuCore::prefetchNext()
-{
+    const   LpcReadBuf  ptr = this->m_manMem.getMemoryAddress(this->m_nextPC);
+    if ( this->m_thumbState ) {
+        prefetchAll<uint16_t>(static_cast<const uint16_t *>(ptr));
+    } else {
+        prefetchAll<OpeCode>(static_cast<const OpeCode *>(ptr));
+    }
 }
 
 }   //  End of namespace  GbaMan
