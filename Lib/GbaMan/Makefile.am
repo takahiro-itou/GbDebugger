@@ -28,6 +28,7 @@ library_source_files        +=  \
         GbaManager.cpp                 \
         MemoryManager.cpp              \
         CpuArm/ArmALU.cpp              \
+        CpuArm/ArmBranch.cpp           \
         CpuArm/ArmPsr.cpp              \
         CpuArm/ArmStrLdr.cpp           \
         CpuArm/CpuArm.cpp              \
