@@ -252,6 +252,9 @@ private:
     /**   プリフェッチ。        **/
     OpeCode                 m_prefOpeCodes[2];
 
+    /**   現在のモード。        **/
+    RegType                 m_thumbState;
+
     /**   命令テーブル。        **/
     static  const   FnInst  s_armInstTable[4096];
 

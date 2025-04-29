@@ -15,7 +15,7 @@
 /**
 **      An Implementation of Branch Instructions.
 **
-**      @file       GbaMan/ArmBranchcpp
+**      @file       GbaMan/ArmBranch.cpp
 **/
 
 #include    "CpuArm.h"
@@ -33,6 +33,37 @@ namespace  {
 //
 //    Branch  Instructions.
 //
+
+//----------------------------------------------------------------
+//
+//    BX  命令
+//    cccc_0001_0010_1111_1111_1111_0001_xxxx (121)
+//
+
+GBD_REGPARM     InstExecResult
+CpuArm::execArm121_BX(
+        const  OpeCode  opeCode)
+{
+    if ( UNLIKELY((opeCode & 0x0FFFFFF0) != 0x012FFF10) ) {
+        return ( InstExecResult::UNDEFINED_OPECODE );
+    }
+
+    const  OpeCode  rn  = (opeCode & 0x0F);
+    const  RegType  dx  = (this->m_cpuRegs[rn].dw);
+
+    this->m_thumbState  = (dx & 1) << 5;
+    if ( this->m_thumbState ) {
+        //  ARM モード。    //
+        this->m_nextPC  = dx & 0xFFFFFFFC;
+        this->m_cpuRegs[15].dw  = (this->m_nextPC + 4);
+    } else {
+        //  THUMB モード。  //
+        this->m_nextPC  = dx & 0xFFFFFFFE;
+        this->m_cpuRegs[15].dw  = (this->m_nextPC + 2);
+    }
+
+    return ( InstExecResult::SUCCESS_CONTINUE );
+}
 
 //----------------------------------------------------------------
 //
