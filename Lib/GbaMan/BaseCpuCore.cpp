@@ -24,6 +24,7 @@
 
 #include    "GbDebugger/Common/DebuggerUtils.h"
 
+#include    <cstring>
 #include    <iostream>
 #include    <ostream>
 
@@ -118,6 +119,18 @@ BaseCpuCore::doHardReset()
 }
 
 //----------------------------------------------------------------
+//    レジスタの内容をコピーする。
+//
+
+ErrCode
+BaseCpuCore::getRegisters(
+        RegBank  &copyBuf)  const
+{
+    memcpy(copyBuf, this->m_cpuRegs, sizeof(copyBuf));
+    return ( ErrCode::SUCCESS );
+}
+
+//----------------------------------------------------------------
 //    レジスタの内容をダンプする。
 //
 
@@ -141,6 +154,18 @@ BaseCpuCore::printRegisters(
     outStr  <<  buf;
 
     return ( outStr );
+}
+
+//----------------------------------------------------------------
+//    レジスタの内容を設定する。
+//
+
+ErrCode
+BaseCpuCore::setgetRegisters(
+        const  RegBank  &cpuRegs)
+{
+    memcpy(this->m_cpuRegs, cpuRegs, sizeof(cpuRegs));
+    return ( ErrCode::SUCCESS );
 }
 
 //========================================================================
