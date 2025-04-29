@@ -55,7 +55,8 @@ namespace  {
 GbaManager::GbaManager()
     : m_manMem(),
       m_cpuArm(nullptr),
-      m_regs()
+      m_regs(),
+      m_cpuMode(0)
 {
     this->m_cpuArm  = new CpuArm(*this, this->m_manMem);
 }
@@ -227,6 +228,14 @@ ErrCode
 GbaManager::changeCpuMode(
         const  RegType  thumbState)
 {
+    //  現在のモードの状態を保存する。  //
+
+    if ( (this->m_cpuMode = (thumbState & CPSR::FLAG_T)) ) {
+        //  THUMB モード。  //
+    } else {
+        //  ARM モード。    //
+    }
+
     return ( ErrCode::SUCCESS );
 }
 

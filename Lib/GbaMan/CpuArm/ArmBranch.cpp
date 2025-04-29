@@ -20,6 +20,8 @@
 
 #include    "CpuArm.h"
 
+#include    "GbDebugger/GbaMan/GbaManager.h"
+
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
@@ -51,6 +53,9 @@ CpuArm::execArm121_BX(
     const  OpeCode  rn  = (opeCode & 0x0F);
     const  RegType  dx  = (this->m_cpuRegs[rn].dw);
 
+#if 1
+    this->m_manGba.changeCpuMode((dx << 5) & CPSR::FLAG_T);
+#else
     this->m_cpuMode = (dx & 1) << 5;
     if ( this->m_cpuMode ) {
         //  ARM モード。    //
@@ -61,6 +66,7 @@ CpuArm::execArm121_BX(
         this->m_nextPC  = dx & 0xFFFFFFFE;
         this->m_cpuRegs[15].dw  = (this->m_nextPC + 2);
     }
+#endif
 
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
