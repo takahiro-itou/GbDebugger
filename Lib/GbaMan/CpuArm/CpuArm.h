@@ -184,6 +184,10 @@ private:
             const  OpeCode  opeCode);
 
     GBD_REGPARM     InstExecResult
+    execArm121_BX(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
     execArm140_MsrSpsr(
             const  OpeCode  opeCode);
 
