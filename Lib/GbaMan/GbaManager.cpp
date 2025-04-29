@@ -219,6 +219,17 @@ GbaManager::printRegisters(
 //    Public Member Functions.
 //
 
+//----------------------------------------------------------------
+//    CPU モードを切り替える。
+//
+
+ErrCode
+GbaManager::changeCpuMode(
+        const  RegType  thumbState)
+{
+    return ( ErrCode::SUCCESS );
+}
+
 //========================================================================
 //
 //    Accessors.
