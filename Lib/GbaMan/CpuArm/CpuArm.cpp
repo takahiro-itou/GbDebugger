@@ -35,11 +35,6 @@ typedef     GBD_REGPARM     int (* G_FnInst)(OpeCode opeCode);
 
 namespace  {
 
-const char * regNames[16] = {
-    "R0" , "R1" , "R2" , "R3" , "R4" , "R5", "R6", "R7",
-    "R8" , "R9" , "R10", "R11", "R12", "SP", "LR", "PC"
-};
-
 /**
 **    条件判定用のテーブル。
 **
@@ -114,70 +109,6 @@ CpuArm::~CpuArm()
 //    Public Member Functions (Implement Pure Virtual).
 //
 
-//========================================================================
-//
-//    Public Member Functions (Overrides).
-//
-
-//========================================================================
-//
-//    Public Member Functions (Pure Virtual Functions).
-//
-
-//========================================================================
-//
-//    Public Member Functions (Virtual Functions).
-//
-
-//----------------------------------------------------------------
-//    レジスタをリセットする。
-//
-
-ErrCode
-CpuArm::doHardReset()
-{
-    for ( int i = 0; i < 48; ++ i ) {
-        this->m_cpuRegs[ i].dw  = 0x00000000;
-    }
-    this->m_nextPC  = 0x08000000;
-
-    prefetchAll();
-    this->m_cpuRegs[15].dw  = this->m_nextPC + 4;
-
-    return ( ErrCode::SUCCESS );
-}
-
-//----------------------------------------------------------------
-//    レジスタの内容をダンプする。
-//
-
-std::ostream  &
-CpuArm::printRegisters(
-        std::ostream  & outStr)  const
-{
-    char    buf[256];
-
-    for ( int i = 0; i < 16; ++ i ) {
-        sprintf(buf, "%4s: %08x ", regNames[i], this->m_cpuRegs[i].dw);
-        outStr  <<  buf;
-        if ( (i & 3) == 3 ) {
-            outStr  <<  std::endl;
-        }
-    }
-
-    sprintf(buf, "CPSR: %08x ", this->m_cpuRegs[16].dw);
-    outStr  <<  buf;
-    sprintf(buf, "Next: %08x\n", this->m_nextPC);
-    outStr  <<  buf;
-
-    return ( outStr );
-}
-
-//========================================================================
-//
-//    Public Member Functions.
-//
-
 //----------------------------------------------------------------
 //    現在の命令を実行する。
 //
@@ -224,6 +155,26 @@ CpuArm::executeNextInst()
 
     return ( InstExecResult::SUCCESS_BREAKPOINT );
 }
+
+//========================================================================
+//
+//    Public Member Functions (Overrides).
+//
+
+//========================================================================
+//
+//    Public Member Functions (Pure Virtual Functions).
+//
+
+//========================================================================
+//
+//    Public Member Functions (Virtual Functions).
+//
+
+//========================================================================
+//
+//    Public Member Functions.
+//
 
 //========================================================================
 //
