@@ -106,7 +106,7 @@ BaseCpuCore::doHardReset()
 {
     this->m_cpuMode = 0;
 
-    for ( int i = 0; i < 48; ++ i ) {
+    for ( int i = 0; i < RegIdx::NUM_REGISTERS; ++ i ) {
         this->m_cpuRegs[ i].dw  = 0x00000000;
     }
     this->m_nextPC  = 0x08000000;

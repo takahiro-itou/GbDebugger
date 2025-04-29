@@ -62,6 +62,73 @@ enum class  InstExecResult
 
 //========================================================================
 //
+//    Register Banks.
+//
+
+struct  RegIdx  {
+    enum  {
+        //  通常のレジスタ群。  //
+        R0      = 0,
+        R1      = 1,
+        R2      = 2,
+        R3      = 3,
+        R4      = 4,
+        R5      = 5,
+        R6      = 6,
+        R7      = 7,
+        R8      = 8,
+        R9      = 9,
+        R10     = 10,
+        R11     = 11,
+        R12     = 12,
+        R13     = 13,
+        R14     = 14,
+        PC      = 15,
+        CPSR    = 16,
+
+        //  FIQ バンク。    //
+        R8_fiq  = 17,
+        R8_usr  = 18,
+        R9_fiq  = 19,
+        R9_usr  = 20,
+        R10fiq  = 21,
+        R10usr  = 22,
+        R11fiq  = 23,
+        R11usr  = 24,
+        R12fiq  = 25,
+        R12usr  = 26,
+
+        //  R13 R14 バンク  //
+        R13fiq  = 27,
+        R14fiq  = 28,
+        R13svc  = 29,
+        R14svc  = 30,
+        R13abt  = 31,
+        R14abt  = 32,
+        R13irq  = 33,
+        R14irq  = 34,
+        R13und  = 35,
+        R14und  = 36,
+        R13usr  = 37,
+        R14usr  = 38,
+
+        //  SPSR バンク。   //
+        SPSRfiq = 39,
+        SPSRsvc = 40,
+        SPSRabt = 41,
+        SPSRirq = 42,
+        SPSRund = 43,
+        SPSRusr = 44,
+
+        NUM_REGISTERS   = 45,
+    };
+};
+
+typedef     RegPair     RegBank[RegIdx::NUM_REGISTERS];
+
+
+//========================================================================
+//
 //    CPSR (Flag) Register.
 //
 

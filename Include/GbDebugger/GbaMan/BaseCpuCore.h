@@ -191,7 +191,7 @@ protected:
     MemoryManager  &        m_manMem;
 
     /**   レジスタ。            **/
-    RegPair                 m_cpuRegs[85];
+    RegBank                 m_cpuRegs;
 
     /**   次の命令のアドレス。  **/
     GuestMemoryAddress      m_nextPC;
