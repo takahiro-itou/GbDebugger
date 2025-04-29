@@ -161,7 +161,7 @@ BaseCpuCore::printRegisters(
 //
 
 ErrCode
-BaseCpuCore::setgetRegisters(
+BaseCpuCore::setRegisters(
         const  RegBank  &cpuRegs)
 {
     memcpy(this->m_cpuRegs, cpuRegs, sizeof(cpuRegs));

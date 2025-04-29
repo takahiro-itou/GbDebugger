@@ -145,7 +145,7 @@ public:
     **      -   正常終了の場合は、ゼロを返す。
     **/
     virtual  ErrCode
-    setgetRegisters(
+    setRegisters(
             const  RegBank  &cpuRegs);
 
 //========================================================================
