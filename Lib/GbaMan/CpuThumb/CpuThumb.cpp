@@ -44,7 +44,10 @@ namespace  {
 //  （デフォルトコンストラクタ）。
 //
 
-CpuThumb::CpuThumb()
+CpuThumb::CpuThumb(
+        GbaManager    & manGba,
+        MemoryManager & manMem)
+    : Super(manGba, manMem)
 {
 }
 
@@ -61,6 +64,16 @@ CpuThumb::~CpuThumb()
 //
 //    Public Member Functions (Implement Pure Virtual).
 //
+
+//----------------------------------------------------------------
+//    現在の命令を実行する。
+//
+
+InstExecResult
+CpuThumb::executeNextInst()
+{
+    return ( InstExecResult::UNDEFINED_OPECODE );
+}
 
 //========================================================================
 //

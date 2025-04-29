@@ -61,7 +61,7 @@ GbaManager::GbaManager()
       m_cpuMode(0)
 {
     this->m_cpuMod0 = new CpuArm(*this, this->m_manMem);
-    this->m_cpuMod1 = new CpuThumb();
+    this->m_cpuMod1 = new CpuThumb(*this, this->m_manMem);
     this->m_cpuCur  = this->m_cpuMod0;
 }
 
