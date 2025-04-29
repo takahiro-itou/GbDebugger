@@ -196,7 +196,7 @@ protected:
     OpeCode                 m_prefOpeCodes[2];
 
     /**   現在のモード。        **/
-    RegType                 m_thumbState;
+    RegType                 m_cpuMode;
 
 //========================================================================
 //

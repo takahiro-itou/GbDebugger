@@ -51,8 +51,8 @@ CpuArm::execArm121_BX(
     const  OpeCode  rn  = (opeCode & 0x0F);
     const  RegType  dx  = (this->m_cpuRegs[rn].dw);
 
-    this->m_thumbState  = (dx & 1) << 5;
-    if ( this->m_thumbState ) {
+    this->m_cpuMode = (dx & 1) << 5;
+    if ( this->m_cpuMode ) {
         //  ARM モード。    //
         this->m_nextPC  = dx & 0xFFFFFFFC;
         this->m_cpuRegs[15].dw  = (this->m_nextPC + 4);

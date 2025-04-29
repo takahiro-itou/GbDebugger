@@ -62,7 +62,7 @@ BaseCpuCore::BaseCpuCore(
       m_cpuRegs(),
       m_nextPC (),
       m_prefOpeCodes(),
-      m_thumbState(0)
+      m_cpuMode(0)
 {
 }
 
@@ -102,7 +102,7 @@ BaseCpuCore::~BaseCpuCore()
 ErrCode
 BaseCpuCore::doHardReset()
 {
-    this->m_thumbState  = 0;
+    this->m_cpuMode = 0;
 
     for ( int i = 0; i < 48; ++ i ) {
         this->m_cpuRegs[ i].dw  = 0x00000000;
@@ -169,7 +169,7 @@ void
 BaseCpuCore::prefetchAutoAll()
 {
     const   LpcReadBuf  ptr = this->m_manMem.getMemoryAddress(this->m_nextPC);
-    if ( this->m_thumbState ) {
+    if ( LIKELY(this->m_cpuMode) ) {
         prefetchAll<uint16_t>(static_cast<const uint16_t *>(ptr));
     } else {
         prefetchAll<OpeCode>(static_cast<const OpeCode *>(ptr));
