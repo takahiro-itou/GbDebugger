@@ -25,6 +25,7 @@ extra_noinst_data_files     =
 extra_noinst_header_files   =
 
 library_source_files        +=  \
+        BaseCpuCore.cpp                \
         GbaManager.cpp                 \
         MemoryManager.cpp              \
         CpuArm/ArmALU.cpp              \
@@ -44,6 +45,7 @@ dist_noinst_data_files      +=  \
         ${extra_noinst_data_files}
 
 dist_noinst_header_files    +=  \
+        BaseCpuCore.h                  \
         CpuArm/ArmALU.h                \
         CpuArm/ArmInstTable.h          \
         CpuArm/CpuArm.h                \

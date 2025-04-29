@@ -15,6 +15,7 @@ Include (${common_cmake_dir}/BuildCommon/ConfigTarget.cmake)
 ##
 
 set(library_source_files
+       BaseCpuCore.cpp
        GbaManager.cpp
        MemoryManager.cpp
        CpuArm/ArmALU.cpp
