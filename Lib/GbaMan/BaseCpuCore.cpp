@@ -33,6 +33,11 @@ namespace  GbaMan  {
 
 namespace  {
 
+const char * regNames[16] = {
+    "R0" , "R1" , "R2" , "R3" , "R4" , "R5", "R6", "R7",
+    "R8" , "R9" , "R10", "R11", "R12", "SP", "LR", "PC"
+};
+
 }   //  End of (Unnamed) namespace.
 
 
@@ -56,7 +61,8 @@ BaseCpuCore::BaseCpuCore(
     : m_manMem(manMem),
       m_cpuRegs(),
       m_nextPC (),
-      m_prefOpeCodes()
+      m_prefOpeCodes(),
+      m_thumbState(0)
 {
 }
 
@@ -96,15 +102,17 @@ BaseCpuCore::~BaseCpuCore()
 ErrCode
 BaseCpuCore::doHardReset()
 {
-}
+    this->m_thumbState  = 0;
 
-//----------------------------------------------------------------
-//    現在の命令を実行する。
-//
+    for ( int i = 0; i < 48; ++ i ) {
+        this->m_cpuRegs[ i].dw  = 0x00000000;
+    }
+    this->m_nextPC  = 0x08000000;
 
-InstExecResult
-BaseCpuCore::executeNextInst()
-{
+    prefetchAll();
+    this->m_cpuRegs[15].dw  = this->m_nextPC + 4;
+
+    return ( ErrCode::SUCCESS );
 }
 
 //----------------------------------------------------------------
@@ -115,6 +123,22 @@ std::ostream  &
 BaseCpuCore::printRegisters(
         std::ostream  & outStr)  const
 {
+    char    buf[256];
+
+    for ( int i = 0; i < 16; ++ i ) {
+        sprintf(buf, "%4s: %08x ", regNames[i], this->m_cpuRegs[i].dw);
+        outStr  <<  buf;
+        if ( (i & 3) == 3 ) {
+            outStr  <<  std::endl;
+        }
+    }
+
+    sprintf(buf, "CPSR: %08x ", this->m_cpuRegs[16].dw);
+    outStr  <<  buf;
+    sprintf(buf, "Next: %08x\n", this->m_nextPC);
+    outStr  <<  buf;
+
+    return ( outStr );
 }
 
 //========================================================================
