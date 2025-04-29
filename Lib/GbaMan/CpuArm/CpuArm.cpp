@@ -90,8 +90,9 @@ g_condTable[16][16] = {
 //
 
 CpuArm::CpuArm(
+        GbaManager    & manGba,
         MemoryManager & manMem)
-    : Super(manMem)
+    : Super(manGba, manMem)
 {
 }
 

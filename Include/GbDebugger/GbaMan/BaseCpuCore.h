@@ -39,6 +39,7 @@ GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
 
 //  クラスの前方宣言。  //
+class   GbaManager;
 class   MemoryManager;
 
 
@@ -67,6 +68,7 @@ public:
     **
     **/
     BaseCpuCore(
+            GbaManager    & manGba,
             MemoryManager & manMem);
 
     //----------------------------------------------------------------
@@ -182,6 +184,8 @@ private:
 //    Member Variables.
 //
 protected:
+
+    GbaManager  &           m_manGba;
 
     /**   メモリマネージャ。    **/
     MemoryManager  &        m_manMem;

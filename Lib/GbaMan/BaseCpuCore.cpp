@@ -57,8 +57,10 @@ const char * regNames[16] = {
 //
 
 BaseCpuCore::BaseCpuCore(
+        GbaManager    & manGba,
         MemoryManager & manMem)
-    : m_manMem(manMem),
+    : m_manGba(manGba),
+      m_manMem(manMem),
       m_cpuRegs(),
       m_nextPC (),
       m_prefOpeCodes(),

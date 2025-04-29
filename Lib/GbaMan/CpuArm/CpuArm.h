@@ -74,6 +74,7 @@ public:
     **
     **/
     CpuArm(
+            GbaManager    & manGba,
             MemoryManager & manMem);
 
     //----------------------------------------------------------------

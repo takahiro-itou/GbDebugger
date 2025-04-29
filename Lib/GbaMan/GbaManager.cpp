@@ -57,7 +57,7 @@ GbaManager::GbaManager()
       m_cpuArm(nullptr),
       m_regs()
 {
-    this->m_cpuArm  = new CpuArm(this->m_manMem);
+    this->m_cpuArm  = new CpuArm(*this, this->m_manMem);
 }
 
 //----------------------------------------------------------------
