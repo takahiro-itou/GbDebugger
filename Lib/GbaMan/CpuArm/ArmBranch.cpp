@@ -73,23 +73,7 @@ CpuArm::execArmBxx_BL(
         const  OpeCode  opeCode)
 {
     this->m_cpuRegs[14].dw  = this->m_cpuRegs[15].dw - 4;
-
-    //  符号拡張
-    //  以下のコードと等価
-    //  ofs = (opeCode & 0x00FFFFFF);
-    //  if ( ofs & 0x00800000 ) ofs |= 0xFF000000;
-    //  ofs <<= 2;
-    int32_t ofs = (static_cast<int32_t>(opeCode & 0x00FFFFFF) << 8) >> 6;
-
-    this->m_nextPC  = this->m_cpuRegs[15].dw  += ofs;
-
-    //  プリフェッチを行う。    //
-    prefetchAll();
-
-    //  プリフェッチによりカウンタが１命令分進む。  //
-    this->m_cpuRegs[15].dw  += 4;
-
-    return ( InstExecResult::SUCCESS_CONTINUE );
+    return  execArmAxx_B(opeCode);
 }
 
 }   //  End of namespace  GbaMan
