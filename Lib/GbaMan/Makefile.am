@@ -45,7 +45,6 @@ dist_noinst_data_files      +=  \
         ${extra_noinst_data_files}
 
 dist_noinst_header_files    +=  \
-        BaseCpuCore.h                  \
         CpuArm/ArmALU.h                \
         CpuArm/ArmInstTable.h          \
         CpuArm/CpuArm.h                \
@@ -55,6 +54,7 @@ dist_noinst_header_files    +=  \
         ${extra_noinst_header_files}
 
 inclib_header_files         +=  \
+        ${inclib_source_dir}/BaseCpuCore.h         \
         ${inclib_source_dir}/CpuUtils.h            \
         ${inclib_source_dir}/GbaManager.h          \
         ${inclib_source_dir}/MemoryManager.h       \

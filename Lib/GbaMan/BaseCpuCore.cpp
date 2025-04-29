@@ -18,7 +18,7 @@
 **      @file       GbaMan/BaseCpuCore.cpp
 **/
 
-#include    "BaseCpuCore.h"
+#include    "GbDebugger/GbaMan/BaseCpuCore.h"
 
 #include    "GbDebugger/GbaMan/MemoryManager.h"
 

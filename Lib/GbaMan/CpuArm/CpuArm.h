@@ -22,7 +22,7 @@
 #    define   GBDEBUGGER_GBAMAN_INCLUDED_CPU_ARM_H
 
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_BASE_CPU_CORE_H )
-#    include    "../BaseCpuCore.h"
+#    include    "GbDebugger/GbaMan/BaseCpuCore.h"
 #endif
 
 #if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_UTILS_H )
