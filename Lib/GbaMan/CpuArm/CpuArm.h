@@ -162,17 +162,10 @@ private:
 
     //----------------------------------------------------------------
     //    命令の実行を行う関数たち。
+    //
 
     GBD_REGPARM     InstExecResult
     execALUInstruction(
-            const  OpeCode  opeCode);
-
-    GBD_REGPARM     InstExecResult
-    execArmA00_B(
-            const  OpeCode  opeCode);
-
-    GBD_REGPARM     InstExecResult
-    execLdrStrInstruction(
             const  OpeCode  opeCode);
 
     GBD_REGPARM     InstExecResult
@@ -201,6 +194,14 @@ private:
 
     GBD_REGPARM     InstExecResult
     execArm360_MrsSpsrImm(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
+    execArmA00_B(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
+    execLdrStrInstruction(
             const  OpeCode  opeCode);
 
     GBD_REGPARM     InstExecResult
