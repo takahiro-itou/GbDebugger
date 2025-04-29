@@ -96,10 +96,7 @@ g_condTable[16][16] = {
 
 CpuArm::CpuArm(
         MemoryManager & manMem)
-    : m_manMem(manMem),
-      m_cpuRegs(),
-      m_nextPC (),
-      m_prefOpeCodes()
+    : Super(manMem)
 {
 }
 

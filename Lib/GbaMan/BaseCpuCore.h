@@ -173,7 +173,7 @@ private:
 //
 //    Member Variables.
 //
-private:
+protected:
 
     /**   メモリマネージャ。    **/
     MemoryManager  &        m_manMem;

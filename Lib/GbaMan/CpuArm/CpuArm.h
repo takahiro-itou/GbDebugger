@@ -21,6 +21,10 @@
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_CPU_ARM_H )
 #    define   GBDEBUGGER_GBAMAN_INCLUDED_CPU_ARM_H
 
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_BASE_CPU_CORE_H )
+#    include    "../BaseCpuCore.h"
+#endif
+
 #if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_UTILS_H )
 #    include    "GbDebugger/Common/DebuggerUtils.h"
 #endif
@@ -38,22 +42,21 @@
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
 
-//  クラスの前方宣言。  //
-class   MemoryManager;
-
-
 //========================================================================
 //
 //    CpuArm  class.
 //
 
-class  CpuArm
+class  CpuArm : BaseCpuCore
 {
 
 //========================================================================
 //
 //    Internal Type Definitions.
 //
+private:
+
+    typedef     BaseCpuCore     Super;
 
     typedef     GBD_REGPARM     InstExecResult
     (CpuArm::* FnInst)(
@@ -239,21 +242,6 @@ private:
 //    Member Variables.
 //
 private:
-
-    /**   メモリマネージャ。    **/
-    MemoryManager  &        m_manMem;
-
-    /**   レジスタ。            **/
-    RegPair                 m_cpuRegs[85];
-
-    /**   次の命令のアドレス。  **/
-    GuestMemoryAddress      m_nextPC;
-
-    /**   プリフェッチ。        **/
-    OpeCode                 m_prefOpeCodes[2];
-
-    /**   現在のモード。        **/
-    RegType                 m_thumbState;
 
     /**   命令テーブル。        **/
     static  const   FnInst  s_armInstTable[4096];
