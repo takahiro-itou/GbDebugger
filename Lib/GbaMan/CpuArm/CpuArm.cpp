@@ -307,6 +307,7 @@ CpuArm::prefetchNext()
 #define     armSTR  &CpuArm::execLdrStrInstruction
 #define     armLDR  &CpuArm::execLdrStrInstruction
 #define     armAxx  &CpuArm::execArmAxx_B
+#define     armBxx  &CpuArm::execArmBxx_BL
 
 #define     REPEAT_16(inst)     \
     inst, inst, inst, inst, inst, inst, inst, inst,     \
@@ -399,7 +400,7 @@ CpuArm::s_armInstTable[4096] = {
     REPEAT256(arm_UI),      //  80.0 -- 8F.F
     REPEAT256(arm_UI),      //  90.0 -- 9F.F
     REPEAT256(armAxx),      //  A0.0 -- AF.F
-    REPEAT256(arm_UI),      //  B0.0 -- BF.F
+    REPEAT256(armBxx),      //  B0.0 -- BF.F
     REPEAT256(arm_UI),      //  C0.0 -- CF.F
     REPEAT256(arm_UI),      //  D0.0 -- DF.F
     REPEAT256(arm_UI),      //  E0.0 -- EF.F
