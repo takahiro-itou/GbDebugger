@@ -45,6 +45,7 @@ dist_noinst_data_files      +=  \
 
 dist_noinst_header_files    +=  \
         CpuArm/ArmALU.h                \
+        CpuArm/ArmInstTable.h          \
         CpuArm/CpuArm.h                \
         CpuArm/DisArm.h                \
         CpuThumb/CpuThumb.h            \
