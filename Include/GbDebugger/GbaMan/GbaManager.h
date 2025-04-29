@@ -43,6 +43,7 @@ GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
 
 //  クラスの前方宣言。  //
+class   BaseCpuCore;
 class   CpuArm;
 class   CpuThumb;
 
@@ -227,10 +228,11 @@ private:
     MemoryManager   m_manMem;
 
     /**   プロセッサ。  **/
-    CpuArm  *       m_cpuArm;
+    BaseCpuCore  *  m_cpuCur;
 
-    /**   レジスタ。    **/
-    RegPair         m_regs[16];
+    CpuArm  *       m_cpuMod0;
+
+    CpuThumb  *     m_cpuMod1;
 
     /**   CPU モード。  **/
     RegType         m_cpuMode;

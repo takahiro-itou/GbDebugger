@@ -22,6 +22,7 @@
 
 #include    "CpuArm/CpuArm.h"
 #include    "CpuArm/DisArm.h"
+#include    "CpuThumb/CpuThumb.h"
 
 #include    "GbDebugger/Common/DebuggerUtils.h"
 
@@ -54,11 +55,14 @@ namespace  {
 
 GbaManager::GbaManager()
     : m_manMem(),
-      m_cpuArm(nullptr),
-      m_regs(),
+      m_cpuCur (nullptr),
+      m_cpuMod0(nullptr),
+      m_cpuMod1(nullptr),
       m_cpuMode(0)
 {
-    this->m_cpuArm  = new CpuArm(*this, this->m_manMem);
+    this->m_cpuMod0 = new CpuArm(*this, this->m_manMem);
+    this->m_cpuMod1 = new CpuThumb();
+    this->m_cpuCur  = this->m_cpuMod0;
 }
 
 //----------------------------------------------------------------
@@ -68,6 +72,11 @@ GbaManager::GbaManager()
 
 GbaManager::~GbaManager()
 {
+    delete  this->m_cpuMod0;
+    this->m_cpuMod0 = nullptr;
+
+    delete  this->m_cpuMod1;
+    this->m_cpuMod1 = nullptr;
 }
 
 //========================================================================
@@ -134,7 +143,8 @@ GbaManager::disassembleThumb(
 ErrCode
 GbaManager::doHardReset()
 {
-    this->m_cpuArm->doHardReset();
+    this->m_cpuCur  = this->m_cpuMod0;
+    this->m_cpuCur->doHardReset();
 
     return ( ErrCode::SUCCESS );
 }
@@ -146,7 +156,7 @@ GbaManager::doHardReset()
 InstExecResult
 GbaManager::executeCurrentInst()
 {
-    return  this->m_cpuArm->executeNextInst();
+    return  this->m_cpuCur->executeNextInst();
 }
 
 //----------------------------------------------------------------
@@ -156,7 +166,7 @@ GbaManager::executeCurrentInst()
 GuestMemoryAddress
 GbaManager::getNextPC()  const
 {
-    return  this->m_cpuArm->getNextPC();
+    return  this->m_cpuCur->getNextPC();
 }
 
 //----------------------------------------------------------------
@@ -212,7 +222,7 @@ std::ostream  &
 GbaManager::printRegisters(
         std::ostream  & outStr)  const
 {
-    return  this->m_cpuArm->printRegisters(outStr);
+    return  this->m_cpuCur->printRegisters(outStr);
 }
 
 //========================================================================
