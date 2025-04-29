@@ -334,7 +334,7 @@ CpuArm::prefetchNext()
 #define     INST_TABLE_200_3FF(CODE1, CODE2, ALU_OP)                        \
     REPEAT_16(armALU),  REPEAT_16(armALU)
 
-#define     INST_TABLE_400_7FF(CODE1, CODE2)          \
+#define     INST_TABLE_400_7FF_STR_LDR(CODE1, CODE2)                        \
     REPEAT_16(armSTR),  REPEAT_16(armLDR)
 
 const   CpuArm::FnInst
@@ -377,23 +377,23 @@ CpuArm::s_armInstTable[4096] = {
     INST_TABLE_200_3FF(3E, 3F, MVN),        //  3E.0 -- 3F.F
 
     //  STR/LDR 命令。  //
-    INST_TABLE_400_7FF(40, 41),             //  40.0 -- 41.F
-    INST_TABLE_400_7FF(42, 43),             //  42.0 -- 43.F
-    INST_TABLE_400_7FF(44, 45),             //  44.0 -- 45.F
-    INST_TABLE_400_7FF(46, 47),             //  46.0 -- 47.F
-    INST_TABLE_400_7FF(48, 49),             //  48.0 -- 49.F
-    INST_TABLE_400_7FF(4A, 4B),             //  4A.0 -- 4B.F
-    INST_TABLE_400_7FF(4C, 4D),             //  4C.0 -- 4D.F
-    INST_TABLE_400_7FF(4E, 4F),             //  4E.0 -- 4F.F
+    INST_TABLE_400_7FF_STR_LDR(40, 41),     //  40.0 -- 41.F
+    INST_TABLE_400_7FF_STR_LDR(42, 43),     //  42.0 -- 43.F
+    INST_TABLE_400_7FF_STR_LDR(44, 45),     //  44.0 -- 45.F
+    INST_TABLE_400_7FF_STR_LDR(46, 47),     //  46.0 -- 47.F
+    INST_TABLE_400_7FF_STR_LDR(48, 49),     //  48.0 -- 49.F
+    INST_TABLE_400_7FF_STR_LDR(4A, 4B),     //  4A.0 -- 4B.F
+    INST_TABLE_400_7FF_STR_LDR(4C, 4D),     //  4C.0 -- 4D.F
+    INST_TABLE_400_7FF_STR_LDR(4E, 4F),     //  4E.0 -- 4F.F
 
-    INST_TABLE_400_7FF(50, 51),             //  50.0 -- 51.F
-    INST_TABLE_400_7FF(52, 53),             //  52.0 -- 53.F
-    INST_TABLE_400_7FF(54, 55),             //  54.0 -- 55.F
-    INST_TABLE_400_7FF(56, 57),             //  56.0 -- 57.F
-    INST_TABLE_400_7FF(58, 59),             //  58.0 -- 59.F
-    INST_TABLE_400_7FF(5A, 5B),             //  5A.0 -- 5B.F
-    INST_TABLE_400_7FF(5C, 5D),             //  5C.0 -- 5D.F
-    INST_TABLE_400_7FF(5E, 5F),             //  5E.0 -- 5F.F
+    INST_TABLE_400_7FF_STR_LDR(50, 51),     //  50.0 -- 51.F
+    INST_TABLE_400_7FF_STR_LDR(52, 53),     //  52.0 -- 53.F
+    INST_TABLE_400_7FF_STR_LDR(54, 55),     //  54.0 -- 55.F
+    INST_TABLE_400_7FF_STR_LDR(56, 57),     //  56.0 -- 57.F
+    INST_TABLE_400_7FF_STR_LDR(58, 59),     //  58.0 -- 59.F
+    INST_TABLE_400_7FF_STR_LDR(5A, 5B),     //  5A.0 -- 5B.F
+    INST_TABLE_400_7FF_STR_LDR(5C, 5D),     //  5C.0 -- 5D.F
+    INST_TABLE_400_7FF_STR_LDR(5E, 5F),     //  5E.0 -- 5F.F
 
     REPEAT256(arm_UI),      //  60.0 -- 6F.F
     REPEAT256(arm_UI),      //  70.0 -- 7F.F
