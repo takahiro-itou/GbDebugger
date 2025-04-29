@@ -72,7 +72,7 @@ GBD_REGPARM     InstExecResult
 CpuArm::execArmBxx_BL(
         const  OpeCode  opeCode)
 {
-    return ( InstExecResult::UNDEFINED_OPECODE );
+    this->m_cpuRegs[14].dw  = this->m_cpuRegs[15].dw - 4;
 
     //  符号拡張
     //  以下のコードと等価
