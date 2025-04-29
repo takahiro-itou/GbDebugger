@@ -28,8 +28,8 @@ library_source_files        +=  \
         GbaManager.cpp                 \
         MemoryManager.cpp              \
         CpuArm/ArmALU.cpp              \
-        CpuArm/ArmLdrStr.cpp           \
         CpuArm/ArmPsr.cpp              \
+        CpuArm/ArmStrLdr.cpp           \
         CpuArm/CpuArm.cpp              \
         CpuArm/DisArm.cpp              \
         CpuThumb/CpuThumb.cpp          \
