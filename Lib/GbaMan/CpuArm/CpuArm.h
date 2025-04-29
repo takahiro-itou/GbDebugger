@@ -201,6 +201,10 @@ private:
             const  OpeCode  opeCode);
 
     GBD_REGPARM     InstExecResult
+    execArmBxx_BL(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
     execLdrStrInstruction(
             const  OpeCode  opeCode);
 
@@ -220,7 +224,7 @@ private:
     /**   命令をプリフェッチする。
     **
     **/
-    inline  void
+    void
     prefetchAll();
 
     //----------------------------------------------------------------

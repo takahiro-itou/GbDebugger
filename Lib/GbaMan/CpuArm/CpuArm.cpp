@@ -267,7 +267,7 @@ CpuArm::executeInst(
 //    命令をプリフェッチする。
 //
 
-inline  void
+void
 CpuArm::prefetchAll()
 {
     this->m_prefOpeCodes[0] =
