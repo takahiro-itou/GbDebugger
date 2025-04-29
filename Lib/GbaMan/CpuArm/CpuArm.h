@@ -197,7 +197,7 @@ private:
             const  OpeCode  opeCode);
 
     GBD_REGPARM     InstExecResult
-    execArmA00_B(
+    execArmAxx_B(
             const  OpeCode  opeCode);
 
     GBD_REGPARM     InstExecResult

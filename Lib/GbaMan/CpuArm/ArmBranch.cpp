@@ -41,7 +41,7 @@ namespace  {
 //
 
 GBD_REGPARM     InstExecResult
-CpuArm::execArmA00_B(
+CpuArm::execArmAxx_B(
         const  OpeCode  opeCode)
 {
     //  符号拡張
