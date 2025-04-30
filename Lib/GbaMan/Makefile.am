@@ -26,6 +26,7 @@ extra_noinst_header_files   =
 
 library_source_files        +=  \
         BaseCpuCore.cpp                \
+        BaseDisCpu.cpp                 \
         GbaManager.cpp                 \
         MemoryManager.cpp              \
         CpuArm/ArmALU.cpp              \
@@ -55,6 +56,7 @@ dist_noinst_header_files    +=  \
 
 inclib_header_files         +=  \
         ${inclib_source_dir}/BaseCpuCore.h         \
+        ${inclib_source_dir}/BaseDisCpu.h          \
         ${inclib_source_dir}/CpuUtils.h            \
         ${inclib_source_dir}/GbaManager.h          \
         ${inclib_source_dir}/MemoryManager.h       \
