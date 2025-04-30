@@ -166,7 +166,7 @@ public:
     virtual  std::ostream  &
     disassembleArm(
             std::ostream       &outStr,
-            GuestMemoryAddress  gmAddr);
+            GuestMemoryAddress  gmAddr)  const;
 
     //----------------------------------------------------------------
     /**   ニーモニックを表示する。
@@ -184,7 +184,7 @@ public:
     virtual  std::ostream  &
     disassembleThumb(
             std::ostream       &outStr,
-            GuestMemoryAddress  gmAddr);
+            GuestMemoryAddress  gmAddr)  const;
 
 //========================================================================
 //

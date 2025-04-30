@@ -205,7 +205,7 @@ GbaManager::printRegisters(
 std::ostream  &
 GbaManager::disassembleArm(
         std::ostream       &outStr,
-        GuestMemoryAddress  gmAddr)
+        GuestMemoryAddress  gmAddr)  const
 {
     const  OpeCode  opeCode = readMemory<OpeCode>(gmAddr);
 
@@ -222,7 +222,10 @@ GbaManager::writeMnemonicCurrent(
         std::ostream       &outStr,
         GuestMemoryAddress  gmAddr)  const
 {
-    return ( outStr );
+    if ( this->m_cpuMode ) {
+        return  disassembleThumb(outStr, gmAddr);
+    }
+    return  disassembleArm(outStr, gmAddr);
 }
 
 //----------------------------------------------------------------
@@ -232,8 +235,9 @@ GbaManager::writeMnemonicCurrent(
 std::ostream  &
 GbaManager::disassembleThumb(
         std::ostream       &outStr,
-        GuestMemoryAddress  gmAddr)
+        GuestMemoryAddress  gmAddr)  const
 {
+    outStr  <<  "disassembleThumb Not Implemented." <<  std::endl;
     return ( outStr );
 }
 
