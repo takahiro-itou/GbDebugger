@@ -99,6 +99,7 @@
 
 #define     arm100  &CpuArm::execArm100_MsrCpsr
 #define     arm120  &CpuArm::execArm120_MrsCpsrReg
+#define     arm121  &CpuArm::execArm121_BX
 #define     arm140  &CpuArm::execArm140_MsrSpsr
 #define     arm160  &CpuArm::execArm160_MrsSpsrReg
 
@@ -197,7 +198,13 @@ CpuArm::s_armInstTable[4096] = {
 
     //  10.0 -- 11.F
     INST_TABLE_ALU_TEST(10, 11, TST),       //  10.0 -- 11.F
-    INST_TABLE_ALU_TEST(12, 13, TEQ),       //  12.0 -- 13.F
+
+//    INST_TABLE_ALU_TEST(12, 13, TEQ),       //  12.0 -- 13.F
+    arm120, arm121, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
+    arm_UI, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
+    armALU, armALU, armALU, armALU,     armALU, armALU, armALU, armALU,
+    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+
     INST_TABLE_ALU_TEST(14, 15, CMP),       //  14.0 -- 15.F
     INST_TABLE_ALU_TEST(16, 17, CMN),       //  16.0 -- 17.F
     INST_TABLE_000_1FF_ALU(18, 19, ORR),    //  18.0 -- 19.F
