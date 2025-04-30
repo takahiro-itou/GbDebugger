@@ -239,12 +239,18 @@ GbaManager::changeCpuMode(
         const  RegType  thumbState)
 {
     //  現在のモードの状態を保存する。  //
+    RegBank regs;
+    this->m_cpuCur->getRegisters(regs);
 
     if ( (this->m_cpuMode = (thumbState & CPSR::FLAG_T)) ) {
         //  THUMB モード。  //
+        this->m_cpuCur  = this->m_cpuMod1;
     } else {
         //  ARM モード。    //
+        this->m_cpuCur  = this->m_cpuMod0;
     }
+
+    this->m_cpuCur->setRegisters(regs);
 
     return ( ErrCode::SUCCESS );
 }
