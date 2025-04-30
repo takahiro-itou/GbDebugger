@@ -120,7 +120,8 @@ struct  RegIdx  {
         SPSRund = 43,
         SPSRusr = 44,
 
-        NUM_REGISTERS   = 45,
+        NEXT_PC = 45,
+        NUM_REGISTERS   = 46,
     };
 };
 
