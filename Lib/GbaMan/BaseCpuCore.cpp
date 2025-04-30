@@ -127,6 +127,7 @@ BaseCpuCore::getRegisters(
         RegBank  &copyBuf)  const
 {
     memcpy(copyBuf, this->m_cpuRegs, sizeof(copyBuf));
+    copyBuf[RegIdx::NEXT_PC].dw = this->m_nextPC;
     return ( ErrCode::SUCCESS );
 }
 
@@ -165,6 +166,10 @@ BaseCpuCore::setRegisters(
         const  RegBank  &cpuRegs)
 {
     memcpy(this->m_cpuRegs, cpuRegs, sizeof(cpuRegs));
+
+    this->m_nextPC  = cpuRegs[RegIdx::NEXT_PC].dw;
+    prefetchAutoAll();
+
     return ( ErrCode::SUCCESS );
 }
 
