@@ -114,24 +114,6 @@ public:
     closeInstance();
 
     //----------------------------------------------------------------
-    /**   ニーモニックを表示する。
-    **
-    **/
-    virtual  std::ostream  &
-    disassembleArm(
-            std::ostream       &outStr,
-            GuestMemoryAddress  gmAddr);
-
-    //----------------------------------------------------------------
-    /**   ニーモニックを表示する。
-    **
-    **/
-    virtual  std::ostream  &
-    disassembleThumb(
-            std::ostream       &outStr,
-            GuestMemoryAddress  gmAddr);
-
-    //----------------------------------------------------------------
     /**   リセットを行う。
     **
     **  @return     エラーコードを返す。
@@ -176,6 +158,33 @@ public:
     virtual  std::ostream  &
     printRegisters(
             std::ostream  & outStr)  const;
+
+    //----------------------------------------------------------------
+    /**   ニーモニックを表示する。
+    **
+    **/
+    virtual  std::ostream  &
+    disassembleArm(
+            std::ostream       &outStr,
+            GuestMemoryAddress  gmAddr);
+
+    //----------------------------------------------------------------
+    /**   ニーモニックを表示する。
+    **
+    **/
+    virtual  std::ostream  &
+    writeMnemonicCurrent(
+            std::ostream       &outStr,
+            GuestMemoryAddress  gmAddr)  const;
+
+    //----------------------------------------------------------------
+    /**   ニーモニックを表示する。
+    **
+    **/
+    virtual  std::ostream  &
+    disassembleThumb(
+            std::ostream       &outStr,
+            GuestMemoryAddress  gmAddr);
 
 //========================================================================
 //

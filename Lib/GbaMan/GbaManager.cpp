@@ -110,33 +110,6 @@ GbaManager::closeInstance()
 }
 
 //----------------------------------------------------------------
-//    ニーモニックを表示する。
-//
-
-std::ostream  &
-GbaManager::disassembleArm(
-        std::ostream       &outStr,
-        GuestMemoryAddress  gmAddr)
-{
-    const  OpeCode  opeCode = readMemory<OpeCode>(gmAddr);
-
-    DisArm  dis;
-    return  dis.writeMnemonic(outStr, gmAddr, opeCode);
-}
-
-//----------------------------------------------------------------
-//    ニーモニックを表示する。
-//
-
-std::ostream  &
-GbaManager::disassembleThumb(
-        std::ostream       &outStr,
-        GuestMemoryAddress  gmAddr)
-{
-    return ( outStr );
-}
-
-//----------------------------------------------------------------
 //    リセットを行う。
 //
 
@@ -223,6 +196,45 @@ GbaManager::printRegisters(
         std::ostream  & outStr)  const
 {
     return  this->m_cpuCur->printRegisters(outStr);
+}
+
+//----------------------------------------------------------------
+//    ニーモニックを表示する。
+//
+
+std::ostream  &
+GbaManager::disassembleArm(
+        std::ostream       &outStr,
+        GuestMemoryAddress  gmAddr)
+{
+    const  OpeCode  opeCode = readMemory<OpeCode>(gmAddr);
+
+    DisArm  dis;
+    return  dis.writeMnemonic(outStr, gmAddr, opeCode);
+}
+
+//----------------------------------------------------------------
+//    ニーモニックを表示する。
+//
+
+std::ostream  &
+GbaManager::writeMnemonicCurrent(
+        std::ostream       &outStr,
+        GuestMemoryAddress  gmAddr)  const
+{
+    return ( outStr );
+}
+
+//----------------------------------------------------------------
+//    ニーモニックを表示する。
+//
+
+std::ostream  &
+GbaManager::disassembleThumb(
+        std::ostream       &outStr,
+        GuestMemoryAddress  gmAddr)
+{
+    return ( outStr );
 }
 
 //========================================================================
