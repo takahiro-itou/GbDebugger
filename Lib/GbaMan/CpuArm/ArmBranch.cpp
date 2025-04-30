@@ -52,21 +52,19 @@ CpuArm::execArm121_BX(
 
     const  OpeCode  rn  = (opeCode & 0x0F);
     const  RegType  dx  = (this->m_cpuRegs[rn].dw);
+    const  RegType  cm  = (dx << 5) & CPSR::FLAG_T;
 
-#if 1
-    this->m_manGba.changeCpuMode((dx << 5) & CPSR::FLAG_T);
-#else
-    this->m_cpuMode = (dx & 1) << 5;
-    if ( this->m_cpuMode ) {
-        //  ARM モード。    //
-        this->m_nextPC  = dx & 0xFFFFFFFC;
-        this->m_cpuRegs[15].dw  = (this->m_nextPC + 4);
-    } else {
+    if ( cm ) {
         //  THUMB モード。  //
-        this->m_nextPC  = dx & 0xFFFFFFFE;
-        this->m_cpuRegs[15].dw  = (this->m_nextPC + 2);
+        this->m_nextPC  = dx & ~1;
+        this->m_cpuRegs[RegIdx::PC].dw  = (this->m_nextPC + 2);
+    } else {
+        this->m_nextPC  = dx & ~3;
+        this->m_cpuRegs[RegIdx::PC].dw  = (this->m_nextPC + 4);
     }
-#endif
+    this->m_cpuRegs[RegIdx::CPSR].dw  &= ~CPSR::FLAG_T;
+    this->m_cpuRegs[RegIdx::CPSR].dw  |=  cm;
+    this->m_manGba.changeCpuMode(cm);
 
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
