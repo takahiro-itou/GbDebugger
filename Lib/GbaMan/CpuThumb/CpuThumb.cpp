@@ -20,6 +20,8 @@
 
 #include    "CpuThumb.h"
 
+#include    <iostream>
+
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
@@ -49,6 +51,7 @@ CpuThumb::CpuThumb(
         MemoryManager & manMem)
     : Super(manGba, manMem)
 {
+    this->m_cpuMode = CPSR::FLAG_T;
 }
 
 //----------------------------------------------------------------
@@ -72,6 +75,7 @@ CpuThumb::~CpuThumb()
 InstExecResult
 CpuThumb::executeNextInst()
 {
+    std::cerr   <<  "Thumb Mode Not Implemented."   <<  std::endl;
     return ( InstExecResult::UNDEFINED_OPECODE );
 }
 

@@ -87,7 +87,6 @@ public:
     virtual  InstExecResult
     executeNextInst();
 
-
 //========================================================================
 //
 //    Public Member Functions (Overrides).
