@@ -391,6 +391,10 @@ DisArm::writeMnemonic(
                     *(dst ++)   = 's';
                 }
                 break;
+            default:
+                *(dst ++)   = '%';
+                *(dst ++)   = *(src);
+                break;
             }
             ++  src;
         }

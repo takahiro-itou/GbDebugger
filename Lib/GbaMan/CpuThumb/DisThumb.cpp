@@ -141,7 +141,38 @@ DisThumb::writeMnemonic(
         GuestMemoryAddress  gmAddr,
         const  OpeCode      opeCode)  const
 {
-    outStr  <<  "disassembleThumb Not Implemented." <<  std::endl;
+    char    buf[256] = { 0 };
+
+    const MnemonicMap *  oc = thumbMnemonics;
+    for ( ; (opeCode & oc->mask) != oc->cval; ++ oc ) ;
+
+    sprintf(buf, "%08x:   %08x\t", gmAddr, opeCode);
+    outStr  <<  buf;
+
+    size_t          len = 0;
+    const  char  *  src = oc->mnemonic;
+    char  *         dst = buf;
+
+    while (*src) {
+        len = 0;
+        if ( *src != '%' ) {
+            *(dst ++)   = *(src ++);
+        } else {
+            ++  src;
+            switch ( *src ) {
+            default:
+                *(dst ++)   = '%';
+                *(dst ++)   = *(src);
+                break;
+            }
+            ++  src;
+        }
+        dst += len;
+    }
+
+    *(dst ++)   = '\0';
+    outStr  <<  buf;
+
     return ( outStr );
 }
 
