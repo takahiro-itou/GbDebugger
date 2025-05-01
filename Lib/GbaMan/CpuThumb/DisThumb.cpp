@@ -99,15 +99,15 @@ thumbMnemonics[] = {
     { 0xF800, 0x9000, "STR Rd, [SP, #nn]" },
     { 0xF800, 0x9800, "LDR Rd, [SP, #nn]" },
 
-    //  Format 12: アドレッシング。 //
+    //  Format 12 : アドレッシング。    //
     { 0xF800, 0xA000, "ADD Rd, PC, #nn" },
     { 0xF800, 0xA800, "ADD Rd, SP, #nn" },
 
-    //  Format 13: SP操作。 //
+    //  Format 13 : SP操作。    //
     { 0xFF80, 0xB000, "ADD SP, #nn" },
     { 0xFF80, 0xB080, "ADD SP, #-nn" },
 
-    //  Format 14: ロードストア命令（スタック）。   //
+    //  Format 14 : ロードストア命令（スタック）。  //
     { 0xFFFF, 0xB500, "PUSH {LR}" },
     { 0xFF00, 0xB400, "PUSH {Rlist}" },
     { 0xFF00, 0xB500, "PUSH {Rlist,LR}" },
@@ -118,6 +118,25 @@ thumbMnemonics[] = {
     //  Format 15   //
     { 0xF800, 0xC000, "STMIA Rb!, {Rlist}" },
     { 0xF800, 0xC800, "LDMIA Rb!, {Rlist}" },
+
+    //  Format 16 : 条件付き分岐命令。      //
+    //  Format 17 : ソフトウェア割り込み。  //
+    { 0xFF00, 0xD000, "BEQ" },
+    { 0xFF00, 0xD100, "BNE" },
+    { 0xFF00, 0xD200, "BCS" },
+    { 0xFF00, 0xD300, "BCC" },
+    { 0xFF00, 0xD400, "BMI" },
+    { 0xFF00, 0xD500, "BPL" },
+    { 0xFF00, 0xD600, "BVS" },
+    { 0xFF00, 0xD700, "BVC" },
+    { 0xFF00, 0xD800, "BHI" },
+    { 0xFF00, 0xD900, "BLS" },
+    { 0xFF00, 0xDA00, "BGE" },
+    { 0xFF00, 0xDB00, "BLT" },
+    { 0xFF00, 0xDC00, "BGT" },
+    { 0xFF00, 0xDD00, "BLE" },
+    { 0xFF00, 0xDF00, "SWI" },
+    { 0xFF00, 0xBE00, "BKPT" },
 
     //  Unknown.    //
     { 0x0000, 0x0000, "[ ??? ]" },
