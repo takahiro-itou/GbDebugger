@@ -63,6 +63,28 @@ thumbMnemonics[] = {
     { 0xFFC0, 0x4380, "BIC" },
     { 0xFFC0, 0x43C0, "MVN" },
 
+    //  Format 05 : R8-15 レジスタ操作。    //
+    { 0xFCC0, 0x4400, "[ ??? ]" },      //  MSBd==0 && MSBs==0 は不正。 //
+    { 0xFF00, 0x4400, "ADD" },
+    { 0xFF00, 0x4500, "CMP" },
+    { 0xFF00, 0x4600, "MOV" },
+    { 0xFF80, 0x4700, "BX"  },          //  MSBd は 0。Rd は未使用。    //
+
+    //  Format 06 : ロードストア命令（PC-Relative）。   //
+    { 0xF800, 0x4800, "LDR" },
+
+    //  Format 07 : ロードストア命令。  //
+    { 0xFE00, 0x5000, "STR" },
+    { 0xFE00, 0x5400, "STRB" },
+    { 0xFE00, 0x5800, "LDR" },
+    { 0xFE00, 0x5C00, "LDRB" },
+
+    //  Format 08: ロードストア命令。   //
+    { 0xFE00, 0x5200, "STRH" },
+    { 0xFE00, 0x5600, "LDSB" },
+    { 0xFE00, 0x5A00, "LDRH" },
+    { 0xFE00, 0x5E00, "LDSH" },
+
     //  Unknown.    //
     { 0x0000, 0x0000, "[ ??? ]" },
 };
