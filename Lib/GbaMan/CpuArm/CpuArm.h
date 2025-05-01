@@ -21,6 +21,10 @@
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_CPU_ARM_H )
 #    define   GBDEBUGGER_GBAMAN_INCLUDED_CPU_ARM_H
 
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_BASE_CPU_CORE_H )
+#    include    "GbDebugger/GbaMan/BaseCpuCore.h"
+#endif
+
 #if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_UTILS_H )
 #    include    "GbDebugger/Common/DebuggerUtils.h"
 #endif
@@ -38,22 +42,21 @@
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
 
-//  クラスの前方宣言。  //
-class   MemoryManager;
-
-
 //========================================================================
 //
 //    CpuArm  class.
 //
 
-class  CpuArm
+class  CpuArm : public BaseCpuCore
 {
 
 //========================================================================
 //
 //    Internal Type Definitions.
 //
+private:
+
+    typedef     BaseCpuCore     Super;
 
     typedef     GBD_REGPARM     InstExecResult
     (CpuArm::* FnInst)(
@@ -71,6 +74,7 @@ public:
     **
     **/
     CpuArm(
+            GbaManager    & manGba,
             MemoryManager & manMem);
 
     //----------------------------------------------------------------
@@ -84,6 +88,14 @@ public:
 //
 //    Public Member Functions (Implement Pure Virtual).
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   現在の命令を実行する。
+    **
+    **/
+    InstExecResult
+    executeNextInst();
 
 //========================================================================
 //
@@ -99,39 +111,11 @@ public:
 //
 //    Public Member Functions (Virtual Functions).
 //
-public:
-
-    //----------------------------------------------------------------
-    /**   レジスタをリセットする。
-    **
-    **  @return     エラーコードを返す。
-    **      -   異常終了の場合は、
-    **          エラーの種類を示す非ゼロ値を返す。
-    **      -   正常終了の場合は、ゼロを返す。
-    **/
-    virtual  ErrCode
-    doHardReset();
-
-    //----------------------------------------------------------------
-    /**   レジスタの内容をダンプする。
-    **
-    **/
-    virtual  std::ostream  &
-    printRegisters(
-            std::ostream  & outStr)  const;
 
 //========================================================================
 //
 //    Public Member Functions.
 //
-public:
-
-    //----------------------------------------------------------------
-    /**   現在の命令を実行する。
-    **
-    **/
-    InstExecResult
-    executeNextInst();
 
 //========================================================================
 //
@@ -162,17 +146,54 @@ private:
 
     //----------------------------------------------------------------
     //    命令の実行を行う関数たち。
+    //
 
     GBD_REGPARM     InstExecResult
-    armALUInstruction(
+    execALUInstruction(
             const  OpeCode  opeCode);
 
     GBD_REGPARM     InstExecResult
-    armA00_B(
+    execArm100_MsrCpsr(
             const  OpeCode  opeCode);
 
     GBD_REGPARM     InstExecResult
-    armUnknownInstruction(
+    execArm120_MrsCpsrReg(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
+    execArm121_BX(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
+    execArm140_MsrSpsr(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
+    execArm160_MrsSpsrReg(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
+    execArm320_MrsCpsrImm(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
+    execArm360_MrsSpsrImm(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
+    execArmAxx_B(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
+    execArmBxx_BL(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
+    execLdrStrInstruction(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
+    execUnknownInstruction(
             const  OpeCode  opeCode);
 
     //----------------------------------------------------------------
@@ -187,7 +208,7 @@ private:
     /**   命令をプリフェッチする。
     **
     **/
-    inline  void
+    void
     prefetchAll();
 
     //----------------------------------------------------------------
@@ -202,18 +223,6 @@ private:
 //    Member Variables.
 //
 private:
-
-    /**   メモリマネージャ。    **/
-    MemoryManager  &        m_manMem;
-
-    /**   レジスタ。            **/
-    RegPair                 m_cpuRegs[85];
-
-    /**   次の命令のアドレス。  **/
-    GuestMemoryAddress      m_nextPC;
-
-    /**   プリフェッチ。        **/
-    OpeCode                 m_prefOpeCodes[2];
 
     /**   命令テーブル。        **/
     static  const   FnInst  s_armInstTable[4096];

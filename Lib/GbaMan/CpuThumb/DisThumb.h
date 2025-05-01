@@ -21,8 +21,8 @@
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_DIS_THUMB_H )
 #    define   GBDEBUGGER_GBAMAN_INCLUDED_DIS_THUMB_H
 
-#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_TYPES_H )
-#    include    "GbDebugger/Common/DebuggerTypes.h"
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_BASE_DIS_CPU_H )
+#    include    "GbDebugger/GbaMan/BaseDisCpu.h"
 #endif
 
 
@@ -37,7 +37,7 @@ namespace  GbaMan  {
 //    DisThumb  class.
 //
 
-class  DisThumb
+class  DisThumb : public BaseDisCpu
 {
 
 //========================================================================
@@ -64,6 +64,20 @@ public:
 //
 //    Public Member Functions (Implement Pure Virtual).
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   ニーモニックを表示する。
+    **
+    **  @param [in,out] outStr    出力ストリーム
+    **  @param [in]     gmAddr    ゲスト上のアドレス
+    **  @param [in]     opeCode   オペコード
+    **/
+    virtual  std::ostream  &
+    writeMnemonic(
+            std::ostream       &outStr,
+            GuestMemoryAddress  gmAddr,
+            const  OpeCode      opeCode)  const  override;
 
 //========================================================================
 //

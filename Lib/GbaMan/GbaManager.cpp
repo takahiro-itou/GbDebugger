@@ -22,6 +22,8 @@
 
 #include    "CpuArm/CpuArm.h"
 #include    "CpuArm/DisArm.h"
+#include    "CpuThumb/CpuThumb.h"
+#include    "CpuThumb/DisThumb.h"
 
 #include    "GbDebugger/Common/DebuggerUtils.h"
 
@@ -34,6 +36,10 @@ GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
 
 namespace  {
+
+//  特に内部状態を持たないクラスなのでグローバル変数でも良い。  //
+DisArm      g_disCpuArm;
+DisThumb    g_disCpuThumb;
 
 }   //  End of (Unnamed) namespace.
 
@@ -54,10 +60,15 @@ namespace  {
 
 GbaManager::GbaManager()
     : m_manMem(),
-      m_cpuArm(nullptr),
-      m_regs()
+      m_cpuCur (nullptr),
+      m_cpuMod0(nullptr),
+      m_cpuMod1(nullptr),
+      m_disCur (&g_disCpuArm),
+      m_cpuMode(0)
 {
-    this->m_cpuArm  = new CpuArm(this->m_manMem);
+    this->m_cpuMod0 = new CpuArm(*this, this->m_manMem);
+    this->m_cpuMod1 = new CpuThumb(*this, this->m_manMem);
+    this->m_cpuCur  = this->m_cpuMod0;
 }
 
 //----------------------------------------------------------------
@@ -67,6 +78,11 @@ GbaManager::GbaManager()
 
 GbaManager::~GbaManager()
 {
+    delete  this->m_cpuMod0;
+    this->m_cpuMod0 = nullptr;
+
+    delete  this->m_cpuMod1;
+    this->m_cpuMod1 = nullptr;
 }
 
 //========================================================================
@@ -100,40 +116,14 @@ GbaManager::closeInstance()
 }
 
 //----------------------------------------------------------------
-//    ニーモニックを表示する。
-//
-
-std::ostream  &
-GbaManager::disassembleArm(
-        std::ostream       &outStr,
-        GuestMemoryAddress  gmAddr)
-{
-    const  OpeCode  opeCode = readMemory<OpeCode>(gmAddr);
-
-    DisArm  dis;
-    return  dis.writeMnemonic(outStr, gmAddr, opeCode);
-}
-
-//----------------------------------------------------------------
-//    ニーモニックを表示する。
-//
-
-std::ostream  &
-GbaManager::disassembleThumb(
-        std::ostream       &outStr,
-        GuestMemoryAddress  gmAddr)
-{
-    return ( outStr );
-}
-
-//----------------------------------------------------------------
 //    リセットを行う。
 //
 
 ErrCode
 GbaManager::doHardReset()
 {
-    this->m_cpuArm->doHardReset();
+    this->m_cpuCur  = this->m_cpuMod0;
+    this->m_cpuCur->doHardReset();
 
     return ( ErrCode::SUCCESS );
 }
@@ -145,7 +135,7 @@ GbaManager::doHardReset()
 InstExecResult
 GbaManager::executeCurrentInst()
 {
-    return  this->m_cpuArm->executeNextInst();
+    return  this->m_cpuCur->executeNextInst();
 }
 
 //----------------------------------------------------------------
@@ -155,7 +145,7 @@ GbaManager::executeCurrentInst()
 GuestMemoryAddress
 GbaManager::getNextPC()  const
 {
-    return  this->m_cpuArm->getNextPC();
+    return  this->m_cpuCur->getNextPC();
 }
 
 //----------------------------------------------------------------
@@ -211,13 +201,82 @@ std::ostream  &
 GbaManager::printRegisters(
         std::ostream  & outStr)  const
 {
-    return  this->m_cpuArm->printRegisters(outStr);
+    return  this->m_cpuCur->printRegisters(outStr);
+}
+
+//----------------------------------------------------------------
+//    ニーモニックを表示する。
+//
+
+std::ostream  &
+GbaManager::disassembleArm(
+        std::ostream       &outStr,
+        GuestMemoryAddress  gmAddr)  const
+{
+    const  OpeCode  opeCode = readMemory<OpeCode>(gmAddr);
+
+    return  g_disCpuArm.writeMnemonic(outStr, gmAddr, opeCode);
+}
+
+//----------------------------------------------------------------
+//    ニーモニックを表示する。
+//
+
+std::ostream  &
+GbaManager::writeMnemonicCurrent(
+        std::ostream       &outStr,
+        GuestMemoryAddress  gmAddr)  const
+{
+    const  OpeCode  opeCode = readMemory<OpeCode>(gmAddr);
+
+    return  this->m_disCur->writeMnemonic(outStr, gmAddr, opeCode);
+}
+
+//----------------------------------------------------------------
+//    ニーモニックを表示する。
+//
+
+std::ostream  &
+GbaManager::disassembleThumb(
+        std::ostream       &outStr,
+        GuestMemoryAddress  gmAddr)  const
+{
+    const  OpeCode  opeCode = readMemory<OpeCode>(gmAddr);
+
+    return  g_disCpuThumb.writeMnemonic(outStr, gmAddr, opeCode);
 }
 
 //========================================================================
 //
 //    Public Member Functions.
 //
+
+//----------------------------------------------------------------
+//    CPU モードを切り替える。
+//
+
+ErrCode
+GbaManager::changeCpuMode(
+        const  RegType  thumbState)
+{
+    //  現在のモードの状態を保存する。  //
+    RegBank regs;
+    this->m_cpuCur->getRegisters(regs);
+
+    if ( (this->m_cpuMode = (thumbState & CPSR::FLAG_T)) ) {
+        //  THUMB モード。  //
+        this->m_cpuCur  = this->m_cpuMod1;
+        this->m_disCur  = &(g_disCpuThumb);
+    } else {
+        //  ARM モード。    //
+        this->m_cpuCur  = this->m_cpuMod0;
+        this->m_disCur  = &(g_disCpuArm);
+    }
+
+    this->m_cpuCur->setRegisters(regs);
+
+    return ( ErrCode::SUCCESS );
+}
 
 //========================================================================
 //

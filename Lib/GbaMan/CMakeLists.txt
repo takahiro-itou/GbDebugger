@@ -15,9 +15,14 @@ Include (${common_cmake_dir}/BuildCommon/ConfigTarget.cmake)
 ##
 
 set(library_source_files
+       BaseCpuCore.cpp
+       BaseDisCpu.cpp
        GbaManager.cpp
        MemoryManager.cpp
        CpuArm/ArmALU.cpp
+       CpuArm/ArmBranch.cpp
+       CpuArm/ArmPsr.cpp
+       CpuArm/ArmStrLdr.cpp
        CpuArm/CpuArm.cpp
        CpuArm/DisArm.cpp
        CpuThumb/CpuThumb.cpp
@@ -25,6 +30,8 @@ set(library_source_files
 )
 
 set(inclib_header_files
+        ${inclib_source_dir}/BaseCpuCore.h
+        ${inclib_source_dir}/BaseDisCpu.h
         ${inclib_source_dir}/CpuUtils.h
         ${inclib_source_dir}/GbaManager.h
         ${inclib_source_dir}/MemoryManager.h

@@ -53,7 +53,7 @@ int  main(int argc, char * argv[])
 
     //  最初の命令を逆アセンブル。  //
     std::cout   <<  "Mnemonic:\n";
-    manGba.disassembleArm(std::cout, manGba.getNextPC())
+    manGba.writeMnemonicCurrent(std::cout, manGba.getNextPC())
             <<  std::endl;
 
     //  最初の命令を実行。  //
@@ -69,7 +69,7 @@ int  main(int argc, char * argv[])
 
         //  次の命令を逆アセンブル。    //
         std::cout   <<  "Mnemonic:\n";
-        manGba.disassembleArm(std::cout, manGba.getNextPC())
+        manGba.writeMnemonicCurrent(std::cout, manGba.getNextPC())
                 <<  std::endl;
     }
 

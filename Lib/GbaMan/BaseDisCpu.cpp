@@ -13,54 +13,49 @@
 *************************************************************************/
 
 /**
-**      An Interface of DisArm class.
+**      An Implementation of BaseDisCpu class.
 **
-**      @file       GbaMan/DisArm.h
+**      @file       GbaMan/BaseDisCpu.cpp
 **/
 
-#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_DIS_ARM_H )
-#    define   GBDEBUGGER_GBAMAN_INCLUDED_DIS_ARM_H
-
-#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_BASE_DIS_CPU_H )
-#    include    "GbDebugger/GbaMan/BaseDisCpu.h"
-#endif
-
-#include    <ostream>
+#include    "GbDebugger/GbaMan/BaseDisCpu.h"
 
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
 
-//  クラスの前方宣言。  //
+namespace  {
+
+}   //  End of (Unnamed) namespace.
 
 
 //========================================================================
 //
-//    DisArm  class.
+//    BaseDisCpu  class.
 //
-
-class  DisArm : public BaseDisCpu
-{
 
 //========================================================================
 //
 //    Constructor(s) and Destructor.
 //
-public:
 
-    //----------------------------------------------------------------
-    /**   インスタンスを初期化する
-    **  （デフォルトコンストラクタ）。
-    **
-    **/
-    DisArm();
+//----------------------------------------------------------------
+//    インスタンスを初期化する
+//  （デフォルトコンストラクタ）。
+//
 
-    //----------------------------------------------------------------
-    /**   インスタンスを破棄する
-    **  （デストラクタ）。
-    **
-    **/
-    virtual  ~DisArm();
+BaseDisCpu::BaseDisCpu()
+{
+}
+
+//----------------------------------------------------------------
+//    インスタンスを破棄する
+//  （デストラクタ）。
+//
+
+BaseDisCpu::~BaseDisCpu()
+{
+}
 
 //========================================================================
 //
@@ -81,20 +76,6 @@ public:
 //
 //    Public Member Functions (Virtual Functions).
 //
-public:
-
-    //----------------------------------------------------------------
-    /**   ニーモニックを表示する。
-    **
-    **  @param [in,out] outStr    出力ストリーム
-    **  @param [in]     gmAddr    ゲスト上のアドレス
-    **  @param [in]     opeCode   オペコード
-    **/
-    virtual  std::ostream  &
-    writeMnemonic(
-            std::ostream       &outStr,
-            GuestMemoryAddress  gmAddr,
-            const  OpeCode      opeCode)  const;
 
 //========================================================================
 //
@@ -116,25 +97,5 @@ public:
 //    For Internal Use Only.
 //
 
-//========================================================================
-//
-//    Member Variables.
-//
-
-//========================================================================
-//
-//    Other Features.
-//
-private:
-    typedef     DisArm          This;
-    DisArm              (const  This  &);
-    This &  operator =  (const  This  &);
-public:
-    //  テストクラス。  //
-    friend  class   DisArmTest;
-};
-
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
-
-#endif

@@ -25,9 +25,14 @@ extra_noinst_data_files     =
 extra_noinst_header_files   =
 
 library_source_files        +=  \
+        BaseCpuCore.cpp                \
+        BaseDisCpu.cpp                 \
         GbaManager.cpp                 \
         MemoryManager.cpp              \
         CpuArm/ArmALU.cpp              \
+        CpuArm/ArmBranch.cpp           \
+        CpuArm/ArmPsr.cpp              \
+        CpuArm/ArmStrLdr.cpp           \
         CpuArm/CpuArm.cpp              \
         CpuArm/DisArm.cpp              \
         CpuThumb/CpuThumb.cpp          \
@@ -42,6 +47,7 @@ dist_noinst_data_files      +=  \
 
 dist_noinst_header_files    +=  \
         CpuArm/ArmALU.h                \
+        CpuArm/ArmInstTable.h          \
         CpuArm/CpuArm.h                \
         CpuArm/DisArm.h                \
         CpuThumb/CpuThumb.h            \
@@ -49,6 +55,8 @@ dist_noinst_header_files    +=  \
         ${extra_noinst_header_files}
 
 inclib_header_files         +=  \
+        ${inclib_source_dir}/BaseCpuCore.h         \
+        ${inclib_source_dir}/BaseDisCpu.h          \
         ${inclib_source_dir}/CpuUtils.h            \
         ${inclib_source_dir}/GbaManager.h          \
         ${inclib_source_dir}/MemoryManager.h       \

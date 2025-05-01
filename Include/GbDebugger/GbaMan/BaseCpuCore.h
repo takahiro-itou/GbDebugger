@@ -13,24 +13,20 @@
 *************************************************************************/
 
 /**
-**      An Interface of GbaManager class.
+**      An Interface of BaseCpuCore class.
 **
-**      @file       GbaMan/GbaManager.h
+**      @file       GbaMan/BaseCpuCore.h
 **/
 
-#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_GBA_MANAGER_H )
-#    define   GBDEBUGGER_GBAMAN_INCLUDED_GBA_MANAGER_H
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_BASE_CPU_CORE_H )
+#    define   GBDEBUGGER_GBAMAN_INCLUDED_BASE_CPU_CORE_H
 
-#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_TYPES_H )
-#    include    "GbDebugger/Common/DebuggerTypes.h"
+#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_UTILS_H )
+#    include    "GbDebugger/Common/DebuggerUtils.h"
 #endif
 
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_CPU_UTILS_H )
-#    include    "CpuUtils.h"
-#endif
-
-#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_MEMORY_MANAGER_H )
-#    include    "MemoryManager.h"
+#    include    "GbDebugger/GbaMan/CpuUtils.h"
 #endif
 
 #if !defined( GBDEBUGGER_SYS_STL_INCLUDED_IOSFWD )
@@ -43,20 +39,16 @@ GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
 
 //  クラスの前方宣言。  //
-class   BaseCpuCore;
-class   BaseDisCpu;
-class   CpuArm;
-class   CpuThumb;
-class   DisArm;
-class   DisThumb;
+class   GbaManager;
+class   MemoryManager;
 
 
 //========================================================================
 //
-//    GbaManager  class.
+//    BaseCpuCore  class.
 //
 
-class  GbaManager
+class  BaseCpuCore
 {
 
 //========================================================================
@@ -72,17 +64,19 @@ public:
 
     //----------------------------------------------------------------
     /**   インスタンスを初期化する
-    **  （デフォルトコンストラクタ）。
+    **  （コンストラクタ）。
     **
     **/
-    GbaManager();
+    BaseCpuCore(
+            GbaManager    & manGba,
+            MemoryManager & manMem);
 
     //----------------------------------------------------------------
     /**   インスタンスを破棄する
     **  （デストラクタ）。
     **
     **/
-    virtual  ~GbaManager();
+    virtual  ~BaseCpuCore();
 
 //========================================================================
 //
@@ -98,6 +92,14 @@ public:
 //
 //    Public Member Functions (Pure Virtual Functions).
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   現在の命令を実行する。
+    **
+    **/
+    virtual  InstExecResult
+    executeNextInst()  = 0;
 
 //========================================================================
 //
@@ -106,18 +108,7 @@ public:
 public:
 
     //----------------------------------------------------------------
-    /**   現在動作しているインスタンスを閉じる。
-    **
-    **  @return     エラーコードを返す。
-    **      -   異常終了の場合は、
-    **          エラーの種類を示す非ゼロ値を返す。
-    **      -   正常終了の場合は、ゼロを返す。
-    **/
-    virtual  ErrCode
-    closeInstance();
-
-    //----------------------------------------------------------------
-    /**   リセットを行う。
+    /**   レジスタをリセットする。
     **
     **  @return     エラーコードを返す。
     **      -   異常終了の場合は、
@@ -128,31 +119,15 @@ public:
     doHardReset();
 
     //----------------------------------------------------------------
-    /**   現在の命令を実行する。
+    /**   レジスタの内容をコピーする。
     **
-    **/
-    virtual  InstExecResult
-    executeCurrentInst();
-
-    //----------------------------------------------------------------
-    /**   プログラムカウンタを取得する。
-    **
-    **/
-    virtual  GuestMemoryAddress
-    getNextPC()  const;
-
-    //----------------------------------------------------------------
-    /**   ROM ファイルを読み込む。
-    **
-    **  @param [in] szFileName    ファイル名。
-    **  @return     エラーコードを返す。
     **      -   異常終了の場合は、
     **          エラーの種類を示す非ゼロ値を返す。
     **      -   正常終了の場合は、ゼロを返す。
     **/
     virtual  ErrCode
-    openRomFile(
-            const   char *  szFileName);
+    getRegisters(
+            RegBank  &copyBuf)  const;
 
     //----------------------------------------------------------------
     /**   レジスタの内容をダンプする。
@@ -163,105 +138,103 @@ public:
             std::ostream  & outStr)  const;
 
     //----------------------------------------------------------------
-    /**   ニーモニックを表示する。
+    /**   レジスタの内容を設定する。
     **
+    **      -   異常終了の場合は、
+    **          エラーの種類を示す非ゼロ値を返す。
+    **      -   正常終了の場合は、ゼロを返す。
     **/
-    virtual  std::ostream  &
-    disassembleArm(
-            std::ostream       &outStr,
-            GuestMemoryAddress  gmAddr)  const;
-
-    //----------------------------------------------------------------
-    /**   ニーモニックを表示する。
-    **
-    **/
-    virtual  std::ostream  &
-    writeMnemonicCurrent(
-            std::ostream       &outStr,
-            GuestMemoryAddress  gmAddr)  const;
-
-    //----------------------------------------------------------------
-    /**   ニーモニックを表示する。
-    **
-    **/
-    virtual  std::ostream  &
-    disassembleThumb(
-            std::ostream       &outStr,
-            GuestMemoryAddress  gmAddr)  const;
+    virtual  ErrCode
+    setRegisters(
+            const  RegBank  &cpuRegs);
 
 //========================================================================
 //
 //    Public Member Functions.
 //
-public:
-
-    //----------------------------------------------------------------
-    /**   CPU モードを切り替える。
-    **
-    **/
-    ErrCode
-    changeCpuMode(
-            const  RegType  thumbState);
-
-    //----------------------------------------------------------------
-    /**   メモリの内容を読みだす。
-    **
-    **/
-    template  <typename  T>
-    inline  const  T
-    readMemory(
-            const   GuestMemoryAddress  gmAddr)  const
-    {
-        return  this->m_manMem.readMemory<T>(gmAddr);
-    }
 
 //========================================================================
 //
 //    Accessors.
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   プログラムカウンタを取得する。
+    **
+    **/
+    const   GuestMemoryAddress
+    getNextPC()  const
+    {
+        return ( this->m_nextPC );
+    }
 
 //========================================================================
 //
 //    Protected Member Functions.
 //
+protected:
+
+    //----------------------------------------------------------------
+    /**   命令をプリフェッチする。
+    **
+    **/
+    template <typename T>
+    inline  void
+    prefetchAll(
+            const  T *  ptr)
+    {
+        this->m_prefOpeCodes[0] = ptr[0];
+        this->m_prefOpeCodes[1] = ptr[1];
+    }
 
 //========================================================================
 //
 //    For Internal Use Only.
 //
+private:
+
+    //----------------------------------------------------------------
+    /**   命令をプリフェッチする。
+    **
+    **/
+    void
+    prefetchAutoAll();
 
 //========================================================================
 //
 //    Member Variables.
 //
-private:
+protected:
 
-    /**   メモリ空間。  **/
-    MemoryManager   m_manMem;
+    GbaManager  &           m_manGba;
 
-    /**   プロセッサ。  **/
-    BaseCpuCore  *  m_cpuCur;
+    /**   メモリマネージャ。    **/
+    MemoryManager  &        m_manMem;
 
-    CpuArm  *       m_cpuMod0;
+    /**   レジスタ。            **/
+    RegBank                 m_cpuRegs;
 
-    CpuThumb  *     m_cpuMod1;
+    /**   次の命令のアドレス。  **/
+    GuestMemoryAddress      m_nextPC;
 
-    BaseDisCpu  *   m_disCur;
+    /**   プリフェッチ。        **/
+    OpeCode                 m_prefOpeCodes[2];
 
-    /**   CPU モード。  **/
-    RegType         m_cpuMode;
+    /**   現在のモード。        **/
+    RegType                 m_cpuMode;
 
 //========================================================================
 //
 //    Other Features.
 //
 private:
-    typedef     GbaManager      This;
-    GbaManager          (const  This  &);
+    typedef     BaseCpuCore     This;
+    BaseCpuCore         (const  This  &);
     This &  operator =  (const  This  &);
 public:
     //  テストクラス。  //
-    friend  class   GbaManagerTest;
+    friend  class   BaseCpuCoreTest;
 };
 
 }   //  End of namespace  GbaMan

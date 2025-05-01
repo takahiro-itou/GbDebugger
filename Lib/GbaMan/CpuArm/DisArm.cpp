@@ -29,22 +29,6 @@ namespace  GbaMan  {
 
 namespace  {
 
-struct  MnemonicMap  {
-    OpeCode         mask;
-    OpeCode         cval;
-    const char *    mnemonic;
-};
-
-const char * regNames[16] = {
-    "R0" , "R1" , "R2" , "R3" , "R4" , "R5", "R6", "R7",
-    "R8" , "R9" , "R10", "R11", "R12", "SP", "LR", "PC"
-};
-
-const char * conditions[16] = {
-    "EQ", "NE", "CS", "CC", "MI", "PL", "VS", "VC",
-    "HI", "LS", "GE", "LT", "GT", "LE", "AL", "NV"
-};
-
 CONSTEXPR_VAR   const  char  *  shiftTypes[5] = {
     "LSL", "LSR", "ASR", "ROR", "RRX",
 };
@@ -52,50 +36,109 @@ CONSTEXPR_VAR   const  char  *  shiftTypes[5] = {
 CONSTEXPR_VAR   const  MnemonicMap
 armMnemonics[] = {
     //  Branch
-    { 0x0FF000F0, 0x01200010, "BX.%c\t%r00" },
-    { 0x0F000000, 0x0A000000, "B.%c\t%o" },
-    { 0x0F000000, 0x0B000000, "BL.%c\t%o" },
-    { 0x0F000000, 0x0F000000, "SWI.%c\t%q" },
+    { 0x0FF000F0, 0x01200010, "BX%c\t%r00" },
+    { 0x0F000000, 0x0A000000, "B%c\t%o" },
+    { 0x0F000000, 0x0B000000, "BL%c\t%o" },
+    { 0x0F000000, 0x0F000000, "SWI%c\t%q" },
+
+    //  PSR 命令。  //
+    { 0x0FFF0FFF, 0x010F0000, "MRS%c\t%r12, CPSR" },
+    { 0x0FF0F000, 0x0120F000, "MSR%c\tCPSR%p, %r00" },
+    { 0x0FFF0FFF, 0x014F0000, "MRS%c\t%r12, SPSR" },
+    { 0x0FF0F000, 0x0160F000, "MSR%c\tSPSR%p, %r00" },
+    { 0x0FF0F000, 0x0320F000, "MSR%c\tCPSR%p, %i" },
+    { 0x0FF0F000, 0x0360F000, "MSR%c\tSPSR%p, %i" },
+
+    //  LDR / STR   //
+    { 0x0F700000, 0x04000000, "STR%c \t%r12, [%r16], %ai" },
+    { 0x0F700000, 0x04100000, "LDR%c \t%r12, [%r16], %ai" },
+    { 0x0F700000, 0x04200000, "STR%c \t%r12, [%r16], %ai" },
+    { 0x0F700000, 0x04300000, "LDR%c \t%r12, [%r16], %ai" },
+    { 0x0F700000, 0x04400000, "STR%cB\t%r12, [%r16], %ai" },
+    { 0x0F700000, 0x04500000, "LDR%cB\t%r12, [%r16], %ai" },
+    { 0x0F700000, 0x04600000, "STR%cB\t%r12, [%r16], %ai" },
+    { 0x0F700000, 0x04700000, "LDR%cB\t%r12, [%r16], %ai" },
+    { 0x0F700000, 0x05000000, "STR%c \t%r12, [%r16, %ai]" },
+    { 0x0F700000, 0x05100000, "LDR%c \t%r12, [%r16, %ai]" },
+    { 0x0F700000, 0x05200000, "STR%c \t%r12, [%r16, %ai]!" },
+    { 0x0F700000, 0x05300000, "LDR%c \t%r12, [%r16, %ai]!" },
+    { 0x0F700000, 0x05400000, "STR%cB\t%r12, [%r16, %ai]" },
+    { 0x0F700000, 0x05500000, "LDR%cB\t%r12, [%r16, %ai]" },
+    { 0x0F700000, 0x05600000, "STR%cB\t%r12, [%r16, %ai]!" },
+    { 0x0F700000, 0x05700000, "LDR%cB\t%r12, [%r16, %ai]!" },
+
+    { 0x0F700000, 0x06000000, "STR%c \t%r12, [%r16], %Rs" },
+    { 0x0F700000, 0x06100000, "LDR%c \t%r12, [%r16], %Rs" },
+    { 0x0F700000, 0x06200000, "STR%c \t%r12, [%r16], %Rs" },
+    { 0x0F700000, 0x06300000, "LDR%c \t%r12, [%r16], %Rs" },
+    { 0x0F700000, 0x06400000, "STR%cB\t%r12, [%r16], %Rs" },
+    { 0x0F700000, 0x06500000, "LDR%cB\t%r12, [%r16], %Rs" },
+    { 0x0F700000, 0x06600000, "STR%cB\t%r12, [%r16], %Rs" },
+    { 0x0F700000, 0x06700000, "LDR%cB\t%r12, [%r16], %Rs" },
+    { 0x0F700000, 0x07000000, "STR%c \t%r12, [%r16, %Rs]" },
+    { 0x0F700000, 0x07100000, "LDR%c \t%r12, [%r16, %Rs]" },
+    { 0x0F700000, 0x07200000, "STR%c \t%r12, [%r16, %Rs]!" },
+    { 0x0F700000, 0x07300000, "LDR%c \t%r12, [%r16, %Rs]!" },
+    { 0x0F700000, 0x07400000, "STR%cB\t%r12, [%r16, %Rs]" },
+    { 0x0F700000, 0x07500000, "LDR%cB\t%r12, [%r16, %Rs]" },
+    { 0x0F700000, 0x07600000, "STR%cB\t%r12, [%r16, %Rs]!" },
+    { 0x0F700000, 0x07700000, "LDR%cB\t%r12, [%r16, %Rs]!" },
 
     //  ALU (Bit25==0 : 第二オペランドはレジスタ)   //
-    { 0x0ff00000, 0x00000000, "AND.%c%s\t%r12, %16, %Rs" },
-    { 0x0ff00000, 0x00200000, "EOR.%c%s\t%r12, %16, %Rs" },
-    { 0x0ff00000, 0x00400000, "SUB.%c%s\t%r12, %16, %Rs" },
-    { 0x0ff00000, 0x00600000, "RSB.%c%s\t%r12, %16, %Rs" },
-    { 0x0ff00000, 0x00800000, "ADD.%c%s\t%r12, %16, %Rs" },
-    { 0x0ff00000, 0x00A00000, "ADC.%c%s\t%r12, %16, %Rs" },
-    { 0x0ff00000, 0x00C00000, "SBC.%c%s\t%r12, %16, %Rs" },
-    { 0x0ff00000, 0x00E00000, "RSC.%c%s\t%r12, %16, %Rs" },
-    { 0x0ff00000, 0x01000000, "TST.%c%s\t%%16, %Rs" },
-    { 0x0ff00000, 0x01200000, "TEQ.%c%s\t%%16, %Rs" },
-    { 0x0ff00000, 0x01400000, "CMP.%c%s\t%%16, %Rs" },
-    { 0x0ff00000, 0x01600000, "CMN.%c%s\t%%16, %Rs" },
-    { 0x0ff00000, 0x01800000, "ORR.%c%s\t%r12, %16, %Rs" },
-    { 0x0ff00000, 0x01A00000, "MOV.%c%s\t%r12, %Rs" },
-    { 0x0ff00000, 0x01C00000, "BIC.%c%s\t%r12, %16, %Rs" },
-    { 0x0ff00000, 0x01E00000, "MVN.%c%s\t%r12, %Rs" },
+    { 0x0FF00000, 0x00000000, "AND%c%s\t%r12, %r16, %Rs" },
+    { 0x0FF00000, 0x00200000, "EOR%c%s\t%r12, %r16, %Rs" },
+    { 0x0FF00000, 0x00400000, "SUB%c%s\t%r12, %r16, %Rs" },
+    { 0x0FF00000, 0x00600000, "RSB%c%s\t%r12, %r16, %Rs" },
+    { 0x0FF00000, 0x00800000, "ADD%c%s\t%r12, %r16, %Rs" },
+    { 0x0FF00000, 0x00A00000, "ADC%c%s\t%r12, %r16, %Rs" },
+    { 0x0FF00000, 0x00C00000, "SBC%c%s\t%r12, %r16, %Rs" },
+    { 0x0FF00000, 0x00E00000, "RSC%c%s\t%r12, %r16, %Rs" },
+    { 0x0FF00000, 0x01000000, "TST%c%s\t%r16, %Rs" },
+    { 0x0FF00000, 0x01200000, "TEQ%c%s\t%r16, %Rs" },
+    { 0x0FF00000, 0x01400000, "CMP%c%s\t%r16, %Rs" },
+    { 0x0FF00000, 0x01600000, "CMN%c%s\t%r16, %Rs" },
+    { 0x0FF00000, 0x01800000, "ORR%c%s\t%r12, %r16, %Rs" },
+    { 0x0FF00000, 0x01A00000, "MOV%c%s\t%r12, %Rs" },
+    { 0x0FF00000, 0x01C00000, "BIC%c%s\t%r12, %r16, %Rs" },
+    { 0x0FF00000, 0x01E00000, "MVN%c%s\t%r12, %Rs" },
 
     //  ALU (Bit25==0 : 第二オペランドはレジスタ)   //
-    { 0x0ff00000, 0x02000000, "AND.%c%s\t%r12, %16, %i" },
-    { 0x0ff00000, 0x02200000, "EOR.%c%s\t%r12, %16, %i" },
-    { 0x0ff00000, 0x02400000, "SUB.%c%s\t%r12, %16, %i" },
-    { 0x0ff00000, 0x02600000, "RSB.%c%s\t%r12, %16, %i" },
-    { 0x0ff00000, 0x02800000, "ADD.%c%s\t%r12, %16, %i" },
-    { 0x0ff00000, 0x02A00000, "ADC.%c%s\t%r12, %16, %i" },
-    { 0x0ff00000, 0x02C00000, "SBC.%c%s\t%r12, %16, %i" },
-    { 0x0ff00000, 0x02E00000, "RSC.%c%s\t%r12, %16, %i" },
-    { 0x0ff00000, 0x03000000, "TST.%c%s\t%%16, %i" },
-    { 0x0ff00000, 0x03200000, "TEQ.%c%s\t%%16, %i" },
-    { 0x0ff00000, 0x03400000, "CMP.%c%s\t%%16, %i" },
-    { 0x0ff00000, 0x03600000, "CMN.%c%s\t%%16, %i" },
-    { 0x0ff00000, 0x03800000, "ORR.%c%s\t%r12, %16, %i" },
-    { 0x0ff00000, 0x03A00000, "MOV.%c%s\t%r12, %i" },
-    { 0x0ff00000, 0x03C00000, "BIC.%c%s\t%r12, %16, %i" },
-    { 0x0ff00000, 0x03E00000, "MVN.%c%s\t%r12, %i" },
+    { 0x0FF00000, 0x02000000, "AND%c%s\t%r12, %r16, %i" },
+    { 0x0FF00000, 0x02200000, "EOR%c%s\t%r12, %r16, %i" },
+    { 0x0FF00000, 0x02400000, "SUB%c%s\t%r12, %r16, %i" },
+    { 0x0FF00000, 0x02600000, "RSB%c%s\t%r12, %r16, %i" },
+    { 0x0FF00000, 0x02800000, "ADD%c%s\t%r12, %r16, %i" },
+    { 0x0FF00000, 0x02A00000, "ADC%c%s\t%r12, %r16, %i" },
+    { 0x0FF00000, 0x02C00000, "SBC%c%s\t%r12, %r16, %i" },
+    { 0x0FF00000, 0x02E00000, "RSC%c%s\t%r12, %r16, %i" },
+    { 0x0FF00000, 0x03000000, "TST%c%s\t%r16, %i" },
+    { 0x0FF00000, 0x03200000, "TEQ%c%s\t%r16, %i" },
+    { 0x0FF00000, 0x03400000, "CMP%c%s\t%r16, %i" },
+    { 0x0FF00000, 0x03600000, "CMN%c%s\t%r16, %i" },
+    { 0x0FF00000, 0x03800000, "ORR%c%s\t%r12, %r16, %i" },
+    { 0x0FF00000, 0x03A00000, "MOV%c%s\t%r12, %i" },
+    { 0x0FF00000, 0x03C00000, "BIC%c%s\t%r12, %r16, %i" },
+    { 0x0FF00000, 0x03E00000, "MVN%c%s\t%r12, %i" },
 
     //  Unknown
     { 0x00000000, 0x00000000, "[ ??? ]" },
 };
+
+//----------------------------------------------------------------
+//  %ai - Addressing Immediate
+//
+
+inline  size_t
+writeAddressingImmediate(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src,
+        GuestMemoryAddress  gmAddr)
+{
+    const  OpeCode  ofs = (opeCode & 0x0FFF);
+    const  char     sgn = (opeCode & 0x00800000) ? '+' : '-';
+    return  sprintf(dst, "%c#0x%0x", sgn, ofs);
+}
 
 //----------------------------------------------------------------
 //  %c - condition (bit 28-31)
@@ -128,6 +171,37 @@ writeOffset(
     }
     ofs <<= 2;
     return   sprintf(dst, "$%08x ; (%08x)", ofs, gmAddr + 8 + ofs);
+}
+
+//----------------------------------------------------------------
+//  %p - PSR
+//  PSR 命令のビット 19-16 のフラグ。
+//
+
+inline  size_t
+writePsrFlags(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src,
+        GuestMemoryAddress  gmAddr)
+{
+    char  *  p  = dst;
+
+    *(p ++) = '_';
+    if ( opeCode & 0x00080000 ) {
+        *(p ++) = 'f';
+    }
+    if ( opeCode & 0x00040000 ) {
+        *(p ++) = 's';
+    }
+    if ( opeCode & 0x00020000 ) {
+        *(p ++) = 'x';
+    }
+    if ( opeCode & 0x00010000 ) {
+        *(p ++) = 'c';
+    }
+
+    return ( p - dst );
 }
 
 //----------------------------------------------------------------
@@ -289,6 +363,11 @@ DisArm::writeMnemonic(
                     len = writeOpe2RegisterWithShift(opeCode, dst, src, gmAddr);
                 }
                 break;
+            case  'a':
+                if ( *(++ src) == 'i' ) {
+                    len = writeAddressingImmediate(opeCode, dst, src, gmAddr);
+                }
+                break;
             case  'c':
                 //  len = sprintf(dst, "%s", conditions[opeCode >> 28]);
                 len = writeCondition(opeCode, dst, src, gmAddr);
@@ -304,10 +383,17 @@ DisArm::writeMnemonic(
             case  'o':
                 len = writeOffset(opeCode, dst, src, gmAddr);
                 break;
+            case  'p':
+                len = writePsrFlags(opeCode, dst, src, gmAddr);
+                break;
             case  's':
                 if ( opeCode & 0x00100000 ) {
                     *(dst ++)   = 's';
                 }
+                break;
+            default:
+                *(dst ++)   = '%';
+                *(dst ++)   = *(src);
                 break;
             }
             ++  src;

@@ -13,16 +13,16 @@
 *************************************************************************/
 
 /**
-**      An Interface of DisArm class.
+**      An Interface of BaseDisCpu class.
 **
-**      @file       GbaMan/DisArm.h
+**      @file       GbaMan/BaseDisCpu.h
 **/
 
-#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_DIS_ARM_H )
-#    define   GBDEBUGGER_GBAMAN_INCLUDED_DIS_ARM_H
-
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_BASE_DIS_CPU_H )
-#    include    "GbDebugger/GbaMan/BaseDisCpu.h"
+#    define   GBDEBUGGER_GBAMAN_INCLUDED_BASE_DIS_CPU_H
+
+#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_TYPES_H )
+#    include    "GbDebugger/Common/DebuggerTypes.h"
 #endif
 
 #include    <ostream>
@@ -36,10 +36,33 @@ namespace  GbaMan  {
 
 //========================================================================
 //
-//    DisArm  class.
+//    Type Definitions.
 //
 
-class  DisArm : public BaseDisCpu
+struct  MnemonicMap  {
+    OpeCode         mask;
+    OpeCode         cval;
+    const char *    mnemonic;
+};
+
+//========================================================================
+
+CONSTEXPR_VAR   const  char  *  regNames[16] = {
+    "R0" , "R1" , "R2" , "R3" , "R4" , "R5", "R6", "R7",
+    "R8" , "R9" , "R10", "R11", "R12", "SP", "LR", "PC"
+};
+
+CONSTEXPR_VAR   const  char  *  conditions[16] = {
+    ".EQ", ".NE", ".CS", ".CC", ".MI", ".PL", ".VS", ".VC",
+    ".HI", ".LS", ".GE", ".LT", ".GT", ".LE", "",    ".NV"
+};
+
+//========================================================================
+//
+//    BaseDisCpu  class.
+//
+
+class  BaseDisCpu
 {
 
 //========================================================================
@@ -53,14 +76,14 @@ public:
     **  （デフォルトコンストラクタ）。
     **
     **/
-    DisArm();
+    BaseDisCpu();
 
     //----------------------------------------------------------------
     /**   インスタンスを破棄する
     **  （デストラクタ）。
     **
     **/
-    virtual  ~DisArm();
+    virtual  ~BaseDisCpu();
 
 //========================================================================
 //
@@ -76,11 +99,6 @@ public:
 //
 //    Public Member Functions (Pure Virtual Functions).
 //
-
-//========================================================================
-//
-//    Public Member Functions (Virtual Functions).
-//
 public:
 
     //----------------------------------------------------------------
@@ -94,7 +112,12 @@ public:
     writeMnemonic(
             std::ostream       &outStr,
             GuestMemoryAddress  gmAddr,
-            const  OpeCode      opeCode)  const;
+            const  OpeCode      opeCode)  const  = 0;
+
+//========================================================================
+//
+//    Public Member Functions (Virtual Functions).
+//
 
 //========================================================================
 //
@@ -126,12 +149,12 @@ public:
 //    Other Features.
 //
 private:
-    typedef     DisArm          This;
-    DisArm              (const  This  &);
+    typedef     BaseDisCpu      This;
+    BaseDisCpu          (const  This  &);
     This &  operator =  (const  This  &);
 public:
     //  テストクラス。  //
-    friend  class   DisArmTest;
+    friend  class   BaseDisCpuTest;
 };
 
 }   //  End of namespace  GbaMan

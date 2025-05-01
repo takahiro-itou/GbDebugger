@@ -21,6 +21,10 @@
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_CPU_THUMB_H )
 #    define   GBDEBUGGER_GBAMAN_INCLUDED_CPU_THUMB_H
 
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_BASE_CPU_CORE_H )
+#    include    "GbDebugger/GbaMan/BaseCpuCore.h"
+#endif
+
 #if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_TYPES_H )
 #    include    "GbDebugger/Common/DebuggerTypes.h"
 #endif
@@ -37,8 +41,16 @@ namespace  GbaMan  {
 //    CpuThumb  class.
 //
 
-class  CpuThumb
+class  CpuThumb : public BaseCpuCore
 {
+
+//========================================================================
+//
+//    Internal Type Definitions.
+//
+private:
+
+    typedef     BaseCpuCore     Super;
 
 //========================================================================
 //
@@ -48,10 +60,12 @@ public:
 
     //----------------------------------------------------------------
     /**   インスタンスを初期化する
-    **  （デフォルトコンストラクタ）。
+    **  （コンストラクタ）。
     **
     **/
-    CpuThumb();
+    CpuThumb(
+            GbaManager    & manGba,
+            MemoryManager & manMem);
 
     //----------------------------------------------------------------
     /**   インスタンスを破棄する
@@ -64,6 +78,14 @@ public:
 //
 //    Public Member Functions (Implement Pure Virtual).
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   現在の命令を実行する。
+    **
+    **/
+    virtual  InstExecResult
+    executeNextInst();
 
 //========================================================================
 //

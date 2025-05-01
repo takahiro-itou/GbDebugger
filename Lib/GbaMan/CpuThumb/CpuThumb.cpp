@@ -20,6 +20,8 @@
 
 #include    "CpuThumb.h"
 
+#include    <iostream>
+
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
@@ -44,8 +46,12 @@ namespace  {
 //  （デフォルトコンストラクタ）。
 //
 
-CpuThumb::CpuThumb()
+CpuThumb::CpuThumb(
+        GbaManager    & manGba,
+        MemoryManager & manMem)
+    : Super(manGba, manMem)
 {
+    this->m_cpuMode = CPSR::FLAG_T;
 }
 
 //----------------------------------------------------------------
@@ -61,6 +67,17 @@ CpuThumb::~CpuThumb()
 //
 //    Public Member Functions (Implement Pure Virtual).
 //
+
+//----------------------------------------------------------------
+//    現在の命令を実行する。
+//
+
+InstExecResult
+CpuThumb::executeNextInst()
+{
+    std::cerr   <<  "Thumb Mode Not Implemented."   <<  std::endl;
+    return ( InstExecResult::UNDEFINED_OPECODE );
+}
 
 //========================================================================
 //
