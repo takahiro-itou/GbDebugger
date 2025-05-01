@@ -201,7 +201,7 @@ DisThumb::writeMnemonic(
     const MnemonicMap *  oc = thumbMnemonics;
     for ( ; (opeCode & oc->mask) != oc->cval; ++ oc ) ;
 
-    sprintf(buf, "%08x:   %08x\t", gmAddr, opeCode);
+    sprintf(buf, "%08x:   %04x\t", gmAddr, (opeCode & 0xFFFF));
     outStr  <<  buf;
 
     size_t          len = 0;
