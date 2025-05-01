@@ -71,7 +71,7 @@ thumbMnemonics[] = {
     { 0xFF80, 0x4700, "BX"  },          //  MSBd は 0。Rd は未使用。    //
 
     //  Format 06 : ロードストア命令（PC-Relative）。   //
-    { 0xF800, 0x4800, "LDR\t%r8, [PC, #%R], ([$%p] = %P)" },
+    { 0xF800, 0x4800, "LDR\t%r8, [PC, #%n2], ([$%p2] = %P2)" },
 
     //  Format 07 : ロードストア命令。  //
     { 0xFE00, 0x5000, "STR" },
@@ -151,6 +151,45 @@ thumbMnemonics[] = {
 };
 
 //----------------------------------------------------------------
+//    相対オフセット。
+//
+
+inline  GuestMemoryAddress
+getUnsignedOffset(
+        const   OpeCode     opeCode,
+        const  char  *    & src)
+{
+    const  int  reg_bit = (*(++ src) - '0');
+    return  static_cast<GuestMemoryAddress>((opeCode & 0x00FF) << (reg_bit));
+}
+
+//----------------------------------------------------------------
+//  %p  - PC-Relative.
+//
+
+inline  size_t
+writePCRelative(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src,
+        GuestMemoryAddress  gmAddr)
+{
+    const   GuestMemoryAddress  nn  = getUnsignedOffset(opeCode, src);
+    return  sprintf(dst, "0x%08x", (gmAddr & ~3) + 4 + nn);
+}
+
+inline  size_t
+writePCRelativeVal(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src,
+        GuestMemoryAddress  gmAddr)
+{
+    const   GuestMemoryAddress  nn  = getUnsignedOffset(opeCode, src);
+    return  sprintf(dst, "0x%08x", (gmAddr & ~3) + 4 + nn);
+}
+
+//----------------------------------------------------------------
 //  %rx - Register.
 //  x : オペコードのどのビットからレジスタ番号を読みだすか
 //
@@ -165,6 +204,21 @@ writeRegister(
     const  int  reg_bit = (*(++ src) - '0');
     const  int  reg_id  = (opeCode >> reg_bit) & 0x07;
     return  sprintf(dst, "%s", regNames[reg_id]);
+}
+
+//----------------------------------------------------------------
+//  %nxx - 符号なしオフセット。
+//
+
+inline  size_t
+writeUnsignedOffset(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src,
+        GuestMemoryAddress  gmAddr)
+{
+    const   GuestMemoryAddress  nn  = getUnsignedOffset(opeCode, src);
+    return  sprintf(dst, "0x%04x", nn);
 }
 
 }   //  End of (Unnamed) namespace.
@@ -232,6 +286,15 @@ DisThumb::writeMnemonic(
         } else {
             ++  src;
             switch ( *src ) {
+            case  'P':
+                len = writePCRelativeVal(opeCode, dst, src, gmAddr);
+                break;
+            case  'n':
+                len = writeUnsignedOffset(opeCode, dst, src, gmAddr);
+                break;
+            case  'p':
+                len = writePCRelative(opeCode, dst, src, gmAddr);
+                break;
             case  'r':
                 len = writeRegister(opeCode, dst, src, gmAddr);
                 break;
