@@ -23,6 +23,7 @@
 #include    "CpuArm/CpuArm.h"
 #include    "CpuArm/DisArm.h"
 #include    "CpuThumb/CpuThumb.h"
+#include    "CpuThumb/DisThumb.h"
 
 #include    "GbDebugger/Common/DebuggerUtils.h"
 
