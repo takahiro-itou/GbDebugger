@@ -71,7 +71,7 @@ thumbMnemonics[] = {
     { 0xFF80, 0x4700, "BX"  },          //  MSBd は 0。Rd は未使用。    //
 
     //  Format 06 : ロードストア命令（PC-Relative）。   //
-    { 0xF800, 0x4800, "LDR" },
+    { 0xF800, 0x4800, "LDR\t%r8, [PC, #%R], ([$%p] = %P)" },
 
     //  Format 07 : ロードストア命令。  //
     { 0xFE00, 0x5000, "STR" },
@@ -150,6 +150,23 @@ thumbMnemonics[] = {
     { 0x0000, 0x0000, "[ ??? ]" },
 };
 
+//----------------------------------------------------------------
+//  %rx - Register.
+//  x : オペコードのどのビットからレジスタ番号を読みだすか
+//
+
+inline  size_t
+writeRegister(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src,
+        GuestMemoryAddress  gmAddr)
+{
+    const  int  reg_bit = (*(++ src) - '0');
+    const  int  reg_id  = (opeCode >> reg_bit) & 0x07;
+    return  sprintf(dst, "%s", regNames[reg_id]);
+}
+
 }   //  End of (Unnamed) namespace.
 
 
@@ -215,6 +232,9 @@ DisThumb::writeMnemonic(
         } else {
             ++  src;
             switch ( *src ) {
+            case  'r':
+                len = writeRegister(opeCode, dst, src, gmAddr);
+                break;
             default:
                 *(dst ++)   = '%';
                 *(dst ++)   = *(src);
