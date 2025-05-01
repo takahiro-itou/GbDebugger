@@ -132,7 +132,7 @@ public:
 public:
 
     void
-    setMewmoryManager(
+    setMemoryManager(
             const  MemoryManager  & manMem)
     {
         this->m_pManMem = &manMem;

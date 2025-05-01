@@ -45,6 +45,7 @@ namespace  {
 //
 
 BaseDisCpu::BaseDisCpu()
+    : m_pManMem(nullptr)
 {
 }
 
