@@ -66,6 +66,16 @@ public:
 //
 //    Public Member Functions (Implement Pure Virtual).
 //
+
+//========================================================================
+//
+//    Public Member Functions (Overrides).
+//
+
+//========================================================================
+//
+//    Public Member Functions (Pure Virtual Functions).
+//
 public:
 
     //----------------------------------------------------------------
@@ -80,16 +90,6 @@ public:
             std::ostream       &outStr,
             GuestMemoryAddress  gmAddr,
             const  OpeCode      opeCode)  const  = 0;
-
-//========================================================================
-//
-//    Public Member Functions (Overrides).
-//
-
-//========================================================================
-//
-//    Public Member Functions (Pure Virtual Functions).
-//
 
 //========================================================================
 //
