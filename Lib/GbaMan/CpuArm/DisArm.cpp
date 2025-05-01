@@ -29,22 +29,6 @@ namespace  GbaMan  {
 
 namespace  {
 
-struct  MnemonicMap  {
-    OpeCode         mask;
-    OpeCode         cval;
-    const char *    mnemonic;
-};
-
-const char * regNames[16] = {
-    "R0" , "R1" , "R2" , "R3" , "R4" , "R5", "R6", "R7",
-    "R8" , "R9" , "R10", "R11", "R12", "SP", "LR", "PC"
-};
-
-const char * conditions[16] = {
-    ".EQ", ".NE", ".CS", ".CC", ".MI", ".PL", ".VS", ".VC",
-    ".HI", ".LS", ".GE", ".LT", ".GT", ".LE", "",    ".NV"
-};
-
 CONSTEXPR_VAR   const  char  *  shiftTypes[5] = {
     "LSL", "LSR", "ASR", "ROR", "RRX",
 };
