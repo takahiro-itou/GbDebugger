@@ -99,6 +99,13 @@ thumbMnemonics[] = {
     { 0xF800, 0x9000, "STR Rd, [SP, #nn]" },
     { 0xF800, 0x9800, "LDR Rd, [SP, #nn]" },
 
+    //  Format 12: アドレッシング。 //
+    { 0xF800, 0xA000, "ADD Rd, PC, #nn" },
+    { 0xF800, 0xA800, "ADD Rd, SP, #nn" },
+
+    //  Format 13: SP操作。 //
+    { 0xFF80, 0xB000, "ADD SP, #nn" },
+    { 0xFF80, 0xB080, "ADD SP, #-nn" },
 
     //  Unknown.    //
     { 0x0000, 0x0000, "[ ??? ]" },
