@@ -71,7 +71,7 @@ thumbMnemonics[] = {
     { 0xFF80, 0x4700, "BX"  },          //  MSBd は 0。Rd は未使用。    //
 
     //  Format 06 : ロードストア命令（PC-Relative）。   //
-    { 0xF800, 0x4800, "LDR\t%r8, [PC, #%n2], ([$%p2] = %P2)" },
+    { 0xF800, 0x4800, "LDR\t%r8, [PC, #%n2], ([$%p2])" },
 
     //  Format 07 : ロードストア命令。  //
     { 0xFE00, 0x5000, "STR" },
