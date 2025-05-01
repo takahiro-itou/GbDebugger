@@ -20,6 +20,8 @@
 
 #include    "DisThumb.h"
 
+#include    "GbDebugger/GbaMan/MemoryManager.h"
+
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
@@ -71,7 +73,7 @@ thumbMnemonics[] = {
     { 0xFF80, 0x4700, "BX"  },          //  MSBd は 0。Rd は未使用。    //
 
     //  Format 06 : ロードストア命令（PC-Relative）。   //
-    { 0xF800, 0x4800, "LDR\t%r8, [PC, #%n2], ([$%p2])" },
+    { 0xF800, 0x4800, "LDR\t%r8, [PC, #%n2]\t;[$%p2] (=$%P2)" },
 
     //  Format 07 : ロードストア命令。  //
     { 0xFE00, 0x5000, "STR" },
@@ -180,13 +182,16 @@ writePCRelative(
 
 inline  size_t
 writePCRelativeVal(
-        const   OpeCode     opeCode,
-        char  *  const      dst,
-        const  char  *    & src,
-        GuestMemoryAddress  gmAddr)
+        const   OpeCode             opeCode,
+        char  *  const              dst,
+        const   char  *           & src,
+        const   MemoryManager     & manMem,
+        const   GuestMemoryAddress  gmAddr)
 {
     const   GuestMemoryAddress  nn  = getUnsignedOffset(opeCode, src);
-    return  sprintf(dst, "0x%08x", (gmAddr & ~3) + 4 + nn);
+    const   GuestMemoryAddress  pos = (gmAddr & ~3) + 4 + nn;
+    const   RegType             val = manMem.readMemory<RegType>(pos);
+    return  sprintf(dst, "%08x", val);
 }
 
 //----------------------------------------------------------------
@@ -287,7 +292,8 @@ DisThumb::writeMnemonic(
             ++  src;
             switch ( *src ) {
             case  'P':
-                len = writePCRelativeVal(opeCode, dst, src, gmAddr);
+                len = writePCRelativeVal(
+                            opeCode, dst, src, *(this->m_pManMem), gmAddr);
                 break;
             case  'n':
                 len = writeUnsignedOffset(opeCode, dst, src, gmAddr);
