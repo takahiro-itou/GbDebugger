@@ -62,6 +62,19 @@ DisThumb::~DisThumb()
 //    Public Member Functions (Implement Pure Virtual).
 //
 
+//----------------------------------------------------------------
+//    ニーモニックを表示する。
+//
+
+std::ostream  &
+DisThumb::writeMnemonic(
+        std::ostream       &outStr,
+        GuestMemoryAddress  gmAddr,
+        const  OpeCode      opeCode)  const
+{
+    return ( outStr );
+}
+
 //========================================================================
 //
 //    Public Member Functions (Overrides).
