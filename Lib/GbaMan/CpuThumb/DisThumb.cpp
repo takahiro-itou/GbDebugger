@@ -26,6 +26,47 @@ namespace  GbaMan  {
 
 namespace  {
 
+CONSTEXPR_VAR   const  MnemonicMap
+thumbMnemonics[] = {
+    //  Format 01 : ビットシフト。  //
+    { 0xF800, 0x0000, "LSL" },
+    { 0xF800, 0x0800, "LSR" },
+    { 0xF800, 0x1000, "ASR" },
+
+    //  Format 02 : 加算減算。      //
+    { 0xFE00, 0x1800, "ADD" },
+    { 0xFE00, 0x1A00, "SUB" },
+    { 0xFE00, 0x1C00, "ADD" },
+    { 0xFE00, 0x1E00, "SUB" },
+
+    //  Format 03 : 即値の演算。    //
+    { 0xF800, 0x2000, "MOV" },
+    { 0xF800, 0x2800, "CMP" },
+    { 0xF800, 0x3000, "ADD" },
+    { 0xF800, 0x3800, "SUB" },
+
+    //  Format 04 : 算術演算。      //
+    { 0xFFC0, 0x4000, "AND" },
+    { 0xFFC0, 0x4040, "EOR" },
+    { 0xFFC0, 0x4080, "LSL" },
+    { 0xFFC0, 0x40C0, "LSR" },
+    { 0xFFC0, 0x4100, "ASR" },
+    { 0xFFC0, 0x4140, "ADC" },
+    { 0xFFC0, 0x4180, "SBC" },
+    { 0xFFC0, 0x41C0, "ROR" },
+    { 0xFFC0, 0x4200, "TST" },
+    { 0xFFC0, 0x4240, "NEG" },
+    { 0xFFC0, 0x4280, "CMP" },
+    { 0xFFC0, 0x42C0, "CMN" },
+    { 0xFFC0, 0x4300, "ORR" },
+    { 0xFFC0, 0x4340, "MUL" },
+    { 0xFFC0, 0x4380, "BIC" },
+    { 0xFFC0, 0x43C0, "MVN" },
+
+    //  Unknown.    //
+    { 0x0000, 0x0000, "[ ??? ]" },
+};
+
 }   //  End of (Unnamed) namespace.
 
 
