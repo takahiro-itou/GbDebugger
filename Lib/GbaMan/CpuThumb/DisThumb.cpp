@@ -85,6 +85,12 @@ thumbMnemonics[] = {
     { 0xFE00, 0x5A00, "LDRH" },
     { 0xFE00, 0x5E00, "LDSH" },
 
+    //  Format 09 : ロードストア命令。  //
+    { 0xF800, 0x6000, "STR" },
+    { 0xF800, 0x6800, "LDR" },
+    { 0xF800, 0x7000, "STRB" },
+    { 0xF800, 0x7800, "LDRB" },
+
     //  Unknown.    //
     { 0x0000, 0x0000, "[ ??? ]" },
 };
