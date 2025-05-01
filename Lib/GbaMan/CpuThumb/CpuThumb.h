@@ -52,6 +52,10 @@ private:
 
     typedef     BaseCpuCore     Super;
 
+    typedef     GBD_REGPARM     InstExecResult
+    (CpuThumb::* FnInst)(
+            const  OpeCode  opeCode);
+
 //========================================================================
 //
 //    Constructor(s) and Destructor.
@@ -126,6 +130,10 @@ public:
 //
 //    Member Variables.
 //
+private:
+
+    /**   命令テーブル。        **/
+    static  const   FnInst  s_thumbInstTable[256];
 
 //========================================================================
 //
