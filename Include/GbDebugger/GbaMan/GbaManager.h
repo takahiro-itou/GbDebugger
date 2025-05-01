@@ -246,6 +246,8 @@ private:
 
     CpuThumb  *     m_cpuMod1;
 
+    BaseDisCpu  *   m_disCur;
+
     /**   CPU モード。  **/
     RegType         m_cpuMode;
 

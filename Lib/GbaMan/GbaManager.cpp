@@ -37,6 +37,10 @@ namespace  GbaMan  {
 
 namespace  {
 
+//  特に内部状態を持たないクラスなのでグローバル変数でも良い。  //
+DisArm      g_disCpuArm;
+DisThumb    g_disCpuThumb;
+
 }   //  End of (Unnamed) namespace.
 
 
@@ -59,6 +63,7 @@ GbaManager::GbaManager()
       m_cpuCur (nullptr),
       m_cpuMod0(nullptr),
       m_cpuMod1(nullptr),
+      m_disCur (&g_disCpuArm),
       m_cpuMode(0)
 {
     this->m_cpuMod0 = new CpuArm(*this, this->m_manMem);
@@ -210,8 +215,7 @@ GbaManager::disassembleArm(
 {
     const  OpeCode  opeCode = readMemory<OpeCode>(gmAddr);
 
-    DisArm  dis;
-    return  dis.writeMnemonic(outStr, gmAddr, opeCode);
+    return  g_disCpuArm.writeMnemonic(outStr, gmAddr, opeCode);
 }
 
 //----------------------------------------------------------------
@@ -223,10 +227,9 @@ GbaManager::writeMnemonicCurrent(
         std::ostream       &outStr,
         GuestMemoryAddress  gmAddr)  const
 {
-    if ( this->m_cpuMode ) {
-        return  disassembleThumb(outStr, gmAddr);
-    }
-    return  disassembleArm(outStr, gmAddr);
+    const  OpeCode  opeCode = readMemory<OpeCode>(gmAddr);
+
+    return  this->m_disCur->writeMnemonic(outStr, gmAddr, opeCode);
 }
 
 //----------------------------------------------------------------
@@ -240,8 +243,7 @@ GbaManager::disassembleThumb(
 {
     const  OpeCode  opeCode = readMemory<OpeCode>(gmAddr);
 
-    DisThumb    dis;
-    return  dis.writeMnemonic(outStr, gmAddr, opeCode);
+    return  g_disCpuThumb.writeMnemonic(outStr, gmAddr, opeCode);
 }
 
 //========================================================================
@@ -264,9 +266,11 @@ GbaManager::changeCpuMode(
     if ( (this->m_cpuMode = (thumbState & CPSR::FLAG_T)) ) {
         //  THUMB モード。  //
         this->m_cpuCur  = this->m_cpuMod1;
+        this->m_disCur  = &(g_disCpuThumb);
     } else {
         //  ARM モード。    //
         this->m_cpuCur  = this->m_cpuMod0;
+        this->m_disCur  = &(g_disCpuArm);
     }
 
     this->m_cpuCur->setRegisters(regs);
