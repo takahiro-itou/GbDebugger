@@ -129,6 +129,14 @@ public:
 //
 //    Accessors.
 //
+public:
+
+    void
+    setMewmoryManager(
+            const  MemoryManager  & manMem)
+    {
+        this->m_pManMem = &manMem;
+    }
 
 //========================================================================
 //
@@ -144,6 +152,9 @@ public:
 //
 //    Member Variables.
 //
+protected:
+
+    const   MemoryManager  *    m_pManMem;
 
 //========================================================================
 //
