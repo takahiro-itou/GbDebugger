@@ -21,8 +21,8 @@
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_DIS_ARM_H )
 #    define   GBDEBUGGER_GBAMAN_INCLUDED_DIS_ARM_H
 
-#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_TYPES_H )
-#    include    "GbDebugger/Common/DebuggerTypes.h"
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_BASE_DIS_CPU_H )
+#    include    "GbDebugger/GbaMan/BaseDisCpu.h"
 #endif
 
 #include    <ostream>
@@ -39,7 +39,7 @@ namespace  GbaMan  {
 //    DisArm  class.
 //
 
-class  DisArm
+class  DisArm : public BaseDisCpu
 {
 
 //========================================================================
