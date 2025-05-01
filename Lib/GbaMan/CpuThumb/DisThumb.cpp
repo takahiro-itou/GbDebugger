@@ -138,6 +138,14 @@ thumbMnemonics[] = {
     { 0xFF00, 0xDF00, "SWI" },
     { 0xFF00, 0xBE00, "BKPT" },
 
+    //  Format 18 : 無条件分岐命令。    //
+    { 0xF800, 0xE000, "B" },
+
+    //  Format 19 : サブルーチンコール。    //
+    { 0xF800, 0xF000, "BL" },
+    { 0xF800, 0xF800, "BLH" },
+    { 0xF800, 0xE800, "BLX" },
+
     //  Unknown.    //
     { 0x0000, 0x0000, "[ ??? ]" },
 };
