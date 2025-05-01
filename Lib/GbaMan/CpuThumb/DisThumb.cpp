@@ -115,6 +115,10 @@ thumbMnemonics[] = {
     { 0xFF00, 0xBC00, "POP {Rlist}" },
     { 0xFF00, 0xBD00, "POP {Rlist,PC}" },
 
+    //  Format 15   //
+    { 0xF800, 0xC000, "STMIA Rb!, {Rlist}" },
+    { 0xF800, 0xC800, "LDMIA Rb!, {Rlist}" },
+
     //  Unknown.    //
     { 0x0000, 0x0000, "[ ??? ]" },
 };
