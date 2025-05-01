@@ -95,6 +95,11 @@ thumbMnemonics[] = {
     { 0xF800, 0x8000, "STRH" },
     { 0xF800, 0x8800, "LDRH" },
 
+    //  Format 11 : ロードストア命令（SP-Relative）。   //
+    { 0xF800, 0x9000, "STR Rd, [SP, #nn]" },
+    { 0xF800, 0x9800, "LDR Rd, [SP, #nn]" },
+
+
     //  Unknown.    //
     { 0x0000, 0x0000, "[ ??? ]" },
 };
