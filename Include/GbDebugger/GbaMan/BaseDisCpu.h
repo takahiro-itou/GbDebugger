@@ -32,6 +32,7 @@ GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
 
 //  クラスの前方宣言。  //
+class   MemoryManager;
 
 
 //========================================================================
