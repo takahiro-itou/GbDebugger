@@ -107,6 +107,14 @@ thumbMnemonics[] = {
     { 0xFF80, 0xB000, "ADD SP, #nn" },
     { 0xFF80, 0xB080, "ADD SP, #-nn" },
 
+    //  Format 14: ロードストア命令（スタック）。   //
+    { 0xFFFF, 0xB500, "PUSH {LR}" },
+    { 0xFF00, 0xB400, "PUSH {Rlist}" },
+    { 0xFF00, 0xB500, "PUSH {Rlist,LR}" },
+    { 0xFFFF, 0xBD00, "POP {PC}" },
+    { 0xFF00, 0xBC00, "POP {Rlist}" },
+    { 0xFF00, 0xBD00, "POP {Rlist,PC}" },
+
     //  Unknown.    //
     { 0x0000, 0x0000, "[ ??? ]" },
 };
