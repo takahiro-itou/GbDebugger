@@ -237,8 +237,10 @@ GbaManager::disassembleThumb(
         std::ostream       &outStr,
         GuestMemoryAddress  gmAddr)  const
 {
-    outStr  <<  "disassembleThumb Not Implemented." <<  std::endl;
-    return ( outStr );
+    const  OpeCode  opeCode = readMemory<OpeCode>(gmAddr);
+
+    DisThumb    dis;
+    return  dis.writeMnemonic(outStr, gmAddr, opeCode);
 }
 
 //========================================================================

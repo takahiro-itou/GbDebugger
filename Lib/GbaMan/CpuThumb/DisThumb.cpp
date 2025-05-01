@@ -72,6 +72,7 @@ DisThumb::writeMnemonic(
         GuestMemoryAddress  gmAddr,
         const  OpeCode      opeCode)  const
 {
+    outStr  <<  "disassembleThumb Not Implemented." <<  std::endl;
     return ( outStr );
 }
 
