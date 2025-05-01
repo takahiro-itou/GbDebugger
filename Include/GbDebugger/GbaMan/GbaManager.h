@@ -44,8 +44,11 @@ namespace  GbaMan  {
 
 //  クラスの前方宣言。  //
 class   BaseCpuCore;
+class   BaseDisCpu;
 class   CpuArm;
 class   CpuThumb;
+class   DisArm;
+class   DisThumb;
 
 
 //========================================================================
