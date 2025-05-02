@@ -21,8 +21,6 @@
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_ARM_INST_H )
 #    define   GBDEBUGGER_GBAMAN_INCLUDED_ARM_INST_H
 
-/**   命令テーブル。        **/
-
 #define     arm_UI  &CpuArm::execUnknownInstruction
 
 #define     arm009  arm_UI
@@ -184,6 +182,11 @@
 
 #define     INST_TABLE_400_7FF_STR_LDR(CODE1, CODE2)                        \
     REPEAT_16(armSTR),  REPEAT_16(armLDR)
+
+//----------------------------------------------------------------
+/**
+**    命令テーブル。
+**/
 
 const   CpuArm::FnInst
 CpuArm::s_armInstTable[4096] = {
