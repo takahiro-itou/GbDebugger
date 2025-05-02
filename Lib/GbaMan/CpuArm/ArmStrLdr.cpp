@@ -13,9 +13,9 @@
 *************************************************************************/
 
 /**
-**      An Implementation of ArmLdrStr Instructions.
+**      An Implementation of Store/Load Instructions.
 **
-**      @file       GbaMan/ArmLdrStr.cpp
+**      @file       GbaMan/ArmStrLdr.cpp
 **/
 
 #include    "CpuArm.h"
@@ -32,7 +32,7 @@ namespace  GbaMan  {
 namespace  {
 
 typedef     GBD_REGPARM     InstExecResult
-(* FnLdrStrInst)(
+(* FnStrLdrInst)(
         const  OpeCode  opeCode,
         RegPair         cpuRegs[],
         MemoryManager & manMem,
@@ -40,7 +40,7 @@ typedef     GBD_REGPARM     InstExecResult
 
 template  <int I, int P, int U, typename B, int BIT21, int OP, int SHIFTTYPE>
 GBD_REGPARM     InstExecResult
-armLdrStrInstruction(
+armStrLdrInstruction(
         const  OpeCode  opeCode,
         RegPair         cpuRegs[],
         MemoryManager & manMem,
@@ -96,25 +96,25 @@ armLdrStrInstruction(
 }
 
 #define     ARMSTRLDR_INST_TABLE(I, P, U, B)    \
-    armLdrStrInstruction<I, P, U, B, 0, 0, 0>,  \
-    armLdrStrInstruction<I, P, U, B, 0, 0, 1>,  \
-    armLdrStrInstruction<I, P, U, B, 0, 0, 2>,  \
-    armLdrStrInstruction<I, P, U, B, 0, 0, 3>,  \
-    armLdrStrInstruction<I, P, U, B, 0, 1, 0>,  \
-    armLdrStrInstruction<I, P, U, B, 0, 1, 1>,  \
-    armLdrStrInstruction<I, P, U, B, 0, 1, 2>,  \
-    armLdrStrInstruction<I, P, U, B, 0, 1, 3>,  \
-    armLdrStrInstruction<I, P, U, B, 1, 0, 0>,  \
-    armLdrStrInstruction<I, P, U, B, 1, 0, 1>,  \
-    armLdrStrInstruction<I, P, U, B, 1, 0, 2>,  \
-    armLdrStrInstruction<I, P, U, B, 1, 0, 3>,  \
-    armLdrStrInstruction<I, P, U, B, 1, 1, 0>,  \
-    armLdrStrInstruction<I, P, U, B, 1, 1, 1>,  \
-    armLdrStrInstruction<I, P, U, B, 1, 1, 2>,  \
-    armLdrStrInstruction<I, P, U, B, 1, 1, 3>
+    armStrLdrInstruction<I, P, U, B, 0, 0, 0>,  \
+    armStrLdrInstruction<I, P, U, B, 0, 0, 1>,  \
+    armStrLdrInstruction<I, P, U, B, 0, 0, 2>,  \
+    armStrLdrInstruction<I, P, U, B, 0, 0, 3>,  \
+    armStrLdrInstruction<I, P, U, B, 0, 1, 0>,  \
+    armStrLdrInstruction<I, P, U, B, 0, 1, 1>,  \
+    armStrLdrInstruction<I, P, U, B, 0, 1, 2>,  \
+    armStrLdrInstruction<I, P, U, B, 0, 1, 3>,  \
+    armStrLdrInstruction<I, P, U, B, 1, 0, 0>,  \
+    armStrLdrInstruction<I, P, U, B, 1, 0, 1>,  \
+    armStrLdrInstruction<I, P, U, B, 1, 0, 2>,  \
+    armStrLdrInstruction<I, P, U, B, 1, 0, 3>,  \
+    armStrLdrInstruction<I, P, U, B, 1, 1, 0>,  \
+    armStrLdrInstruction<I, P, U, B, 1, 1, 1>,  \
+    armStrLdrInstruction<I, P, U, B, 1, 1, 2>,  \
+    armStrLdrInstruction<I, P, U, B, 1, 1, 3>
 
-CONSTEXPR_VAR   FnLdrStrInst
-g_armLdrStrInstTable[256] = {
+CONSTEXPR_VAR   FnStrLdrInst
+g_armStrLdrInstTable[256] = {
     ARMSTRLDR_INST_TABLE(0, 0, -1, BtWord),
     ARMSTRLDR_INST_TABLE(0, 0, -1, BtByte),
     ARMSTRLDR_INST_TABLE(0, 0,  1, BtWord),
@@ -139,11 +139,11 @@ g_armLdrStrInstTable[256] = {
 
 //========================================================================
 //
-//    ArmLdrStr  Instructions.
+//    ArmStrLdr  Instructions.
 //
 
 GBD_REGPARM     InstExecResult
-CpuArm::execLdrStrInstruction(
+CpuArm::execStrLdrInstruction(
         const  OpeCode  opeCode)
 {
     //  オペコードから下記のビットを取り出す。          //
@@ -156,7 +156,7 @@ CpuArm::execLdrStrInstruction(
     //  bit  6-- 5  シフトの種類 (LSL, LSR, ASR, ROR)   //
     const  OpeCode  idx =
         ((opeCode >> 18) & 0x00FC) | ((opeCode >> 5) & 0x03);
-    FnLdrStrInst    pfInst  = g_armLdrStrInstTable[idx];
+    FnStrLdrInst    pfInst  = g_armStrLdrInstTable[idx];
 
     char    buf[512];
     sprintf(buf,

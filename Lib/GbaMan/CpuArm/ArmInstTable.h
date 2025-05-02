@@ -142,8 +142,8 @@
 #define     arm340  arm_UI
 #define     arm360  &CpuArm::execArm360_MrsSpsrImm
 #define     armALU  &CpuArm::execALUInstruction
-#define     armSTR  &CpuArm::execLdrStrInstruction
-#define     armLDR  &CpuArm::execLdrStrInstruction
+#define     armSTR  &CpuArm::execStrLdrInstruction
+#define     armLDR  &CpuArm::execStrLdrInstruction
 #define     armAxx  &CpuArm::execArmAxx_B
 #define     armBxx  &CpuArm::execArmBxx_BL
 
