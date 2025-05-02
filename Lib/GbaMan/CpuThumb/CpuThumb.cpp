@@ -20,7 +20,17 @@
 
 #include    "CpuThumb.h"
 
+#include    "GbDebugger/GbaMan/MemoryManager.h"
+
 #include    <iostream>
+
+
+//========================================================================
+//
+//    Implementation of Inlines.
+//
+
+#include    "ThumbStrLdr.inl"
 
 
 GBDEBUGGER_NAMESPACE_BEGIN
