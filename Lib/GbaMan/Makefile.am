@@ -52,6 +52,7 @@ dist_noinst_header_files    +=  \
         CpuArm/DisArm.h                \
         CpuThumb/CpuThumb.h            \
         CpuThumb/DisThumb.h            \
+        CpuThumb/ThumbInstTable.h      \
         ${extra_noinst_header_files}
 
 inclib_header_files         +=  \
