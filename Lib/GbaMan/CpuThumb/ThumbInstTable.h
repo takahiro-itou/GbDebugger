@@ -21,4 +21,14 @@
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_THUMB_INST_H )
 #    define   GBDEBUGGER_GBAMAN_INCLUDED_THUMB_INST_H
 
+//----------------------------------------------------------------
+/**
+**    命令テーブル。
+**/
+
+const   CpuThumb::FnInst
+CpuThumb::s_thumbInstTable[256] = {
+    nullptr,
+};
+
 #endif

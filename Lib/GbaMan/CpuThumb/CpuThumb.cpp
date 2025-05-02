@@ -36,6 +36,8 @@ namespace  {
 //    CpuThumb  class.
 //
 
+#include    "ThumbInstTable.h"
+
 //========================================================================
 //
 //    Constructor(s) and Destructor.
@@ -137,11 +139,6 @@ CpuThumb::executeNextInst()
 //
 //    For Internal Use Only.
 //
-
-const   CpuThumb::FnInst
-CpuThumb::s_thumbInstTable[256] = {
-    nullptr,
-};
 
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
