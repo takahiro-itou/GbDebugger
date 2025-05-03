@@ -50,6 +50,15 @@ armMnemonics[] = {
     { 0x0FF0F000, 0x0360F000, "MSR%c\tSPSR%p, %i" },
 
     //  LDR / STR   //
+    { 0x0F7F0000, 0x041F0000, "LDR%c \t%r12, [%r16], %ai \t; %P" },
+    { 0x0F7F0000, 0x043F0000, "LDR%c \t%r12, [%r16], %ai \t; %P" },
+    { 0x0F7F0000, 0x045F0000, "LDR%cB\t%r12, [%r16], %ai \t; %P" },
+    { 0x0F7F0000, 0x047F0000, "LDR%cB\t%r12, [%r16], %ai \t; %P" },
+    { 0x0F7F0000, 0x051F0000, "LDR%c \t%r12, [%r16, %ai] \t; %P" },
+    { 0x0F7F0000, 0x053F0000, "LDR%c \t%r12, [%r16, %ai]!\t; %P" },
+    { 0x0F7F0000, 0x055F0000, "LDR%cB\t%r12, [%r16, %ai] \t; %P" },
+    { 0x0F7F0000, 0x056F0000, "LDR%cB\t%r12, [%r16, %ai]!\t; %P" },
+
     { 0x0F700000, 0x04000000, "STR%c \t%r12, [%r16], %ai" },
     { 0x0F700000, 0x04100000, "LDR%c \t%r12, [%r16], %ai" },
     { 0x0F700000, 0x04200000, "STR%c \t%r12, [%r16], %ai" },
@@ -170,7 +179,36 @@ writeOffset(
         ofs |= 0xFF000000;
     }
     ofs <<= 2;
-    return   sprintf(dst, "$%08x ; (%08x)", ofs, gmAddr + 8 + ofs);
+    return  sprintf(dst, "$%08x ; (%08x)", ofs, gmAddr + 8 + ofs);
+}
+
+//----------------------------------------------------------------
+//  %P  - PC-Relative.
+//
+
+inline  size_t
+writePCRelative(
+        const   OpeCode             opeCode,
+        char  *  const              dst,
+        const   char  *           & src,
+        const   MemoryManager     & manMem,
+        const   GuestMemoryAddress  gmAddr)
+{
+    GuestMemoryAddress          pos = (gmAddr + 8);
+    const   GuestMemoryAddress  ofs = (opeCode & 0x0FFF);
+    if ( opeCode & 0x00800000 ) {
+        pos += ofs;
+    } else {
+        pos -= ofs;
+    }
+
+    //  読みだすアドレスが決定的、かつ大抵ロム上。  //
+    //  なので値も定数だろうから読みだしておく。    //
+    const  RegType  val = manMem.readMemory<RegType>(pos);
+    if ( opeCode & 0x00400000 ) {
+        return  sprintf(dst, "[$%08x] (=$%02x)",  pos, (val & 0xFF));
+    }
+    return  sprintf(dst, "[$%08x] (=$%08x)",  pos, val);
 }
 
 //----------------------------------------------------------------
@@ -216,11 +254,12 @@ writeRegister(
         const  char  *    & src,
         GuestMemoryAddress  gmAddr)
 {
-    const  int  reg_id0 = (*(++ src) - '0');
-    const  int  reg_id1 = (*(++ src) - '0');
-    const  int  reg_bit = ((reg_id0 * 10) + reg_id1);
-    const  int  reg_id  = (opeCode >> reg_bit) & 0x0F;
-    return  sprintf(dst, "%s", regNames[reg_id]);
+    // const  int  reg_id0 = (*(++ src) - '0');
+    // const  int  reg_id1 = (*(++ src) - '0');
+    // const  int  reg_bit = ((reg_id0 * 10) + reg_id1);
+    const  int  regBit  = readMnemonicParameter(src, 2);
+    const  int  regIdx  = (opeCode >> regBit) & 0x0F;
+    return  sprintf(dst, "%s", regNames[regIdx]);
 }
 
 //----------------------------------------------------------------
@@ -350,22 +389,35 @@ DisArm::writeMnemonic(
     size_t          len = 0;
     const  char  *  src = oc->mnemonic;
     char  *         dst = buf;
+    char            ch;
 
-    while (*src) {
+    while ( ch = *(src ++) ) {
         len = 0;
-        if ( *src != '%' ) {
-            *(dst ++)   = *(src ++);
+        if ( ch != '%' ) {
+            * (dst ++)  = ch;
         } else {
-            ++  src;
-            switch ( *src ) {
+            ch  = *(src ++);
+            switch ( ch ) {
+            case  'P':
+                len = writePCRelative(
+                            opeCode, dst, src, *(this->m_pManMem), gmAddr);
+                break;
             case  'R':
-                if ( *(++ src) == 's' ) {
+                if ( *(src ++) == 's' ) {
                     len = writeOpe2RegisterWithShift(opeCode, dst, src, gmAddr);
+                } else {
+                    * (dst ++)  = '%';
+                    * (dst ++)  = ch;
+                    --  src;
                 }
                 break;
             case  'a':
-                if ( *(++ src) == 'i' ) {
+                if ( *(src ++) == 'i' ) {
                     len = writeAddressingImmediate(opeCode, dst, src, gmAddr);
+                } else {
+                    * (dst ++)  = '%';
+                    * (dst ++)  = ch;
+                    --  src;
                 }
                 break;
             case  'c':
@@ -388,15 +440,14 @@ DisArm::writeMnemonic(
                 break;
             case  's':
                 if ( opeCode & 0x00100000 ) {
-                    *(dst ++)   = 's';
+                    * (dst ++)  = 's';
                 }
                 break;
             default:
-                *(dst ++)   = '%';
-                *(dst ++)   = *(src);
+                * (dst ++)  = '%';
+                * (dst ++)  = ch;
                 break;
             }
-            ++  src;
         }
         dst += len;
     }

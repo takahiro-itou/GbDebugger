@@ -32,6 +32,7 @@ GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
 
 //  クラスの前方宣言。  //
+class   MemoryManager;
 
 
 //========================================================================
@@ -128,6 +129,14 @@ public:
 //
 //    Accessors.
 //
+public:
+
+    void
+    setMemoryManager(
+            const  MemoryManager  & manMem)
+    {
+        this->m_pManMem = &manMem;
+    }
 
 //========================================================================
 //
@@ -143,6 +152,9 @@ public:
 //
 //    Member Variables.
 //
+protected:
+
+    const   MemoryManager  *    m_pManMem;
 
 //========================================================================
 //
@@ -156,6 +168,36 @@ public:
     //  テストクラス。  //
     friend  class   BaseDisCpuTest;
 };
+
+//========================================================================
+//
+//    Inline Functions.
+//
+
+//----------------------------------------------------------------
+/**
+**
+**/
+
+inline  int
+readMnemonicParameter(
+        const  char *  &src,
+        const  int      digMax)
+{
+    int val = 0;
+
+    for ( int d = 0; d < digMax; ++ d ) {
+        const  char  ch = (*(src ++));
+        if ( ('0' <= ch) && (ch <= '9') ) {
+            val = (val * 10) + (ch - '0');
+        } else {
+            --  src;
+            break;
+        }
+    }
+
+    return ( val );
+}
 
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END

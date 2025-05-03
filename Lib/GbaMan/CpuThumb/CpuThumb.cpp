@@ -20,7 +20,18 @@
 
 #include    "CpuThumb.h"
 
+#include    "GbDebugger/GbaMan/MemoryManager.h"
+
 #include    <iostream>
+
+
+//========================================================================
+//
+//    Implementation of Inlines.
+//
+
+#include    "ThumbOperateRegister.inl"
+#include    "ThumbStrLdr.inl"
 
 
 GBDEBUGGER_NAMESPACE_BEGIN
@@ -35,6 +46,8 @@ namespace  {
 //
 //    CpuThumb  class.
 //
+
+#include    "ThumbInstTable.h"
 
 //========================================================================
 //
@@ -75,8 +88,32 @@ CpuThumb::~CpuThumb()
 InstExecResult
 CpuThumb::executeNextInst()
 {
-    std::cerr   <<  "Thumb Mode Not Implemented."   <<  std::endl;
-    return ( InstExecResult::UNDEFINED_OPECODE );
+    char    buf[256];
+
+    const  GuestMemoryAddress oldPC = this->m_nextPC;
+    const  OpeCode  opeCode = this->m_prefOpeCodes[0];
+    this->m_prefOpeCodes[0] = this->m_prefOpeCodes[1];
+
+    this->m_nextPC  = this->m_cpuRegs[RegIdx::PC].dw;
+    this->m_cpuRegs[RegIdx::PC].dw  += 2;
+    prefetchNext();
+
+    const  OpeCode  idx = (opeCode >> 8) & 0x00FF;
+    FnInst  pfInst  = s_thumbInstTable[idx];
+    //  InstExecResult  ret = (this ->* pfInst)(opeCode);
+    InstExecResult  ret = InstExecResult::UNDEFINED_OPECODE;
+    if ( pfInst != nullptr ) {
+        ret = (this ->* pfInst)(opeCode);
+    }
+    if ( ret == InstExecResult::UNDEFINED_OPECODE ) {
+        sprintf(buf,
+                "Undefined Thumb instruction %04x (%03x) at %08x\n",
+                opeCode, idx, oldPC);
+        std::cerr   <<  buf;
+        return ( InstExecResult::UNDEFINED_OPECODE );
+    }
+
+    return ( InstExecResult::SUCCESS_BREAKPOINT );
 }
 
 //========================================================================
@@ -113,6 +150,17 @@ CpuThumb::executeNextInst()
 //
 //    For Internal Use Only.
 //
+
+//----------------------------------------------------------------
+//    次の命令をプリフェッチする。
+//
+
+void
+CpuThumb::prefetchNext()
+{
+    this->m_prefOpeCodes[1] =
+            this->m_manMem.readMemory<uint16_t>(this->m_nextPC + 2);
+}
 
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END

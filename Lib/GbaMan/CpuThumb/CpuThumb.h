@@ -52,6 +52,10 @@ private:
 
     typedef     BaseCpuCore     Super;
 
+    typedef     GBD_REGPARM     InstExecResult
+    (CpuThumb::* FnInst)(
+            const  OpeCode  opeCode);
+
 //========================================================================
 //
 //    Constructor(s) and Destructor.
@@ -121,11 +125,37 @@ public:
 //
 //    For Internal Use Only.
 //
+private:
+
+    //----------------------------------------------------------------
+    //    命令の実行を行う関数たち。
+    //
+
+    template  <int OP>
+    GBD_REGPARM     InstExecResult
+    execBitShift(
+            const  OpeCode  opeCode);
+
+    template  <int Rs, int OP>
+    GBD_REGPARM     InstExecResult
+    execStoreLoadRelative(
+            const  OpeCode  opeCode);
+
+    //----------------------------------------------------------------
+    /**   次の命令をプリフェッチする。
+    **
+    **/
+    void
+    prefetchNext();
 
 //========================================================================
 //
 //    Member Variables.
 //
+private:
+
+    /**   命令テーブル。        **/
+    static  const   FnInst  s_thumbInstTable[256];
 
 //========================================================================
 //
