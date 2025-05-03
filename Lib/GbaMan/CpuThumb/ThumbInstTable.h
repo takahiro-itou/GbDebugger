@@ -22,6 +22,9 @@
 #    define   GBDEBUGGER_GBAMAN_INCLUDED_THUMB_INST_H
 
 #define     thumb48     &CpuThumb::execStoreLoadRelative<15, 1>
+#define     thumb00     &CpuThumb::execBitShift<0>
+#define     thumb08     &CpuThumb::execBitShift<1>
+#define     thumb10     &CpuThumb::execBitShift<2>
 
 //----------------------------------------------------------------
 /**
@@ -31,11 +34,11 @@
 const   CpuThumb::FnInst
 CpuThumb::s_thumbInstTable[256] = {
     //  0x00 -- 0F  //
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    thumb00, thumb00, thumb00, thumb00,   thumb00, thumb00, thumb00, thumb00,
+    thumb08, thumb08, thumb08, thumb08,   thumb08, thumb08, thumb08, thumb08,
 
     //  0x10 -- 1F  //
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    thumb10, thumb10, thumb10, thumb10,   thumb10, thumb10, thumb10, thumb10,
     nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
 
     //  0x20 -- 2F  //

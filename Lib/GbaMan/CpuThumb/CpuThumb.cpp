@@ -30,6 +30,7 @@
 //    Implementation of Inlines.
 //
 
+#include    "ThumbOperateRegister.inl"
 #include    "ThumbStrLdr.inl"
 
 
