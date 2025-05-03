@@ -394,7 +394,7 @@ DisArm::writeMnemonic(
     while ( ch = *(src ++) ) {
         len = 0;
         if ( ch != '%' ) {
-            *(dst ++)   = ch;
+            * (dst ++)   = ch;
         } else {
             ch  = *(src ++);
             switch ( ch ) {
@@ -405,11 +405,19 @@ DisArm::writeMnemonic(
             case  'R':
                 if ( *(src ++) == 's' ) {
                     len = writeOpe2RegisterWithShift(opeCode, dst, src, gmAddr);
+                } else {
+                    * (dst ++)  = '%';
+                    * (dst ++)  = ch;
+                    --  src;
                 }
                 break;
             case  'a':
                 if ( *(src ++) == 'i' ) {
                     len = writeAddressingImmediate(opeCode, dst, src, gmAddr);
+                } else {
+                    * (dst ++)  = '%';
+                    * (dst ++)  = ch;
+                    --  src;
                 }
                 break;
             case  'c':
@@ -432,12 +440,12 @@ DisArm::writeMnemonic(
                 break;
             case  's':
                 if ( opeCode & 0x00100000 ) {
-                    *(dst ++)   = 's';
+                    * (dst ++)  = 's';
                 }
                 break;
             default:
-                *(dst ++)   = '%';
-                *(dst ++)   = ch;
+                * (dst ++)  = '%';
+                * (dst ++)  = ch;
                 break;
             }
         }
