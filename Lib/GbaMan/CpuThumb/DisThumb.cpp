@@ -31,7 +31,7 @@ namespace  {
 CONSTEXPR_VAR   const  MnemonicMap
 thumbMnemonics[] = {
     //  Format 01 : ビットシフト。  //
-    { 0xF800, 0x0000, "LSL\t%r0, %r3, #%i{6,31}" },
+    { 0xF800, 0x0000, "LSL\t%r0, %r3, #%I{6,31}" },
     { 0xF800, 0x0800, "LSR" },
     { 0xF800, 0x1000, "ASR" },
 
@@ -188,7 +188,7 @@ writePCRelative(
 }
 
 //----------------------------------------------------------------
-//  %i{bit,msk} - Immediate.
+//  %I{bit,msk} - Immediate.
 //  bit : オペコードのどのビットから即値を読みだすか
 //  msk : 読みだした即値に掛けるマスク
 //
@@ -200,7 +200,18 @@ writeImmediate(
         const  char  *    & src,
         GuestMemoryAddress  gmAddr)
 {
-    return  0;
+    RegType val = 0;
+
+    if ( *(src) == '{' ) {
+        ++  src;
+        const  int  immBit  = readMnemonicParameter(src, 2);
+        ++  src;    //  カンマを読み捨て。      //
+        const  int  immMask = readMnemonicParameter(src, 8);
+        ++  src;    //  末尾の }  を読み捨て。  //
+        val = (opeCode >> immBit) & immMask;
+    }
+
+    return  sprintf(dst, "0x%04x", val);
 }
 
 //----------------------------------------------------------------
@@ -297,10 +308,13 @@ DisThumb::writeMnemonic(
     while ( ch = *(src ++) ) {
         len = 0;
         if ( ch != '%' ) {
-            *(dst ++)   = ch;
+            * (dst ++)  = ch;
         } else {
             ch  = *(src ++);
             switch ( ch ) {
+            case  'I':
+                len = writeImmediate(opeCode, dst, src, gmAddr);
+                break;
             case  'P':
                 len = writePCRelative(
                             opeCode, dst, src, *(this->m_pManMem), gmAddr);
@@ -312,8 +326,8 @@ DisThumb::writeMnemonic(
                 len = writeRegister(opeCode, dst, src, gmAddr);
                 break;
             default:
-                *(dst ++)   = '%';
-                *(dst ++)   = ch;
+                * (dst ++)  = '%';
+                * (dst ++)  = ch;
                 break;
             }
         }
