@@ -131,6 +131,11 @@ private:
     //    命令の実行を行う関数たち。
     //
 
+    template  <int OP>
+    GBD_REGPARM     InstExecResult
+    execBitShift(
+            const  OpeCode  opeCode);
+
     template  <int Rs, int OP>
     GBD_REGPARM     InstExecResult
     execStoreLoadRelative(
