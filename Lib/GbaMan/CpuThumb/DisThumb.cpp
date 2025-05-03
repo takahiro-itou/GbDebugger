@@ -31,7 +31,7 @@ namespace  {
 CONSTEXPR_VAR   const  MnemonicMap
 thumbMnemonics[] = {
     //  Format 01 : ビットシフト。  //
-    { 0xF800, 0x0000, "LSL" },
+    { 0xF800, 0x0000, "LSL\t%r0, %r3, #%i{6,31}" },
     { 0xF800, 0x0800, "LSR" },
     { 0xF800, 0x1000, "ASR" },
 
