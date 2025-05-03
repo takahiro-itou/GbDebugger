@@ -194,13 +194,16 @@ writePCRelative(
         const   MemoryManager     & manMem,
         const   GuestMemoryAddress  gmAddr)
 {
-    GuestMemoryAddress  pos = (gmAddr + 8);
-    GuestMemoryAddress  ofs = (opeCode & 0x0FFF);
+    GuestMemoryAddress          pos = (gmAddr + 8);
+    const   GuestMemoryAddress  ofs = (opeCode & 0x0FFF);
     if ( opeCode & 0x00800000 ) {
         pos += ofs;
     } else {
         pos -= ofs;
     }
+
+    //  読みだすアドレスが決定的、かつ大抵ロム上。  //
+    //  なので値も定数だろうから読みだしておく。    //
     const  RegType  val = manMem.readMemory<RegType>(pos);
     if ( opeCode & 0x00400000 ) {
         return  sprintf(dst, "[$%08x] (=$%02x)",  pos, (val & 0xFF));
