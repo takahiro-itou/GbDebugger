@@ -183,6 +183,32 @@ writeOffset(
 }
 
 //----------------------------------------------------------------
+//  %P  - PC-Relative.
+//
+
+inline  size_t
+writePCRelative(
+        const   OpeCode             opeCode,
+        char  *  const              dst,
+        const   char  *           & src,
+        const   MemoryManager     & manMem,
+        const   GuestMemoryAddress  gmAddr)
+{
+    GuestMemoryAddress  pos = (gmAddr + 8);
+    GuestMemoryAddress  ofs = (opeCode & 0x0FFF);
+    if ( opeCode & 0x00800000 ) {
+        pos += ofs;
+    } else {
+        pos -= ofs;
+    }
+    const  RegType  val = manMem.readMemory<RegType>(pos);
+    if ( opeCode & 0x00400000 ) {
+        return  sprintf(dst, "[$%08x] (=$%02x)",  pos, (val & 0xFF));
+    }
+    return  sprintf(dst, "[$%08x] (=$%08x)",  pos, val);
+}
+
+//----------------------------------------------------------------
 //  %p - PSR
 //  PSR 命令のビット 19-16 のフラグ。
 //
@@ -368,6 +394,10 @@ DisArm::writeMnemonic(
         } else {
             ++  src;
             switch ( *src ) {
+            case  'P':
+                len = writePCRelative(
+                            opeCode, dst, src, *(this->m_pManMem), gmAddr);
+                break;
             case  'R':
                 if ( *(++ src) == 's' ) {
                     len = writeOpe2RegisterWithShift(opeCode, dst, src, gmAddr);
