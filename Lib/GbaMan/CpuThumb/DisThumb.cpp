@@ -299,7 +299,7 @@ DisThumb::writeMnemonic(
         if ( ch != '%' ) {
             *(dst ++)   = ch;
         } else {
-            ch  = *(src);
+            ch  = *(src ++);
             switch ( ch ) {
             case  'P':
                 len = writePCRelative(
@@ -313,10 +313,9 @@ DisThumb::writeMnemonic(
                 break;
             default:
                 *(dst ++)   = '%';
-                *(dst ++)   = *(src);
+                *(dst ++)   = ch;
                 break;
             }
-            ++  src;
         }
         dst += len;
     }
