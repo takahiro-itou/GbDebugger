@@ -389,14 +389,15 @@ DisArm::writeMnemonic(
     size_t          len = 0;
     const  char  *  src = oc->mnemonic;
     char  *         dst = buf;
+    char            ch;
 
-    while (*src) {
+    while ( ch = *(src ++) ) {
         len = 0;
-        if ( *src != '%' ) {
-            *(dst ++)   = *(src ++);
+        if ( ch != '%' ) {
+            *(dst ++)   = ch;
         } else {
-            ++  src;
-            switch ( *src ) {
+            ch  = *(src);
+            switch ( ch ) {
             case  'P':
                 len = writePCRelative(
                             opeCode, dst, src, *(this->m_pManMem), gmAddr);
