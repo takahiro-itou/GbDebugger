@@ -216,11 +216,12 @@ writeRegister(
         const  char  *    & src,
         GuestMemoryAddress  gmAddr)
 {
-    const  int  reg_id0 = (*(++ src) - '0');
-    const  int  reg_id1 = (*(++ src) - '0');
-    const  int  reg_bit = ((reg_id0 * 10) + reg_id1);
-    const  int  reg_id  = (opeCode >> reg_bit) & 0x0F;
-    return  sprintf(dst, "%s", regNames[reg_id]);
+    // const  int  reg_id0 = (*(++ src) - '0');
+    // const  int  reg_id1 = (*(++ src) - '0');
+    // const  int  reg_bit = ((reg_id0 * 10) + reg_id1);
+    const  int  regBit  = readMnemonicParameter(src, 2);
+    const  int  regIdx  = (opeCode >> regBit) & 0x0F;
+    return  sprintf(dst, "%s", regNames[regIdx]);
 }
 
 //----------------------------------------------------------------
