@@ -403,12 +403,12 @@ DisArm::writeMnemonic(
                             opeCode, dst, src, *(this->m_pManMem), gmAddr);
                 break;
             case  'R':
-                if ( *(++ src) == 's' ) {
+                if ( *(src ++) == 's' ) {
                     len = writeOpe2RegisterWithShift(opeCode, dst, src, gmAddr);
                 }
                 break;
             case  'a':
-                if ( *(++ src) == 'i' ) {
+                if ( *(src ++) == 'i' ) {
                     len = writeAddressingImmediate(opeCode, dst, src, gmAddr);
                 }
                 break;
