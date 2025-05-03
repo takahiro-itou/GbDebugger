@@ -165,6 +165,7 @@ getUnsignedOffset(
     return  static_cast<GuestMemoryAddress>((opeCode & 0x00FF) << sftBits);
 }
 
+
 //----------------------------------------------------------------
 //  %P  - PC-Relative.
 //
@@ -185,6 +186,23 @@ writePCRelative(
     const  RegType  val = manMem.readMemory<RegType>(pos);
     return  sprintf(dst, "[%08x] (=$%08x)", pos, val);
 }
+
+//----------------------------------------------------------------
+//  %i{bit,msk} - Immediate.
+//  bit : オペコードのどのビットから即値を読みだすか
+//  msk : 読みだした即値に掛けるマスク
+//
+
+inline  size_t
+writeImmediate(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src,
+        GuestMemoryAddress  gmAddr)
+{
+    return  0;
+}
+
 
 //----------------------------------------------------------------
 //  %rx - Register.
