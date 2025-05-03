@@ -159,10 +159,10 @@ thumbMnemonics[] = {
 inline  GuestMemoryAddress
 getUnsignedOffset(
         const   OpeCode     opeCode,
-        const  char  *    & src)
+        const   char  *    & src)
 {
-    const  int  reg_bit = (*(++ src) - '0');
-    return  static_cast<GuestMemoryAddress>((opeCode & 0x00FF) << (reg_bit));
+    const  int  sftBits = readMnemonicParameter(src, 1);
+    return  static_cast<GuestMemoryAddress>((opeCode & 0x00FF) << sftBits);
 }
 
 //----------------------------------------------------------------
