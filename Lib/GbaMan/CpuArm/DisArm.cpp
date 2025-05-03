@@ -179,7 +179,7 @@ writeOffset(
         ofs |= 0xFF000000;
     }
     ofs <<= 2;
-    return   sprintf(dst, "$%08x ; (%08x)", ofs, gmAddr + 8 + ofs);
+    return  sprintf(dst, "$%08x ; (%08x)", ofs, gmAddr + 8 + ofs);
 }
 
 //----------------------------------------------------------------

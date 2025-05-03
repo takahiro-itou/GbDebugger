@@ -123,20 +123,20 @@ thumbMnemonics[] = {
 
     //  Format 16 : 条件付き分岐命令。      //
     //  Format 17 : ソフトウェア割り込み。  //
-    { 0xFF00, 0xD000, "BEQ" },
-    { 0xFF00, 0xD100, "BNE" },
-    { 0xFF00, 0xD200, "BCS" },
-    { 0xFF00, 0xD300, "BCC" },
-    { 0xFF00, 0xD400, "BMI" },
-    { 0xFF00, 0xD500, "BPL" },
-    { 0xFF00, 0xD600, "BVS" },
-    { 0xFF00, 0xD700, "BVC" },
-    { 0xFF00, 0xD800, "BHI" },
-    { 0xFF00, 0xD900, "BLS" },
-    { 0xFF00, 0xDA00, "BGE" },
-    { 0xFF00, 0xDB00, "BLT" },
-    { 0xFF00, 0xDC00, "BGT" },
-    { 0xFF00, 0xDD00, "BLE" },
+    { 0xFF00, 0xD000, "BEQ\t%os2" },
+    { 0xFF00, 0xD100, "BNE\t%os2" },
+    { 0xFF00, 0xD200, "BCS\t%os2" },
+    { 0xFF00, 0xD300, "BCC\t%os2" },
+    { 0xFF00, 0xD400, "BMI\t%os2" },
+    { 0xFF00, 0xD500, "BPL\t%os2" },
+    { 0xFF00, 0xD600, "BVS\t%os2" },
+    { 0xFF00, 0xD700, "BVC\t%os2" },
+    { 0xFF00, 0xD800, "BHI\t%os2" },
+    { 0xFF00, 0xD900, "BLS\t%os2" },
+    { 0xFF00, 0xDA00, "BGE\t%os2" },
+    { 0xFF00, 0xDB00, "BLT\t%os2" },
+    { 0xFF00, 0xDC00, "BGT\t%os2" },
+    { 0xFF00, 0xDD00, "BLE\t%os2" },
     { 0xFF00, 0xDF00, "SWI" },
     { 0xFF00, 0xBE00, "BKPT" },
 
@@ -232,6 +232,27 @@ writeRegister(
 }
 
 //----------------------------------------------------------------
+//  %ou/%os - オフセット。
+//
+
+inline  size_t
+writeOffset(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src,
+        GuestMemoryAddress  gmAddr)
+{
+    const   char        ch  = (*(src ++));
+    GuestMemoryAddress  ofs = getUnsignedOffset(opeCode, src);
+
+    if ( (ch == 's') && (ofs & 0x0080) ) {
+        ofs |= 0xFFFFFF00;
+    }
+
+    return  sprintf(dst, "$%08x ; (%08x)", ofs, gmAddr + 4 + ofs);
+}
+
+//----------------------------------------------------------------
 //  %nxx - 符号なしオフセット。
 //
 
@@ -321,6 +342,9 @@ DisThumb::writeMnemonic(
                 break;
             case  'n':
                 len = writeUnsignedOffset(opeCode, dst, src, gmAddr);
+                break;
+            case  'o':
+                len = writeOffset(opeCode, dst, src, gmAddr);
                 break;
             case  'r':
                 len = writeRegister(opeCode, dst, src, gmAddr);
