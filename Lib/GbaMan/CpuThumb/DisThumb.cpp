@@ -245,7 +245,7 @@ writeRegisterHigh(
     const  int  regBit  = readMnemonicParameter(src, 1);
     ++  src;    //  プラス記号を読み捨て。
     const  int  msbBit  = readMnemonicParameter(src, 1);
-    const  int  regIdx  = (((opeCode >> msbBit) << 4) & 0x0F)
+    const  int  regIdx  = (((opeCode >> msbBit) << 3) & 0x0F)
                                 | ((opeCode >> regBit) & 0x07);
     return  sprintf(dst, "%s", regNames[regIdx]);
 }
