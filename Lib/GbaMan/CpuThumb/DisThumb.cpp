@@ -203,7 +203,6 @@ writeImmediate(
     return  0;
 }
 
-
 //----------------------------------------------------------------
 //  %rx - Register.
 //  x : オペコードのどのビットからレジスタ番号を読みだすか
@@ -216,9 +215,9 @@ writeRegister(
         const  char  *    & src,
         GuestMemoryAddress  gmAddr)
 {
-    const  int  reg_bit = (*(++ src) - '0');
-    const  int  reg_id  = (opeCode >> reg_bit) & 0x07;
-    return  sprintf(dst, "%s", regNames[reg_id]);
+    const  int  regBit  = readMnemonicParameter(src, 1);
+    const  int  regIdx  = (opeCode >> regBit) & 0x07;
+    return  sprintf(dst, "%s", regNames[regIdx]);
 }
 
 //----------------------------------------------------------------
