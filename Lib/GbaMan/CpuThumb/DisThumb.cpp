@@ -73,7 +73,7 @@ thumbMnemonics[] = {
     { 0xFF80, 0x4700, "BX"  },          //  MSBd は 0。Rd は未使用。    //
 
     //  Format 06 : ロードストア命令（PC-Relative）。   //
-    { 0xF800, 0x4800, "LDR\t%r8, [PC, #%n2]\t;[$%p2] (=$%P2)" },
+    { 0xF800, 0x4800, "LDR\t%r8, [PC, #%n2]\t; %P2" },
 
     //  Format 07 : ロードストア命令。  //
     { 0xFE00, 0x5000, "STR" },
@@ -166,22 +166,11 @@ getUnsignedOffset(
 }
 
 //----------------------------------------------------------------
-//  %p  - PC-Relative.
+//  %P  - PC-Relative.
 //
 
 inline  size_t
 writePCRelative(
-        const   OpeCode     opeCode,
-        char  *  const      dst,
-        const  char  *    & src,
-        GuestMemoryAddress  gmAddr)
-{
-    const   GuestMemoryAddress  nn  = getUnsignedOffset(opeCode, src);
-    return  sprintf(dst, "0x%08x", (gmAddr & ~3) + 4 + nn);
-}
-
-inline  size_t
-writePCRelativeVal(
         const   OpeCode             opeCode,
         char  *  const              dst,
         const   char  *           & src,
@@ -190,8 +179,11 @@ writePCRelativeVal(
 {
     const   GuestMemoryAddress  nn  = getUnsignedOffset(opeCode, src);
     const   GuestMemoryAddress  pos = (gmAddr & ~3) + 4 + nn;
-    const   RegType             val = manMem.readMemory<RegType>(pos);
-    return  sprintf(dst, "%08x", val);
+
+    //  読みだすアドレスが決定的、かつ大抵ロム上。  //
+    //  なので値も定数だろうから読みだしておく。    //
+    const  RegType  val = manMem.readMemory<RegType>(pos);
+    return  sprintf(dst, "[%08x] (=$%08x)", pos, val);
 }
 
 //----------------------------------------------------------------
@@ -292,14 +284,11 @@ DisThumb::writeMnemonic(
             ++  src;
             switch ( *src ) {
             case  'P':
-                len = writePCRelativeVal(
+                len = writePCRelative(
                             opeCode, dst, src, *(this->m_pManMem), gmAddr);
                 break;
             case  'n':
                 len = writeUnsignedOffset(opeCode, dst, src, gmAddr);
-                break;
-            case  'p':
-                len = writePCRelative(opeCode, dst, src, gmAddr);
                 break;
             case  'r':
                 len = writeRegister(opeCode, dst, src, gmAddr);
