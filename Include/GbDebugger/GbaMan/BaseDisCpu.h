@@ -191,8 +191,17 @@ readMnemonicParameter(
         if ( ('0' <= ch) && (ch <= '9') ) {
             val = (val * 10) + (ch - '0');
         } else {
-            break;
+            return ( val );
         }
+    }
+
+    //  ここに来るのは、桁数制限に掛かった時。  //
+    //  次の文字が数字以外であれば読み飛ばす。  //
+    const  char  ch = (* (src + 1));
+    if ( ('0' <= ch) && (ch <= '9') ) {
+    } else if ( (ch == ',') ) {
+    } else {
+        ++  src;
     }
 
     return ( val );
