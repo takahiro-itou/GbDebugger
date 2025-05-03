@@ -96,7 +96,7 @@ CpuThumb::executeNextInst()
 
     this->m_nextPC  = this->m_cpuRegs[RegIdx::PC].dw;
     this->m_cpuRegs[RegIdx::PC].dw  += 2;
-    //  prefetchNext();
+    prefetchNext();
 
     const  OpeCode  idx = (opeCode >> 8) & 0x00FF;
     FnInst  pfInst  = s_thumbInstTable[idx];
@@ -150,6 +150,17 @@ CpuThumb::executeNextInst()
 //
 //    For Internal Use Only.
 //
+
+//----------------------------------------------------------------
+//    次の命令をプリフェッチする。
+//
+
+void
+CpuThumb::prefetchNext()
+{
+    this->m_prefOpeCodes[1] =
+            this->m_manMem.readMemory<uint16_t>(this->m_nextPC + 2);
+}
 
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
