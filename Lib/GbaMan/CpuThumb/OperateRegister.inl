@@ -73,6 +73,8 @@ CpuThumb::execBitShift(
         break;
     }
 
+    this->m_cpuRegs[RegIdx::CPSR].dw
+            = setCondLogical(res, lhs, nn, flag_cy, cpuFlag);
     this->m_cpuRegs[rd].dw  = res;
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
