@@ -31,6 +31,37 @@ namespace  GbaMan  {
 
 //  クラスの前方宣言。  //
 
+//========================================================================
+//
+//    ビットシフト演算の基本実装。
+//
+
+//----------------------------------------------------------------
+/**   LSL 演算のキャリーフラグ
+**
+**/
+
+CONSTEXPR_FUNC  inline  bool
+sobaseLslFlg(
+        const  RegType  value,
+        const  int      shift)
+{
+    return ( (value >> (32 - shift)) & 1 ? true : false ) );
+}
+
+//----------------------------------------------------------------
+/**   LSL 演算の実行結果の値。
+**
+**/
+
+CONSTEXPR_FUNC  inline  RegType
+sobaseLslVal(
+        const  RegType  value,
+        const  int      shift)
+{
+    return ( (value << shift) );
+}
+
 inline  RegType
 shiftopLsl(
         const  int      shift,
