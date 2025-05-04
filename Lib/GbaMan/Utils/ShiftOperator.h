@@ -39,6 +39,8 @@ namespace  GbaMan  {
 //----------------------------------------------------------------
 /**   LSL 演算のキャリーフラグ
 **
+**  @param [in] value
+**  @param [in] shift   シフト量 (1-32)
 **/
 
 CONSTEXPR_FUNC  inline  bool
@@ -63,6 +65,19 @@ sobaseLslVal(
 }
 
 //----------------------------------------------------------------
+/**   LSR 演算のキャリーフラグ。
+**
+**/
+
+CONSTEXPR_FUNC  inline  bool
+sobaseLsrFlg(
+        const  RegType  value,
+        const  int      shift)
+{
+    return ( (value >> (shift - 1)) & 1 ? true : false );
+}
+
+//----------------------------------------------------------------
 
 inline  RegType
 socheckLsl(
@@ -78,7 +93,7 @@ socheckLsl(
         retVal  = 0;
     } else if ( LIKELY(shift < 32) ) {
         outflgC = sobaseLslFlg(value, shift);
-        retVal  = sobaseLslVal(value, shift);
+        retVal  = (value << shift);
     } else {
         //  シフト量がレジスタの幅を超えているので結果は必ず０  //
         outflgC = 0;
@@ -153,7 +168,7 @@ struct  ArmALURmLsrReg
                 fout_cy = (vRm & 0x80000000) ? true : false;
                 rhs     = 0;
             } else if ( LIKELY(shift < 32) ) {
-                fout_cy = (vRm >> (shift - 1)) & 1 ? true : false;
+                fout_cy = sobaseLsrFlg(vRm, shift);
                 rhs     = (vRm >> shift);
             } else {
                 fout_cy = false;
@@ -182,7 +197,7 @@ struct  ArmALURmLsrImm
     {
         RegType rhs = vRm;
         if ( LIKELY(shift) ) {
-            fout_cy = (vRm >> (shift - 1)) & 1 ? true : false;
+            fout_cy = sobaseLsrFlg(vRm, shift);
             rhs     >>= shift;
         } else {
             //  LSR#0 は LSR#32 として解釈される。  //
