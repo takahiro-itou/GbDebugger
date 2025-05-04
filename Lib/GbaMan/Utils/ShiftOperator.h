@@ -78,6 +78,35 @@ sobaseLsrFlg(
 }
 
 //----------------------------------------------------------------
+/**   ROR 演算のキャリーフラグ。
+**
+**/
+
+CONSTEXPR_FUNC  inline  bool
+sobaseRorFlg(
+        const  RegType  value,
+        const  int      shift)
+{
+    //  キャリーには下から shift - 1  ビット目が入る。  //
+    return ( (value >> (shift - 1)) & 1 ? true : false );
+}
+
+//----------------------------------------------------------------
+/**   ROR 演算の実行結果の値。
+**
+**/
+
+CONSTEXPR_FUNC  inline  RegType
+sobaseRorVal(
+        const  RegType  value,
+        const  int      shift)
+{
+    //  ビット [shift-1..0] を [31..(32-shift)] へ移動し、  //
+    //  ビット [31..shift]  を [31-shift..0]  へ移動する。  //
+    return ( (value << (32 - shift)) | (value >> shift) );
+}
+
+//----------------------------------------------------------------
 
 inline  RegType
 socheckLsl(
@@ -293,10 +322,8 @@ struct  ArmALURmRorReg
     {
         RegType rhs = vRm;
         if ( LIKELY(shift & 0x1F) ) {
-            //fout_cy = (vRm >> (shift - 1)) & 1 ? true : false;
-            fout_cy = armRorFlg(vRm, shift);
-            rhs     = armRorVal(vRm, shift);
-            //rhs = ((vRm < (32 - shift)) | (vRm >> shift));
+            fout_cy = sobaseRorFlg(vRm, shift);
+            rhs     = sobaseRorVal(vRm, shift);
         } else {
             if ( shift ) {
                 fout_cy = (vRm & 0x80000000 ? true : false);
@@ -323,9 +350,8 @@ struct  ArmALURmRorImm
     {
         RegType rhs;
         if ( LIKELY(shift) ) {
-//            fout_cy = (vRm >> (shift - 1)) & 1 ? true : false;
-            fout_cy = armRorFlg(vRm, shift);
-            rhs     = armRorVal(vRm, shift);   //((vRm << (32 - shift)) | (vRm >> shift));
+            fout_cy = sobaseRorFlg(vRm, shift);
+            rhs     = sobaseRorVal(vRm, shift);
         } else {
             //  ROR#0 は RCR#1  として解釈される。  //
             fout_cy = (vRm & 1) ? true : false;
@@ -334,7 +360,6 @@ struct  ArmALURmRorImm
         return ( rhs );
     }
 };
-
 
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
