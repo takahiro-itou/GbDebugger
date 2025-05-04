@@ -277,6 +277,65 @@ struct  ArmALURmAsrImm
     }
 };
 
+//========================================================================
+/**
+**    シフト量をレジスタで指定する ROR
+**/
+
+struct  ArmALURmRorReg
+{
+    RegType
+    operator()(
+            const  int      shift,
+            const  RegType  vRm,
+            bool          & fout_cy,
+            const  bool     flag_cy)
+    {
+        RegType rhs = vRm;
+        if ( LIKELY(shift & 0x1F) ) {
+            //fout_cy = (vRm >> (shift - 1)) & 1 ? true : false;
+            fout_cy = armRorFlg(vRm, shift);
+            rhs     = armRorVal(vRm, shift);
+            //rhs = ((vRm < (32 - shift)) | (vRm >> shift));
+        } else {
+            if ( shift ) {
+                fout_cy = (vRm & 0x80000000 ? true : false);
+            }
+            rhs = vRm;
+        }
+        return ( rhs );
+    }
+};
+
+//========================================================================
+/**
+**    シフト量を即値で指定する ROR
+**/
+
+struct  ArmALURmRorImm
+{
+    RegType
+    operator()(
+            const  int      shift,
+            const  RegType  vRm,
+            bool          & fout_cy,
+            const  bool     flag_cy)
+    {
+        RegType rhs;
+        if ( LIKELY(shift) ) {
+//            fout_cy = (vRm >> (shift - 1)) & 1 ? true : false;
+            fout_cy = armRorFlg(vRm, shift);
+            rhs     = armRorVal(vRm, shift);   //((vRm << (32 - shift)) | (vRm >> shift));
+        } else {
+            //  ROR#0 は RCR#1  として解釈される。  //
+            fout_cy = (vRm & 1) ? true : false;
+            rhs     = ((vRm >> 1) | (flag_cy << 31));
+        }
+        return ( rhs );
+    }
+};
+
+
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
 
