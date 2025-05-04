@@ -275,27 +275,26 @@ struct  ArmALURmAsrReg
 **    シフト量を即値で指定する ASR
 **/
 
-struct  ArmALURmAsrImm
+struct  ShiftOpAsrImm
 {
     RegType
     operator()(
+            const  RegType  value,
             const  int      shift,
-            const  RegType  vRm,
-            bool          & fout_cy,
-            const  bool     flag_cy)
+            bool          & flagCy)  const
     {
         RegType rhs;
         if ( LIKELY(shift) ) {
-            int32_t v = static_cast<int32_t>(vRm);
-            fout_cy = (v >> (int)(shift - 1)) & 1 ? true : false;
+            int32_t v = static_cast<int32_t>(value);
+            flagCy  = (v >> (int)(shift - 1)) & 1 ? true : false;
             rhs     = v >> (int)(shift);
         } else {
             //  ASR#0 は ASR#32 として解釈される。  //
-            if ( vRm & 0x80000000 ) {
-                fout_cy = true;
+            if ( value & 0x80000000 ) {
+                flagCy  = true;
                 rhs     = 0xFFFFFFFF;
             } else {
-                fout_cy = false;
+                flagCy  = false;
                 rhs     = 0;
             }
         }
