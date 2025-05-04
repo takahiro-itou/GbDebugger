@@ -54,6 +54,37 @@ shiftopLsl(
     return ( retVal );
 }
 
+//========================================================================
+//
+//    シフト量をレジスタで指定する LSL
+//
+
+struct  ArmALURmLslReg
+{
+    RegType
+    operator()(
+            const  int      shift,
+            const  RegType  vRm,
+            bool          & fout_cy,
+            const  bool     flag_cy)
+    {
+        RegType rhs = vRm;
+        if ( LIKELY(shift) ) {
+            if ( shift == 32 ) {
+                fout_cy = (vRm & 1 ? true : false);
+                rhs     = 0;
+            } else if ( LIKELY(shift < 32) ) {
+                fout_cy = (vRm >> (32 - shift)) & 1 ? true : false;
+                rhs     = (vRm << shift);
+            } else {
+                fout_cy = false;
+                rhs     = 0;
+            }
+        }
+        return ( rhs );
+    }
+};
+
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
 
