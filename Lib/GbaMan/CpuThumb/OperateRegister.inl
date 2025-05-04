@@ -62,9 +62,7 @@ CpuThumb::execBitShift(
         res = ShiftOpLslImm()(lhs, nn, flag_cy);
         break;
     case  1:
-        if ( nn ) {
-            res = (lhs >> nn);
-        }
+        res = ShiftOpLsrImm()(lhs, nn, flag_cy);
         break;
     case  2:
         if ( nn ) {

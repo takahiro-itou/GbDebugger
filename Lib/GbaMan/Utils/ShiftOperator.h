@@ -213,25 +213,21 @@ struct  ArmALURmLsrReg
 **    シフト量を即値で指定する LSR
 **/
 
-struct  ArmALURmLsrImm
+struct  ShiftOpLsrImm
 {
     RegType
     operator()(
+            const  RegType  value,
             const  int      shift,
-            const  RegType  vRm,
-            bool          & fout_cy,
-            const  bool     flag_cy)  const
+            bool          & flagCy)  const
     {
-        RegType rhs = vRm;
         if ( LIKELY(shift) ) {
-            fout_cy = sobaseLsrFlg(vRm, shift);
-            rhs     >>= shift;
-        } else {
-            //  LSR#0 は LSR#32 として解釈される。  //
-            fout_cy = (vRm & 0x80000000) ? true : false;
-            rhs     = 0;
+            flagCy  = sobaseLsrFlg(value, shift);
+            return ( value >> shift );
         }
-        return ( rhs );
+        //  LSR#0 は LSR#32 として解釈される。  //
+        flagCy  = (value & 0x80000000) ? true : false;
+        return ( value );
     }
 };
 

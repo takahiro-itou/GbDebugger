@@ -114,7 +114,7 @@ getAluOp2Register(
             rhs = ShiftOpLslImm()(vRm, shift, fout_cy);
             break;
         case  1:    //  LSR
-            rhs = ArmALURmLsrImm()(shift, vRm, fout_cy, flag_cy);
+            rhs = ShiftOpLsrImm()(vRm, shift, fout_cy);
             break;
         case  2:    //  ASR
             rhs = ArmALURmAsrImm()(shift, vRm, fout_cy, flag_cy);
