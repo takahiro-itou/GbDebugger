@@ -88,9 +88,9 @@ socheckLsl(
 }
 
 //========================================================================
-//
-//    シフト量をレジスタで指定する LSL
-//
+/**
+**    シフト量をレジスタで指定する LSL
+**/
 
 struct  ArmALURmLslReg
 {
@@ -109,9 +109,9 @@ struct  ArmALURmLslReg
 };
 
 //========================================================================
-//
-//    シフト量を即値で指定する LSL
-//
+/**
+**    シフト量を即値で指定する LSL
+**/
 
 struct  ArmALURmLslImm
 {
@@ -120,7 +120,7 @@ struct  ArmALURmLslImm
             const  int      shift,
             const  RegType  vRm,
             bool          & fout_cy,
-            const  bool     flag_cy)
+            const  bool     flag_cy)  const
     {
         RegType rhs = vRm;
         if ( UNLIKELY(!shift) ) {
@@ -133,6 +133,65 @@ struct  ArmALURmLslImm
     }
 };
 
+//========================================================================
+/**
+**    シフト量をレジスタで指定する LSR
+**/
+
+struct  ArmALURmLsrReg
+{
+    RegType
+    operator()(
+            const  int      shift,
+            const  RegType  vRm,
+            bool          & fout_cy,
+            const  bool     flag_cy)  const
+    {
+        RegType rhs = vRm;
+        if ( LIKELY(shift) ) {
+            if ( shift == 32 ) {
+                fout_cy = (vRm & 0x80000000) ? true : false;
+                rhs     = 0;
+            } else if ( LIKELY(shift < 32) ) {
+                fout_cy = (vRm >> (shift - 1)) & 1 ? true : false;
+                rhs     = (vRm >> shift);
+            } else {
+                fout_cy = false;
+                rhs     = 0;
+            }
+        } else {
+            rhs = vRm;
+        }
+        return ( rhs );
+    }
+};
+
+//========================================================================
+/**
+**    シフト量を即値で指定する LSR
+**/
+
+struct  ArmALURmLsrImm
+{
+    RegType
+    operator()(
+            const  int      shift,
+            const  RegType  vRm,
+            bool          & fout_cy,
+            const  bool     flag_cy)  const
+    {
+        RegType rhs = vRm;
+        if ( LIKELY(shift) ) {
+            fout_cy = (vRm >> (shift - 1)) & 1 ? true : false;
+            rhs     >>= shift;
+        } else {
+            //  LSR#0 は LSR#32 として解釈される。  //
+            fout_cy = (vRm & 0x80000000) ? true : false;
+            rhs     = 0;
+        }
+        return ( rhs );
+    }
+};
 
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
