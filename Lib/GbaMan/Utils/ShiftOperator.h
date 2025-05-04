@@ -155,25 +155,23 @@ struct  ArmALURmLslReg
 //========================================================================
 /**
 **    シフト量を即値で指定する LSL
+**
 **/
 
-struct  ArmALURmLslImm
+struct  ShiftOpLslImm
 {
     RegType
     operator()(
+            const  RegType  value,
             const  int      shift,
-            const  RegType  vRm,
-            bool          & fout_cy,
-            const  bool     flag_cy)  const
+            bool          & flagCy)  const
     {
-        RegType rhs = vRm;
         if ( UNLIKELY(!shift) ) {
-            fout_cy = sobaseLslFlg(vRm, shift);
-            rhs     <<= shift;
+            flagCy  = sobaseLslFlg(value, shift);
+            return ( value << shift );
         }
         //  LSL#0 はシフトを行わない。  //
-
-        return ( rhs );
+        return ( value );
     }
 };
 

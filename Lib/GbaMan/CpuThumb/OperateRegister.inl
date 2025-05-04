@@ -25,6 +25,10 @@
 #    include    "CpuThumb.h"
 #endif
 
+#if !defined( GBDEBUGGER_GBAMAN_UTILS_INCLUDED_SHIFT_OPERATOR_H )
+#    include    "../Utils/ShiftOperator.h"
+#endif
+
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
@@ -50,12 +54,12 @@ CpuThumb::execBitShift(
 
     const  RegType  lhs = this->m_cpuRegs[rs].dw;
     RegType         res = lhs;
+    RegType         cpuFlag = (this->m_cpuRegs[RegIdx::CPSR].dw);
+    bool            flag_cy = (cpuFlag & CPSR::FLAG_C) ? true : false;
 
     switch ( OP ){
     case  0:
-        if ( LIKELY(nn) ) {
-            res = (lhs << nn);
-        }
+        res = ShiftOpLslImm()(lhs, nn, flag_cy);
         break;
     case  1:
         if ( nn ) {
