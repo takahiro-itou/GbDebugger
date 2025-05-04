@@ -55,64 +55,6 @@ armALUInstruction(
 //    第二オペランドの指定に使うファンクタ。
 //
 
-struct  ArmALURmAsrReg
-{
-    RegType
-    operator()(
-            const  int      shift,
-            const  RegType  vRm,
-            bool          & fout_cy,
-            const  bool     flag_cy)
-    {
-        RegType rhs = vRm;
-        if ( LIKELY(shift < 32) ) {
-            if ( LIKELY(shift) ) {
-                int32_t v = static_cast<int32_t>(vRm);
-                fout_cy = (v >> (int)(shift - 1)) & 1 ? true : false;
-                rhs     = v >> (int)(shift);
-            } else {
-                rhs     = vRm;
-            }
-        } else {
-            if ( vRm & 0x80000000 ) {
-                fout_cy = true;
-                rhs     = 0xFFFFFFFF;
-            } else {
-                fout_cy = false;
-                rhs     = 0;
-            }
-        }
-        return ( rhs );
-    }
-};
-
-struct  ArmALURmAsrImm
-{
-    RegType
-    operator()(
-            const  int      shift,
-            const  RegType  vRm,
-            bool          & fout_cy,
-            const  bool     flag_cy)
-    {
-        RegType rhs;
-        if ( LIKELY(shift) ) {
-            int32_t v = static_cast<int32_t>(vRm);
-            fout_cy = (v >> (int)(shift - 1)) & 1 ? true : false;
-            rhs     = v >> (int)(shift);
-        } else {
-            //  ASR#0 は ASR#32 として解釈される。  //
-            if ( vRm & 0x80000000 ) {
-                fout_cy = true;
-                rhs     = 0xFFFFFFFF;
-            } else {
-                fout_cy = false;
-                rhs     = 0;
-            }
-        }
-        return ( rhs );
-    }
-};
 
 struct  ArmALURmRorReg
 {
