@@ -62,10 +62,12 @@ sobaseLslVal(
     return ( value << shift );
 }
 
+//----------------------------------------------------------------
+
 inline  RegType
-shiftopLsl(
-        const  int      shift,
+socheckLsl(
         const  RegType  value,
+        const  int      shift,
         bool          & outflgC)
 {
     RegType retVal  = value;
@@ -97,22 +99,12 @@ struct  ArmALURmLslReg
             const  int      shift,
             const  RegType  vRm,
             bool          & fout_cy,
-            const  bool     flag_cy)
+            const  bool     flag_cy)  const
     {
-        RegType rhs = vRm;
         if ( LIKELY(shift) ) {
-            if ( shift == 32 ) {
-                fout_cy = (vRm & 1 ? true : false);
-                rhs     = 0;
-            } else if ( LIKELY(shift < 32) ) {
-                fout_cy = (vRm >> (32 - shift)) & 1 ? true : false;
-                rhs     = (vRm << shift);
-            } else {
-                fout_cy = false;
-                rhs     = 0;
-            }
+            return  socheckLsl(vRm, shift, fout_cy);
         }
-        return ( rhs );
+        return ( vRm );
     }
 };
 
