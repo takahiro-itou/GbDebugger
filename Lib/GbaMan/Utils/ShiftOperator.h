@@ -46,7 +46,7 @@ sobaseLslFlg(
         const  RegType  value,
         const  int      shift)
 {
-    return ( (value >> (32 - shift)) & 1 ? true : false ) );
+    return ( (value >> (32 - shift)) & 1 ? true : false );
 }
 
 //----------------------------------------------------------------
@@ -59,7 +59,7 @@ sobaseLslVal(
         const  RegType  value,
         const  int      shift)
 {
-    return ( (value << shift) );
+    return ( value << shift );
 }
 
 inline  RegType
@@ -75,8 +75,8 @@ shiftopLsl(
         outflgC = (value & 1 ? true : false);
         retVal  = 0;
     } else if ( LIKELY(shift < 32) ) {
-        outflgC = (value >> (32 - shift)) & 1 ? true : false;
-        retVal  = (value << shift);
+        outflgC = sobaseLslFlg(value, shift);
+        retVal  = sobaseLslVal(value, shift);
     } else {
         //  シフト量がレジスタの幅を超えているので結果は必ず０  //
         outflgC = 0;
