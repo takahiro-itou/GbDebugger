@@ -166,7 +166,7 @@ struct  ShiftOpLslImm
             const  int      shift,
             bool          & flagCy)  const
     {
-        if ( UNLIKELY(!shift) ) {
+        if ( UNLIKELY(shift) ) {
             flagCy  = sobaseLslFlg(value, shift);
             return ( value << shift );
         }
