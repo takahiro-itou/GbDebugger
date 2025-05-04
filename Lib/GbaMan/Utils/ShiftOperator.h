@@ -43,10 +43,11 @@ namespace  GbaMan  {
 **  @param [in] shift   シフト量 (1-32)
 **/
 
+template  <typename T>
 CONSTEXPR_FUNC  inline  bool
 sobaseLslFlg(
-        const  RegType  value,
-        const  int      shift)
+        const  T    value,
+        const  int  shift)
 {
     return ( (value >> (32 - shift)) & 1 ? true : false );
 }
@@ -69,10 +70,11 @@ sobaseLslVal(
 **
 **/
 
+template  <typename T>
 CONSTEXPR_FUNC  inline  bool
 sobaseLsrFlg(
-        const  RegType  value,
-        const  int      shift)
+        const  T    value,
+        const  int  shift)
 {
     return ( (value >> (shift - 1)) & 1 ? true : false );
 }
@@ -82,10 +84,11 @@ sobaseLsrFlg(
 **
 **/
 
+template  <typename T>
 CONSTEXPR_FUNC  inline  bool
 sobaseRorFlg(
-        const  RegType  value,
-        const  int      shift)
+        const  T    value,
+        const  int  shift)
 {
     //  キャリーには下から shift - 1  ビット目が入る。  //
     return ( (value >> (shift - 1)) & 1 ? true : false );
