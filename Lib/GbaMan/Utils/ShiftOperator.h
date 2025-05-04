@@ -31,6 +31,28 @@ namespace  GbaMan  {
 
 //  クラスの前方宣言。  //
 
+inline  RegType
+shiftopLsl(
+        const  int      shift,
+        const  RegType  value,
+        bool          & outflgC)
+{
+    RegType retVal  = value;
+    if ( shift == 32 ) {
+        //  シフト量がレジスタの幅に等しいので結果は必ず０  //
+        //  ただし元の最下位ビットがキャリーに入る。        //
+        outflgC = (value & 1 ? true : false);
+        retVal  = 0;
+    } else if ( LIKELY(shift < 32) ) {
+        outflgC = (value >> (32 - shift)) & 1 ? true : false;
+        retVal  = (value << shift);
+    } else {
+        //  シフト量がレジスタの幅を超えているので結果は必ず０  //
+        outflgC = 0;
+        retVal  = 0;
+    }
+    return ( retVal );
+}
 
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END

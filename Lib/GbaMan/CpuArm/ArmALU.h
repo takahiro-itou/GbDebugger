@@ -29,6 +29,8 @@
 #    include    "GbDebugger/Common/DebuggerUtils.h"
 #endif
 
+#include    "../Utils/ShiftOperator.h"
+
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
