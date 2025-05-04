@@ -108,6 +108,32 @@ struct  ArmALURmLslReg
     }
 };
 
+//========================================================================
+//
+//    シフト量を即値で指定する LSL
+//
+
+struct  ArmALURmLslImm
+{
+    RegType
+    operator()(
+            const  int      shift,
+            const  RegType  vRm,
+            bool          & fout_cy,
+            const  bool     flag_cy)
+    {
+        RegType rhs = vRm;
+        if ( UNLIKELY(!shift) ) {
+            fout_cy = sobaseLslFlg(vRm, shift);
+            rhs     <<= shift;
+        }
+        //  LSL#0 はシフトを行わない。  //
+
+        return ( rhs );
+    }
+};
+
+
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
 

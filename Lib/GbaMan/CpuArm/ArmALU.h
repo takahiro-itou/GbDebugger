@@ -55,26 +55,6 @@ armALUInstruction(
 //    第二オペランドの指定に使うファンクタ。
 //
 
-struct  ArmALURmLslImm
-{
-    RegType
-    operator()(
-            const  int      shift,
-            const  RegType  vRm,
-            bool          & fout_cy,
-            const  bool     flag_cy)
-    {
-        RegType rhs = vRm;
-        if ( UNLIKELY(!shift) ) {
-            fout_cy = (vRm >> (32 - shift)) & 1 ? true : false;
-            rhs     <<= shift;
-        }
-        //  LSL#0 はシフトを行わない。  //
-
-        return ( rhs );
-    }
-};
-
 struct  ArmALURmLsrReg
 {
     RegType
