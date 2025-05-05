@@ -71,7 +71,7 @@ armALUInstruction(
     if ( BIT25 == 0 ) {
         //  第二オペランドはレジスタ。ビット 00..07 で指定される。  //
         rhs = getAluOp2Register<SHIFTTYPE, BIT4>(
-                opeCode, cpuRegs, fout_cy, flag_cy);
+                opeCode, cpuRegs, fout_cy);
     } else {
         //  第二オペランドは即値指定。ビット 00..07 で指定される。  //
         const  RegType  imm = (opeCode & 0xFF);

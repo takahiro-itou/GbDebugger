@@ -95,8 +95,7 @@ inline  const   RegType
 getAluOp2Register(
         const  OpeCode  opeCode,
         const  RegPair  cpuRegs[],
-        bool          & fout_cy,
-        const  bool     flag_cy)
+        bool          & flagCy)
 {
     RegType rhs;
 
@@ -111,16 +110,16 @@ getAluOp2Register(
         //  ビット 05..06 はシフトの種類。  //
         switch ( SHIFTTYPE ) {
         case  0:    //  LSL
-            rhs = ShiftOpLslImm()(vRm, shift, fout_cy);
+            rhs = ShiftOpLslImm()(vRm, shift, flagCy);
             break;
         case  1:    //  LSR
-            rhs = ShiftOpLsrImm()(vRm, shift, fout_cy);
+            rhs = ShiftOpLsrImm()(vRm, shift, flagCy);
             break;
         case  2:    //  ASR
-            rhs = ShiftOpAsrImm()(vRm, shift, fout_cy);
+            rhs = ShiftOpAsrImm()(vRm, shift, flagCy);
             break;
         case  3:    //  ROR
-            rhs = ShiftOpRorImm()(vRm, shift, fout_cy);
+            rhs = ShiftOpRorImm()(vRm, shift, flagCy);
             break;
         }
     } else {
@@ -133,16 +132,16 @@ getAluOp2Register(
         //  ビット 05..06 はシフトの種類。  //
         switch ( SHIFTTYPE ) {
         case  0:    //  LSL
-            rhs = ShiftOpLslReg()(vRm, shift, fout_cy);
+            rhs = ShiftOpLslReg()(vRm, shift, flagCy);
             break;
         case  1:    //  LSR
-            rhs = ShiftOpLsrReg()(vRm, shift, fout_cy);
+            rhs = ShiftOpLsrReg()(vRm, shift, flagCy);
             break;
         case  2:    //  ASR
-            rhs = ShiftOpAsrReg()(vRm, shift, fout_cy);
+            rhs = ShiftOpAsrReg()(vRm, shift, flagCy);
             break;
         case  3:    //  ROR
-            rhs = ShiftOpRorReg()(vRm, shift, fout_cy);
+            rhs = ShiftOpRorReg()(vRm, shift, flagCy);
             break;
         }
     }
