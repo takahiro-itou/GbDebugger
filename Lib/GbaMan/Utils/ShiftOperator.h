@@ -337,8 +337,7 @@ struct  ShiftOpRorImm
     operator()(
             const  RegType  value,
             const  int      shift,
-            bool          & flagCy,
-            const  bool     flag_cy)  const
+            bool          & flagCy)  const
     {
         RegType rhs;
         if ( LIKELY(shift) ) {
