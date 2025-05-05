@@ -15,11 +15,11 @@
 /**
 **      プロジェクトの設定。
 **
-**      @file       Common/DebuggerSettings.h
+**      @file       Common/DebuggerProject.h
 **/
 
-#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_SETTINGS_H )
-#    define   GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_SETTINGS_H
+#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_PROJECT_H )
+#    define   GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_PROJECT_H
 
 //  スクリプトによる設定値が書き込まれたヘッダを読み込む。  //
 #if !defined( GBDEBUGGER_CONFIG_INCLUDED_CONFIGURED_DEBUGGER_H )
@@ -32,11 +32,6 @@
 
 GBDEBUGGER_NAMESPACE_BEGIN
 
-/**
-**    ダミーの型宣言。
-**/
-
-typedef     int     CommonType;
 
 GBDEBUGGER_NAMESPACE_END
 

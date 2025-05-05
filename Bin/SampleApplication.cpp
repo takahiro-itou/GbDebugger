@@ -18,7 +18,7 @@
 **      @file       Bin/SampleApplication.cpp
 **/
 
-#include    "GbDebugger/Common/SampleDocument.h"
+#include    "GbDebugger/GbaMan/GbaManager.h"
 
 #include    <iostream>
 
@@ -26,17 +26,52 @@ using   namespace   GBDEBUGGER_NAMESPACE;
 
 int  main(int argc, char * argv[])
 {
-    Common::SampleDocument  test;
-    std::string     input;
+    ErrCode retCode = ErrCode::SUCCESS;
+    GbaMan::GbaManager  manGba;
 
-    std::cout   <<  "Input:";
-    std::cin    >>  input;
+    if ( argc < 2 ) {
+        std::cerr   <<  "Usage "
+                    <<  argv[0]
+                    <<  " [rom file]"
+                    <<  std::endl;
+        return ( 1 );
+    }
 
-    test.setMessage(input);
-    std::cout   <<  "The number of alphabet in "
-                <<  input
-                <<  " = "
-                <<  test.countAlphabet()
+    if ( (retCode = manGba.openRomFile(argv[1])) != ErrCode::SUCCESS ) {
+        std::cerr   <<  "ERROR : Open ROM "
+                    <<  argv[1] <<  std::endl;
+        return ( 1 );
+    }
+
+    //  ハードリセットを行う。      //
+    manGba.doHardReset();
+
+    //  最初のレジスタをダンプ。    //
+    std::cout   <<  "REGS\n";
+    manGba.printRegisters(std::cout)
+            <<  std::endl;
+
+    //  最初の命令を逆アセンブル。  //
+    std::cout   <<  "Mnemonic:\n";
+    manGba.writeMnemonicCurrent(std::cout, manGba.getNextPC())
+            <<  std::endl;
+
+    //  最初の命令を実行。  //
+    GbaMan::InstExecResult  ret = GbaMan::InstExecResult::SUCCESS_CONTINUE;
+
+    while ( ret != GbaMan::InstExecResult::UNDEFINED_OPECODE ) {
+        ret = manGba.executeCurrentInst();
+
+        //  レジスタをダンプ。  //
+        std::cout   <<  "REGS\n";
+        manGba.printRegisters(std::cout)
                 <<  std::endl;
+
+        //  次の命令を逆アセンブル。    //
+        std::cout   <<  "Mnemonic:\n";
+        manGba.writeMnemonicCurrent(std::cout, manGba.getNextPC())
+                <<  std::endl;
+    }
+
     return ( 0 );
 }

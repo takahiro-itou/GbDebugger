@@ -4,12 +4,12 @@
 ##    テストの設定。
 ##
 
-add_test(NAME   SampleDocumentTest
-    COMMAND  $<TARGET_FILE:SampleDocumentTest>
+add_test(NAME   DebuggerProjectTest
+    COMMAND  $<TARGET_FILE:DebuggerProjectTest>
 )
 
-add_test(NAME   DebuggerSettingsTest
-    COMMAND  $<TARGET_FILE:DebuggerSettingsTest>
+add_test(NAME   DebuggerTypesTest
+    COMMAND  $<TARGET_FILE:DebuggerTypesTest>
 )
 
 ##----------------------------------------------------------------
@@ -17,5 +17,5 @@ add_test(NAME   DebuggerSettingsTest
 ##    テストプログラムのビルド。
 ##
 
-add_executable(SampleDocumentTest       SampleDocumentTest.cpp)
-add_executable(DebuggerSettingsTest     DebuggerSettingsTest.cpp)
+add_executable(DebuggerProjectTest      DebuggerProjectTest.cpp)
+add_executable(DebuggerTypesTest        DebuggerTypesTest.cpp)

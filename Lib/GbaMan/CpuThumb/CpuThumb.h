@@ -13,41 +13,48 @@
 *************************************************************************/
 
 /**
-**      An Interface of SampleDocument class.
+**      An Interface of CpuThumb class.
 **
-**      @file       Common/SampleDocument.h
+**      @file       GbaMan/CpuThumb.h
 **/
 
-#if !defined( GBDEBUGGER_COMMON_INCLUDED_SAMPLE_DOCUMENT_H )
-#    define   GBDEBUGGER_COMMON_INCLUDED_SAMPLE_DOCUMENT_H
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_CPU_THUMB_H )
+#    define   GBDEBUGGER_GBAMAN_INCLUDED_CPU_THUMB_H
+
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_BASE_CPU_CORE_H )
+#    include    "GbDebugger/GbaMan/BaseCpuCore.h"
+#endif
 
 #if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_TYPES_H )
-#    include    "DebuggerTypes.h"
+#    include    "GbDebugger/Common/DebuggerTypes.h"
 #endif
 
-#if !defined( GBDEBUGGER_SYS_STL_INCLUDED_STRING )
-#    include    <string>
-#    define   GBDEBUGGER_SYS_STL_INCLUDED_STRING
-#endif
 
 GBDEBUGGER_NAMESPACE_BEGIN
-namespace  Common  {
+namespace  GbaMan  {
 
 //  クラスの前方宣言。  //
 
 
 //========================================================================
 //
-//    SampleDocument  class.
+//    CpuThumb  class.
 //
 
-class  SampleDocument
+class  CpuThumb : public BaseCpuCore
 {
 
 //========================================================================
 //
 //    Internal Type Definitions.
 //
+private:
+
+    typedef     BaseCpuCore     Super;
+
+    typedef     GBD_REGPARM     InstExecResult
+    (CpuThumb::* FnInst)(
+            const  OpeCode  opeCode);
 
 //========================================================================
 //
@@ -57,22 +64,32 @@ public:
 
     //----------------------------------------------------------------
     /**   インスタンスを初期化する
-    **  （デフォルトコンストラクタ）。
+    **  （コンストラクタ）。
     **
     **/
-    SampleDocument();
+    CpuThumb(
+            GbaManager    & manGba,
+            MemoryManager & manMem);
 
     //----------------------------------------------------------------
     /**   インスタンスを破棄する
     **  （デストラクタ）。
     **
     **/
-    virtual  ~SampleDocument();
+    virtual  ~CpuThumb();
 
 //========================================================================
 //
 //    Public Member Functions (Implement Pure Virtual).
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   現在の命令を実行する。
+    **
+    **/
+    virtual  InstExecResult
+    executeNextInst();
 
 //========================================================================
 //
@@ -88,15 +105,6 @@ public:
 //
 //    Public Member Functions (Virtual Functions).
 //
-public:
-
-    //----------------------------------------------------------------
-    /**   入力メッセージ中に含まれるアルファベットを数える。
-    **
-    **  @return     半角アルファベット [A-Za-z] の文字数
-    **/
-    virtual  int
-    countAlphabet()  const;
 
 //========================================================================
 //
@@ -107,17 +115,6 @@ public:
 //
 //    Accessors.
 //
-public:
-
-    //----------------------------------------------------------------
-    /**   メッセージを設定する。
-    **
-    **  @param [in] message   入力データ
-    **  @return     void.
-    **/
-    void
-    setMessage(
-            const  std::string  &message);
 
 //========================================================================
 //
@@ -128,6 +125,28 @@ public:
 //
 //    For Internal Use Only.
 //
+private:
+
+    //----------------------------------------------------------------
+    //    命令の実行を行う関数たち。
+    //
+
+    template  <int OP>
+    GBD_REGPARM     InstExecResult
+    execBitShift(
+            const  OpeCode  opeCode);
+
+    template  <int Rs, int OP>
+    GBD_REGPARM     InstExecResult
+    execStoreLoadRelative(
+            const  OpeCode  opeCode);
+
+    //----------------------------------------------------------------
+    /**   次の命令をプリフェッチする。
+    **
+    **/
+    void
+    prefetchNext();
 
 //========================================================================
 //
@@ -135,18 +154,23 @@ public:
 //
 private:
 
-    std::string     m_message;
+    /**   命令テーブル。        **/
+    static  const   FnInst  s_thumbInstTable[256];
 
 //========================================================================
 //
 //    Other Features.
 //
+private:
+    typedef     CpuThumb        This;
+    CpuThumb            (const  This  &);
+    This &  operator =  (const  This  &);
 public:
     //  テストクラス。  //
-    friend  class   SampleDocumentTest;
+    friend  class   CpuThumbTest;
 };
 
-}   //  End of namespace  Common
+}   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
 
 #endif

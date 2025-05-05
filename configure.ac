@@ -159,6 +159,7 @@ AC_CONFIG_FILES([
     Lib/Makefile
     Lib/.Config/Makefile
     Lib/Common/Makefile
+    Lib/GbaMan/Makefile
 ])
 
 AC_CONFIG_FILES([
@@ -171,6 +172,8 @@ dnl
 
 AC_CONFIG_FILES([
     Lib/Common/Tests/Makefile
+    Lib/GbaMan/Tests/Makefile
+    Lib/GbaMan/Tests/TestConf.h
 ])
 
 dnl

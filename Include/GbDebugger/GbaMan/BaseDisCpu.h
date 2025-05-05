@@ -13,41 +13,58 @@
 *************************************************************************/
 
 /**
-**      An Interface of SampleDocument class.
+**      An Interface of BaseDisCpu class.
 **
-**      @file       Common/SampleDocument.h
+**      @file       GbaMan/BaseDisCpu.h
 **/
 
-#if !defined( GBDEBUGGER_COMMON_INCLUDED_SAMPLE_DOCUMENT_H )
-#    define   GBDEBUGGER_COMMON_INCLUDED_SAMPLE_DOCUMENT_H
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_BASE_DIS_CPU_H )
+#    define   GBDEBUGGER_GBAMAN_INCLUDED_BASE_DIS_CPU_H
 
 #if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_TYPES_H )
-#    include    "DebuggerTypes.h"
+#    include    "GbDebugger/Common/DebuggerTypes.h"
 #endif
 
-#if !defined( GBDEBUGGER_SYS_STL_INCLUDED_STRING )
-#    include    <string>
-#    define   GBDEBUGGER_SYS_STL_INCLUDED_STRING
-#endif
+#include    <ostream>
+
 
 GBDEBUGGER_NAMESPACE_BEGIN
-namespace  Common  {
+namespace  GbaMan  {
 
 //  クラスの前方宣言。  //
+class   MemoryManager;
 
 
 //========================================================================
 //
-//    SampleDocument  class.
+//    Type Definitions.
 //
 
-class  SampleDocument
+struct  MnemonicMap  {
+    OpeCode         mask;
+    OpeCode         cval;
+    const char *    mnemonic;
+};
+
+//========================================================================
+
+CONSTEXPR_VAR   const  char  *  regNames[16] = {
+    "R0" , "R1" , "R2" , "R3" , "R4" , "R5", "R6", "R7",
+    "R8" , "R9" , "R10", "R11", "R12", "SP", "LR", "PC"
+};
+
+CONSTEXPR_VAR   const  char  *  conditions[16] = {
+    ".EQ", ".NE", ".CS", ".CC", ".MI", ".PL", ".VS", ".VC",
+    ".HI", ".LS", ".GE", ".LT", ".GT", ".LE", "",    ".NV"
+};
+
+//========================================================================
+//
+//    BaseDisCpu  class.
+//
+
+class  BaseDisCpu
 {
-
-//========================================================================
-//
-//    Internal Type Definitions.
-//
 
 //========================================================================
 //
@@ -60,14 +77,14 @@ public:
     **  （デフォルトコンストラクタ）。
     **
     **/
-    SampleDocument();
+    BaseDisCpu();
 
     //----------------------------------------------------------------
     /**   インスタンスを破棄する
     **  （デストラクタ）。
     **
     **/
-    virtual  ~SampleDocument();
+    virtual  ~BaseDisCpu();
 
 //========================================================================
 //
@@ -83,20 +100,25 @@ public:
 //
 //    Public Member Functions (Pure Virtual Functions).
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   ニーモニックを表示する。
+    **
+    **  @param [in,out] outStr    出力ストリーム
+    **  @param [in]     gmAddr    ゲスト上のアドレス
+    **  @param [in]     opeCode   オペコード
+    **/
+    virtual  std::ostream  &
+    writeMnemonic(
+            std::ostream       &outStr,
+            GuestMemoryAddress  gmAddr,
+            const  OpeCode      opeCode)  const  = 0;
 
 //========================================================================
 //
 //    Public Member Functions (Virtual Functions).
 //
-public:
-
-    //----------------------------------------------------------------
-    /**   入力メッセージ中に含まれるアルファベットを数える。
-    **
-    **  @return     半角アルファベット [A-Za-z] の文字数
-    **/
-    virtual  int
-    countAlphabet()  const;
 
 //========================================================================
 //
@@ -109,15 +131,12 @@ public:
 //
 public:
 
-    //----------------------------------------------------------------
-    /**   メッセージを設定する。
-    **
-    **  @param [in] message   入力データ
-    **  @return     void.
-    **/
     void
-    setMessage(
-            const  std::string  &message);
+    setMemoryManager(
+            const  MemoryManager  & manMem)
+    {
+        this->m_pManMem = &manMem;
+    }
 
 //========================================================================
 //
@@ -133,20 +152,54 @@ public:
 //
 //    Member Variables.
 //
-private:
+protected:
 
-    std::string     m_message;
+    const   MemoryManager  *    m_pManMem;
 
 //========================================================================
 //
 //    Other Features.
 //
+private:
+    typedef     BaseDisCpu      This;
+    BaseDisCpu          (const  This  &);
+    This &  operator =  (const  This  &);
 public:
     //  テストクラス。  //
-    friend  class   SampleDocumentTest;
+    friend  class   BaseDisCpuTest;
 };
 
-}   //  End of namespace  Common
+//========================================================================
+//
+//    Inline Functions.
+//
+
+//----------------------------------------------------------------
+/**
+**
+**/
+
+inline  int
+readMnemonicParameter(
+        const  char *  &src,
+        const  int      digMax)
+{
+    int val = 0;
+
+    for ( int d = 0; d < digMax; ++ d ) {
+        const  char  ch = (*(src ++));
+        if ( ('0' <= ch) && (ch <= '9') ) {
+            val = (val * 10) + (ch - '0');
+        } else {
+            --  src;
+            break;
+        }
+    }
+
+    return ( val );
+}
+
+}   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
 
 #endif

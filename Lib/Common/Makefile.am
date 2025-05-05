@@ -36,7 +36,9 @@ dist_noinst_header_files    +=  \
         ${extra_noinst_header_files}
 
 inclib_header_files         +=  \
-        ${inclib_source_dir}/DebuggerSettings.h    \
+        ${inclib_source_dir}/DebuggerProject.h     \
+        ${inclib_source_dir}/DebuggerTypes.h       \
+        ${inclib_source_dir}/DebuggerUtils.h       \
         ${inclib_source_dir}/SampleDocument.h      \
         ${extra_library_header_files}
 
@@ -53,7 +55,7 @@ library_compile_srcfiles    +=  \
 ##    List of Libraries.
 ##
 
-static_libraries_list   +=  libsampleCommon.static.a
+static_libraries_list   +=  libgbdCommon.static.a
 shared_libraries_list   +=
 
 ##
@@ -70,4 +72,5 @@ include  $(top_srcdir)/.M4/BuildCommon/Install.inc
 ##    Build Libraries.
 ##
 
-libsampleCommon_static_a_SOURCES    =  ${library_source_files}
+libgbdCommon_static_a_SOURCES   =  ${library_source_files}
+

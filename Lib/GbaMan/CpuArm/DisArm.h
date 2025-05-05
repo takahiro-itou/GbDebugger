@@ -13,41 +13,34 @@
 *************************************************************************/
 
 /**
-**      An Interface of SampleDocument class.
+**      An Interface of DisArm class.
 **
-**      @file       Common/SampleDocument.h
+**      @file       GbaMan/DisArm.h
 **/
 
-#if !defined( GBDEBUGGER_COMMON_INCLUDED_SAMPLE_DOCUMENT_H )
-#    define   GBDEBUGGER_COMMON_INCLUDED_SAMPLE_DOCUMENT_H
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_DIS_ARM_H )
+#    define   GBDEBUGGER_GBAMAN_INCLUDED_DIS_ARM_H
 
-#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_TYPES_H )
-#    include    "DebuggerTypes.h"
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_BASE_DIS_CPU_H )
+#    include    "GbDebugger/GbaMan/BaseDisCpu.h"
 #endif
 
-#if !defined( GBDEBUGGER_SYS_STL_INCLUDED_STRING )
-#    include    <string>
-#    define   GBDEBUGGER_SYS_STL_INCLUDED_STRING
-#endif
+#include    <ostream>
+
 
 GBDEBUGGER_NAMESPACE_BEGIN
-namespace  Common  {
+namespace  GbaMan  {
 
 //  クラスの前方宣言。  //
 
 
 //========================================================================
 //
-//    SampleDocument  class.
+//    DisArm  class.
 //
 
-class  SampleDocument
+class  DisArm : public BaseDisCpu
 {
-
-//========================================================================
-//
-//    Internal Type Definitions.
-//
 
 //========================================================================
 //
@@ -60,14 +53,14 @@ public:
     **  （デフォルトコンストラクタ）。
     **
     **/
-    SampleDocument();
+    DisArm();
 
     //----------------------------------------------------------------
     /**   インスタンスを破棄する
     **  （デストラクタ）。
     **
     **/
-    virtual  ~SampleDocument();
+    virtual  ~DisArm();
 
 //========================================================================
 //
@@ -91,12 +84,17 @@ public:
 public:
 
     //----------------------------------------------------------------
-    /**   入力メッセージ中に含まれるアルファベットを数える。
+    /**   ニーモニックを表示する。
     **
-    **  @return     半角アルファベット [A-Za-z] の文字数
+    **  @param [in,out] outStr    出力ストリーム
+    **  @param [in]     gmAddr    ゲスト上のアドレス
+    **  @param [in]     opeCode   オペコード
     **/
-    virtual  int
-    countAlphabet()  const;
+    virtual  std::ostream  &
+    writeMnemonic(
+            std::ostream       &outStr,
+            GuestMemoryAddress  gmAddr,
+            const  OpeCode      opeCode)  const;
 
 //========================================================================
 //
@@ -107,17 +105,6 @@ public:
 //
 //    Accessors.
 //
-public:
-
-    //----------------------------------------------------------------
-    /**   メッセージを設定する。
-    **
-    **  @param [in] message   入力データ
-    **  @return     void.
-    **/
-    void
-    setMessage(
-            const  std::string  &message);
 
 //========================================================================
 //
@@ -133,20 +120,21 @@ public:
 //
 //    Member Variables.
 //
-private:
-
-    std::string     m_message;
 
 //========================================================================
 //
 //    Other Features.
 //
+private:
+    typedef     DisArm          This;
+    DisArm              (const  This  &);
+    This &  operator =  (const  This  &);
 public:
     //  テストクラス。  //
-    friend  class   SampleDocumentTest;
+    friend  class   DisArmTest;
 };
 
-}   //  End of namespace  Common
+}   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
 
 #endif

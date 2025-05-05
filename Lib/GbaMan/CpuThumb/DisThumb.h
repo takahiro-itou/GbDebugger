@@ -13,41 +13,32 @@
 *************************************************************************/
 
 /**
-**      An Interface of SampleDocument class.
+**      An Interface of DisThumb class.
 **
-**      @file       Common/SampleDocument.h
+**      @file       GbaMan/DisThumb.h
 **/
 
-#if !defined( GBDEBUGGER_COMMON_INCLUDED_SAMPLE_DOCUMENT_H )
-#    define   GBDEBUGGER_COMMON_INCLUDED_SAMPLE_DOCUMENT_H
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_DIS_THUMB_H )
+#    define   GBDEBUGGER_GBAMAN_INCLUDED_DIS_THUMB_H
 
-#if !defined( GBDEBUGGER_COMMON_INCLUDED_DEBUGGER_TYPES_H )
-#    include    "DebuggerTypes.h"
+#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_BASE_DIS_CPU_H )
+#    include    "GbDebugger/GbaMan/BaseDisCpu.h"
 #endif
 
-#if !defined( GBDEBUGGER_SYS_STL_INCLUDED_STRING )
-#    include    <string>
-#    define   GBDEBUGGER_SYS_STL_INCLUDED_STRING
-#endif
 
 GBDEBUGGER_NAMESPACE_BEGIN
-namespace  Common  {
+namespace  GbaMan  {
 
 //  クラスの前方宣言。  //
 
 
 //========================================================================
 //
-//    SampleDocument  class.
+//    DisThumb  class.
 //
 
-class  SampleDocument
+class  DisThumb : public BaseDisCpu
 {
-
-//========================================================================
-//
-//    Internal Type Definitions.
-//
 
 //========================================================================
 //
@@ -60,19 +51,33 @@ public:
     **  （デフォルトコンストラクタ）。
     **
     **/
-    SampleDocument();
+    DisThumb();
 
     //----------------------------------------------------------------
     /**   インスタンスを破棄する
     **  （デストラクタ）。
     **
     **/
-    virtual  ~SampleDocument();
+    virtual  ~DisThumb();
 
 //========================================================================
 //
 //    Public Member Functions (Implement Pure Virtual).
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   ニーモニックを表示する。
+    **
+    **  @param [in,out] outStr    出力ストリーム
+    **  @param [in]     gmAddr    ゲスト上のアドレス
+    **  @param [in]     opeCode   オペコード
+    **/
+    virtual  std::ostream  &
+    writeMnemonic(
+            std::ostream       &outStr,
+            GuestMemoryAddress  gmAddr,
+            const  OpeCode      opeCode)  const  override;
 
 //========================================================================
 //
@@ -88,15 +93,6 @@ public:
 //
 //    Public Member Functions (Virtual Functions).
 //
-public:
-
-    //----------------------------------------------------------------
-    /**   入力メッセージ中に含まれるアルファベットを数える。
-    **
-    **  @return     半角アルファベット [A-Za-z] の文字数
-    **/
-    virtual  int
-    countAlphabet()  const;
 
 //========================================================================
 //
@@ -107,17 +103,6 @@ public:
 //
 //    Accessors.
 //
-public:
-
-    //----------------------------------------------------------------
-    /**   メッセージを設定する。
-    **
-    **  @param [in] message   入力データ
-    **  @return     void.
-    **/
-    void
-    setMessage(
-            const  std::string  &message);
 
 //========================================================================
 //
@@ -133,20 +118,21 @@ public:
 //
 //    Member Variables.
 //
-private:
-
-    std::string     m_message;
 
 //========================================================================
 //
 //    Other Features.
 //
+private:
+    typedef     DisThumb        This;
+    DisThumb            (const  This  &);
+    This &  operator =  (const  This  &);
 public:
     //  テストクラス。  //
-    friend  class   SampleDocumentTest;
+    friend  class   DisThumbTest;
 };
 
-}   //  End of namespace  Common
+}   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
 
 #endif
