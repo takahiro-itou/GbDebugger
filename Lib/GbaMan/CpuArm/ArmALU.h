@@ -60,10 +60,9 @@ struct  ArmALUImmRor
 {
     RegType
     operator()(
-            const  int      shift,
             const  RegType  vImm,
-            bool          & fout_cy,
-            const  bool     flag_cy)
+            const  int      shift,
+            bool          & fout_cy)  const
     {
         RegType rhs = vImm;
         if ( UNLIKELY(shift) ) {

@@ -76,7 +76,7 @@ armALUInstruction(
         //  第二オペランドは即値指定。ビット 00..07 で指定される。  //
         const  RegType  imm = (opeCode & 0xFF);
         const  int      ror = (opeCode & 0xF00) >> 7;
-        rhs = ArmALUImmRor()(ror, imm, fout_cy, flag_cy);
+        rhs = ArmALUImmRor()(imm, ror, fout_cy);
     }
 
     const  RegType  cur = cpuFlag;
