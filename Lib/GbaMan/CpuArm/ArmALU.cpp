@@ -21,6 +21,7 @@
 #include    "ArmALU.h"
 #include    "CpuArm.h"
 
+#include    <cassert>
 #include    <iostream>
 #include    <stdio.h>
 
@@ -51,13 +52,15 @@ armALUInstruction(
     std::cerr   <<  __PRETTY_FUNCTION__ <<  std::endl;
 #endif
     sprintf(buf,
-            "Op2(I/R) = %d, CODE = %x, S = %d, SHIFT = %d, BIT4(R) = %d\n",
-            BIT25, CODE, BIT20, SHIFTOP::SHIFT_TYPE, BIT4);
+            "Op2(I/R) = %d, CODE = %x, S = %d, SHIFT = %d/%d, BIT4(R) = %d\n",
+            BIT25, CODE, BIT20,
+            SHIFTOP::SHIFT_TYPE, SHIFTOP::SHIFTW_REG, BIT4);
     std::cerr   <<  buf;
     sprintf(buf,
             "OpeCode = %08x, dst = %d\n",
             opeCode, dst);
     std::cerr   <<  buf;
+    assert( SHIFTOP::SHIFTW_REG == BIT4 );
 
     //  第一オペランドレジスタはビット 16..19 で指定。  //
     const  RegType  lhs = cpuRegs[(opeCode >> 16) & 0x0F].dw;
