@@ -58,8 +58,26 @@ armStrLdrInstruction(
         ofs = (opeCode & 0x0FFF);
     } else {
         //  オフセットはシフトされたレジスタ。  //
-        ofs = getAluOp2Register<SHIFTTYPE, 0>(
-                opeCode, cpuRegs, fout_cy);
+        switch ( SHIFTTYPE ) {
+        case  0:
+            ofs = getAluOp2Register<ShiftOpLslImm, 0>(
+                    opeCode, cpuRegs, fout_cy);
+            break;
+        case  1:
+            ofs = getAluOp2Register<ShiftOpLsrImm, 0>(
+                    opeCode, cpuRegs, fout_cy);
+            break;
+        case  2:
+            ofs = getAluOp2Register<ShiftOpAsrImm, 0>(
+                    opeCode, cpuRegs, fout_cy);
+            break;
+        case  3:
+            ofs = getAluOp2Register<ShiftOpRorImm, 0>(
+                    opeCode, cpuRegs, fout_cy);
+            break;
+        }
+        // ofs = getAluOp2Register<SHIFTTYPE, 0>(
+        //         opeCode, cpuRegs, fout_cy);
     }
 
     //  U フラグ (BIT 23)   //
