@@ -152,6 +152,12 @@ struct  ShiftOpLslReg
         }
         return ( value );
     }
+
+    /**   シフトタイプ。            **/
+    static  CONSTEXPR_VAR   int     SHIFT_TYPE  = 0;
+
+    /**   シフト量はレジスタ指定。  **/
+    static  CONSTEXPR_VAR   int     SHIFTW_REG  = 1;
 };
 
 //========================================================================
