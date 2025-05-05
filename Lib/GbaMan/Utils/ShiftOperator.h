@@ -346,8 +346,9 @@ struct  ShiftOpRorImm
             rhs     = sobaseRorVal(value, shift);
         } else {
             //  ROR#0 は RCR#1  として解釈される。  //
+            const  RegType  msb = (flagCy << 31);
             flagCy  = (value & 1) ? true : false;
-            rhs     = ((value >> 1) | (flag_cy << 31));
+            rhs     = ((value >> 1) | (msb));
         }
         return ( rhs );
     }
