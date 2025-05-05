@@ -154,6 +154,11 @@ struct  CPSR  {
         MODE_ABORT  = 0x17,
         MODE_UNDEF  = 0x1B,
         MODE_SYSTEM = 0x1F,
+
+        FBIT_N      = 31,
+        FBIT_Z      = 30,
+        FBIT_C      = 29,
+        FBIT_V      = 28,
     };
 };
 
