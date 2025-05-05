@@ -64,8 +64,8 @@ armALUInstruction(
     RegType         rhs;
     uint64_t        res;
 
-    const   RegType Cy      = (cpuFlag >> 29) & 0x01;
-    const   bool    flag_cy = (cpuFlag & CPSR::FLAG_C) ? true : false;
+    const   RegType Cy      = (cpuFlag >> CPSR::FBIT_C) & 0x01;
+    const   bool    flag_cy = (Cy ? true : false);
     bool            fout_cy = flag_cy;
 
     if ( BIT25 == 0 ) {
