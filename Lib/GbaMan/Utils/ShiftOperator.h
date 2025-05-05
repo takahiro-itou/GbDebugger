@@ -243,24 +243,24 @@ struct  ArmALURmAsrReg
     operator()(
             const  int      shift,
             const  RegType  value,
-            bool          & fout_cy,
+            bool          & flagCy,
             const  bool     flag_cy)
     {
         RegType rhs = value;
         if ( LIKELY(shift < 32) ) {
             if ( LIKELY(shift) ) {
                 int32_t v = static_cast<int32_t>(value);
-                fout_cy = (v >> (int)(shift - 1)) & 1 ? true : false;
+                flagCy  = (v >> (int)(shift - 1)) & 1 ? true : false;
                 rhs     = v >> (int)(shift);
             } else {
                 rhs     = value;
             }
         } else {
             if ( value & 0x80000000 ) {
-                fout_cy = true;
+                flagCy  = true;
                 rhs     = 0xFFFFFFFF;
             } else {
-                fout_cy = false;
+                flagCy  = false;
                 rhs     = 0;
             }
         }
@@ -311,16 +311,16 @@ struct  ArmALURmRorReg
     operator()(
             const  int      shift,
             const  RegType  value,
-            bool          & fout_cy,
+            bool          & flagCy,
             const  bool     flag_cy)
     {
         RegType rhs = value;
         if ( LIKELY(shift & 0x1F) ) {
-            fout_cy = sobaseRorFlg(value, shift);
+            flagCy  = sobaseRorFlg(value, shift);
             rhs     = sobaseRorVal(value, shift);
         } else {
             if ( shift ) {
-                fout_cy = (value & 0x80000000 ? true : false);
+                flagCy  = (value & 0x80000000 ? true : false);
             }
             rhs = value;
         }
@@ -339,16 +339,16 @@ struct  ShiftOpRorImm
     operator()(
             const  RegType  value,
             const  int      shift,
-            bool          & fout_cy,
+            bool          & flagCy,
             const  bool     flag_cy)  const
     {
         RegType rhs;
         if ( LIKELY(shift) ) {
-            fout_cy = sobaseRorFlg(value, shift);
+            flagCy  = sobaseRorFlg(value, shift);
             rhs     = sobaseRorVal(value, shift);
         } else {
             //  ROR#0 は RCR#1  として解釈される。  //
-            fout_cy = (value & 1) ? true : false;
+            flagCy  = (value & 1) ? true : false;
             rhs     = ((value >> 1) | (flag_cy << 31));
         }
         return ( rhs );
