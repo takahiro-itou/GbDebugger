@@ -139,19 +139,18 @@ socheckLsl(
 **    シフト量をレジスタで指定する LSL
 **/
 
-struct  ArmALURmLslReg
+struct  ShiftOpLslReg
 {
     RegType
     operator()(
+            const  RegType  value,
             const  int      shift,
-            const  RegType  vRm,
-            bool          & fout_cy,
-            const  bool     flag_cy)  const
+            bool          & flagCy)  const
     {
         if ( LIKELY(shift) ) {
-            return  socheckLsl(vRm, shift, fout_cy);
+            return  socheckLsl(value, shift, flagCy);
         }
-        return ( vRm );
+        return ( value );
     }
 };
 

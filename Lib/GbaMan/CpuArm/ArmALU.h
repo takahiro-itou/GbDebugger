@@ -133,7 +133,7 @@ getAluOp2Register(
         //  ビット 05..06 はシフトの種類。  //
         switch ( SHIFTTYPE ) {
         case  0:    //  LSL
-            rhs = ArmALURmLslReg()(shift, vRm, fout_cy, flag_cy);
+            rhs = ShiftOpLslReg()(vRm, shift, fout_cy);
             break;
         case  1:    //  LSR
             rhs = ArmALURmLsrReg()(shift, vRm, fout_cy, flag_cy);
