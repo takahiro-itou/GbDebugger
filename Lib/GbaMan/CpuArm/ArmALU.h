@@ -65,6 +65,12 @@ struct  ArmALUImmRor
         }
         return ( rhs );
     }
+
+    /**   シフトタイプ  **/
+    static  CONSTEXPR_VAR   int     SHIFT_TYPE  = 4;
+
+    /**   シフト量は即値指定。  **/
+    static  CONSTEXPR_VAR   int     SHIFTW_REG  = 0;
 };
 
 inline  const   RegType
