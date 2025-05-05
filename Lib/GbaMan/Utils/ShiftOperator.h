@@ -360,6 +360,12 @@ struct  ShiftOpRorReg
         }
         return ( rhs );
     }
+
+    /**   シフトタイプ  **/
+    static  CONSTEXPR_VAR   int     SHIFT_TYPE  = 3;
+
+    /**   シフト量はレジスタ指定。  **/
+    static  CONSTEXPR_VAR   int     SHIFTW_REG  = 1;
 };
 
 //========================================================================
@@ -387,6 +393,12 @@ struct  ShiftOpRorImm
         }
         return ( rhs );
     }
+
+    /**   シフトタイプ  **/
+    static  CONSTEXPR_VAR   int     SHIFT_TYPE  = 3;
+
+    /**   シフト量は即値指定。  **/
+    static  CONSTEXPR_VAR   int     SHIFTW_REG  = 0;
 };
 
 }   //  End of namespace  GbaMan
