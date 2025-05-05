@@ -182,29 +182,28 @@ struct  ShiftOpLslImm
 **    シフト量をレジスタで指定する LSR
 **/
 
-struct  ArmALURmLsrReg
+struct  ShiftOpLsrReg
 {
     RegType
     operator()(
+            const  RegType  value,
             const  int      shift,
-            const  RegType  vRm,
-            bool          & fout_cy,
-            const  bool     flag_cy)  const
+            bool          & flagCy)  const
     {
-        RegType rhs = vRm;
+        RegType rhs = value;
         if ( LIKELY(shift) ) {
             if ( shift == 32 ) {
-                fout_cy = (vRm & 0x80000000) ? true : false;
+                flagCy  = (value & 0x80000000) ? true : false;
                 rhs     = 0;
             } else if ( LIKELY(shift < 32) ) {
-                fout_cy = sobaseLsrFlg(vRm, shift);
-                rhs     = (vRm >> shift);
+                flagCy  = sobaseLsrFlg(value, shift);
+                rhs     = (value >> shift);
             } else {
-                fout_cy = false;
+                flagCy  = false;
                 rhs     = 0;
             }
         } else {
-            rhs = vRm;
+            rhs = value;
         }
         return ( rhs );
     }
