@@ -334,14 +334,14 @@ struct  ArmALURmRorReg
 **    シフト量を即値で指定する ROR
 **/
 
-struct  ArmALURmRorImm
+struct  ShiftOpRorImm
 {
     RegType
     operator()(
-            const  int      shift,
             const  RegType  vRm,
+            const  int      shift,
             bool          & fout_cy,
-            const  bool     flag_cy)
+            const  bool     flag_cy)  const
     {
         RegType rhs;
         if ( LIKELY(shift) ) {

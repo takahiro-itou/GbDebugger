@@ -120,7 +120,7 @@ getAluOp2Register(
             rhs = ShiftOpAsrImm()(vRm, shift, fout_cy);
             break;
         case  3:    //  ROR
-            rhs = ArmALURmRorImm()(shift, vRm, fout_cy, flag_cy);
+            rhs = ShiftOpRorImm()(vRm, shift, fout_cy, flag_cy);
             break;
         }
     } else {
