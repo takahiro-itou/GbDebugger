@@ -304,14 +304,13 @@ struct  ShiftOpAsrImm
 **    シフト量をレジスタで指定する ROR
 **/
 
-struct  ArmALURmRorReg
+struct  ShiftOpRorReg
 {
     RegType
     operator()(
-            const  int      shift,
             const  RegType  value,
-            bool          & flagCy,
-            const  bool     flag_cy)
+            const  int      shift,
+            bool          & flagCy)  const
     {
         RegType rhs = value;
         if ( LIKELY(shift & 0x1F) ) {
