@@ -67,10 +67,10 @@ thumbMnemonics[] = {
 
     //  Format 05 : R8-15 レジスタ操作。    //
     { 0xFCC0, 0x4400, "[ ??? ]" },      //  MSBd==0 && MSBs==0 は不正。 //
-    { 0xFF00, 0x4400, "ADD" },
-    { 0xFF00, 0x4500, "CMP" },
-    { 0xFF00, 0x4600, "MOV" },
-    { 0xFF80, 0x4700, "BX"  },          //  MSBd は 0。Rd は未使用。    //
+    { 0xFF00, 0x4400, "ADD \t%m0+7, %m3+6" },
+    { 0xFF00, 0x4500, "CMP \t%m0+7, %m3+6" },
+    { 0xFF00, 0x4600, "MOV \t%m0+7, %m3+6" },
+    { 0xFF80, 0x4700, "BX  \t%m0+7, %m3+6" },   //  MSBd は 0。Rd は未使用  //
 
     //  Format 06 : ロードストア命令（PC-Relative）。   //
     { 0xF800, 0x4800, "LDR\t%r8, [PC, #%n2]\t; %P2" },
@@ -232,6 +232,25 @@ writeRegister(
 }
 
 //----------------------------------------------------------------
+//  %m - Register With MSB
+//
+
+inline  size_t
+writeRegisterHigh(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src,
+        GuestMemoryAddress  gmAddr)
+{
+    const  int  regBit  = readMnemonicParameter(src, 1);
+    ++  src;    //  プラス記号を読み捨て。
+    const  int  msbBit  = readMnemonicParameter(src, 1);
+    const  int  regIdx  = (((opeCode >> msbBit) << 3) & 0x0F)
+                                | ((opeCode >> regBit) & 0x07);
+    return  sprintf(dst, "%s", regNames[regIdx]);
+}
+
+//----------------------------------------------------------------
 //  %ou/%os - オフセット。
 //
 
@@ -339,6 +358,9 @@ DisThumb::writeMnemonic(
             case  'P':
                 len = writePCRelative(
                             opeCode, dst, src, *(this->m_pManMem), gmAddr);
+                break;
+            case  'm':
+                len = writeRegisterHigh(opeCode, dst, src, gmAddr);
                 break;
             case  'n':
                 len = writeUnsignedOffset(opeCode, dst, src, gmAddr);

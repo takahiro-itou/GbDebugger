@@ -59,7 +59,7 @@ armStrLdrInstruction(
     } else {
         //  オフセットはシフトされたレジスタ。  //
         ofs = getAluOp2Register<SHIFTTYPE, 0>(
-                opeCode, cpuRegs, fout_cy, flag_cy);
+                opeCode, cpuRegs, fout_cy);
     }
 
     //  U フラグ (BIT 23)   //

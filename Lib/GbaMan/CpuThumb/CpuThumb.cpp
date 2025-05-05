@@ -30,8 +30,8 @@
 //    Implementation of Inlines.
 //
 
-#include    "ThumbOperateRegister.inl"
-#include    "ThumbStrLdr.inl"
+#include    "OperateRegister.inl"
+#include    "StoreLoad.inl"
 
 
 GBDEBUGGER_NAMESPACE_BEGIN
