@@ -44,12 +44,6 @@ class   MemoryManager;
 //    ArmALU  Instructions.
 //
 
-GBD_REGPARM     InstExecResult
-armALUInstruction(
-        const  OpeCode  opeCode,
-        RegPair         cpuRegs[],
-        uint32_t      & cpuFlag);
-
 //========================================================================
 //
 //    第二オペランドの指定に使うファンクタ。
