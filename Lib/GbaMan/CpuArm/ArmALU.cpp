@@ -36,7 +36,7 @@ typedef     GBD_REGPARM     InstExecResult
         RegPair         cpuRegs[],
         RegType       & cpuFlag);
 
-template  <int BIT25, int CODE, int BIT20, int SHIFTTYPE, int BIT4>
+template  <int BIT25, int CODE, int BIT20, typename SHIFTOP, int BIT4>
 GBD_REGPARM     InstExecResult
 armALUInstruction(
         const  OpeCode  opeCode,
@@ -52,7 +52,7 @@ armALUInstruction(
 #endif
     sprintf(buf,
             "Op2(I/R) = %d, CODE = %x, S = %d, SHIFT = %d, BIT4(R) = %d\n",
-            BIT25, CODE, BIT20, SHIFTTYPE, BIT4);
+            BIT25, CODE, BIT20, SHIFTOP::SHIFT_TYPE, BIT4);
     std::cerr   <<  buf;
     sprintf(buf,
             "OpeCode = %08x, dst = %d\n",
@@ -69,7 +69,7 @@ armALUInstruction(
     if ( BIT25 == 0 ) {
         //  第二オペランドはレジスタ。ビット 00..07 で指定される。  //
         if ( BIT4 == 0 ) {
-            switch ( SHIFTTYPE ) {
+            switch ( SHIFTOP::SHIFT_TYPE ) {
             case  0:
                 rhs = getAluOp2Register<ShiftOpLslImm, BIT4>(
                         opeCode, cpuRegs, flagCy);
@@ -88,7 +88,7 @@ armALUInstruction(
                 break;
             }
         } else{
-            switch ( SHIFTTYPE ) {
+            switch ( SHIFTOP::SHIFT_TYPE ) {
             case  0:
                 rhs = getAluOp2Register<ShiftOpLslReg, BIT4>(
                         opeCode, cpuRegs, flagCy);
@@ -214,23 +214,23 @@ armALUInstruction(
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
-#define     ARMALU_INST_TABLE(RN2, OP)          \
-    armALUInstruction<RN2, OP, 0, 0, 0>,        \
-    armALUInstruction<RN2, OP, 0, 0, 1>,        \
-    armALUInstruction<RN2, OP, 0, 1, 0>,        \
-    armALUInstruction<RN2, OP, 0, 1, 1>,        \
-    armALUInstruction<RN2, OP, 0, 2, 0>,        \
-    armALUInstruction<RN2, OP, 0, 2, 1>,        \
-    armALUInstruction<RN2, OP, 0, 3, 0>,        \
-    armALUInstruction<RN2, OP, 0, 3, 1>,        \
-    armALUInstruction<RN2, OP, 1, 0, 0>,        \
-    armALUInstruction<RN2, OP, 1, 0, 1>,        \
-    armALUInstruction<RN2, OP, 1, 1, 0>,        \
-    armALUInstruction<RN2, OP, 1, 1, 1>,        \
-    armALUInstruction<RN2, OP, 1, 2, 0>,        \
-    armALUInstruction<RN2, OP, 1, 2, 1>,        \
-    armALUInstruction<RN2, OP, 1, 3, 0>,        \
-    armALUInstruction<RN2, OP, 1, 3, 1>
+#define     ARMALU_INST_TABLE(RN2, OP)                      \
+    armALUInstruction<RN2, OP, 0, ShiftOpLslImm, 0>,        \
+    armALUInstruction<RN2, OP, 0, ShiftOpLslReg, 1>,        \
+    armALUInstruction<RN2, OP, 0, ShiftOpLsrImm, 0>,        \
+    armALUInstruction<RN2, OP, 0, ShiftOpLsrReg, 1>,        \
+    armALUInstruction<RN2, OP, 0, ShiftOpAsrImm, 0>,        \
+    armALUInstruction<RN2, OP, 0, ShiftOpAsrReg, 1>,        \
+    armALUInstruction<RN2, OP, 0, ShiftOpRorImm, 0>,        \
+    armALUInstruction<RN2, OP, 0, ShiftOpRorReg, 1>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpLslImm, 0>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpLslReg, 1>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpLsrImm, 0>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpLsrReg, 1>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpAsrImm, 0>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpAsrReg, 1>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpRorImm, 0>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpRorReg, 1>
 
 //  演算の種類 OP (bit24-21) が 08-0b の時、        //
 //  つまり TST, TEQ, CMP, CMN 命令の時は、          //
@@ -238,23 +238,17 @@ armALUInstruction(
 //  よってビット 20 をセットしないといけない。      //
 //  そうでないビット列は、別の命令に解釈される。    //
 
-#define     ARMALU_TEST_INST_TABLE(RN2, OP)     \
-    nullptr,                                    \
-    nullptr,                                    \
-    nullptr,                                    \
-    nullptr,                                    \
-    nullptr,                                    \
-    nullptr,                                    \
-    nullptr,                                    \
-    nullptr,                                    \
-    armALUInstruction<RN2, OP, 1, 0, 0>,        \
-    armALUInstruction<RN2, OP, 1, 0, 1>,        \
-    armALUInstruction<RN2, OP, 1, 1, 0>,        \
-    armALUInstruction<RN2, OP, 1, 1, 1>,        \
-    armALUInstruction<RN2, OP, 1, 2, 0>,        \
-    armALUInstruction<RN2, OP, 1, 2, 1>,        \
-    armALUInstruction<RN2, OP, 1, 3, 0>,        \
-    armALUInstruction<RN2, OP, 1, 3, 1>
+#define     ARMALU_TEST_INST_TABLE(RN2, OP)                 \
+    nullptr,    nullptr,    nullptr,    nullptr,            \
+    nullptr,    nullptr,    nullptr,    nullptr,            \
+    armALUInstruction<RN2, OP, 1, ShiftOpLslImm, 0>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpLslReg, 1>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpLsrImm, 0>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpLsrReg, 1>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpAsrImm, 0>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpAsrReg, 1>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpRorImm, 0>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpRorReg, 1>
 
 CONSTEXPR_VAR   FnALUInst
 g_armALUInstTable[512] = {
