@@ -242,21 +242,21 @@ struct  ArmALURmAsrReg
     RegType
     operator()(
             const  int      shift,
-            const  RegType  vRm,
+            const  RegType  value,
             bool          & fout_cy,
             const  bool     flag_cy)
     {
-        RegType rhs = vRm;
+        RegType rhs = value;
         if ( LIKELY(shift < 32) ) {
             if ( LIKELY(shift) ) {
-                int32_t v = static_cast<int32_t>(vRm);
+                int32_t v = static_cast<int32_t>(value);
                 fout_cy = (v >> (int)(shift - 1)) & 1 ? true : false;
                 rhs     = v >> (int)(shift);
             } else {
-                rhs     = vRm;
+                rhs     = value;
             }
         } else {
-            if ( vRm & 0x80000000 ) {
+            if ( value & 0x80000000 ) {
                 fout_cy = true;
                 rhs     = 0xFFFFFFFF;
             } else {
@@ -310,19 +310,19 @@ struct  ArmALURmRorReg
     RegType
     operator()(
             const  int      shift,
-            const  RegType  vRm,
+            const  RegType  value,
             bool          & fout_cy,
             const  bool     flag_cy)
     {
-        RegType rhs = vRm;
+        RegType rhs = value;
         if ( LIKELY(shift & 0x1F) ) {
-            fout_cy = sobaseRorFlg(vRm, shift);
-            rhs     = sobaseRorVal(vRm, shift);
+            fout_cy = sobaseRorFlg(value, shift);
+            rhs     = sobaseRorVal(value, shift);
         } else {
             if ( shift ) {
-                fout_cy = (vRm & 0x80000000 ? true : false);
+                fout_cy = (value & 0x80000000 ? true : false);
             }
-            rhs = vRm;
+            rhs = value;
         }
         return ( rhs );
     }
@@ -337,19 +337,19 @@ struct  ShiftOpRorImm
 {
     RegType
     operator()(
-            const  RegType  vRm,
+            const  RegType  value,
             const  int      shift,
             bool          & fout_cy,
             const  bool     flag_cy)  const
     {
         RegType rhs;
         if ( LIKELY(shift) ) {
-            fout_cy = sobaseRorFlg(vRm, shift);
-            rhs     = sobaseRorVal(vRm, shift);
+            fout_cy = sobaseRorFlg(value, shift);
+            rhs     = sobaseRorVal(value, shift);
         } else {
             //  ROR#0 は RCR#1  として解釈される。  //
-            fout_cy = (vRm & 1) ? true : false;
-            rhs     = ((vRm >> 1) | (flag_cy << 31));
+            fout_cy = (value & 1) ? true : false;
+            rhs     = ((value >> 1) | (flag_cy << 31));
         }
         return ( rhs );
     }
