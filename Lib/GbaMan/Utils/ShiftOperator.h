@@ -153,7 +153,7 @@ struct  ShiftOpLslReg
         return ( value );
     }
 
-    /**   シフトタイプ。            **/
+    /**   シフトタイプ  **/
     static  CONSTEXPR_VAR   int     SHIFT_TYPE  = 0;
 
     /**   シフト量はレジスタ指定。  **/
@@ -181,6 +181,12 @@ struct  ShiftOpLslImm
         //  LSL#0 はシフトを行わない。  //
         return ( value );
     }
+
+    /**   シフトタイプ  **/
+    static  CONSTEXPR_VAR   int     SHIFT_TYPE  = 0;
+
+    /**   シフト量は即値指定。  **/
+    static  CONSTEXPR_VAR   int     SHIFTW_REG  = 0;
 };
 
 //========================================================================
@@ -213,6 +219,12 @@ struct  ShiftOpLsrReg
         }
         return ( rhs );
     }
+
+    /**   シフトタイプ  **/
+    static  CONSTEXPR_VAR   int     SHIFT_TYPE  = 1;
+
+    /**   シフト量はレジスタ指定。  **/
+    static  CONSTEXPR_VAR   int     SHIFTW_REG  = 1;
 };
 
 //========================================================================
@@ -236,6 +248,12 @@ struct  ShiftOpLsrImm
         flagCy  = (value & 0x80000000) ? true : false;
         return ( value );
     }
+
+    /**   シフトタイプ  **/
+    static  CONSTEXPR_VAR   int     SHIFT_TYPE  = 1;
+
+    /**   シフト量は即値指定。  **/
+    static  CONSTEXPR_VAR   int     SHIFTW_REG  = 0;
 };
 
 //========================================================================
