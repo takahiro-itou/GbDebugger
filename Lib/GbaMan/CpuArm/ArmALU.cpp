@@ -259,7 +259,19 @@ armALUInstruction(
 //  よってビット 20 をセットしないといけない。      //
 //  そうでないビット列は、別の命令に解釈される。    //
 
-#define     ARMALU_TEST_INST_TABLE(RN2, OP)                 \
+#define     ALU_TEST_INST_TABLE_REG(RN2, OP)                 \
+    nullptr,    nullptr,    nullptr,    nullptr,            \
+    nullptr,    nullptr,    nullptr,    nullptr,            \
+    armALUInstruction<RN2, OP, 1, ShiftOpLslImm, 0>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpLslReg, 1>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpLsrImm, 0>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpLsrReg, 1>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpAsrImm, 0>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpAsrReg, 1>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpRorImm, 0>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpRorReg, 1>
+
+#define     ALU_TEST_INST_TABLE_IMM(RN2, OP)                 \
     nullptr,    nullptr,    nullptr,    nullptr,            \
     nullptr,    nullptr,    nullptr,    nullptr,            \
     armALUInstruction<RN2, OP, 1, ShiftOpLslImm, 0>,        \
@@ -281,10 +293,10 @@ g_armALUInstTable[512] = {
     ALU_INST_TABLE_REG(0, 0x05),
     ALU_INST_TABLE_REG(0, 0x06),
     ALU_INST_TABLE_REG(0, 0x07),
-    ARMALU_TEST_INST_TABLE(0, 0x08),
-    ARMALU_TEST_INST_TABLE(0, 0x09),
-    ARMALU_TEST_INST_TABLE(0, 0x0A),
-    ARMALU_TEST_INST_TABLE(0, 0x0B),
+    ALU_TEST_INST_TABLE_REG(0, 0x08),
+    ALU_TEST_INST_TABLE_REG(0, 0x09),
+    ALU_TEST_INST_TABLE_REG(0, 0x0A),
+    ALU_TEST_INST_TABLE_REG(0, 0x0B),
     ALU_INST_TABLE_REG(0, 0x0C),
     ALU_INST_TABLE_REG(0, 0x0D),
     ALU_INST_TABLE_REG(0, 0x0E),
@@ -298,18 +310,20 @@ g_armALUInstTable[512] = {
     ALU_INST_TABLE_IMM(1, 0x05),
     ALU_INST_TABLE_IMM(1, 0x06),
     ALU_INST_TABLE_IMM(1, 0x07),
-    ARMALU_TEST_INST_TABLE(1, 0x08),
-    ARMALU_TEST_INST_TABLE(1, 0x09),
-    ARMALU_TEST_INST_TABLE(1, 0x0A),
-    ARMALU_TEST_INST_TABLE(1, 0x0B),
+    ALU_TEST_INST_TABLE_IMM(1, 0x08),
+    ALU_TEST_INST_TABLE_IMM(1, 0x09),
+    ALU_TEST_INST_TABLE_IMM(1, 0x0A),
+    ALU_TEST_INST_TABLE_IMM(1, 0x0B),
     ALU_INST_TABLE_IMM(1, 0x0C),
     ALU_INST_TABLE_IMM(1, 0x0D),
     ALU_INST_TABLE_IMM(1, 0x0E),
     ALU_INST_TABLE_IMM(1, 0x0F),
 };
 
-#undef  ARMALU_INST_TABLE
-#undef  ARMALU_TEST_INST_TABLE
+#undef  ALU_INST_TABLE_REG
+#undef  ALU_TEST_INST_TABLE_REG
+#undef  ALU_INST_TABLE_IMM
+#undef  ALU_TEST_INST_TABLE_IMM
 
 }   //  End of (Unnamed) namespace.
 
