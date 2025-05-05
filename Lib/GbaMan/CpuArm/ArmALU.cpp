@@ -217,7 +217,25 @@ armALUInstruction(
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
-#define     ARMALU_INST_TABLE(RN2, OP)                      \
+#define     ALU_INST_TABLE_REG(RN2, OP)                      \
+    armALUInstruction<RN2, OP, 0, ShiftOpLslImm, 0>,        \
+    armALUInstruction<RN2, OP, 0, ShiftOpLslReg, 1>,        \
+    armALUInstruction<RN2, OP, 0, ShiftOpLsrImm, 0>,        \
+    armALUInstruction<RN2, OP, 0, ShiftOpLsrReg, 1>,        \
+    armALUInstruction<RN2, OP, 0, ShiftOpAsrImm, 0>,        \
+    armALUInstruction<RN2, OP, 0, ShiftOpAsrReg, 1>,        \
+    armALUInstruction<RN2, OP, 0, ShiftOpRorImm, 0>,        \
+    armALUInstruction<RN2, OP, 0, ShiftOpRorReg, 1>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpLslImm, 0>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpLslReg, 1>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpLsrImm, 0>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpLsrReg, 1>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpAsrImm, 0>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpAsrReg, 1>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpRorImm, 0>,        \
+    armALUInstruction<RN2, OP, 1, ShiftOpRorReg, 1>
+
+#define     ALU_INST_TABLE_IMM(RN2, OP)                      \
     armALUInstruction<RN2, OP, 0, ShiftOpLslImm, 0>,        \
     armALUInstruction<RN2, OP, 0, ShiftOpLslReg, 1>,        \
     armALUInstruction<RN2, OP, 0, ShiftOpLsrImm, 0>,        \
@@ -255,39 +273,39 @@ armALUInstruction(
 
 CONSTEXPR_VAR   FnALUInst
 g_armALUInstTable[512] = {
-    ARMALU_INST_TABLE(0, 0x00),
-    ARMALU_INST_TABLE(0, 0x01),
-    ARMALU_INST_TABLE(0, 0x02),
-    ARMALU_INST_TABLE(0, 0x03),
-    ARMALU_INST_TABLE(0, 0x04),
-    ARMALU_INST_TABLE(0, 0x05),
-    ARMALU_INST_TABLE(0, 0x06),
-    ARMALU_INST_TABLE(0, 0x07),
+    ALU_INST_TABLE_REG(0, 0x00),
+    ALU_INST_TABLE_REG(0, 0x01),
+    ALU_INST_TABLE_REG(0, 0x02),
+    ALU_INST_TABLE_REG(0, 0x03),
+    ALU_INST_TABLE_REG(0, 0x04),
+    ALU_INST_TABLE_REG(0, 0x05),
+    ALU_INST_TABLE_REG(0, 0x06),
+    ALU_INST_TABLE_REG(0, 0x07),
     ARMALU_TEST_INST_TABLE(0, 0x08),
     ARMALU_TEST_INST_TABLE(0, 0x09),
     ARMALU_TEST_INST_TABLE(0, 0x0A),
     ARMALU_TEST_INST_TABLE(0, 0x0B),
-    ARMALU_INST_TABLE(0, 0x0C),
-    ARMALU_INST_TABLE(0, 0x0D),
-    ARMALU_INST_TABLE(0, 0x0E),
-    ARMALU_INST_TABLE(0, 0x0F),
+    ALU_INST_TABLE_REG(0, 0x0C),
+    ALU_INST_TABLE_REG(0, 0x0D),
+    ALU_INST_TABLE_REG(0, 0x0E),
+    ALU_INST_TABLE_REG(0, 0x0F),
 
-    ARMALU_INST_TABLE(1, 0x00),
-    ARMALU_INST_TABLE(1, 0x01),
-    ARMALU_INST_TABLE(1, 0x02),
-    ARMALU_INST_TABLE(1, 0x03),
-    ARMALU_INST_TABLE(1, 0x04),
-    ARMALU_INST_TABLE(1, 0x05),
-    ARMALU_INST_TABLE(1, 0x06),
-    ARMALU_INST_TABLE(1, 0x07),
+    ALU_INST_TABLE_IMM(1, 0x00),
+    ALU_INST_TABLE_IMM(1, 0x01),
+    ALU_INST_TABLE_IMM(1, 0x02),
+    ALU_INST_TABLE_IMM(1, 0x03),
+    ALU_INST_TABLE_IMM(1, 0x04),
+    ALU_INST_TABLE_IMM(1, 0x05),
+    ALU_INST_TABLE_IMM(1, 0x06),
+    ALU_INST_TABLE_IMM(1, 0x07),
     ARMALU_TEST_INST_TABLE(1, 0x08),
     ARMALU_TEST_INST_TABLE(1, 0x09),
     ARMALU_TEST_INST_TABLE(1, 0x0A),
     ARMALU_TEST_INST_TABLE(1, 0x0B),
-    ARMALU_INST_TABLE(1, 0x0C),
-    ARMALU_INST_TABLE(1, 0x0D),
-    ARMALU_INST_TABLE(1, 0x0E),
-    ARMALU_INST_TABLE(1, 0x0F),
+    ALU_INST_TABLE_IMM(1, 0x0C),
+    ALU_INST_TABLE_IMM(1, 0x0D),
+    ALU_INST_TABLE_IMM(1, 0x0E),
+    ALU_INST_TABLE_IMM(1, 0x0F),
 };
 
 #undef  ARMALU_INST_TABLE
