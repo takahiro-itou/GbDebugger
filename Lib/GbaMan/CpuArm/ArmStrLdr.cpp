@@ -47,6 +47,8 @@ armStrLdrInstruction(
         MemoryManager & manMem,
         RegType       & cpuFlag)
 {
+    static_assert(SHIFTOP::SHIFTW_REG == 0);
+
     const  int  rd  = (opeCode >> 12) & 0x0F;
     const  int  rn  = (opeCode >> 16) & 0x0F;
     int         ofs;
@@ -59,7 +61,6 @@ armStrLdrInstruction(
         ofs = (opeCode & 0x0FFF);
     } else {
         //  オフセットはシフトされたレジスタ。  //
-        static_assert(SHIFTOP::SHIFTW_REG == 0);
         ofs = getAluOp2Register<SHIFTOP, 0>(
                 opeCode, cpuRegs, fout_cy);
     }
