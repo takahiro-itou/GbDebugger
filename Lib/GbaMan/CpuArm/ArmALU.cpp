@@ -72,45 +72,9 @@ armALUInstruction(
     if ( BIT25 == 0 ) {
         //  第二オペランドはレジスタ。ビット 00..07 で指定される。  //
         if ( BIT4 == 0 ) {
-            // switch ( SHIFTOP::SHIFT_TYPE ) {
-            // case  0:
-            //     rhs = getAluOp2Register<ShiftOpLslImm, BIT4>(
-            //             opeCode, cpuRegs, flagCy);
-            //     break;
-            // case  1:
-            //     rhs = getAluOp2Register<ShiftOpLsrImm, BIT4>(
-            //             opeCode, cpuRegs, flagCy);
-            //     break;
-            // case  2:
-            //     rhs = getAluOp2Register<ShiftOpAsrImm, BIT4>(
-            //             opeCode, cpuRegs, flagCy);
-            //     break;
-            // case  3:
-            //     rhs = getAluOp2Register<ShiftOpRorImm, BIT4>(
-            //             opeCode, cpuRegs, flagCy);
-            //     break;
-            // }
             rhs = getAluOp2Register<SHIFTOP, BIT4>(
                     opeCode, cpuRegs, flagCy);
         } else{
-            // switch ( SHIFTOP::SHIFT_TYPE ) {
-            // case  0:
-            //     rhs = getAluOp2Register<ShiftOpLslReg, BIT4>(
-            //             opeCode, cpuRegs, flagCy);
-            //     break;
-            // case  1:
-            //     rhs = getAluOp2Register<ShiftOpLsrReg, BIT4>(
-            //             opeCode, cpuRegs, flagCy);
-            //     break;
-            // case  2:
-            //     rhs = getAluOp2Register<ShiftOpAsrReg, BIT4>(
-            //             opeCode, cpuRegs, flagCy);
-            //     break;
-            // case  3:
-            //     rhs = getAluOp2Register<ShiftOpRorReg, BIT4>(
-            //             opeCode, cpuRegs, flagCy);
-            //     break;
-            // }
             rhs = getAluOp2Register<SHIFTOP, BIT4>(
                     opeCode, cpuRegs, flagCy);
         }
