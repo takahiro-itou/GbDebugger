@@ -136,6 +136,11 @@ private:
     execBitShift(
             const  OpeCode  opeCode);
 
+    template  <int COND>
+    GBD_REGPARM     InstExecResult
+    execConditionalBranch(
+            const  OpeCode  opeCode);
+
     template  <int Rs, int OP>
     GBD_REGPARM     InstExecResult
     execStoreLoadRelative(
