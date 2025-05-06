@@ -81,7 +81,7 @@ armALUInstruction(
         }
 #endif
 
-        rhs = getAluOp2Register<SHIFTOP, BIT4>(
+        rhs = getAluOp2Register<SHIFTOP, SHIFTOP::SHIFTW_REG>(
                 opeCode, cpuRegs, flagCy);
     } else {
         assert((std::is_same<SHIFTOP, ArmALUImmRor>::value));
