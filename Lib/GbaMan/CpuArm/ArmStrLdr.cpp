@@ -38,7 +38,8 @@ typedef     GBD_REGPARM     InstExecResult
         MemoryManager & manMem,
         RegType       & cpuFlag);
 
-template  <int I, int P, int U, typename B, int BIT21, int OP, int SHIFTTYPE>
+template  <int I, int P, int U, typename B, int BIT21,
+           int OP, typename SHIFTOP>
 GBD_REGPARM     InstExecResult
 armStrLdrInstruction(
         const  OpeCode  opeCode,
@@ -58,7 +59,7 @@ armStrLdrInstruction(
         ofs = (opeCode & 0x0FFF);
     } else {
         //  オフセットはシフトされたレジスタ。  //
-        ofs = getAluOp2Register<SHIFTTYPE, 0>(
+        ofs = getAluOp2Register<SHIFTOP, 0>(
                 opeCode, cpuRegs, fout_cy);
     }
 
@@ -95,23 +96,23 @@ armStrLdrInstruction(
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
-#define     ARMSTRLDR_INST_TABLE(I, P, U, B)    \
-    armStrLdrInstruction<I, P, U, B, 0, 0, 0>,  \
-    armStrLdrInstruction<I, P, U, B, 0, 0, 1>,  \
-    armStrLdrInstruction<I, P, U, B, 0, 0, 2>,  \
-    armStrLdrInstruction<I, P, U, B, 0, 0, 3>,  \
-    armStrLdrInstruction<I, P, U, B, 0, 1, 0>,  \
-    armStrLdrInstruction<I, P, U, B, 0, 1, 1>,  \
-    armStrLdrInstruction<I, P, U, B, 0, 1, 2>,  \
-    armStrLdrInstruction<I, P, U, B, 0, 1, 3>,  \
-    armStrLdrInstruction<I, P, U, B, 1, 0, 0>,  \
-    armStrLdrInstruction<I, P, U, B, 1, 0, 1>,  \
-    armStrLdrInstruction<I, P, U, B, 1, 0, 2>,  \
-    armStrLdrInstruction<I, P, U, B, 1, 0, 3>,  \
-    armStrLdrInstruction<I, P, U, B, 1, 1, 0>,  \
-    armStrLdrInstruction<I, P, U, B, 1, 1, 1>,  \
-    armStrLdrInstruction<I, P, U, B, 1, 1, 2>,  \
-    armStrLdrInstruction<I, P, U, B, 1, 1, 3>
+#define     ARMSTRLDR_INST_TABLE(I, P, U, B)                \
+    armStrLdrInstruction<I, P, U, B, 0, 0, ShiftOpLslImm>,  \
+    armStrLdrInstruction<I, P, U, B, 0, 0, ShiftOpLsrImm>,  \
+    armStrLdrInstruction<I, P, U, B, 0, 0, ShiftOpAsrImm>,  \
+    armStrLdrInstruction<I, P, U, B, 0, 0, ShiftOpRorImm>,  \
+    armStrLdrInstruction<I, P, U, B, 0, 1, ShiftOpLslImm>,  \
+    armStrLdrInstruction<I, P, U, B, 0, 1, ShiftOpLsrImm>,  \
+    armStrLdrInstruction<I, P, U, B, 0, 1, ShiftOpAsrImm>,  \
+    armStrLdrInstruction<I, P, U, B, 0, 1, ShiftOpRorImm>,  \
+    armStrLdrInstruction<I, P, U, B, 1, 0, ShiftOpLslImm>,  \
+    armStrLdrInstruction<I, P, U, B, 1, 0, ShiftOpLsrImm>,  \
+    armStrLdrInstruction<I, P, U, B, 1, 0, ShiftOpAsrImm>,  \
+    armStrLdrInstruction<I, P, U, B, 1, 0, ShiftOpRorImm>,  \
+    armStrLdrInstruction<I, P, U, B, 1, 1, ShiftOpLslImm>,  \
+    armStrLdrInstruction<I, P, U, B, 1, 1, ShiftOpLsrImm>,  \
+    armStrLdrInstruction<I, P, U, B, 1, 1, ShiftOpAsrImm>,  \
+    armStrLdrInstruction<I, P, U, B, 1, 1, ShiftOpRorImm>
 
 CONSTEXPR_VAR   FnStrLdrInst
 g_armStrLdrInstTable[256] = {
