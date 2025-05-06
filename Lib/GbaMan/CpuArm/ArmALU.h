@@ -102,25 +102,10 @@ getAluOp2Register(
     OpeCode iRm = (opeCode & 0x0F);
     RegType vRm = cpuRegs[iRm].dw;
 
-    if ( BIT4 == 0 ) {
+    if ( SHIFTOP::SHIFTW_REG == 0 ) {
         //  シフト量の指定は即値。ビット 07..11 で指定。    //
         const int shift = (opeCode >> 7) & 0x1F;
-
         //  ビット 05..06 はシフトの種類。  //
-        // switch ( SHIFTTYPE ) {
-        // case  0:    //  LSL
-        //     rhs = ShiftOpLslImm()(vRm, shift, flagCy);
-        //     break;
-        // case  1:    //  LSR
-        //     rhs = ShiftOpLsrImm()(vRm, shift, flagCy);
-        //     break;
-        // case  2:    //  ASR
-        //     rhs = ShiftOpAsrImm()(vRm, shift, flagCy);
-        //     break;
-        // case  3:    //  ROR
-        //     rhs = ShiftOpRorImm()(vRm, shift, flagCy);
-        //     break;
-        // }
         rhs = SHIFTOP()(vRm, shift, flagCy);
     } else {
         //  シフト量指定はレジスタ。ビット 08..11 で指定。  //
@@ -128,22 +113,7 @@ getAluOp2Register(
         if ( iRm == 15 ) {
             vRm += 4;       //  オペランド Rm が R15 (PC) の時  //
         }
-
         //  ビット 05..06 はシフトの種類。  //
-        // switch ( SHIFTTYPE ) {
-        // case  0:    //  LSL
-        //     rhs = ShiftOpLslReg()(vRm, shift, flagCy);
-        //     break;
-        // case  1:    //  LSR
-        //     rhs = ShiftOpLsrReg()(vRm, shift, flagCy);
-        //     break;
-        // case  2:    //  ASR
-        //     rhs = ShiftOpAsrReg()(vRm, shift, flagCy);
-        //     break;
-        // case  3:    //  ROR
-        //     rhs = ShiftOpRorReg()(vRm, shift, flagCy);
-        //     break;
-        // }
         rhs = SHIFTOP()(vRm, shift, flagCy);
     }
 
