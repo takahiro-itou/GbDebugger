@@ -59,6 +59,7 @@ armStrLdrInstruction(
         ofs = (opeCode & 0x0FFF);
     } else {
         //  オフセットはシフトされたレジスタ。  //
+        static_assert(SHIFTOP::SHIFTW_REG == 0);
         ofs = getAluOp2Register<SHIFTOP, 0>(
                 opeCode, cpuRegs, fout_cy);
     }
