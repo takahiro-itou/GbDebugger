@@ -80,7 +80,6 @@ armALUInstruction(
                     opeCode, cpuRegs, flagCy);
         }
 #endif
-
         rhs = getAluOp2Register<SHIFTOP, SHIFTOP::SHIFTW_REG>(
                 opeCode, cpuRegs, flagCy);
     } else {
@@ -88,7 +87,7 @@ armALUInstruction(
         //  第二オペランドは即値指定。ビット 00..07 で指定される。  //
         const  RegType  imm = (opeCode & 0xFF);
         const  int      ror = (opeCode & 0xF00) >> 7;
-        rhs = ArmALUImmRor()(imm, ror, flagCy);
+        rhs = SHIFTOP()(imm, ror, flagCy);
     }
 
     const  RegType  cur = cpuFlag;
