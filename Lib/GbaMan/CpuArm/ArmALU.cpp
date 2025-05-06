@@ -236,22 +236,22 @@ armALUInstruction(
     armALUInstruction<0, OP, 1, ShiftOpRorReg, 1>
 
 #define     ALU_INST_TABLE_IMM(OP)                          \
-    armALUInstruction<1, OP, 0, ShiftOpLslImm, 0>,          \
-    armALUInstruction<1, OP, 0, ShiftOpLslReg, 1>,          \
-    armALUInstruction<1, OP, 0, ShiftOpLsrImm, 0>,          \
-    armALUInstruction<1, OP, 0, ShiftOpLsrReg, 1>,          \
-    armALUInstruction<1, OP, 0, ShiftOpAsrImm, 0>,          \
-    armALUInstruction<1, OP, 0, ShiftOpAsrReg, 1>,          \
-    armALUInstruction<1, OP, 0, ShiftOpRorImm, 0>,          \
-    armALUInstruction<1, OP, 0, ShiftOpRorReg, 1>,          \
-    armALUInstruction<1, OP, 1, ShiftOpLslImm, 0>,          \
-    armALUInstruction<1, OP, 1, ShiftOpLslReg, 1>,          \
-    armALUInstruction<1, OP, 1, ShiftOpLsrImm, 0>,          \
-    armALUInstruction<1, OP, 1, ShiftOpLsrReg, 1>,          \
-    armALUInstruction<1, OP, 1, ShiftOpAsrImm, 0>,          \
-    armALUInstruction<1, OP, 1, ShiftOpAsrReg, 1>,          \
-    armALUInstruction<1, OP, 1, ShiftOpRorImm, 0>,          \
-    armALUInstruction<1, OP, 1, ShiftOpRorReg, 1>
+    armALUInstruction<1, OP, 0, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 0, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 0, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 0, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 0, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 0, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 0, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 0, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>
 
 //  演算の種類 OP (bit24-21) が 08-0b の時、        //
 //  つまり TST, TEQ, CMP, CMN 命令の時は、          //
@@ -274,14 +274,14 @@ armALUInstruction(
 #define     ALU_TEST_INST_TABLE_IMM(OP)                     \
     nullptr,    nullptr,    nullptr,    nullptr,            \
     nullptr,    nullptr,    nullptr,    nullptr,            \
-    armALUInstruction<1, OP, 1, ShiftOpLslImm, 0>,          \
-    armALUInstruction<1, OP, 1, ShiftOpLslReg, 1>,          \
-    armALUInstruction<1, OP, 1, ShiftOpLsrImm, 0>,          \
-    armALUInstruction<1, OP, 1, ShiftOpLsrReg, 1>,          \
-    armALUInstruction<1, OP, 1, ShiftOpAsrImm, 0>,          \
-    armALUInstruction<1, OP, 1, ShiftOpAsrReg, 1>,          \
-    armALUInstruction<1, OP, 1, ShiftOpRorImm, 0>,          \
-    armALUInstruction<1, OP, 1, ShiftOpRorReg, 1>
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>
 
 CONSTEXPR_VAR   FnALUInst
 g_armALUInstTable[512] = {
