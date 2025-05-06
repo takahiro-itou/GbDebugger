@@ -21,6 +21,7 @@
 #include    "ArmALU.h"
 #include    "CpuArm.h"
 
+#include    <cassert>
 #include    <iostream>
 #include    <stdio.h>
 
@@ -36,7 +37,7 @@ typedef     GBD_REGPARM     InstExecResult
         RegPair         cpuRegs[],
         RegType       & cpuFlag);
 
-template  <int BIT25, int CODE, int BIT20, int SHIFTTYPE, int BIT4>
+template  <int BIT25, int CODE, int BIT20, typename SHIFTOP, int BIT4>
 GBD_REGPARM     InstExecResult
 armALUInstruction(
         const  OpeCode  opeCode,
@@ -51,13 +52,15 @@ armALUInstruction(
     std::cerr   <<  __PRETTY_FUNCTION__ <<  std::endl;
 #endif
     sprintf(buf,
-            "Op2(I/R) = %d, CODE = %x, S = %d, SHIFT = %d, BIT4(R) = %d\n",
-            BIT25, CODE, BIT20, SHIFTTYPE, BIT4);
+            "Op2(I/R) = %d, CODE = %x, S = %d, SHIFT = %d/%d, BIT4(R) = %d\n",
+            BIT25, CODE, BIT20,
+            SHIFTOP::SHIFT_TYPE, SHIFTOP::SHIFTW_REG, BIT4);
     std::cerr   <<  buf;
     sprintf(buf,
             "OpeCode = %08x, dst = %d\n",
             opeCode, dst);
     std::cerr   <<  buf;
+    assert( SHIFTOP::SHIFTW_REG == BIT4 );
 
     //  第一オペランドレジスタはビット 16..19 で指定。  //
     const  RegType  lhs = cpuRegs[(opeCode >> 16) & 0x0F].dw;
@@ -68,8 +71,48 @@ armALUInstruction(
 
     if ( BIT25 == 0 ) {
         //  第二オペランドはレジスタ。ビット 00..07 で指定される。  //
-        rhs = getAluOp2Register<SHIFTTYPE, BIT4>(
-                opeCode, cpuRegs, flagCy);
+        if ( BIT4 == 0 ) {
+            switch ( SHIFTOP::SHIFT_TYPE ) {
+            case  0:
+                rhs = getAluOp2Register<ShiftOpLslImm, BIT4>(
+                        opeCode, cpuRegs, flagCy);
+                break;
+            case  1:
+                rhs = getAluOp2Register<ShiftOpLsrImm, BIT4>(
+                        opeCode, cpuRegs, flagCy);
+                break;
+            case  2:
+                rhs = getAluOp2Register<ShiftOpAsrImm, BIT4>(
+                        opeCode, cpuRegs, flagCy);
+                break;
+            case  3:
+                rhs = getAluOp2Register<ShiftOpRorImm, BIT4>(
+                        opeCode, cpuRegs, flagCy);
+                break;
+            }
+        } else{
+            switch ( SHIFTOP::SHIFT_TYPE ) {
+            case  0:
+                rhs = getAluOp2Register<ShiftOpLslReg, BIT4>(
+                        opeCode, cpuRegs, flagCy);
+                break;
+            case  1:
+                rhs = getAluOp2Register<ShiftOpLsrReg, BIT4>(
+                        opeCode, cpuRegs, flagCy);
+                break;
+            case  2:
+                rhs = getAluOp2Register<ShiftOpAsrReg, BIT4>(
+                        opeCode, cpuRegs, flagCy);
+                break;
+            case  3:
+                rhs = getAluOp2Register<ShiftOpRorReg, BIT4>(
+                        opeCode, cpuRegs, flagCy);
+                break;
+            }
+        }
+
+        // rhs = getAluOp2Register<SHIFTTYPE, BIT4>(
+        //         opeCode, cpuRegs, flagCy);
     } else {
         //  第二オペランドは即値指定。ビット 00..07 で指定される。  //
         const  RegType  imm = (opeCode & 0xFF);
@@ -174,23 +217,41 @@ armALUInstruction(
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
-#define     ARMALU_INST_TABLE(RN2, OP)          \
-    armALUInstruction<RN2, OP, 0, 0, 0>,        \
-    armALUInstruction<RN2, OP, 0, 0, 1>,        \
-    armALUInstruction<RN2, OP, 0, 1, 0>,        \
-    armALUInstruction<RN2, OP, 0, 1, 1>,        \
-    armALUInstruction<RN2, OP, 0, 2, 0>,        \
-    armALUInstruction<RN2, OP, 0, 2, 1>,        \
-    armALUInstruction<RN2, OP, 0, 3, 0>,        \
-    armALUInstruction<RN2, OP, 0, 3, 1>,        \
-    armALUInstruction<RN2, OP, 1, 0, 0>,        \
-    armALUInstruction<RN2, OP, 1, 0, 1>,        \
-    armALUInstruction<RN2, OP, 1, 1, 0>,        \
-    armALUInstruction<RN2, OP, 1, 1, 1>,        \
-    armALUInstruction<RN2, OP, 1, 2, 0>,        \
-    armALUInstruction<RN2, OP, 1, 2, 1>,        \
-    armALUInstruction<RN2, OP, 1, 3, 0>,        \
-    armALUInstruction<RN2, OP, 1, 3, 1>
+#define     ALU_INST_TABLE_REG(OP)                          \
+    armALUInstruction<0, OP, 0, ShiftOpLslImm, 0>,          \
+    armALUInstruction<0, OP, 0, ShiftOpLslReg, 1>,          \
+    armALUInstruction<0, OP, 0, ShiftOpLsrImm, 0>,          \
+    armALUInstruction<0, OP, 0, ShiftOpLsrReg, 1>,          \
+    armALUInstruction<0, OP, 0, ShiftOpAsrImm, 0>,          \
+    armALUInstruction<0, OP, 0, ShiftOpAsrReg, 1>,          \
+    armALUInstruction<0, OP, 0, ShiftOpRorImm, 0>,          \
+    armALUInstruction<0, OP, 0, ShiftOpRorReg, 1>,          \
+    armALUInstruction<0, OP, 1, ShiftOpLslImm, 0>,          \
+    armALUInstruction<0, OP, 1, ShiftOpLslReg, 1>,          \
+    armALUInstruction<0, OP, 1, ShiftOpLsrImm, 0>,          \
+    armALUInstruction<0, OP, 1, ShiftOpLsrReg, 1>,          \
+    armALUInstruction<0, OP, 1, ShiftOpAsrImm, 0>,          \
+    armALUInstruction<0, OP, 1, ShiftOpAsrReg, 1>,          \
+    armALUInstruction<0, OP, 1, ShiftOpRorImm, 0>,          \
+    armALUInstruction<0, OP, 1, ShiftOpRorReg, 1>
+
+#define     ALU_INST_TABLE_IMM(OP)                          \
+    armALUInstruction<1, OP, 0, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 0, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 0, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 0, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 0, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 0, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 0, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 0, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>
 
 //  演算の種類 OP (bit24-21) が 08-0b の時、        //
 //  つまり TST, TEQ, CMP, CMN 命令の時は、          //
@@ -198,63 +259,71 @@ armALUInstruction(
 //  よってビット 20 をセットしないといけない。      //
 //  そうでないビット列は、別の命令に解釈される。    //
 
-#define     ARMALU_TEST_INST_TABLE(RN2, OP)     \
-    nullptr,                                    \
-    nullptr,                                    \
-    nullptr,                                    \
-    nullptr,                                    \
-    nullptr,                                    \
-    nullptr,                                    \
-    nullptr,                                    \
-    nullptr,                                    \
-    armALUInstruction<RN2, OP, 1, 0, 0>,        \
-    armALUInstruction<RN2, OP, 1, 0, 1>,        \
-    armALUInstruction<RN2, OP, 1, 1, 0>,        \
-    armALUInstruction<RN2, OP, 1, 1, 1>,        \
-    armALUInstruction<RN2, OP, 1, 2, 0>,        \
-    armALUInstruction<RN2, OP, 1, 2, 1>,        \
-    armALUInstruction<RN2, OP, 1, 3, 0>,        \
-    armALUInstruction<RN2, OP, 1, 3, 1>
+#define     ALU_TEST_INST_TABLE_REG(OP)                     \
+    nullptr,    nullptr,    nullptr,    nullptr,            \
+    nullptr,    nullptr,    nullptr,    nullptr,            \
+    armALUInstruction<0, OP, 1, ShiftOpLslImm, 0>,          \
+    armALUInstruction<0, OP, 1, ShiftOpLslReg, 1>,          \
+    armALUInstruction<0, OP, 1, ShiftOpLsrImm, 0>,          \
+    armALUInstruction<0, OP, 1, ShiftOpLsrReg, 1>,          \
+    armALUInstruction<0, OP, 1, ShiftOpAsrImm, 0>,          \
+    armALUInstruction<0, OP, 1, ShiftOpAsrReg, 1>,          \
+    armALUInstruction<0, OP, 1, ShiftOpRorImm, 0>,          \
+    armALUInstruction<0, OP, 1, ShiftOpRorReg, 1>
+
+#define     ALU_TEST_INST_TABLE_IMM(OP)                     \
+    nullptr,    nullptr,    nullptr,    nullptr,            \
+    nullptr,    nullptr,    nullptr,    nullptr,            \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>,           \
+    armALUInstruction<1, OP, 1, ArmALUImmRor, 0>
 
 CONSTEXPR_VAR   FnALUInst
 g_armALUInstTable[512] = {
-    ARMALU_INST_TABLE(0, 0x00),
-    ARMALU_INST_TABLE(0, 0x01),
-    ARMALU_INST_TABLE(0, 0x02),
-    ARMALU_INST_TABLE(0, 0x03),
-    ARMALU_INST_TABLE(0, 0x04),
-    ARMALU_INST_TABLE(0, 0x05),
-    ARMALU_INST_TABLE(0, 0x06),
-    ARMALU_INST_TABLE(0, 0x07),
-    ARMALU_TEST_INST_TABLE(0, 0x08),
-    ARMALU_TEST_INST_TABLE(0, 0x09),
-    ARMALU_TEST_INST_TABLE(0, 0x0A),
-    ARMALU_TEST_INST_TABLE(0, 0x0B),
-    ARMALU_INST_TABLE(0, 0x0C),
-    ARMALU_INST_TABLE(0, 0x0D),
-    ARMALU_INST_TABLE(0, 0x0E),
-    ARMALU_INST_TABLE(0, 0x0F),
+    ALU_INST_TABLE_REG(0x00),
+    ALU_INST_TABLE_REG(0x01),
+    ALU_INST_TABLE_REG(0x02),
+    ALU_INST_TABLE_REG(0x03),
+    ALU_INST_TABLE_REG(0x04),
+    ALU_INST_TABLE_REG(0x05),
+    ALU_INST_TABLE_REG(0x06),
+    ALU_INST_TABLE_REG(0x07),
+    ALU_TEST_INST_TABLE_REG(0x08),
+    ALU_TEST_INST_TABLE_REG(0x09),
+    ALU_TEST_INST_TABLE_REG(0x0A),
+    ALU_TEST_INST_TABLE_REG(0x0B),
+    ALU_INST_TABLE_REG(0x0C),
+    ALU_INST_TABLE_REG(0x0D),
+    ALU_INST_TABLE_REG(0x0E),
+    ALU_INST_TABLE_REG(0x0F),
 
-    ARMALU_INST_TABLE(1, 0x00),
-    ARMALU_INST_TABLE(1, 0x01),
-    ARMALU_INST_TABLE(1, 0x02),
-    ARMALU_INST_TABLE(1, 0x03),
-    ARMALU_INST_TABLE(1, 0x04),
-    ARMALU_INST_TABLE(1, 0x05),
-    ARMALU_INST_TABLE(1, 0x06),
-    ARMALU_INST_TABLE(1, 0x07),
-    ARMALU_TEST_INST_TABLE(1, 0x08),
-    ARMALU_TEST_INST_TABLE(1, 0x09),
-    ARMALU_TEST_INST_TABLE(1, 0x0A),
-    ARMALU_TEST_INST_TABLE(1, 0x0B),
-    ARMALU_INST_TABLE(1, 0x0C),
-    ARMALU_INST_TABLE(1, 0x0D),
-    ARMALU_INST_TABLE(1, 0x0E),
-    ARMALU_INST_TABLE(1, 0x0F),
+    ALU_INST_TABLE_IMM(0x00),
+    ALU_INST_TABLE_IMM(0x01),
+    ALU_INST_TABLE_IMM(0x02),
+    ALU_INST_TABLE_IMM(0x03),
+    ALU_INST_TABLE_IMM(0x04),
+    ALU_INST_TABLE_IMM(0x05),
+    ALU_INST_TABLE_IMM(0x06),
+    ALU_INST_TABLE_IMM(0x07),
+    ALU_TEST_INST_TABLE_IMM(0x08),
+    ALU_TEST_INST_TABLE_IMM(0x09),
+    ALU_TEST_INST_TABLE_IMM(0x0A),
+    ALU_TEST_INST_TABLE_IMM(0x0B),
+    ALU_INST_TABLE_IMM(0x0C),
+    ALU_INST_TABLE_IMM(0x0D),
+    ALU_INST_TABLE_IMM(0x0E),
+    ALU_INST_TABLE_IMM(0x0F),
 };
 
-#undef  ARMALU_INST_TABLE
-#undef  ARMALU_TEST_INST_TABLE
+#undef  ALU_INST_TABLE_REG
+#undef  ALU_TEST_INST_TABLE_REG
+#undef  ALU_INST_TABLE_IMM
+#undef  ALU_TEST_INST_TABLE_IMM
 
 }   //  End of (Unnamed) namespace.
 
