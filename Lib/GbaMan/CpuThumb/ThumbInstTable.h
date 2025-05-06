@@ -21,10 +21,28 @@
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_THUMB_INST_H )
 #    define   GBDEBUGGER_GBAMAN_INCLUDED_THUMB_INST_H
 
-#define     thumb48     &CpuThumb::execStoreLoadRelative<15, 1>
+
 #define     thumb00     &CpuThumb::execBitShift<0>
 #define     thumb08     &CpuThumb::execBitShift<1>
 #define     thumb10     &CpuThumb::execBitShift<2>
+
+#define     thumb48     &CpuThumb::execStoreLoadRelative<15, 1>
+
+#define     thumbD0     &CpuThumb::execConditionalBranch<0>
+#define     thumbD1     &CpuThumb::execConditionalBranch<1>
+#define     thumbD2     &CpuThumb::execConditionalBranch<2>
+#define     thumbD3     &CpuThumb::execConditionalBranch<3>
+#define     thumbD4     &CpuThumb::execConditionalBranch<4>
+#define     thumbD5     &CpuThumb::execConditionalBranch<5>
+#define     thumbD6     &CpuThumb::execConditionalBranch<6>
+#define     thumbD7     &CpuThumb::execConditionalBranch<8>
+#define     thumbD8     &CpuThumb::execConditionalBranch<9>
+#define     thumbD9     &CpuThumb::execConditionalBranch<10>
+#define     thumbDA     &CpuThumb::execConditionalBranch<11>
+#define     thumbDB     &CpuThumb::execConditionalBranch<12>
+#define     thumbDC     &CpuThumb::execConditionalBranch<13>
+#define     thumbDD     &CpuThumb::execConditionalBranch<14>
+
 
 //----------------------------------------------------------------
 /**

@@ -30,6 +30,7 @@
 //    Implementation of Inlines.
 //
 
+#include    "Branch.inl"
 #include    "OperateRegister.inl"
 #include    "StoreLoad.inl"
 
