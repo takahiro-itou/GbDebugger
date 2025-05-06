@@ -54,6 +54,11 @@ CpuThumb::execConditionalBranch(
     if ( g_condTable[COND][flg] ) {
         const   int8_t  ofs = static_cast<int8_t>(opeCode & 0xFF);
         this->m_cpuRegs[15].dw  += ofs;
+        sprintf(buf,
+                "Branch ofs=%04x, PC=%08x\n",
+                ofs, this->m_cpuRegs[15].dw
+        );
+        std::cerr   <<  buf;
     }
     return ( InstExecResult::UNDEFINED_OPECODE );
 }
