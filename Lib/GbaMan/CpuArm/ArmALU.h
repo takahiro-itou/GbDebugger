@@ -102,7 +102,7 @@ getAluOp2Register(
     OpeCode iRm = (opeCode & 0x0F);
     RegType vRm = cpuRegs[iRm].dw;
 
-    if ( BIT4 == 0 ) {
+    if ( SHIFTOP::SHIFTW_REG == 0 ) {
         //  シフト量の指定は即値。ビット 07..11 で指定。    //
         const int shift = (opeCode >> 7) & 0x1F;
         //  ビット 05..06 はシフトの種類。  //
