@@ -93,24 +93,26 @@ armALUInstruction(
             rhs = getAluOp2Register<SHIFTOP, BIT4>(
                     opeCode, cpuRegs, flagCy);
         } else{
-            switch ( SHIFTOP::SHIFT_TYPE ) {
-            case  0:
-                rhs = getAluOp2Register<ShiftOpLslReg, BIT4>(
-                        opeCode, cpuRegs, flagCy);
-                break;
-            case  1:
-                rhs = getAluOp2Register<ShiftOpLsrReg, BIT4>(
-                        opeCode, cpuRegs, flagCy);
-                break;
-            case  2:
-                rhs = getAluOp2Register<ShiftOpAsrReg, BIT4>(
-                        opeCode, cpuRegs, flagCy);
-                break;
-            case  3:
-                rhs = getAluOp2Register<ShiftOpRorReg, BIT4>(
-                        opeCode, cpuRegs, flagCy);
-                break;
-            }
+            // switch ( SHIFTOP::SHIFT_TYPE ) {
+            // case  0:
+            //     rhs = getAluOp2Register<ShiftOpLslReg, BIT4>(
+            //             opeCode, cpuRegs, flagCy);
+            //     break;
+            // case  1:
+            //     rhs = getAluOp2Register<ShiftOpLsrReg, BIT4>(
+            //             opeCode, cpuRegs, flagCy);
+            //     break;
+            // case  2:
+            //     rhs = getAluOp2Register<ShiftOpAsrReg, BIT4>(
+            //             opeCode, cpuRegs, flagCy);
+            //     break;
+            // case  3:
+            //     rhs = getAluOp2Register<ShiftOpRorReg, BIT4>(
+            //             opeCode, cpuRegs, flagCy);
+            //     break;
+            // }
+            rhs = getAluOp2Register<SHIFTOP, BIT4>(
+                    opeCode, cpuRegs, flagCy);
         }
 
         // rhs = getAluOp2Register<SHIFTTYPE, BIT4>(
