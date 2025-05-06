@@ -44,6 +44,13 @@ GBD_REGPARM     InstExecResult
 CpuThumb::execConditionalBranch(
         const  OpeCode  opeCode)
 {
+    const  RegType  flg = (this->m_cpuRegs[16].dw >> 28) & 0x0F;
+    char    buf[512];
+    sprintf(buf,
+            "Branch COND=%d, OpeCode=%04x, FLAGS=%d, CondCheck=%d\n",
+            COND, opeCode, flg, g_condTable[COND][flg]
+    );
+    std::cerr   <<  buf;
     return ( InstExecResult::UNDEFINED_OPECODE );
 }
 
