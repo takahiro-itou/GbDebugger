@@ -71,6 +71,7 @@ armALUInstruction(
 
     if ( BIT25 == 0 ) {
         //  第二オペランドはレジスタ。ビット 00..07 で指定される。  //
+#if 0
         if ( BIT4 == 0 ) {
             rhs = getAluOp2Register<SHIFTOP, BIT4>(
                     opeCode, cpuRegs, flagCy);
@@ -78,9 +79,10 @@ armALUInstruction(
             rhs = getAluOp2Register<SHIFTOP, BIT4>(
                     opeCode, cpuRegs, flagCy);
         }
+#endif
 
-        // rhs = getAluOp2Register<SHIFTTYPE, BIT4>(
-        //         opeCode, cpuRegs, flagCy);
+        rhs = getAluOp2Register<SHIFTOP, BIT4>(
+                opeCode, cpuRegs, flagCy);
     } else {
         assert((std::is_same<SHIFTOP, ArmALUImmRor>::value));
         //  第二オペランドは即値指定。ビット 00..07 で指定される。  //
