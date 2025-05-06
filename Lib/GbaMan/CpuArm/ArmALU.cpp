@@ -83,7 +83,10 @@ armALUInstruction(
         rhs = getAluOp2Register<SHIFTOP, SHIFTOP::SHIFTW_REG>(
                 opeCode, cpuRegs, flagCy);
     } else {
-        assert((std::is_same<SHIFTOP, ArmALUImmRor>::value));
+        static_assert(
+                (BIT25 == 1) || (std::is_same<SHIFTOP, ArmALUImmRor>::value),
+                "SHIFTOP must be ArmALUImmRor if BIT25 == 1"
+        );
         //  第二オペランドは即値指定。ビット 00..07 で指定される。  //
         const  RegType  imm = (opeCode & 0xFF);
         const  int      ror = (opeCode & 0xF00) >> 7;
