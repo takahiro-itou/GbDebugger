@@ -32,9 +32,9 @@ library_source_files        +=  \
         CpuArm/ArmALU.cpp              \
         CpuArm/ArmBranch.cpp           \
         CpuArm/ArmPsr.cpp              \
-        CpuArm/ArmStrLdr.cpp           \
         CpuArm/CpuArm.cpp              \
         CpuArm/DisArm.cpp              \
+        CpuArm/StoreLoad.cpp           \
         CpuThumb/CpuThumb.cpp          \
         CpuThumb/DisThumb.cpp          \
         ${extra_library_source_files}
