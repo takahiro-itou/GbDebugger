@@ -51,6 +51,10 @@ CpuThumb::execConditionalBranch(
             COND, opeCode, flg, g_condTable[COND][flg]
     );
     std::cerr   <<  buf;
+    if ( g_condTable[COND][flg] ) {
+        const   int8_t  ofs = static_cast<int8_t>(opeCode & 0xFF);
+        this->m_cpuRegs[15].dw  += ofs;
+    }
     return ( InstExecResult::UNDEFINED_OPECODE );
 }
 
