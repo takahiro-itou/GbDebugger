@@ -55,12 +55,17 @@ CpuThumb::execConditionalBranch(
         const   int8_t  val = static_cast<int8_t>(opeCode & 0xFF);
         const   GuestMemoryAddress  ofs
             = static_cast<GuestMemoryAddress>(val << 1);
-        this->m_cpuRegs[15].dw  += ofs;
+        this->m_nextPC  = (this->m_cpuRegs[15].dw += ofs);
+        this->m_cpuRegs[15].dw  += 2;
         sprintf(buf,
                 "Branch ofs=%04x, PC=%08x\n",
                 ofs, this->m_cpuRegs[15].dw
         );
         std::cerr   <<  buf;
+
+        const   LpcReadBuf  ptr =
+            this->m_manMem.getMemoryAddress(this->m_nextPC);
+        prefetchAll<uint16_t>(static_cast<const uint16_t *>(ptr));
     }
     return ( InstExecResult::UNDEFINED_OPECODE );
 }
