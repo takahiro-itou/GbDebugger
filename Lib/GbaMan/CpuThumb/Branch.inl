@@ -52,7 +52,9 @@ CpuThumb::execConditionalBranch(
     );
     std::cerr   <<  buf;
     if ( g_condTable[COND][flg] ) {
-        const   int8_t  ofs = static_cast<int8_t>(opeCode & 0xFF);
+        const   int8_t  val = static_cast<int8_t>(opeCode & 0xFF);
+        const   GuestMemoryAddress  ofs
+            = static_cast<GuestMemoryAddress>(val << 1);
         this->m_cpuRegs[15].dw  += ofs;
         sprintf(buf,
                 "Branch ofs=%04x, PC=%08x\n",
