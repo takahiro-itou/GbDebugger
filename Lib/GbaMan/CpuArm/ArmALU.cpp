@@ -85,7 +85,7 @@ armALUInstruction(
                     opeCode, cpuRegs, flagCy);
         }
 #endif
-        rhs = getAluOp2Register<SHIFTOP, SHIFTOP::SHIFTW_REG>(
+        rhs = getAluOp2Register<SHIFTOP>(
                 opeCode, cpuRegs, flagCy);
     } else {
         //  第二オペランドは即値指定。ビット 00..07 で指定される。  //
