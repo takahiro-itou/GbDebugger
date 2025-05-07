@@ -201,6 +201,7 @@ writeImmediate(
         GuestMemoryAddress  gmAddr)
 {
     RegType val = 0;
+    int     dig = 4;
 
     if ( *(src) == '{' ) {
         ++  src;
@@ -211,7 +212,7 @@ writeImmediate(
         val = (opeCode >> immBit) & immMask;
     }
 
-    return  sprintf(dst, "0x%04x", val);
+    return  sprintf(dst, "0x%0*x", dig, val);
 }
 
 //----------------------------------------------------------------
