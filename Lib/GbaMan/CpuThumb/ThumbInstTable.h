@@ -26,6 +26,46 @@
 #define     thumb08     &CpuThumb::execBitShift<1>
 #define     thumb10     &CpuThumb::execBitShift<2>
 
+//  MOV Rd, #nn
+#define     thumb20     &CpuThumb::execOperateImm<0, 0>
+#define     thumb21     &CpuThumb::execOperateImm<0, 1>
+#define     thumb22     &CpuThumb::execOperateImm<0, 2>
+#define     thumb23     &CpuThumb::execOperateImm<0, 3>
+#define     thumb24     &CpuThumb::execOperateImm<0, 4>
+#define     thumb25     &CpuThumb::execOperateImm<0, 5>
+#define     thumb26     &CpuThumb::execOperateImm<0, 6>
+#define     thumb27     &CpuThumb::execOperateImm<0, 7>
+
+//  CMP Rd, #nn
+#define     thumb28     &CpuThumb::execOperateImm<1, 0>
+#define     thumb29     &CpuThumb::execOperateImm<1, 1>
+#define     thumb2A     &CpuThumb::execOperateImm<1, 2>
+#define     thumb2B     &CpuThumb::execOperateImm<1, 3>
+#define     thumb2C     &CpuThumb::execOperateImm<1, 4>
+#define     thumb2D     &CpuThumb::execOperateImm<1, 5>
+#define     thumb2E     &CpuThumb::execOperateImm<1, 6>
+#define     thumb2F     &CpuThumb::execOperateImm<1, 7>
+
+//  ADD Rd, #nn
+#define     thumb30     &CpuThumb::execOperateImm<2, 0>
+#define     thumb31     &CpuThumb::execOperateImm<2, 1>
+#define     thumb32     &CpuThumb::execOperateImm<2, 2>
+#define     thumb33     &CpuThumb::execOperateImm<2, 3>
+#define     thumb34     &CpuThumb::execOperateImm<2, 4>
+#define     thumb35     &CpuThumb::execOperateImm<2, 5>
+#define     thumb36     &CpuThumb::execOperateImm<2, 6>
+#define     thumb37     &CpuThumb::execOperateImm<2, 7>
+
+//  SUB Rd, #nn
+#define     thumb38     &CpuThumb::execOperateImm<3, 0>
+#define     thumb39     &CpuThumb::execOperateImm<3, 1>
+#define     thumb3A     &CpuThumb::execOperateImm<3, 2>
+#define     thumb3B     &CpuThumb::execOperateImm<3, 3>
+#define     thumb3C     &CpuThumb::execOperateImm<3, 4>
+#define     thumb3D     &CpuThumb::execOperateImm<3, 5>
+#define     thumb3E     &CpuThumb::execOperateImm<3, 6>
+#define     thumb3F     &CpuThumb::execOperateImm<3, 7>
+
 #define     thumb48     &CpuThumb::execStoreLoadRelative<15, 1>
 
 #define     thumbD0     &CpuThumb::execConditionalBranch<0>
@@ -60,12 +100,12 @@ CpuThumb::s_thumbInstTable[256] = {
     nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
 
     //  0x20 -- 2F  //
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    thumb20, thumb21, thumb22, thumb23,   thumb24, thumb25, thumb26, thumb27,
+    thumb28, thumb29, thumb2A, thumb2B,   thumb2C, thumb2D, thumb2E, thumb2F,
 
     //  0x30 -- 3F  //
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    thumb30, thumb31, thumb32, thumb33,   thumb34, thumb35, thumb36, thumb37,
+    thumb38, thumb39, thumb3A, thumb3B,   thumb3C, thumb3D, thumb3E, thumb3F,
 
     //  0x40 -- 4F  //
     nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
