@@ -75,6 +75,45 @@ CpuThumb::execBitShift(
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
+template  <int OP, int RD>
+GBD_REGPARM     InstExecResult
+CpuThumb::execOperateImm(
+        const  OpeCode  opeCode)
+{
+    const  RegType  lhs = (this->m_cpuRegs[RD].dw);
+    const  RegType  rhs = (opeCode & 0x00FF);
+    RegType     res;
+
+    const  RegType  cur = (this->m_cpuRegs[16].dw);
+    RegType         flg;
+    const  bool     Cy  = (cur >> CPSR::FBIT_C) & 0x01;
+
+    switch ( OP ) {
+    case  0x00:     //  MOV Rd, #nn
+        res = lhs + rhs;
+        flg = setCondLogical(res, lhs, rhs, Cy, cur);
+        this->m_cpuRegs[RD].dw  = res;
+        break;
+    case  0x01:     //  CMP Rd, #nn
+        res = lhs - rhs;
+        flg = setCondSub(res, lhs, rhs, Cy, cur);
+        break;
+    case  0x02:     //  ADD Rd, #nn
+        res = lhs + rhs;
+        flg = setCondAdd(res, lhs, rhs, Cy, cur);
+        this->m_cpuRegs[RD].dw  = res;
+        break;
+    case  0x03:     //  SUB Rd, #nn
+        res = lhs - rhs;
+        flg = setCondSub(res, lhs, rhs, Cy, cur);
+        this->m_cpuRegs[RD].dw  = res;
+        break;
+    }
+
+    this->m_cpuRegs[16].dw  = flg;
+    return ( InstExecResult::SUCCESS_CONTINUE
+}
+
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
 
