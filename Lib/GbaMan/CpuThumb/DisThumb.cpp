@@ -284,7 +284,8 @@ writeUnsignedOffset(
         GuestMemoryAddress  gmAddr)
 {
     const   GuestMemoryAddress  nn  = getUnsignedOffset(opeCode, src);
-    return  sprintf(dst, "0x%04x", nn);
+    int     dig = 4;
+    return  sprintf(dst, "0x%0*x", dig, nn);
 }
 
 }   //  End of (Unnamed) namespace.
