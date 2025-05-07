@@ -111,7 +111,7 @@ CpuThumb::execOperateImm(
     }
 
     this->m_cpuRegs[16].dw  = flg;
-    return ( InstExecResult::SUCCESS_CONTINUE
+    return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
 }   //  End of namespace  GbaMan
