@@ -42,7 +42,7 @@ thumbMnemonics[] = {
     { 0xFE00, 0x1E00, "SUB" },
 
     //  Format 03 : 即値の演算。    //
-    { 0xF800, 0x2000, "MOV" },
+    { 0xF800, 0x2000, "MOV \t%r8, #%I{0,255}" },
     { 0xF800, 0x2800, "CMP" },
     { 0xF800, 0x3000, "ADD" },
     { 0xF800, 0x3800, "SUB" },
