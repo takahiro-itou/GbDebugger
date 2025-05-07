@@ -67,7 +67,8 @@ CpuThumb::execConditionalBranch(
             this->m_manMem.getMemoryAddress(this->m_nextPC);
         prefetchAll<uint16_t>(static_cast<const uint16_t *>(ptr));
     }
-    return ( InstExecResult::UNDEFINED_OPECODE );
+
+    return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
 }   //  End of namespace  GbaMan
