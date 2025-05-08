@@ -144,8 +144,8 @@ thumbMnemonics[] = {
     { 0xF800, 0xE000, "B" },
 
     //  Format 19 : サブルーチンコール。    //
-    { 0xF800, 0xF000, "BL  \t#%L" },
-    { 0xF800, 0xF800, "BLH \t#%Z" },
+    { 0xF800, 0xF000, "BL  \t%L" },
+    { 0xF800, 0xF800, "BLH \t%Z" },
     { 0xF800, 0xE800, "BLX" },
 
     //  Unknown.    //
@@ -183,7 +183,7 @@ writeLongOffset(
         ofs |= 0xFFFFF800;
     }
     ofs = (ofs << 12) | ((nextOpe & 0x07FF) << 1);
-    return  sprintf(dst, "0x%08x", ofs);
+    return  sprintf(dst, "#0x%08x ; ($+4+0x%08x)", gmAddr + 4 + ofs, ofs);
 }
 
 //----------------------------------------------------------------
