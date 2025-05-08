@@ -381,6 +381,9 @@ DisThumb::writeMnemonic(
             case  'I':
                 len = writeImmediate(opeCode, dst, src, gmAddr);
                 break;
+            case  'L':
+                len = writeLongOffset(opeCode, op2, dst, src, gmAddr);
+                break;
             case  'P':
                 len = writePCRelative(
                             opeCode, dst, src, *(this->m_pManMem), gmAddr);
