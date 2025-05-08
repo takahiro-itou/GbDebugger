@@ -144,8 +144,8 @@ thumbMnemonics[] = {
     { 0xF800, 0xE000, "B" },
 
     //  Format 19 : サブルーチンコール。    //
-    { 0xF800, 0xF000, "BL  \t%L" },
-    { 0xF800, 0xF800, "BLH \t%Z" },
+    { 0xF800, 0xF000, "BL  \t#%L" },
+    { 0xF800, 0xF800, "BLH \t#%Z" },
     { 0xF800, 0xE800, "BLX" },
 
     //  Unknown.    //
@@ -183,7 +183,7 @@ writeLongOffset(
         ofs |= 0xFFFFF800;
     }
     ofs = (ofs << 12) | ((nextOpe & 0x07FF) << 1);
-    return  sprintf(dst, "$%08x", ofs);
+    return  sprintf(dst, "0x%08x", ofs);
 }
 
 //----------------------------------------------------------------
@@ -204,7 +204,7 @@ writePCRelative(
     //  読みだすアドレスが決定的、かつ大抵ロム上。  //
     //  なので値も定数だろうから読みだしておく。    //
     const  RegType  val = manMem.readMemory<RegType>(pos);
-    return  sprintf(dst, "[%08x] (=$%08x)", pos, val);
+    return  sprintf(dst, "[#0x%08x] (=#0x%08x)", pos, val);
 }
 
 //----------------------------------------------------------------
@@ -289,7 +289,7 @@ writeOffset(
         ofs |= 0xFFFFFF00;
     }
 
-    return  sprintf(dst, "$%08x ; (%08x)", ofs, gmAddr + 4 + ofs);
+    return  sprintf(dst, "#0x%08x ; (0x%08x)", ofs, gmAddr + 4 + ofs);
 }
 
 //----------------------------------------------------------------
