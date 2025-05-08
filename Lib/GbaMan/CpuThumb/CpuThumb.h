@@ -136,6 +136,15 @@ private:
     execBitShift(
             const  OpeCode  opeCode);
 
+    GBD_REGPARM     InstExecResult
+    execBranchLinkHigh(
+            const  OpeCode  opeCode);
+
+    template  <RegType SE>
+    GBD_REGPARM     InstExecResult
+    execBranchLinkLow(
+            const  OpeCode  opeCode);
+
     template  <int COND>
     GBD_REGPARM     InstExecResult
     execConditionalBranch(
