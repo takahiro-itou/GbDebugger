@@ -179,7 +179,7 @@ writeOffset(
         ofs |= 0xFF000000;
     }
     ofs <<= 2;
-    return  sprintf(dst, "$%08x ; (%08x)", ofs, gmAddr + 8 + ofs);
+    return  sprintf(dst, "#0x%08x ; (0x%08x)", ofs, gmAddr + 8 + ofs);
 }
 
 //----------------------------------------------------------------
@@ -206,9 +206,9 @@ writePCRelative(
     //  なので値も定数だろうから読みだしておく。    //
     const  RegType  val = manMem.readMemory<RegType>(pos);
     if ( opeCode & 0x00400000 ) {
-        return  sprintf(dst, "[$%08x] (=$%02x)",  pos, (val & 0xFF));
+        return  sprintf(dst, "[#0x%08x] (=0x%02x)",  pos, (val & 0xFF));
     }
-    return  sprintf(dst, "[$%08x] (=$%08x)",  pos, val);
+    return  sprintf(dst, "[#0x%08x] (=0x%08x)",  pos, val);
 }
 
 //----------------------------------------------------------------
