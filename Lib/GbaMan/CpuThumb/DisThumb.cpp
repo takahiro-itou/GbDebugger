@@ -359,6 +359,10 @@ DisThumb::writeMnemonic(
     const MnemonicMap *  oc = thumbMnemonics;
     for ( ; (opeCode & oc->mask) != oc->cval; ++ oc ) ;
 
+    OpeCode     op2 = 0;
+    if ( (opeCode & 0xF800) == 0xF000 ) {
+        op2 = this->m_pManMem->readMemory<OpeCode>(gmAddr + 2);
+    }
     sprintf(buf, "%08x:   %04x\t", gmAddr, (opeCode & 0xFFFF));
     outStr  <<  buf;
 
