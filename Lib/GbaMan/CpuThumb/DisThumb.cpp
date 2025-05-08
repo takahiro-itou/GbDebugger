@@ -144,8 +144,8 @@ thumbMnemonics[] = {
     { 0xF800, 0xE000, "B" },
 
     //  Format 19 : サブルーチンコール。    //
-    { 0xF800, 0xF000, "BL" },
-    { 0xF800, 0xF800, "BLH" },
+    { 0xF800, 0xF000, "BL  \t%L" },
+    { 0xF800, 0xF800, "BLH \t%Z" },
     { 0xF800, 0xE800, "BLX" },
 
     //  Unknown.    //
@@ -165,6 +165,26 @@ getUnsignedOffset(
     return  static_cast<GuestMemoryAddress>((opeCode & 0x00FF) << sftBits);
 }
 
+
+//----------------------------------------------------------------
+//  %L  - Long (22bit) offset
+//
+
+inline  size_t
+writeLongOffset(
+        const   OpeCode             opeCode,
+        const   OpeCode             nextOpe,
+        char  *  const              dst,
+        const   char  *           & src,
+        const   GuestMemoryAddress  gmAddr)
+{
+    int32_t ofs = (opeCode & 0x07FF);
+    if ( ofs & 0x0400 ) {
+        ofs |= 0xFFFFF800;
+    }
+    ofs = (ofs << 12) | ((nextOpe & 0x07FF) << 1);
+    return  sprintf(dst, "$%08x", ofs);
+}
 
 //----------------------------------------------------------------
 //  %P  - PC-Relative.
