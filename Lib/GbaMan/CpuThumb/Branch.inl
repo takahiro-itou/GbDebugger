@@ -72,8 +72,8 @@ GBD_REGPARM     InstExecResult
 CpuThumb::execBranchLinkLow(
         const  OpeCode  opeCode)
 {
-    const  RegType  ofs = (opeCode & 0x07FF);
-    this->m_cpuRegs[14].dw  = (this->m_cpuRegs[15].dw) + ((ofs << 12) | SE);
+    const  RegType  ofs = (opeCode & 0x07FF) << 12;
+    this->m_cpuRegs[14].dw  = (this->m_cpuRegs[15].dw) + (ofs | SE);
 
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
