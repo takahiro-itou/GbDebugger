@@ -39,6 +39,22 @@ namespace  {
 //    Conditional Branch  Instructions.
 //
 
+inline
+GBD_REGPARM     InstExecResult
+CpuThumb::execBranchLinkHigh(
+        const  OpeCode  opeCode)
+{
+    const  int  ofs = (opeCode & 0x07FF) << 1;
+    const  uint32_t adr = (this->m_cpuRegs[14].dw + (ofs << 1));
+
+    //  リターンアドレス。  //
+    this->m_cpuRegs[14].dw  = (this->m_cpuRegs[15].dw - 2) | 1;
+    this->m_nextPC  = (adr & ~1);
+    this->m_cpuRegs[15].dw  = (this->m_nextPC + 2);
+
+    return ( InstExecResult::SUCCESS_CONTINUE );
+}
+
 template  <RegType SE>
 GBD_REGPARM     InstExecResult
 CpuThumb::execBranchLinkLow(
