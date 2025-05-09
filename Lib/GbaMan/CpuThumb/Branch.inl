@@ -47,7 +47,7 @@ CpuThumb::execBranchLinkHigh(
     char    buf[512];
 
     const  int  ofs = (opeCode & 0x07FF) << 1;
-    const  uint32_t adr = (this->m_cpuRegs[14].dw + (ofs << 1));
+    const  uint32_t adr = (this->m_cpuRegs[14].dw + ofs);
 
     //  リターンアドレス。  //
     this->m_cpuRegs[14].dw  = (this->m_cpuRegs[15].dw - 2) | 1;
