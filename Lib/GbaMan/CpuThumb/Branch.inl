@@ -46,13 +46,12 @@ CpuThumb::execBranchLinkHigh(
 {
     char    buf[512];
 
-    const  int  ofs = (opeCode & 0x07FF) << 1;
-    const  uint32_t adr = (this->m_cpuRegs[14].dw + ofs);
+    const  int  ofs = static_cast<int>(opeCode & 0x07FF) << 1;
+    const  GuestMemoryAddress   adr = (this->m_cpuRegs[14].dw + ofs);
 
     //  リターンアドレス。  //
     this->m_cpuRegs[14].dw  = (this->m_cpuRegs[15].dw - 2) | 1;
-    this->m_nextPC  = (adr & ~1);
-    this->m_cpuRegs[15].dw  = (this->m_nextPC + 2);
+    this->m_cpuRegs[15].dw  = (this->m_nextPC = (adr & 0xFFFFFFFE)) + 2;
 
     sprintf(buf,
             "BL ofs=%04x, PC=%08x, LR=%08x, Next=%08x\n",
