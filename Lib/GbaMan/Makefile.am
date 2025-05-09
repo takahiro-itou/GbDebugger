@@ -50,6 +50,7 @@ dist_noinst_header_files    +=  \
         CpuArm/ArmInstTable.h          \
         CpuArm/CpuArm.h                \
         CpuArm/DisArm.h                \
+        CpuThumb/Branch.inl            \
         CpuThumb/CpuThumb.h            \
         CpuThumb/DisThumb.h            \
         CpuThumb/OperateRegister.inl   \
