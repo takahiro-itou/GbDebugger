@@ -39,6 +39,17 @@ namespace  {
 //    Conditional Branch  Instructions.
 //
 
+template  <RegType SE>
+GBD_REGPARM     InstExecResult
+CpuThumb::execBranchLinkLow(
+        const  OpeCode  opeCode)
+{
+    const  RegType  ofs = (opeCode & 0x07FF);
+    this->m_cpuRegs[14].dw  = (this->m_cpuRegs[15].dw) + ((ofs << 12) | SE);
+
+    return ( InstExecResult::SUCCESS_CONTINUE );
+}
+
 template  <int COND>
 GBD_REGPARM     InstExecResult
 CpuThumb::execConditionalBranch(
