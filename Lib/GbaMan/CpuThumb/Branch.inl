@@ -44,6 +44,8 @@ GBD_REGPARM     InstExecResult
 CpuThumb::execBranchLinkHigh(
         const  OpeCode  opeCode)
 {
+    char    buf[512];
+
     const  int  ofs = (opeCode & 0x07FF) << 1;
     const  uint32_t adr = (this->m_cpuRegs[14].dw + (ofs << 1));
 
@@ -51,6 +53,13 @@ CpuThumb::execBranchLinkHigh(
     this->m_cpuRegs[14].dw  = (this->m_cpuRegs[15].dw - 2) | 1;
     this->m_nextPC  = (adr & ~1);
     this->m_cpuRegs[15].dw  = (this->m_nextPC + 2);
+
+    sprintf(buf,
+            "BL ofs=%04x, PC=%08x, LR=%08x, Next=%08x\n",
+            ofs, this->m_cpuRegs[15].dw,
+            this->m_cpuRegs[14].dw, this->m_nextPC
+    );
+    std::cerr   <<  buf;
 
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
