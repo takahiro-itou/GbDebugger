@@ -65,7 +65,8 @@ armALUInstruction(
     //  第一オペランドレジスタはビット 16..19 で指定。  //
     const  RegType  lhs = cpuRegs[(opeCode >> 16) & 0x0F].dw;
     const  RegType  Cy  = (cpuFlag >> CPSR::FBIT_C) & 0x01;
-    RegType     rhs, res;
+    RegType     rhs;
+    RegType     res = cpuRegs[dst].dw;
     bool        flagCy = (Cy ? true : false);
 
     static_assert(
@@ -98,82 +99,63 @@ armALUInstruction(
 
     switch ( CODE ) {
     case  0x00:     //  AND         Rd = Rn AND Op2
-        res = lhs & rhs;
-        flg = setCondLogical(res, lhs, rhs, cur);
+        flg = setCondLogical((res = lhs & rhs), lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x01:     //  EOR (XOR)   Rd = Rn XOR Op2
-        res = lhs ^ rhs;
-        flg = setCondLogical(res, lhs, rhs, cur);
+        flg = setCondLogical((res = lhs ^ rhs), lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x02:     //  SUB         Rd = Rn - OP2
-        res = static_cast<uint64_t>(lhs) - static_cast<uint64_t>(rhs);
-        flg = setCondSub(res, lhs, rhs, cur);
+        flg = setCondSub((res = lhs - rhs), lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x03:     //  RSB         Rd = Op2 - Rn
-        res = static_cast<uint64_t>(rhs) - static_cast<uint64_t>(lhs);
-        flg = setCondSub(res, rhs, lhs, cur);
+        flg = setCondSub((res = rhs - lhs), rhs, lhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x04:     //  ADD         Rd = Rn + Op2
-        res = static_cast<uint64_t>(lhs) + static_cast<uint64_t>(rhs);
-        flg = setCondAdd(res, lhs, rhs, cur);
+        flg = setCondAdd((res = lhs + rhs), lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x05:     //  ADC         Rd = Rn + Op2 + Cy
-        res = static_cast<uint64_t>(lhs) + static_cast<uint64_t>(rhs)
-                    + static_cast<uint64_t>(Cy);
-        flg = setCondAdd(res, lhs, rhs, cur);
+        flg = setCondAdd((res = lhs + rhs + Cy), lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x06:     //  SBC         Rd = Rn - Op2 + Cy - 1
-        res = static_cast<uint64_t>(lhs) - static_cast<uint64_t>(rhs)
-                    + static_cast<uint64_t>(Cy - 1);
-        flg = setCondAdd(res, lhs, rhs, cur);
+        flg = setCondAdd((res = lhs - rhs + Cy - 1), lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x07:     //  RSC         Rd = Op2 - Rn + Cy - 1
-        res = static_cast<uint64_t>(rhs) - static_cast<uint64_t>(lhs)
-                    + static_cast<uint64_t>(Cy - 1);
-        flg = setCondAdd(res, rhs, lhs, cur);
+        flg = setCondAdd((res = rhs - lhs + Cy - 1), rhs, lhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x08:     //  TST         (void)(Rn AND Op2)
-        res = lhs & rhs;
-        flg = setCondLogical(res, lhs, rhs, cur);
+        flg = setCondLogical((lhs & rhs), lhs, rhs, cur);
         break;
     case  0x09:     //  TEQ         (void)(Rn XOR Op2)
-        res = lhs ^ rhs;
-        flg = setCondLogical(res, lhs, rhs, cur);
+        flg = setCondLogical((lhs ^ rhs), lhs, rhs, cur);
         break;
     case  0x0A:     //  CMP         (void)(Rn - Op2)
-        res = static_cast<uint64_t>(lhs) - static_cast<uint64_t>(rhs);
-        flg = setCondSub(res, lhs, rhs, cur);
+        flg = setCondSub((lhs - rhs), lhs, rhs, cur);
         break;
     case  0x0B:     //  CMN         (void)(Rn + Op2)
-        res = static_cast<uint64_t>(lhs) + static_cast<uint64_t>(rhs);
-        flg = setCondAdd(res, lhs, rhs, cur);
+        flg = setCondAdd((lhs + rhs), lhs, rhs, cur);
         break;
     case  0x0C:     //  ORR (OR)    Rd = Rn OR Op2
-        res = lhs | rhs;
-        flg = setCondLogical(res, lhs, rhs, cur);
+        flg = setCondLogical((res = lhs | rhs), lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x0D:     //  MOV         Rd = Op2
-        res = rhs;
-        flg = setCondLogical(res, lhs, rhs, cur);
+        flg = setCondLogical((res = rhs), lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x0E:     //  BIC         Rd = Rnn AND NOT Op2
-        res = lhs & ~rhs;
-        flg = setCondLogical(res, lhs, rhs, cur);
+        flg = setCondLogical((res = lhs & ~rhs), lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x0F:     //  MVN         Rd = Not Op2
-        res = ~rhs;
-        flg = setCondLogical(res, lhs, rhs, cur);
+        flg = setCondLogical((res = ~rhs), lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     }
