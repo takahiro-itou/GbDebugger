@@ -235,9 +235,7 @@ setCondLogical(
         const  RegType  res,
         const  RegType,
         const  RegType,
-        const  bool,
         const  RegType  cur)
-
 {
     const  RegType  flag_n  = (res & CPSR::FLAG_N);
     const  RegType  flag_z  = (res ? 0 : CPSR::FLAG_Z);

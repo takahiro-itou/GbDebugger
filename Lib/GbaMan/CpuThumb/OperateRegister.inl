@@ -176,8 +176,9 @@ CpuThumb::execBitShift(
         break;
     }
 
+    cpuFlag = setCondLogicalCarry(flag_cy, cpuFlag);
     this->m_cpuRegs[RegIdx::CPSR].dw
-            = setCondLogical(res, lhs, nn, flag_cy, cpuFlag);
+            = setCondLogical(res, lhs, nn, cpuFlag);
     this->m_cpuRegs[rd].dw  = res;
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
@@ -240,7 +241,7 @@ CpuThumb::execOperateImm(
     switch ( OP ) {
     case  0x00:     //  MOV Rd, #nn
         res = lhs + rhs;
-        flg = setCondLogical(res, lhs, rhs, Cy, cur);
+        flg = setCondLogical(res, lhs, rhs, cur);
         this->m_cpuRegs[RD].dw  = res;
         break;
     case  0x01:     //  CMP Rd, #nn

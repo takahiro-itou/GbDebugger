@@ -59,7 +59,7 @@ runTestLogical(
         const  RegType  rhs,
         const  RegType  exp)
 {
-    const  RegType  act = setCondLogical(res, lhs, rhs, 0, 0);
+    const  RegType  act = setCondLogical(res, lhs, rhs, 0);
     return  checkFlags(exp, act, nLine);
 }
 
