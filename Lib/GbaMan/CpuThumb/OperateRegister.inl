@@ -175,7 +175,7 @@ CpuThumb::execArithmeticLogic(
             this->m_cpuRegs[rd].dw,
             this->m_cpuRegs[rs].dw,
             this->m_cpuRegs[16].dw);
-    return ( InstExecResult::UNDEFINED_OPECODE );
+    return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
 //----------------------------------------------------------------

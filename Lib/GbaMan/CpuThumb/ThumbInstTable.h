@@ -72,6 +72,8 @@
 #define     thumb3E     &CpuThumb::execOperateImm<3, 6>
 #define     thumb3F     &CpuThumb::execOperateImm<3, 7>
 
+#define     thumb40     &CpuThumb::execArithmeticLogic
+
 #define     thumb48     &CpuThumb::execStoreLoadRelative<15, 1>
 
 #define     thumbD0     &CpuThumb::execConditionalBranch<0>
@@ -118,7 +120,7 @@ CpuThumb::s_thumbInstTable[256] = {
     thumb38, thumb39, thumb3A, thumb3B,   thumb3C, thumb3D, thumb3E, thumb3F,
 
     //  0x40 -- 4F  //
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    thumb40, thumb40, thumb40, thumb40,   nullptr, nullptr, nullptr, nullptr,
     thumb48, thumb48, thumb48, thumb48,   thumb48, thumb48, thumb48, thumb48,
 
     nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
