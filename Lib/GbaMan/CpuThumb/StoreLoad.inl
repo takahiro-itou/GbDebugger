@@ -41,21 +41,66 @@ namespace  {
 
 //----------------------------------------------------------------
 
-inline
+template  <int RB>
 GBD_REGPARM     InstExecResult
 CpuThumb::execMultipleLoad(
         const  OpeCode  opeCode)
 {
+    char    buf[512];
+
+    int cnt = 0;
+    GuestMemoryAddress  gmAddr  = this->m_cpuRegs[RB].dw;
+    RegType  *  ptr = static_cast<RegType *>(
+            this->m_manMem.getMemoryAddress(gmAddr));
+
+    for ( int bit = 0; bit < 8; ++ bit ) {
+        if ( (opeCode >> bit) & 1 ) {
+            this->m_cpuRegs[bit].dw = * (ptr ++);
+
+            sprintf(buf, "Read from address %08x to R%d (%08x)",
+                    gmAddr, bit, this->m_cpuRegs[bit].dw);
+            std::cerr   <<  buf <<  std::endl;
+
+            ++ cnt;
+            gmAddr  += 4;
+            if ( bit == RB ) {
+                std::cerr   <<  "Destructed Rb:"    <<  RB  <<  std::endl;
+                return ( InstExecResult::UNDEFINED_OPECODE );
+            }
+        }
+    }
+    this->m_cpuRegs[RB].dw  = gmAddr;
+
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
 //----------------------------------------------------------------
 
-inline
+template  <int RB>
 GBD_REGPARM     InstExecResult
 CpuThumb::execMultipleStore(
         const  OpeCode  opeCode)
 {
+    char    buf[512];
+
+    int cnt = 0;
+    GuestMemoryAddress  gmAddr  = this->m_cpuRegs[RB].dw;
+    RegType  *  ptr = static_cast<RegType *>(
+            this->m_manMem.getMemoryAddress(gmAddr));
+
+    for ( int bit = 0; bit < 8; ++ bit ) {
+        if ( (opeCode >> bit) & 1 ) {
+            sprintf(buf, "Write to address %08x from R%d (%08x)",
+                    gmAddr, bit, this->m_cpuRegs[bit].dw);
+            std::cerr   <<  buf <<  std::endl;
+
+            * (ptr ++)  = this->m_cpuRegs[bit].dw;
+            ++ cnt;
+            gmAddr  += 4;
+        }
+    }
+    this->m_cpuRegs[RB].dw  = gmAddr;;
+
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 

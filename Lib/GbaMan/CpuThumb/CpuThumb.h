@@ -154,12 +154,12 @@ private:
     execConditionalBranch(
             const  OpeCode  opeCode);
 
-    inline
+    template <int RB>
     GBD_REGPARM     InstExecResult
     execMultipleLoad(
             const  OpeCode  opeCode);
 
-    inline
+    template <int RB>
     GBD_REGPARM     InstExecResult
     execMultipleStore(
             const  OpeCode  opeCode);
