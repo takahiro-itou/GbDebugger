@@ -48,6 +48,56 @@ execALUInstruction(
         RegType     regRhs,
         RegType   & cpuFlag)
 {
+    const  RegType  Cy  = (cpuFlag >> CPSR::FBIT_C) & 1;
+    RegType     res = regLhs;
+
+    switch ( OP ) {
+    case  0x00:     //  AND
+        res &= regRhs;
+        break;
+    case  0x01:     //  EOR
+        res ^= regRhs;
+        break;
+    case  0x02:     //  LSL
+        res <<= (regRhs & 0x00FF);
+        break;
+    case  0x03:     //  LSR
+        res >>= (regRhs & 0x00FF);
+        break;
+    case  0x04:     //  ASR
+        res = static_cast<int32_t>(res) >> (regRhs & 0x00FF);
+        break;
+    case  0x05:     //  ADC
+        res += (regRhs + Cy);
+        break;
+    case  0x06:     //  SBC
+        res = (res - regRhs + Cy - 1);
+        break;
+    case  0x07:     //  ROR
+        break;
+    case  0x08:     //  TST
+        break;
+    case  0x09:     //  NEG
+        break;
+    case  0x0A:     //  CMP
+        break;
+    case  0x0B:     //  CMN
+        break;
+    case  0x0C:     //  ORR
+        res |= regRhs;
+        break;
+    case  0x0D:     //  MUL
+        res *= regRhs;
+        break;
+    case  0x0E:     //  BIC
+        res &= (~ regRhs);
+        break;
+    case  0x0F:     //  MVN
+        res =  (~ regRhs);
+        break;
+    }
+
+    return;
 }
 
 CONSTEXPR_VAR   FnALUInst
