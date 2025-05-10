@@ -110,16 +110,16 @@ thumbMnemonics[] = {
     { 0xFF80, 0xB080, "ADD SP, #-nn" },
 
     //  Format 14 : ロードストア命令（スタック）。  //
-    { 0xFFFF, 0xB500, "PUSH {LR}" },
-    { 0xFF00, 0xB400, "PUSH {Rlist}" },
-    { 0xFF00, 0xB500, "PUSH {Rlist,LR}" },
-    { 0xFFFF, 0xBD00, "POP {PC}" },
-    { 0xFF00, 0xBC00, "POP {Rlist}" },
-    { 0xFF00, 0xBD00, "POP {Rlist,PC}" },
+    { 0xFFFF, 0xB500, "PUSH\t{LR}" },
+    { 0xFF00, 0xB400, "PUSH\t{%l}" },
+    { 0xFF00, 0xB500, "PUSH\t{%l,LR}" },
+    { 0xFFFF, 0xBD00, "POP \t{PC}" },
+    { 0xFF00, 0xBC00, "POP \t{$l}" },
+    { 0xFF00, 0xBD00, "POP \t{%l,PC}" },
 
     //  Format 15   //
-    { 0xF800, 0xC000, "STMIA Rb!, {Rlist}" },
-    { 0xF800, 0xC800, "LDMIA Rb!, {Rlist}" },
+    { 0xF800, 0xC000, "STMIA\t%r8!, {%l}" },
+    { 0xF800, 0xC800, "LDMIA\t%r8!, {%l}" },
 
     //  Format 16 : 条件付き分岐命令。      //
     //  Format 17 : ソフトウェア割り込み。  //
