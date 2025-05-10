@@ -150,9 +150,9 @@ private:
     execConditionalBranch(
             const  OpeCode  opeCode);
 
-    template  <int OP, int N>
+    template  <int OP>
     GBD_REGPARM     InstExecResult
-    execOperateAddImm(
+    execOperateAddSub(
             const  OpeCode  opeCode);
 
     template  <int OP, int RD>

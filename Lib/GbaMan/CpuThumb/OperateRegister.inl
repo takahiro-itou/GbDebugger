@@ -75,6 +75,54 @@ CpuThumb::execBitShift(
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
+//----------------------------------------------------------------
+
+template  <int OP>
+GBD_REGPARM     InstExecResult
+CpuThumb::execOperateAddSub(
+        const  OpeCode  opeCode)
+{
+    const  int  rd  = ((opeCode     ) & 0x07);
+    const  int  rs  = ((opeCode >> 3) & 0x07);
+    const  int  nn  = ((opeCode >> 6) & 0x07);
+
+    const  RegType  lhs = (this->m_cpuRegs[rs].dw);
+    const  RegType  cur = (this->m_cpuRegs[16].dw);
+    RegType         rhs, res, flg;
+
+    switch ( OP ) {
+    case  0:    //  ADD Rd, Rs, Rn
+        rhs = this->m_cpuRegs[nn].dw;
+        res = lhs + rhs;
+        flg = setCondAdd(res, lhs, rhs, 0, cur);
+        this->m_cpuRegs[rd].dw  = res;
+        break;
+    case  1:    //  SUB Rd, Rs, Rn
+        rhs = this->m_cpuRegs[nn].dw;
+        res = lhs - rhs;
+        flg = setCondSub(res, lhs, rhs, 0, cur);
+        this->m_cpuRegs[rd].dw  = res;
+        break;
+    case  2:    //  ADD Rd, Rs, #nn
+        rhs = nn;
+        res = lhs + rhs;
+        flg = setCondAdd(res, lhs, rhs, 0, cur);
+        this->m_cpuRegs[rd].dw  = res;
+        break;
+    case  3:    //  SUB RD, Rs, #nn
+        rhs = nn;
+        res = lhs - rhs;
+        flg = setCondSub(res, lhs, rhs, 0, cur);
+        this->m_cpuRegs[rd].dw  = res;
+        break;
+    }
+
+    this->m_cpuRegs[16].dw  = flg;
+    return ( InstExecResult::SUCCESS_CONTINUE );
+}
+
+//----------------------------------------------------------------
+
 template  <int OP, int RD>
 GBD_REGPARM     InstExecResult
 CpuThumb::execOperateImm(
