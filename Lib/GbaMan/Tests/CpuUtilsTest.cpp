@@ -29,32 +29,60 @@ namespace  GbaMan  {
 
 namespace  {
 
-inline  void
+template  <typename  T>
+inline  int
+checkFlags(
+        const  T  &     vExp,
+        const  T  &     vAct,
+        const  int      nLine)
+{
+    char    buf[512];
+    if ( vExp != vAct ) {
+        sprintf(buf,
+                "\nEquality Assertion Failed."
+                "\n  Expected : %08x"
+                "\n  Actual   : %08x"
+                "\nAt " __FILE__ ":%d\n",
+                vExp, vAct, nLine);
+        std::cerr   <<  buf;
+        return ( 1 );
+    }
+
+    return ( 0 );
+}
+
+inline  int
 runTestLogical(
+        const  int      nLine,
         const  RegType  res,
         const  RegType  lhs,
         const  RegType  rhs,
         const  RegType  exp)
 {
-    CPPUNIT_ASSERT_EQUAL(exp, setCondLogical(res, lhs, rhs, 0, 0));
+    const  RegType  act = setCondLogical(res, lhs, rhs, 0, 0);
+    return  checkFlags(exp, act, nLine);
 }
 
-inline  void
+inline  int
 runTestAdd(
+        const  int      nLine,
         const  RegType  lhs,
         const  RegType  rhs,
         const  RegType  exp)
 {
-    CPPUNIT_ASSERT_EQUAL(exp, setCondAdd(lhs + rhs, lhs, rhs, 0, 0));
+    const  RegType  act = setCondAdd(lhs + rhs, lhs, rhs, 0, 0);
+    return  checkFlags(exp, act, nLine);
 }
 
-inline  void
+inline  int
 runTestSub(
+        const  int      nLine,
         const  RegType  lhs,
         const  RegType  rhs,
         const  RegType  exp)
 {
-    CPPUNIT_ASSERT_EQUAL(exp, setCondSub(lhs - rhs, lhs, rhs, 0, 0));
+    const  RegType  act = setCondSub(lhs - rhs, lhs, rhs, 0, 0);
+    return  checkFlags(exp, act, nLine);
 }
 
 }   //  End of (Unnamed) namespace.
@@ -94,16 +122,23 @@ CPPUNIT_TEST_SUITE_REGISTRATION( CpuUtilsTest );
 
 void  CpuUtilsTest::testSetCondLogical()
 {
-    runTestLogical(10 & 3, 10, 3, 0);
-    runTestLogical(10 & 4, 10, 4, CPSR::FLAG_Z);
-    runTestLogical(
-            0x7FFFFFFF | 0x80000000, 0x7FFFFFFF, 0x80000000, CPSR::FLAG_N
+    int cnt = 0;
+    cnt += runTestLogical(__LINE__, 10 & 3, 10, 3, 0);
+    cnt += runTestLogical(__LINE__, 10 & 4, 10, 4, CPSR::FLAG_Z);
+    cnt += runTestLogical(
+                __LINE__, 0x7FFFFFFF | 0x80000000,
+                0x7FFFFFFF, 0x80000000, CPSR::FLAG_N
     );
+
+    CPPUNIT_ASSERT_EQUAL( 0, cnt );
     return;
 }
 
 void  CpuUtilsTest::testSetCondAdd()
 {
+    runTestAdd(__LINE__,  0,  0, CPSR::FLAG_Z);
+    runTestAdd(__LINE__,  1, -1, CPSR::FLAG_Z | CPSR::FLAG_C);
+    runTestAdd(__LINE__, -1,  1, CPSR::FLAG_Z | CPSR::FLAG_C);
 }
 
 void  CpuUtilsTest::testSetCondSub()
