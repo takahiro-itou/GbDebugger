@@ -50,53 +50,83 @@ execALUInstruction(
 {
     const  RegType  Cy  = (cpuFlag >> CPSR::FBIT_C) & 1;
     RegType     res = regLhs;
+    RegType     flg = cpuFlag;
 
     switch ( OP ) {
     case  0x00:     //  AND
         res &= regRhs;
+        cpuFlag = setCondLogical(res, regLhs, regRhs, flg);
         break;
     case  0x01:     //  EOR
         res ^= regRhs;
+        cpuFlag = setCondLogical(res, regLhs, regRhs, flg);
         break;
     case  0x02:     //  LSL
         res <<= (regRhs & 0x00FF);
+        cpuFlag = setCondLogical(res, regLhs, regRhs, flg);
         break;
     case  0x03:     //  LSR
         res >>= (regRhs & 0x00FF);
+        cpuFlag = setCondLogical(res, regLhs, regRhs, flg);
         break;
     case  0x04:     //  ASR
         res = static_cast<int32_t>(res) >> (regRhs & 0x00FF);
+        cpuFlag = setCondLogical(res, regLhs, regRhs, flg);
         break;
     case  0x05:     //  ADC
         res += (regRhs + Cy);
+        cpuFlag = setCondAdd(res, regLhs, regRhs, flg);
         break;
     case  0x06:     //  SBC
         res = (res - regRhs + Cy - 1);
+        cpuFlag = setCondAdd(res, regLhs, regRhs, flg);
         break;
     case  0x07:     //  ROR
+    {
+        const  int  sw  = (regRhs & 0x1F);
+        if ( sw == 0 ) {
+            flg = setCondLogicalCarry(res & 0x80000000, flg);
+        } else {
+            flg = setCondLogicalCarry(armRorFlg(res, sw), flg);
+            res = armRorVal(res, sw);
+        }
+    }
+        cpuFlag = setCondLogical(res, regLhs, regRhs, flg);
         break;
     case  0x08:     //  TST
+        cpuFlag = setCondLogical(regLhs & regRhs, regLhs, regRhs, flg);
         break;
     case  0x09:     //  NEG
+        res = 0 - regRhs;
+        cpuFlag = setCondSub(res, 0, regRhs, flg);
         break;
     case  0x0A:     //  CMP
+        cpuFlag = setCondSub(regLhs - regRhs, regLhs, regRhs, flg);
         break;
     case  0x0B:     //  CMN
+        cpuFlag = setCondAdd(regLhs + regRhs, regLhs, regRhs, flg);
         break;
     case  0x0C:     //  ORR
         res |= regRhs;
+        cpuFlag = setCondLogical(res, regLhs, regRhs, flg);
         break;
     case  0x0D:     //  MUL
         res *= regRhs;
+        cpuFlag = setCondLogical(
+                        res, regLhs, regRhs, setCondLogicalCarry(0, flg)
+        );
         break;
     case  0x0E:     //  BIC
         res &= (~ regRhs);
+        cpuFlag = setCondLogical(res, regLhs, regRhs, flg);
         break;
     case  0x0F:     //  MVN
         res =  (~ regRhs);
+        cpuFlag = setCondLogical(res, regLhs, regRhs, flg);
         break;
     }
 
+    regLhs  = res;
     return;
 }
 
