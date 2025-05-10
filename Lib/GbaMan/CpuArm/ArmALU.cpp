@@ -66,7 +66,7 @@ armALUInstruction(
     const  RegType  lhs = cpuRegs[(opeCode >> 16) & 0x0F].dw;
     const  RegType  Cy  = (cpuFlag >> CPSR::FBIT_C) & 0x01;
     RegType     rhs;
-    uint64_t    res;
+    RegType     res;
     bool        flagCy = (Cy ? true : false);
 
     static_assert(
@@ -110,35 +110,35 @@ armALUInstruction(
         break;
     case  0x02:     //  SUB         Rd = Rn - OP2
         res = static_cast<uint64_t>(lhs) - static_cast<uint64_t>(rhs);
-        flg = setCondSub(res, lhs, rhs, flagCy, cur);
+        flg = setCondSub(res, lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x03:     //  RSB         Rd = Op2 - Rn
         res = static_cast<uint64_t>(rhs) - static_cast<uint64_t>(lhs);
-        flg = setCondSub(res, rhs, lhs, flagCy, cur);
+        flg = setCondSub(res, rhs, lhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x04:     //  ADD         Rd = Rn + Op2
         res = static_cast<uint64_t>(lhs) + static_cast<uint64_t>(rhs);
-        flg = setCondAdd(res, lhs, rhs, flagCy, cur);
+        flg = setCondAdd(res, lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x05:     //  ADC         Rd = Rn + Op2 + Cy
         res = static_cast<uint64_t>(lhs) + static_cast<uint64_t>(rhs)
                     + static_cast<uint64_t>(Cy);
-        flg = setCondAdd(res, lhs, rhs, flagCy, cur);
+        flg = setCondAdd(res, lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x06:     //  SBC         Rd = Rn - Op2 + Cy - 1
         res = static_cast<uint64_t>(lhs) - static_cast<uint64_t>(rhs)
                     + static_cast<uint64_t>(Cy - 1);
-        flg = setCondAdd(res, lhs, rhs, flagCy, cur);
+        flg = setCondAdd(res, lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x07:     //  RSC         Rd = Op2 - Rn + Cy - 1
         res = static_cast<uint64_t>(rhs) - static_cast<uint64_t>(lhs)
                     + static_cast<uint64_t>(Cy - 1);
-        flg = setCondAdd(res, rhs, lhs, flagCy, cur);
+        flg = setCondAdd(res, rhs, lhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x08:     //  TST         (void)(Rn AND Op2)
@@ -151,11 +151,11 @@ armALUInstruction(
         break;
     case  0x0A:     //  CMP         (void)(Rn - Op2)
         res = static_cast<uint64_t>(lhs) - static_cast<uint64_t>(rhs);
-        flg = setCondSub(res, lhs, rhs, flagCy, cur);
+        flg = setCondSub(res, lhs, rhs, cur);
         break;
     case  0x0B:     //  CMN         (void)(Rn + Op2)
         res = static_cast<uint64_t>(lhs) + static_cast<uint64_t>(rhs);
-        flg = setCondAdd(res, lhs, rhs, flagCy, cur);
+        flg = setCondAdd(res, lhs, rhs, cur);
         break;
     case  0x0C:     //  ORR (OR)    Rd = Rn OR Op2
         res = lhs | rhs;

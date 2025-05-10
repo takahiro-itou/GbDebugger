@@ -241,7 +241,6 @@ setCondAdd(
         const  RegType  res,
         const  RegType  lhs,
         const  RegType  rhs,
-        const  bool,
         const  RegType  cur)
 {
     const  RegType  flag_n  = (res & CPSR::FLAG_N);
@@ -261,7 +260,6 @@ setCondSub(
         const  RegType  res,
         const  RegType  lhs,
         const  RegType  rhs,
-        const  bool,
         const  RegType  cur)
 {
     const  RegType  flag_n  = (res & CPSR::FLAG_N);
