@@ -35,6 +35,15 @@ namespace  GbaMan  {
 
 namespace  {
 
+template  <int OP>
+GBD_REGPARM     void
+execALUInstruction(
+        RegPair   & regLhs,
+        RegType     regRhs,
+        RegType   & cpuFlag)
+{
+}
+
 }   //  End of (Unnamed) namespace.
 
 
@@ -42,6 +51,21 @@ namespace  {
 //
 //    Operate Register Instructions.
 //
+
+//----------------------------------------------------------------
+
+inline
+GBD_REGPARM     InstExecResult
+CpuThumb::execArithmeticLogic(
+        const  OpeCode  opeCode)
+{
+    const  int  rd  = ((opeCode     ) & 0x07);
+    const  int  rs  = ((opeCode >> 3) & 0x07);
+
+    return ( InstExecResult::UNDEFINED_OPECODE );
+}
+
+//----------------------------------------------------------------
 
 template  <int OP>
 GBD_REGPARM     InstExecResult
