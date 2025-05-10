@@ -35,14 +35,40 @@ namespace  GbaMan  {
 
 namespace  {
 
+typedef     GBD_REGPARM     void
+(* FnALUInst)(
+        RegType   & regLhs,
+        RegType     regRhs,
+        RegType   & cpuFlag);
+
 template  <int OP>
 GBD_REGPARM     void
 execALUInstruction(
-        RegPair   & regLhs,
+        RegType   & regLhs,
         RegType     regRhs,
         RegType   & cpuFlag)
 {
 }
+
+CONSTEXPR_VAR   FnALUInst
+g_thumbALUInstTable[16] = {
+    &execALUInstruction<0x00>,
+    &execALUInstruction<0x01>,
+    &execALUInstruction<0x02>,
+    &execALUInstruction<0x03>,
+    &execALUInstruction<0x04>,
+    &execALUInstruction<0x05>,
+    &execALUInstruction<0x06>,
+    &execALUInstruction<0x07>,
+    &execALUInstruction<0x08>,
+    &execALUInstruction<0x09>,
+    &execALUInstruction<0x0A>,
+    &execALUInstruction<0x0B>,
+    &execALUInstruction<0x0C>,
+    &execALUInstruction<0x0D>,
+    &execALUInstruction<0x0E>,
+    &execALUInstruction<0x0F>,
+};
 
 }   //  End of (Unnamed) namespace.
 
@@ -61,7 +87,14 @@ CpuThumb::execArithmeticLogic(
 {
     const  int  rd  = ((opeCode     ) & 0x07);
     const  int  rs  = ((opeCode >> 3) & 0x07);
+    const  int  idx = ((opeCode >> 6) & 0x0F);
 
+    FnALUInst   pfInst  = g_thumbALUInstTable[idx];
+
+    (* pfInst)(
+            this->m_cpuRegs[rd].dw,
+            this->m_cpuRegs[rs].dw,
+            this->m_cpuRegs[16].dw);
     return ( InstExecResult::UNDEFINED_OPECODE );
 }
 
