@@ -223,8 +223,8 @@ armRorVal(
 inline  RegType
 setCondLogical(
         const  RegType  res,
-        const  RegType  lhs,
-        const  RegType  rhs,
+        const  RegType,
+        const  RegType,
         const  bool     fout_cy,
         const  RegType  cur)
 

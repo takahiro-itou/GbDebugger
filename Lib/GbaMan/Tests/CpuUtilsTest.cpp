@@ -136,9 +136,42 @@ void  CpuUtilsTest::testSetCondLogical()
 
 void  CpuUtilsTest::testSetCondAdd()
 {
-    runTestAdd(__LINE__,  0,  0, CPSR::FLAG_Z);
-    runTestAdd(__LINE__,  1, -1, CPSR::FLAG_Z | CPSR::FLAG_C);
-    runTestAdd(__LINE__, -1,  1, CPSR::FLAG_Z | CPSR::FLAG_C);
+    int cnt = 0;
+
+    cnt += runTestAdd(__LINE__,  0,  0, CPSR::FLAG_Z);
+    cnt += runTestAdd(__LINE__,  1, -1, CPSR::FLAG_Z | CPSR::FLAG_C);
+    cnt += runTestAdd(__LINE__, -1,  1, CPSR::FLAG_Z | CPSR::FLAG_C);
+
+    //  境界値テスト。  //
+    //  2147483646 + 1 =  2147483647  : ----    //
+    cnt += runTestAdd(__LINE__, 0x7FFFFFFE, 1, 0);
+    cnt += runTestAdd(__LINE__, 1, 0x7FFFFFFE, 0);
+
+    //  2147483646 + 2 = -2147483648  : N--V    //
+    cnt += runTestAdd(__LINE__, 0x7FFFFFFE, 2, CPSR::FLAG_N | CPSR::FLAG_V);
+    cnt += runTestAdd(__LINE__, 2, 0x7FFFFFFE, CPSR::FLAG_N | CPSR::FLAG_V);
+
+    //  符号なし整数のキャリー  //
+
+    //  4294967294 + 1 = 4294967295   : N---    //
+    cnt += runTestAdd(__LINE__, 0xFFFFFFFE, 1, CPSR::FLAG_N);
+    cnt += runTestAdd(__LINE__, 1, 0xFFFFFFFE, CPSR::FLAG_N);
+
+    //  4294967294 + 2 = 0            : -ZC-    //
+    cnt += runTestAdd(__LINE__, 0xFFFFFFFE, 2, CPSR::FLAG_Z | CPSR::FLAG_C);
+    cnt += runTestAdd(__LINE__, 2, 0xFFFFFFFE, CPSR::FLAG_Z | CPSR::FLAG_C);
+
+    //  4294967294 + 3 = 1            : --C-    //
+    cnt += runTestAdd(__LINE__, 0xFFFFFFFE, 3, CPSR::FLAG_C);
+    cnt += runTestAdd(__LINE__, 3, 0xFFFFFFFE, CPSR::FLAG_C);
+
+    //  4294967295 + 4294967295 = 4294967294  : N-C-    //
+    cnt += runTestAdd(
+                __LINE__, 0xFFFFFFFF, 0xFFFFFFFF,
+                CPSR::FLAG_N | CPSR::FLAG_C);
+
+    CPPUNIT_ASSERT_EQUAL( 0, cnt );
+    return;
 }
 
 void  CpuUtilsTest::testSetCondSub()
