@@ -154,6 +154,16 @@ private:
     execConditionalBranch(
             const  OpeCode  opeCode);
 
+    inline
+    GBD_REGPARM     InstExecResult
+    execMultipleLoad(
+            const  OpeCode  opeCode);
+
+    inline
+    GBD_REGPARM     InstExecResult
+    execMultipleStore(
+            const  OpeCode  opeCode);
+
     template  <int OP>
     GBD_REGPARM     InstExecResult
     execOperateAddSub(

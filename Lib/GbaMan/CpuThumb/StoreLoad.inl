@@ -39,6 +39,28 @@ namespace  {
 //    Store/Load  Instructions.
 //
 
+//----------------------------------------------------------------
+
+inline
+GBD_REGPARM     InstExecResult
+CpuThumb::execMultipleLoad(
+        const  OpeCode  opeCode)
+{
+    return ( InstExecResult::SUCCESS_CONTINUE );
+}
+
+//----------------------------------------------------------------
+
+inline
+GBD_REGPARM     InstExecResult
+CpuThumb::execMultipleStore(
+        const  OpeCode  opeCode)
+{
+    return ( InstExecResult::SUCCESS_CONTINUE );
+}
+
+//----------------------------------------------------------------
+
 template  <int Rs, int OP>
 GBD_REGPARM     InstExecResult
 CpuThumb::execStoreLoadRelative(
