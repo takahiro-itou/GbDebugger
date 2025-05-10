@@ -36,10 +36,10 @@ thumbMnemonics[] = {
     { 0xF800, 0x1000, "ASR \t%r0, %r3, #%I{6,31}" },
 
     //  Format 02 : 加算減算。      //
-    { 0xFE00, 0x1800, "ADD" },
-    { 0xFE00, 0x1A00, "SUB" },
-    { 0xFE00, 0x1C00, "ADD" },
-    { 0xFE00, 0x1E00, "SUB" },
+    { 0xFE00, 0x1800, "ADD \t%r0, %r3, %r6" },
+    { 0xFE00, 0x1A00, "SUB \t%r0, %r3, %r6" },
+    { 0xFE00, 0x1C00, "ADD \t%r0, %r3, #%I{6,7}" },
+    { 0xFE00, 0x1E00, "SUB \t%r0, %r3, #%I{6,7}" },
 
     //  Format 03 : 即値の演算。    //
     { 0xF800, 0x2000, "MOV \t%r8, #%I{0,255}" },
