@@ -176,6 +176,56 @@ void  CpuUtilsTest::testSetCondAdd()
 
 void  CpuUtilsTest::testSetCondSub()
 {
+    int cnt = 0;
+
+    //  繰り下がりがない時に C=1  に注意。  //
+
+    cnt += runTestSub(__LINE__,  0,  0, CPSR::FLAG_Z | CPSR::FLAG_C);
+    cnt += runTestSub(__LINE__,  1,  1, CPSR::FLAG_Z | CPSR::FLAG_C);
+    cnt += runTestSub(__LINE__, -1, -1, CPSR::FLAG_Z | CPSR::FLAG_C);
+
+    //  2 - 1 =  1 : --C-   //
+    //  1 - 2 = -1 : N---   //
+    cnt += runTestSub(__LINE__,  2,  1, CPSR::FLAG_C);
+    cnt += runTestSub(__LINE__,  1,  2, CPSR::FLAG_N);
+
+    //  0 - 2147483647 = -2147483647  : N---    //
+    cnt += runTestSub(__LINE__, 0, 2147483647, CPSR::FLAG_N);
+
+    //  2147483646 - 4294967295 = 2147483647    //
+    //  2147483646 - (-1) =  2147483647 : ----  //
+    cnt += runTestSub(__LINE__, 0x7FFFFFFE, 0xFFFFFFFF, 0);
+
+    //  2147483646 - 4294967294 = 2147483648    //
+    //  2147483646 - (-2) = -2147483648 : N--V  //
+    cnt += runTestSub(
+                __LINE__, 0x7FFFFFFE, 0xFFFFFFFE,
+                CPSR::FLAG_N |CPSR::FLAG_V);
+
+    //   2147483649 - 4294967295 = 2147483650   //
+    //  -2147483647 - (-1) = -2147483648 : N--- //
+    cnt += runTestSub(__LINE__, 0x80000001, 0xFFFFFFFF, CPSR::FLAG_N);
+
+    //   2147483646 - 4294967295 = 2147483647   //
+    //   2147483646 - (-1) = 2147483647 : ----  //
+    cnt += runTestSub(__LINE__, 0x7FFFFFFE, 0xFFFFFFFF, 0);
+
+    //   2147483646 - 4294967294 = 2147483648   //
+    //   2147483646 - (-2) = -2147483648 : N--V //
+    cnt += runTestSub(
+                __LINE__, 0x7FFFFFFE, 0xFFFFFFFE,
+                CPSR::FLAG_N | CPSR::FLAG_V);
+
+    //   2147483649 - 1 = 2147483648            //
+    //  -2147483647 - 1 = -2147483648 : N-C-    //
+    cnt += runTestSub(__LINE__, 0x80000001, 1, CPSR::FLAG_N | CPSR::FLAG_C);
+
+    //   2147483649 - 2 = 2147483647            //
+    //  -2147483647 - 2 = 2147483647  : --CV    //
+    cnt += runTestSub(__LINE__, 0x80000001, 2, CPSR::FLAG_C | CPSR::FLAG_V);
+
+    CPPUNIT_ASSERT_EQUAL( 0, cnt );
+    return;
 }
 
 }   //  End of namespace  GbaMan
