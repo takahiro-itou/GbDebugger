@@ -22,6 +22,8 @@
 
 #include    "GbDebugger/GbaMan/MemoryManager.h"
 
+#include    <sstream>
+
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
@@ -271,6 +273,38 @@ writeRegisterHigh(
     return  sprintf(dst, "%s", regNames[regIdx]);
 }
 
+inline  size_t
+writeRegisterList(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src)
+{
+    const  int  regList = (opeCode & 0x00FF);
+    int         flgSep  = 0;
+    std::stringstream   ss;
+
+    for ( int bit = 0; bit < 8; ) {
+        if ( (regList >> bit) & 1 ) {
+            const  int  fr = bit;
+            while ( (regList >> bit) & 1 ) { ++ bit; }
+            const  int  to  = bit - 1;
+            if ( flgSep ) {
+                ss  <<  ',';
+            }
+            ss  <<  regNames[fr];
+            if ( fr != to ) {
+                ss  <<  (fr == to - 1) ? ',' : '-';
+                ss  <<  regNames[to];
+            }
+            flgSep  = 1;
+        } else {
+            ++ bit;
+        }
+    }
+
+    return  sprintf(dst, "%s", ss.str());
+}
+
 //----------------------------------------------------------------
 //  %ou/%os - オフセット。
 //
@@ -391,6 +425,9 @@ DisThumb::writeMnemonic(
             case  'P':
                 len = writePCRelative(
                             opeCode, dst, src, *(this->m_pManMem), gmAddr);
+                break;
+            case  'l':
+                len = writeRegisterList(opeCode, dst, src);
                 break;
             case  'm':
                 len = writeRegisterHigh(opeCode, dst, src, gmAddr);
