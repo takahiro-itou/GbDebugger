@@ -70,7 +70,7 @@ runTestAdd(
         const  RegType  rhs,
         const  RegType  exp)
 {
-    const  RegType  act = setCondAdd(lhs + rhs, lhs, rhs, 0, 0);
+    const  RegType  act = setCondAdd(lhs + rhs, lhs, rhs, 0);
     return  checkFlags(exp, act, nLine);
 }
 
@@ -81,7 +81,7 @@ runTestSub(
         const  RegType  rhs,
         const  RegType  exp)
 {
-    const  RegType  act = setCondSub(lhs - rhs, lhs, rhs, 0, 0);
+    const  RegType  act = setCondSub(lhs - rhs, lhs, rhs, 0);
     return  checkFlags(exp, act, nLine);
 }
 

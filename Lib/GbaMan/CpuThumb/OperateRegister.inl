@@ -93,31 +93,25 @@ CpuThumb::execOperateAddSub(
     switch ( OP ) {
     case  0:    //  ADD Rd, Rs, Rn
         rhs = this->m_cpuRegs[nn].dw;
-        res = lhs + rhs;
-        flg = setCondAdd(res, lhs, rhs, cur);
-        this->m_cpuRegs[rd].dw  = res;
+        flg = setCondAdd((res = lhs + rhs), lhs, rhs, cur);
         break;
     case  1:    //  SUB Rd, Rs, Rn
         rhs = this->m_cpuRegs[nn].dw;
-        res = lhs - rhs;
-        flg = setCondSub(res, lhs, rhs, cur);
-        this->m_cpuRegs[rd].dw  = res;
+        flg = setCondSub((res = lhs - rhs), lhs, rhs, cur);
         break;
     case  2:    //  ADD Rd, Rs, #nn
         rhs = nn;
-        res = lhs + rhs;
-        flg = setCondAdd(res, lhs, rhs, cur);
-        this->m_cpuRegs[rd].dw  = res;
+        flg = setCondAdd((res = lhs + rhs), lhs, rhs, cur);
         break;
     case  3:    //  SUB RD, Rs, #nn
         rhs = nn;
-        res = lhs - rhs;
-        flg = setCondSub(res, lhs, rhs, cur);
-        this->m_cpuRegs[rd].dw  = res;
+        flg = setCondSub((res = lhs - rhs), lhs, rhs, cur);
         break;
     }
 
+    this->m_cpuRegs[rd].dw  = res;
     this->m_cpuRegs[16].dw  = flg;
+
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
