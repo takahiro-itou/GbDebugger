@@ -302,7 +302,7 @@ writeRegisterList(
         }
     }
 
-    return  sprintf(dst, "%s", ss.str());
+    return  sprintf(dst, "%s", ss.str().c_str());
 }
 
 //----------------------------------------------------------------
