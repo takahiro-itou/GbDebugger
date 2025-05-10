@@ -76,6 +76,24 @@
 
 #define     thumb48     &CpuThumb::execStoreLoadRelative<15, 1>
 
+#define     thumbC0     &CpuThumb::execMultipleStore<0>
+#define     thumbC1     &CpuThumb::execMultipleStore<1>
+#define     thumbC2     &CpuThumb::execMultipleStore<2>
+#define     thumbC3     &CpuThumb::execMultipleStore<3>
+#define     thumbC4     &CpuThumb::execMultipleStore<4>
+#define     thumbC5     &CpuThumb::execMultipleStore<5>
+#define     thumbC6     &CpuThumb::execMultipleStore<6>
+#define     thumbC7     &CpuThumb::execMultipleStore<7>
+
+#define     thumbC8     &CpuThumb::execMultipleLoad<0>
+#define     thumbC9     &CpuThumb::execMultipleLoad<1>
+#define     thumbCA     &CpuThumb::execMultipleLoad<2>
+#define     thumbCB     &CpuThumb::execMultipleLoad<3>
+#define     thumbCC     &CpuThumb::execMultipleLoad<4>
+#define     thumbCD     &CpuThumb::execMultipleLoad<5>
+#define     thumbCE     &CpuThumb::execMultipleLoad<6>
+#define     thumbCF     &CpuThumb::execMultipleLoad<7>
+
 #define     thumbD0     &CpuThumb::execConditionalBranch<0>
 #define     thumbD1     &CpuThumb::execConditionalBranch<1>
 #define     thumbD2     &CpuThumb::execConditionalBranch<2>
@@ -146,8 +164,8 @@ CpuThumb::s_thumbInstTable[256] = {
     nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
 
     //  0xC0 -- CF  //
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    thumbC0, thumbC1, thumbC2, thumbC3,   thumbC4, thumbC5, thumbC6, thumbC7,
+    thumbC8, thumbC9, thumbCA, thumbCB,   thumbCC, thumbCD, thumbCE, thumbCF,
 
     //  0xD0 -- DF  //
     thumbD0, thumbD1, thumbD2, thumbD3,   thumbD4, thumbD5, thumbD6, thumbD7,
