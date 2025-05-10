@@ -269,7 +269,7 @@ CpuThumb::execOperateImm(
 
     switch ( OP ) {
     case  0x00:     //  MOV Rd, #nn
-        res = lhs + rhs;
+        res = rhs;
         flg = setCondLogical(res, lhs, rhs, cur);
         this->m_cpuRegs[RD].dw  = res;
         break;
