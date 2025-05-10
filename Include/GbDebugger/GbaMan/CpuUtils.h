@@ -222,7 +222,7 @@ armRorVal(
 
 inline  RegType
 setCondLogical(
-        const  uint64_t res,
+        const  RegType  res,
         const  RegType  lhs,
         const  RegType  rhs,
         const  bool     fout_cy,
@@ -238,10 +238,10 @@ setCondLogical(
 
 inline  RegType
 setCondAdd(
-        const  uint64_t res,
+        const  RegType  res,
         const  RegType  lhs,
         const  RegType  rhs,
-        const  bool     fout_cy,
+        const  bool,
         const  RegType  cur)
 {
     const  RegType  flag_n  = (res & CPSR::FLAG_N);
@@ -258,10 +258,10 @@ setCondAdd(
 
 inline  RegType
 setCondSub(
-        const  uint64_t res,
+        const  RegType  res,
         const  RegType  lhs,
         const  RegType  rhs,
-        const  bool     fout_cy,
+        const  bool,
         const  RegType  cur)
 {
     const  RegType  flag_n  = (res & CPSR::FLAG_N);
