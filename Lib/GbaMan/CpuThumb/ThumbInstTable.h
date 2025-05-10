@@ -26,6 +26,12 @@
 #define     thumb08     &CpuThumb::execBitShift<1>
 #define     thumb10     &CpuThumb::execBitShift<2>
 
+//  ADD Rd, Rs, Rn/#nn
+#define     thumb18     &CpuThumb::execOperateAddSub<0>
+#define     thumb1A     &CpuThumb::execOperateAddSub<1>
+#define     thumb1C     &CpuThumb::execOperateAddSub<2>
+#define     thumb1E     &CpuThumb::execOperateAddSub<3>
+
 //  MOV Rd, #nn
 #define     thumb20     &CpuThumb::execOperateImm<0, 0>
 #define     thumb21     &CpuThumb::execOperateImm<0, 1>
@@ -101,7 +107,7 @@ CpuThumb::s_thumbInstTable[256] = {
 
     //  0x10 -- 1F  //
     thumb10, thumb10, thumb10, thumb10,   thumb10, thumb10, thumb10, thumb10,
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    thumb18, thumb18, thumb1A, thumb1A,   thumb1C, thumb1C, thumb1E, thumb1E,
 
     //  0x20 -- 2F  //
     thumb20, thumb21, thumb22, thumb23,   thumb24, thumb25, thumb26, thumb27,
