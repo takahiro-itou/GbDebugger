@@ -266,7 +266,6 @@ CpuThumb::execOperateImm(
 
     const  RegType  cur = (this->m_cpuRegs[16].dw);
     RegType         flg;
-    const  bool     Cy  = (cur >> CPSR::FBIT_C) & 0x01;
 
     switch ( OP ) {
     case  0x00:     //  MOV Rd, #nn
