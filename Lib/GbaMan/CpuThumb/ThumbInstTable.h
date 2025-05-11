@@ -109,6 +109,9 @@
 #define     thumb80     &CpuThumb::execStoreLoadWithImmOffset<0, uint16_t>
 #define     thumb88     &CpuThumb::execStoreLoadWithImmOffset<1, uint16_t>
 
+#define     thumb90     &CpuThumb::execStoreLoadRelative<13, 0>
+#define     thumb98     &CpuThumb::execStoreLoadRelative<13, 1>
+
 #define     thumbC0     &CpuThumb::execMultipleStore<0>
 #define     thumbC1     &CpuThumb::execMultipleStore<1>
 #define     thumbC2     &CpuThumb::execMultipleStore<2>
@@ -191,8 +194,8 @@ CpuThumb::s_thumbInstTable[256] = {
     thumb88, thumb88, thumb88, thumb88,   thumb88, thumb88, thumb88, thumb88,
 
     //  0x90 -- 9F  //
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    thumb90, thumb90, thumb90, thumb90,   thumb90, thumb90, thumb90, thumb90,
+    thumb98, thumb98, thumb98, thumb98,   thumb98, thumb98, thumb98, thumb98,
 
     //  0xA0 -- AF  //
     nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
