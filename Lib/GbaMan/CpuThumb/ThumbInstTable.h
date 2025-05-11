@@ -120,6 +120,12 @@
 //  ADD  SP, #nn
 #define     thumbB0     &CpuThumb::execOperateSP
 
+//  PUSH
+#define     thumbB4     &CpuThumb::execPushPop<0, -1>
+#define     thumbB5     &CpuThumb::execPushPop<0, 14>
+#define     thumbBC     &CpuThumb::execPushPop<1, -1>
+#define     thumbBD     &CpuThumb::execPushPop<1, 15>
+
 #define     thumbC0     &CpuThumb::execMultipleStore<0>
 #define     thumbC1     &CpuThumb::execMultipleStore<1>
 #define     thumbC2     &CpuThumb::execMultipleStore<2>
@@ -210,8 +216,8 @@ CpuThumb::s_thumbInstTable[256] = {
     thumbA8, thumbA8, thumbA8, thumbA8,   thumbA8, thumbA8, thumbA8, thumbA8,
 
     //  0xB0 -- BF  //
-    thumbB0, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    thumbB0, thumbUI, thumbUI, thumbUI,   thumbB4, thumbB5, thumbUI, thumbUI,
+    thumbUI, thumbUI, thumbUI, thumbUI,   thumbBC, thumbBD, nullptr, thumbUI,
 
     //  0xC0 -- CF  //
     thumbC0, thumbC1, thumbC2, thumbC3,   thumbC4, thumbC5, thumbC6, thumbC7,
