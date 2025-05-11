@@ -22,6 +22,8 @@
 #    define   GBDEBUGGER_GBAMAN_INCLUDED_THUMB_INST_H
 
 
+#define     thumbUI     nullptr
+
 #define     thumb00     &CpuThumb::execBitShift<0>
 #define     thumb08     &CpuThumb::execBitShift<1>
 #define     thumb10     &CpuThumb::execBitShift<2>
@@ -73,6 +75,12 @@
 #define     thumb3F     &CpuThumb::execOperateImm<3, 7>
 
 #define     thumb40     &CpuThumb::execArithmeticLogic
+
+//  High Register.
+#define     thumb44     &CpuThumb::execOperateHighRegister<0>
+#define     thumb45     &CpuThumb::execOperateHighRegister<1>
+#define     thumb46     &CpuThumb::execOperateHighRegister<2>
+#define     thumb47     &CpuThumb::execOperateHighRegister<3>
 
 //  Store/Load
 #define     thumb48     &CpuThumb::execStoreLoadRelative<15, 1>
@@ -146,7 +154,7 @@ CpuThumb::s_thumbInstTable[256] = {
     thumb38, thumb39, thumb3A, thumb3B,   thumb3C, thumb3D, thumb3E, thumb3F,
 
     //  0x40 -- 4F  //
-    thumb40, thumb40, thumb40, thumb40,   nullptr, nullptr, nullptr, nullptr,
+    thumb40, thumb40, thumb40, thumb40,   thumb44, thumb45, thumb46, thumb47,
     thumb48, thumb48, thumb48, thumb48,   thumb48, thumb48, thumb48, thumb48,
 
     //  0x50 -- 5F  //
