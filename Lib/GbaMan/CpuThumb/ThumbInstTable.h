@@ -120,11 +120,13 @@
 //  ADD  SP, #nn
 #define     thumbB0     &CpuThumb::execOperateSP
 
-//  PUSH
+//  PUSH/POP
 #define     thumbB4     &CpuThumb::execPushPop<0, -1>
 #define     thumbB5     &CpuThumb::execPushPop<0, 14>
 #define     thumbBC     &CpuThumb::execPushPop<1, -1>
 #define     thumbBD     &CpuThumb::execPushPop<1, 15>
+
+#define     thumbBE     &CpuThumb::execBreakPoint
 
 #define     thumbC0     &CpuThumb::execMultipleStore<0>
 #define     thumbC1     &CpuThumb::execMultipleStore<1>
@@ -158,6 +160,8 @@
 #define     thumbDB     &CpuThumb::execConditionalBranch<12>
 #define     thumbDC     &CpuThumb::execConditionalBranch<13>
 #define     thumbDD     &CpuThumb::execConditionalBranch<14>
+
+#define     thumbDF     &CpuThumb::execSoftwareInterrupt
 
 #define     thumbE0     &CpuThumb::execUnconditionalBranch
 
@@ -219,7 +223,7 @@ CpuThumb::s_thumbInstTable[256] = {
 
     //  0xB0 -- BF  //
     thumbB0, thumbUI, thumbUI, thumbUI,   thumbB4, thumbB5, thumbUI, thumbUI,
-    thumbUI, thumbUI, thumbUI, thumbUI,   thumbBC, thumbBD, nullptr, thumbUI,
+    thumbUI, thumbUI, thumbUI, thumbUI,   thumbBC, thumbBD, thumbBE, thumbUI,
 
     //  0xC0 -- CF  //
     thumbC0, thumbC1, thumbC2, thumbC3,   thumbC4, thumbC5, thumbC6, thumbC7,
@@ -227,7 +231,7 @@ CpuThumb::s_thumbInstTable[256] = {
 
     //  0xD0 -- DF  //
     thumbD0, thumbD1, thumbD2, thumbD3,   thumbD4, thumbD5, thumbD6, thumbD7,
-    thumbD8, thumbD9, thumbDA, thumbDB,   thumbDC, thumbDD, thumbUI, nullptr,
+    thumbD8, thumbD9, thumbDA, thumbDB,   thumbDC, thumbDD, thumbUI, thumbDF,
 
     //  0xE0 -- EF  //
     thumbE0, thumbE0, thumbE0, thumbE0,   thumbE0, thumbE0, thumbE0, thumbE0,
