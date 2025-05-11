@@ -80,7 +80,7 @@ thumbMnemonics[] = {
     { 0xFF80, 0x4700, "BX  \t%m3+6" },          //  MSBd は 0。Rd は未使用  //
 
     //  Format 06 : ロードストア命令（PC-Relative）。   //
-    { 0xF800, 0x4800, "LDR \t%r8, [PC, #%I{0,255,2}]\t; %P2" },
+    { 0xF800, 0x4800, "LDR \t%r8, [PC, #%I{0,255,2}]\t; %P{0,255,2}" },
 
     //  Format 07 : ロードストア命令。  //
     //  Format 08: ロードストア命令。   //
@@ -109,7 +109,7 @@ thumbMnemonics[] = {
     { 0xF800, 0x9800, "LDR \r%r8, [SP, #%I{0,255,2}]" },
 
     //  Format 12 : アドレッシング。    //
-    { 0xF800, 0xA000, "ADD \t%r8, PC, #%I{0,255,2}" },
+    { 0xF800, 0xA000, "ADD \t%r8, PC, #%I{0,255,2}\t(=%p{0,255,2})" },
     { 0xF800, 0xA800, "ADD \t%r8, SP, #%I{0,255,2}" },
 
     //  Format 13 : SP操作。    //
@@ -152,8 +152,7 @@ thumbMnemonics[] = {
 
     //  Format 19 : サブルーチンコール。    //
     { 0xF800, 0xF000, "BL  \t%L" },
-    { 0xF800, 0xF800, "BLH \t%Z" },
-    { 0xF800, 0xE800, "BLX" },
+    { 0xF800, 0xF800, "BLH \t#%I{0,2047,1}" },
 
     //  Unknown.    //
     { 0x0000, 0x0000, "[ ??? ]" },
@@ -197,7 +196,6 @@ writeLongOffset(
 //  %P  - PC-Relative.
 //
 
-#if 0
 inline  size_t
 writePCRelative(
         const   OpeCode             opeCode,
@@ -205,8 +203,11 @@ writePCRelative(
         const   char  *           & src,
         const   GuestMemoryAddress  gmAddr)
 {
+    const   GuestMemoryAddress  nn  = getUnsignedOffset(opeCode, src);
+    const   GuestMemoryAddress  pos = (gmAddr & ~3) + 4 + nn;
+
+    return  sprintf(dst, "#0x%08x", pos);
 }
-#endif
 
 inline  size_t
 writePCRelativeWithVal(
@@ -471,6 +472,9 @@ DisThumb::writeMnemonic(
                 break;
             case  'o':
                 len = writeOffset(opeCode, dst, src, gmAddr);
+                break;
+            case  'p':
+                len = writePCRelative(opeCode, dst, src, gmAddr);
                 break;
             case  'r':
                 len = writeRegister(opeCode, dst, src, gmAddr);
