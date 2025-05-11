@@ -41,6 +41,17 @@ namespace  {
 
 //----------------------------------------------------------------
 
+template  <int Rs>
+GBD_REGPARM     InstExecResult
+CpuThumb::execAddressingRelative(
+        const  OpeCode  opeCode)
+{
+    std::cerr   <<  "Not Implemented (AddressingRelative)"  <<  std::endl;
+    return ( InstExecResult::UNDEFINED_OPECODE );
+}
+
+//----------------------------------------------------------------
+
 template  <int RB>
 GBD_REGPARM     InstExecResult
 CpuThumb::execMultipleLoad(

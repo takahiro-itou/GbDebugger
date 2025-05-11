@@ -131,6 +131,11 @@ private:
     //    命令の実行を行う関数たち。
     //
 
+    template  <int Rs>
+    GBD_REGPARM     InstExecResult
+    execAddressingRelative(
+            const  OpeCode  opeCode);
+
     GBD_REGPARM     InstExecResult
     execArithmeticLogic(
             const  OpeCode  opeCode);
