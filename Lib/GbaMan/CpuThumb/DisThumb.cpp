@@ -203,7 +203,7 @@ writePCRelative(
         const   char  *           & src,
         const   GuestMemoryAddress  gmAddr)
 {
-    const   GuestMemoryAddress  nn  = getUnsignedOffset(opeCode, src);
+    const   GuestMemoryAddress  nn  = getUnsignedScaleImmediate(opeCode, src);
     const   GuestMemoryAddress  pos = (gmAddr & ~3) + 4 + nn;
 
     return  sprintf(dst, "#0x%08x", pos);
@@ -217,7 +217,7 @@ writePCRelativeWithVal(
         const   MemoryManager     & manMem,
         const   GuestMemoryAddress  gmAddr)
 {
-    const   GuestMemoryAddress  nn  = getUnsignedOffset(opeCode, src);
+    const   GuestMemoryAddress  nn  = getUnsignedScaleImmediate(opeCode, src);
     const   GuestMemoryAddress  pos = (gmAddr & ~3) + 4 + nn;
 
     //  読みだすアドレスが決定的、かつ大抵ロム上。  //
