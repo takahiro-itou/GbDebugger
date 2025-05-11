@@ -391,7 +391,7 @@ DisArm::writeMnemonic(
     char  *         dst = buf;
     char            ch;
 
-    while ( ch = *(src ++) ) {
+    while ( (ch = *(src ++)) ) {
         len = 0;
         if ( ch != '%' ) {
             * (dst ++)  = ch;

@@ -296,7 +296,7 @@ writeRegisterList(
             }
             ss  <<  regNames[fr];
             if ( fr != to ) {
-                ss  <<  (fr == to - 1) ? ',' : '-';
+                ss  <<  ((fr == to - 1) ? ',' : '-');
                 ss  <<  regNames[to];
             }
             flgSep  = 1;
@@ -412,7 +412,7 @@ DisThumb::writeMnemonic(
     char  *         dst = buf;
     char            ch;
 
-    while ( ch = *(src ++) ) {
+    while ( (ch = *(src ++)) ) {
         len = 0;
         if ( ch != '%' ) {
             * (dst ++)  = ch;
