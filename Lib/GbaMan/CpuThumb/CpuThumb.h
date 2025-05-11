@@ -189,6 +189,11 @@ private:
     execStoreLoadWithImmOffset(
             const  OpeCode  opeCode);
 
+    template  <int OP, typename B>
+    GBD_REGPARM     InstExecResult
+    execStoreLoadWithRegOffset(
+            const  OpeCode  opeCode);
+
     //----------------------------------------------------------------
     /**   次の命令をプリフェッチする。
     **

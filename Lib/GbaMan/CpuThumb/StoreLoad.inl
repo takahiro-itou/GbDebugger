@@ -145,6 +145,17 @@ CpuThumb::execStoreLoadWithImmOffset(
     return ( InstExecResult::UNDEFINED_OPECODE );
 }
 
+//----------------------------------------------------------------
+
+template  <int OP, typename B>
+GBD_REGPARM     InstExecResult
+CpuThumb::execStoreLoadWithRegOffset(
+        const  OpeCode  opeCode)
+{
+    std::cerr   <<  "Not Implemented (StoreLoad With RegOffs)"  <<  std::endl;
+    return ( InstExecResult::UNDEFINED_OPECODE );
+}
+
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
 
