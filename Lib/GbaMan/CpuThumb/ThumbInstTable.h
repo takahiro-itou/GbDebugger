@@ -83,7 +83,7 @@
 #define     thumb47     &CpuThumb::execOperateHighRegister<3>
 
 //  Store/Load
-#define     thumb48     &CpuThumb::execStoreLoadRelative<15, 1>
+#define     thumb48     &CpuThumb::execStoreLoadRelative<15, 1, 0xFFFFFFFC>
 
 //  STR  Rd, [Rb, Ro]
 #define     thumb50     &CpuThumb::execStoreLoadWithRegOffset<0, BtWord>
@@ -109,8 +109,8 @@
 #define     thumb80     &CpuThumb::execStoreLoadWithImmOffset<0, uint16_t>
 #define     thumb88     &CpuThumb::execStoreLoadWithImmOffset<1, uint16_t>
 
-#define     thumb90     &CpuThumb::execStoreLoadRelative<13, 0>
-#define     thumb98     &CpuThumb::execStoreLoadRelative<13, 1>
+#define     thumb90     &CpuThumb::execStoreLoadRelative<13, 0, 0xFFFFFFFF>
+#define     thumb98     &CpuThumb::execStoreLoadRelative<13, 1, 0xFFFFFFFF>
 
 //  ADD  Rd, PC, #nn
 #define     thumbA0     &CpuThumb::execAddressingRelative<15>

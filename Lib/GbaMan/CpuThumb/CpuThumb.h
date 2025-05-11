@@ -204,7 +204,7 @@ private:
     execSoftwareInterrupt(
             const  OpeCode  opeCode);
 
-    template  <int Rs, int OP>
+    template  <int Rs, int OP, RegType M>
     GBD_REGPARM     InstExecResult
     execStoreLoadRelative(
             const  OpeCode  opeCode);

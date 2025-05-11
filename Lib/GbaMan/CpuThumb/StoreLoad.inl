@@ -128,7 +128,7 @@ CpuThumb::execPushPop(
 
 //----------------------------------------------------------------
 
-template  <int Rs, int OP>
+template  <int Rs, int OP, RegType M>
 GBD_REGPARM     InstExecResult
 CpuThumb::execStoreLoadRelative(
         const  OpeCode  opeCode)
@@ -136,7 +136,7 @@ CpuThumb::execStoreLoadRelative(
     const  int      rd  = (opeCode >> 8) & 0x07;
     const  OpeCode  nn  = (opeCode & 0x00FF);
 
-    GuestMemoryAddress  gmAddr  = this->m_cpuRegs[Rs].dw + (nn << 2);
+    GuestMemoryAddress  gmAddr  = (this->m_cpuRegs[Rs].dw & M) + (nn << 2);
     char    buf[512];
     LpWriteBuf  ptr = this->m_manMem.getMemoryAddress(gmAddr);
 
