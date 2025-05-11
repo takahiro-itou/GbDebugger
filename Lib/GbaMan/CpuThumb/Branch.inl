@@ -84,6 +84,20 @@ CpuThumb::execBranchLinkLow(
 
 //----------------------------------------------------------------
 
+inline
+GBD_REGPARM     InstExecResult
+CpuThumb::execBreakPoint(
+        const  OpeCode  opeCode)
+{
+    char    buf[512];
+    sprintf(buf, "Hit BKPT! Comment=%02x\n", (opeCode & 0x00FF));
+    std::cerr   <<  buf;
+
+    return ( InstExecResult::SUCCESS_BREAKPOINT );
+}
+
+//----------------------------------------------------------------
+
 template  <int COND>
 GBD_REGPARM     InstExecResult
 CpuThumb::execConditionalBranch(
@@ -114,6 +128,17 @@ CpuThumb::execConditionalBranch(
     }
 
     return ( InstExecResult::SUCCESS_CONTINUE );
+}
+
+//----------------------------------------------------------------
+
+inline
+GBD_REGPARM     InstExecResult
+CpuThumb::execSoftwareInterrupt(
+        const  OpeCode  opeCode)
+{
+    std::cerr   <<  "Not Implemented (SWI)" <<  std::endl;
+    return ( InstExecResult::UNDEFINED_OPECODE );
 }
 
 //----------------------------------------------------------------

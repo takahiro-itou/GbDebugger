@@ -154,6 +154,11 @@ private:
     execBranchLinkLow(
             const  OpeCode  opeCode);
 
+    inline
+    GBD_REGPARM     InstExecResult
+    execBreakPoint(
+            const  OpeCode  opeCode);
+
     template  <int COND>
     GBD_REGPARM     InstExecResult
     execConditionalBranch(
@@ -192,6 +197,11 @@ private:
     template  <int OP, int PCLR>
     GBD_REGPARM     InstExecResult
     execPushPop(
+            const  OpeCode  opeCode);
+
+    inline
+    GBD_REGPARM     InstExecResult
+    execSoftwareInterrupt(
             const  OpeCode  opeCode);
 
     template  <int Rs, int OP>
