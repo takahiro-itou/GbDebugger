@@ -85,6 +85,23 @@
 //  Store/Load
 #define     thumb48     &CpuThumb::execStoreLoadRelative<15, 1>
 
+//  STR  Rd, [Rb, Ro]
+#define     thumb50     &CpuThumb::execStoreLoadWithRegOffset<0, BtWord>
+//  STRH Rd, [Rb, Ro]
+#define     thumb52     &CpuThumb::execStoreLoadWithRegOffset<0, uint16_t>
+//  STRB Rd, [Rb, Ro]
+#define     thumb54     &CpuThumb::execStoreLoadWithRegOffset<0, BtByte>
+//  LDSB Rd, [Rb, Ro]
+#define     thumb56     &CpuThumb::execStoreLoadWithRegOffset<3, BtByte>
+//  LDR  Rd, [Rb, Ro]
+#define     thumb58     &CpuThumb::execStoreLoadWithRegOffset<1, BtWord>
+//  LDRH Rd, [Rb, Ro]
+#define     thumb5A     &CpuThumb::execStoreLoadWithRegOffset<1, uint16_t>
+//  LDRB Rd, [Rb, Ro]
+#define     thumb5C     &CpuThumb::execStoreLoadWithRegOffset<1, BtByte>
+//  LDSG Rd, [Rb, Ro]
+#define     thumb5E     &CpuThumb::execStoreLoadWithRegOffset<3, int16_t>
+
 #define     thumb60     &CpuThumb::execStoreLoadWithImmOffset<0, BtWord>
 #define     thumb68     &CpuThumb::execStoreLoadWithImmOffset<1, BtWord>
 #define     thumb70     &CpuThumb::execStoreLoadWithImmOffset<0, BtByte>
@@ -158,8 +175,8 @@ CpuThumb::s_thumbInstTable[256] = {
     thumb48, thumb48, thumb48, thumb48,   thumb48, thumb48, thumb48, thumb48,
 
     //  0x50 -- 5F  //
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    thumb50, thumb50, thumb52, thumb52,   thumb54, thumb54, thumb56, thumb56,
+    thumb58, thumb58, thumb5A, thumb5A,   thumb5C, thumb5C, thumb5E, thumb5E,
 
     //  0x60 -- 6F  //
     thumb60, thumb60, thumb60, thumb60,   thumb60, thumb60, thumb60, thumb60,
