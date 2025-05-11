@@ -117,6 +117,9 @@
 //  ADD  Rd, SP, #nn
 #define     thumbA8     &CpuThumb::execAddressingRelative<13>
 
+//  ADD  SP, #nn
+#define     thumbB0     &CpuThumb::execOperateSP
+
 #define     thumbC0     &CpuThumb::execMultipleStore<0>
 #define     thumbC1     &CpuThumb::execMultipleStore<1>
 #define     thumbC2     &CpuThumb::execMultipleStore<2>
@@ -207,7 +210,7 @@ CpuThumb::s_thumbInstTable[256] = {
     thumbA8, thumbA8, thumbA8, thumbA8,   thumbA8, thumbA8, thumbA8, thumbA8,
 
     //  0xB0 -- BF  //
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    thumbB0, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
     nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
 
     //  0xC0 -- CF  //
