@@ -209,6 +209,11 @@ private:
     execStoreLoadWithRegOffset(
             const  OpeCode  opeCode);
 
+    inline
+    GBD_REGPARM     InstExecResult
+    execUnconditionalBranch(
+            const  OpeCode  opeCode);
+
     //----------------------------------------------------------------
     /**   次の命令をプリフェッチする。
     **

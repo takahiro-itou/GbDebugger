@@ -39,6 +39,8 @@ namespace  {
 //    Conditional Branch  Instructions.
 //
 
+//----------------------------------------------------------------
+
 inline
 GBD_REGPARM     InstExecResult
 CpuThumb::execBranchLinkHigh(
@@ -67,6 +69,8 @@ CpuThumb::execBranchLinkHigh(
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
+//----------------------------------------------------------------
+
 template  <RegType SE>
 GBD_REGPARM     InstExecResult
 CpuThumb::execBranchLinkLow(
@@ -77,6 +81,8 @@ CpuThumb::execBranchLinkLow(
 
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
+
+//----------------------------------------------------------------
 
 template  <int COND>
 GBD_REGPARM     InstExecResult
@@ -108,6 +114,17 @@ CpuThumb::execConditionalBranch(
     }
 
     return ( InstExecResult::SUCCESS_CONTINUE );
+}
+
+//----------------------------------------------------------------
+
+inline
+GBD_REGPARM     InstExecResult
+CpuThumb::execUnconditionalBranch(
+        const  OpeCode  opeCode)
+{
+    std::cerr   <<  "Not Implemented (Branch)"  <<  std::endl;
+    return ( InstExecResult::UNDEFINED_OPECODE );
 }
 
 }   //  End of namespace  GbaMan
