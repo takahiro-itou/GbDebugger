@@ -78,41 +78,41 @@ thumbMnemonics[] = {
     { 0xFF80, 0x4700, "BX  \t%m3+6" },          //  MSBd は 0。Rd は未使用  //
 
     //  Format 06 : ロードストア命令（PC-Relative）。   //
-    { 0xF800, 0x4800, "LDR\t%r8, [PC, #%n2]\t; %P2" },
+    { 0xF800, 0x4800, "LDR \t%r8, [PC, #%S{0,255,2}]\t; %P2" },
 
     //  Format 07 : ロードストア命令。  //
-    { 0xFE00, 0x5000, "STR" },
-    { 0xFE00, 0x5400, "STRB" },
-    { 0xFE00, 0x5800, "LDR" },
-    { 0xFE00, 0x5C00, "LDRB" },
-
     //  Format 08: ロードストア命令。   //
-    { 0xFE00, 0x5200, "STRH" },
-    { 0xFE00, 0x5600, "LDSB" },
-    { 0xFE00, 0x5A00, "LDRH" },
-    { 0xFE00, 0x5E00, "LDSH" },
+    { 0xFE00, 0x5000, "STR \t%r0, [%r3, %r6]" },
+    { 0xFE00, 0x5400, "STRB\t%r0, [%r3, %r6]" },
+    { 0xFE00, 0x5800, "LDR \t%r0, [%r3, %r6]" },
+    { 0xFE00, 0x5C00, "LDRB\t%r0, [%r3, %r6]" },
+
+    { 0xFE00, 0x5200, "STRH\t%r0, [%r3, %r6]" },
+    { 0xFE00, 0x5600, "LDSB\t%r0, [%r3, %r6]" },
+    { 0xFE00, 0x5A00, "LDRH\t%r0, [%r3, %r6]" },
+    { 0xFE00, 0x5E00, "LDSH\t%r0, [%r3, %r6]" },
 
     //  Format 09 : ロードストア命令。  //
-    { 0xF800, 0x6000, "STR" },
-    { 0xF800, 0x6800, "LDR" },
-    { 0xF800, 0x7000, "STRB" },
-    { 0xF800, 0x7800, "LDRB" },
+    { 0xF800, 0x6000, "STR \t%r0, [%r3, #%S{6,31,2}" },
+    { 0xF800, 0x6800, "LDR \t%r0, [%r3, #%S{6,31,2}" },
+    { 0xF800, 0x7000, "STRB\t%r0, [%r3, #%S{6,31,0}" },
+    { 0xF800, 0x7800, "LDRB\t%r0, [%r3, #%S{6,31,0}" },
 
     //  Format 10: ロードストア命令（ハーフワード）。   //
-    { 0xF800, 0x8000, "STRH" },
-    { 0xF800, 0x8800, "LDRH" },
+    { 0xF800, 0x8000, "STRH\t%r0, [%r3, #%S{6,31,1}" },
+    { 0xF800, 0x8800, "LDRH\t%r0, [%r3, #%S{6,31,1}" },
 
     //  Format 11 : ロードストア命令（SP-Relative）。   //
-    { 0xF800, 0x9000, "STR Rd, [SP, #nn]" },
-    { 0xF800, 0x9800, "LDR Rd, [SP, #nn]" },
+    { 0xF800, 0x9000, "STR \t%r8, [SP, #%S{0,255,2}]" },
+    { 0xF800, 0x9800, "LDR \r%r8, [SP, #%S{0,255,2}]" },
 
     //  Format 12 : アドレッシング。    //
-    { 0xF800, 0xA000, "ADD Rd, PC, #nn" },
-    { 0xF800, 0xA800, "ADD Rd, SP, #nn" },
+    { 0xF800, 0xA000, "ADD \t%r8, PC, #%S{0,255,2}" },
+    { 0xF800, 0xA800, "ADD \t%r8, SP, #%S{0,255,2}" },
 
     //  Format 13 : SP操作。    //
-    { 0xFF80, 0xB000, "ADD SP, #nn" },
-    { 0xFF80, 0xB080, "ADD SP, #-nn" },
+    { 0xFF80, 0xB000, "ADD \tSP, #%S{0,127,2}" },
+    { 0xFF80, 0xB080, "ADD \tSP, #-%S{0,127,2}" },
 
     //  Format 14 : ロードストア命令（スタック）。  //
     { 0xFFFF, 0xB500, "PUSH\t{LR}" },
@@ -146,7 +146,7 @@ thumbMnemonics[] = {
     { 0xFF00, 0xBE00, "BKPT" },
 
     //  Format 18 : 無条件分岐命令。    //
-    { 0xF800, 0xE000, "B" },
+    { 0xF800, 0xE000, "B   \t%p{0,2047,1}" },
 
     //  Format 19 : サブルーチンコール。    //
     { 0xF800, 0xF000, "BL  \t%L" },
@@ -347,6 +347,32 @@ writeUnsignedOffset(
 
 }   //  End of (Unnamed) namespace.
 
+//----------------------------------------------------------------
+
+inline  size_t
+writeUnsignedScaleOffset(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src,
+        GuestMemoryAddress  gmAddr)
+{
+    RegType val = 0;
+    int     dig = 4;
+
+    if ( *(src) == '{' ) {
+        ++  src;
+        const  int  immBit  = readMnemonicParameter(src, 2);
+        ++  src;    //  カンマを読み捨て。      //
+        const  int  immMask = readMnemonicParameter(src, 8);
+        ++  src;    //  カンマを読み捨て。
+        const  int  immSft  = readMnemonicParameter(src, 2);
+        ++  src;    //  末尾の }  を読み捨て。  //
+        val = ((opeCode >> immBit) & immMask) << immSft;
+    }
+
+    return  sprintf(dst, "0x%0*x", dig, val);
+}
+
 
 //========================================================================
 //
@@ -428,6 +454,9 @@ DisThumb::writeMnemonic(
             case  'P':
                 len = writePCRelative(
                             opeCode, dst, src, *(this->m_pManMem), gmAddr);
+                break;
+            case  'S':
+                len = writeUnsignedScaleOffset(opeCode, dst, src, gmAddr);
                 break;
             case  'l':
                 len = writeRegisterList(opeCode, dst, src);
