@@ -22,6 +22,8 @@
 
 #include    "GbDebugger/GbaMan/MemoryManager.h"
 
+#include    "../Utils/DisUtils.inl"
+
 #include    <sstream>
 
 
@@ -195,8 +197,19 @@ writeLongOffset(
 //  %P  - PC-Relative.
 //
 
+#if 0
 inline  size_t
 writePCRelative(
+        const   OpeCode             opeCode,
+        char  *  const              dst,
+        const   char  *           & src,
+        const   GuestMemoryAddress  gmAddr)
+{
+}
+#endif
+
+inline  size_t
+writePCRelativeWithVal(
         const   OpeCode             opeCode,
         char  *  const              dst,
         const   char  *           & src,
@@ -350,25 +363,13 @@ writeUnsignedOffset(
 //----------------------------------------------------------------
 
 inline  size_t
-writeUnsignedScaleOffset(
+writeUnsignedScaleImmediate(
         const   OpeCode     opeCode,
         char  *  const      dst,
-        const  char  *    & src,
-        GuestMemoryAddress  gmAddr)
+        const  char  *    & src)
 {
-    RegType val = 0;
+    RegType val = getUnsignedScaleImmediate(opeCode, src);
     int     dig = 4;
-
-    if ( *(src) == '{' ) {
-        ++  src;
-        const  int  immBit  = readMnemonicParameter(src, 2);
-        ++  src;    //  カンマを読み捨て。      //
-        const  int  immMask = readMnemonicParameter(src, 8);
-        ++  src;    //  カンマを読み捨て。
-        const  int  immSft  = readMnemonicParameter(src, 2);
-        ++  src;    //  末尾の }  を読み捨て。  //
-        val = ((opeCode >> immBit) & immMask) << immSft;
-    }
 
     return  sprintf(dst, "0x%0*x", dig, val);
 }
@@ -452,11 +453,11 @@ DisThumb::writeMnemonic(
                 len = writeLongOffset(opeCode, op2, dst, src, gmAddr);
                 break;
             case  'P':
-                len = writePCRelative(
+                len = writePCRelativeWithVal(
                             opeCode, dst, src, *(this->m_pManMem), gmAddr);
                 break;
             case  'S':
-                len = writeUnsignedScaleOffset(opeCode, dst, src, gmAddr);
+                len = writeUnsignedScaleImmediate(opeCode, dst, src);
                 break;
             case  'l':
                 len = writeRegisterList(opeCode, dst, src);
