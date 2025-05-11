@@ -255,6 +255,17 @@ CpuThumb::execOperateAddSub(
 
 //----------------------------------------------------------------
 
+template  <int OP>
+GBD_REGPARM     InstExecResult
+CpuThumb::execOperateHighRegister(
+        const  OpeCode  opeCode)
+{
+    std::cerr   <<  "Not Implemented (OperateHighRegister)" <<  std::endl;
+    return ( InstExecResult::UNDEFINED_OPECODE );
+}
+
+//----------------------------------------------------------------
+
 template  <int OP, int RD>
 GBD_REGPARM     InstExecResult
 CpuThumb::execOperateImm(

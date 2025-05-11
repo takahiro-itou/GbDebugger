@@ -169,6 +169,11 @@ private:
     execOperateAddSub(
             const  OpeCode  opeCode);
 
+    template  <int OP>
+    GBD_REGPARM     InstExecResult
+    execOperateHighRegister(
+            const  OpeCode  opeCode);
+
     template  <int OP, int RD>
     GBD_REGPARM     InstExecResult
     execOperateImm(
