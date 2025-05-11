@@ -131,27 +131,29 @@ CpuThumb::execPushPop(
 
     if ( OP == 0 ) {
         if ( PCLR >= 0 ) {
+            gmAddr  -= 4;
+
             sprintf(buf, "Write to address %08x from R%d (%08x)",
                     gmAddr, PCLR, this->m_cpuRegs[PCLR].dw);
             std::cerr   <<  buf <<  std::endl;
 
-            * (ptr --)  = this->m_cpuRegs[PCLR].dw;
+            * (-- ptr)  = this->m_cpuRegs[PCLR].dw;
             ++ cnt;
-            gmAddr  -= 4;
         }
         for ( int bit = 7; bit >= 0; -- bit ) {
             if ( (opeCode >> bit) & 1 ) {
+                gmAddr  -= 4;
+
                 sprintf(buf, "Write to address %08x from R%d (%08x)",
                         gmAddr, bit, this->m_cpuRegs[bit].dw);
                 std::cerr   <<  buf <<  std::endl;
 
-                * (ptr --)  = this->m_cpuRegs[bit].dw;
+                * (-- ptr)  = this->m_cpuRegs[bit].dw;
                 ++ cnt;
-                gmAddr  -= 4;
             }
         }
     } else {
-        for ( int bit = 7; bit >= 0; -- bit ) {
+        for ( int bit = 0; bit <= 7; ++ bit ) {
             if ( (opeCode >> bit) & 1 ) {
                 this->m_cpuRegs[bit].dw = *(ptr ++);
 

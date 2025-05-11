@@ -121,7 +121,7 @@ thumbMnemonics[] = {
     { 0xFF00, 0xB400, "PUSH\t{%l}" },
     { 0xFF00, 0xB500, "PUSH\t{%l,LR}" },
     { 0xFFFF, 0xBD00, "POP \t{PC}" },
-    { 0xFF00, 0xBC00, "POP \t{$l}" },
+    { 0xFF00, 0xBC00, "POP \t{%l}" },
     { 0xFF00, 0xBD00, "POP \t{%l,PC}" },
 
     //  Format 15   //
