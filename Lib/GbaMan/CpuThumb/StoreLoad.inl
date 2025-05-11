@@ -163,8 +163,30 @@ GBD_REGPARM     InstExecResult
 CpuThumb::execStoreLoadWithImmOffset(
         const  OpeCode  opeCode)
 {
-    std::cerr   <<  "Not Implemented (StoreLoad With ImmOffs)"  <<  std::endl;
-    return ( InstExecResult::UNDEFINED_OPECODE );
+    const  int      rd  = ((opeCode     ) & 0x07);
+    const  int      rb  = ((opeCode >> 3) & 0x07);
+    const  RegType  nn  = ((opeCode >> 6) & 0x1F);
+
+    char    buf[512];
+
+    GuestMemoryAddress  gmAddr  = this->m_cpuRegs[rb].dw + (sizeof(B) * nn);
+    LpWriteBuf  ptr = this->m_manMem.getMemoryAddress(gmAddr);
+
+    switch ( 0 ) {
+    case  0:        //  STR
+        sprintf(buf, "Write to address %08x from R%d (%08x)",
+                gmAddr, rd, this->m_cpuRegs[rd].dw);
+        *( pointer_cast<B *>(ptr) ) = static_cast<B>(this->m_cpuRegs[rd].dw);
+        break;
+    case  1:        //  LDR
+        this->m_cpuRegs[rd].dw  = *( pointer_cast<B *>(ptr) );
+        sprintf(buf, "Read from address %08x to R%d (%08x)",
+                gmAddr, rd, this->m_cpuRegs[rd].dw);
+        break;
+    }
+    std::cerr   <<  buf <<  std::endl;
+
+    return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
 //----------------------------------------------------------------
