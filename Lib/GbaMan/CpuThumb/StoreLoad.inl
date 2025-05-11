@@ -122,8 +122,60 @@ GBD_REGPARM     InstExecResult
 CpuThumb::execPushPop(
         const  OpeCode  opeCode)
 {
-    std::cerr   <<  "Not Implemented (Push/Pop)"  <<  std::endl;
-    return ( InstExecResult::UNDEFINED_OPECODE );
+    char    buf[512];
+
+    int cnt = 0;
+    GuestMemoryAddress  gmAddr  = (this->m_cpuRegs[RegIdx::R13].dw & ~3);
+    RegType  *  ptr = static_cast<RegType *>(
+            this->m_manMem.getMemoryAddress(gmAddr));
+
+    if ( OP == 0 ) {
+        if ( PCLR >= 0 ) {
+            sprintf(buf, "Write to address %08x from R%d (%08x)",
+                    gmAddr, PCLR, this->m_cpuRegs[PCLR].dw);
+            std::cerr   <<  buf <<  std::endl;
+
+            * (ptr --)  = this->m_cpuRegs[PCLR].dw;
+            ++ cnt;
+            gmAddr  -= 4;
+        }
+        for ( int bit = 7; bit >= 0; -- bit ) {
+            if ( (opeCode >> bit) & 1 ) {
+                sprintf(buf, "Write to address %08x from R%d (%08x)",
+                        gmAddr, bit, this->m_cpuRegs[bit].dw);
+                std::cerr   <<  buf <<  std::endl;
+
+                * (ptr --)  = this->m_cpuRegs[bit].dw;
+                ++ cnt;
+                gmAddr  -= 4;
+            }
+        }
+    } else {
+        for ( int bit = 7; bit >= 0; -- bit ) {
+            if ( (opeCode >> bit) & 1 ) {
+                this->m_cpuRegs[bit].dw = *(ptr ++);
+
+                sprintf(buf, "Read from address %08x to R%d (%08x)",
+                        gmAddr, bit, this->m_cpuRegs[bit].dw);
+                std::cerr   <<  buf <<  std::endl;
+
+                ++ cnt;
+                gmAddr  += 4;
+            }
+        }
+        if ( PCLR >= 0 ) {
+            this->m_cpuRegs[PCLR].dw    = *(ptr ++);
+
+            sprintf(buf, "Read from address %08x to R%d (%08x)",
+                    gmAddr, PCLR, this->m_cpuRegs[PCLR].dw);
+            std::cerr   <<  buf <<  std::endl;
+            ++ cnt;
+            gmAddr  += 4;
+        }
+    }
+    this->m_cpuRegs[RegIdx::R13].dw = gmAddr;
+
+    return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
 //----------------------------------------------------------------
