@@ -163,5 +163,34 @@ CpuThumb::prefetchNext()
             this->m_manMem.readMemory<uint16_t>(this->m_nextPC + 2);
 }
 
+//----------------------------------------------------------------
+//    プログラムカウンタを変更する命令の処理。
+//
+
+GBD_REGPARM     InstExecResult
+CpuThumb::modifyProgramCounter(
+        const  RegType  valNew)
+{
+    if ( !(valNew & 1) ) {
+        //  ARM モードに切り替え。  //
+        this->m_nextPC  = valNew & ~3;
+        this->m_cpuRegs[RegIdx::PC].dw  = (this->m_nextPC + 4);
+
+        this->m_cpuRegs[RegIdx::CPSR].dw  &= ~CPSR::FLAG_T;
+        return ( InstExecResult::UNDEFINED_OPECODE );
+    }
+
+    //  THUMB モード。  //
+    this->m_nextPC  = valNew & ~1;
+    this->m_cpuRegs[RegIdx::PC].dw  = (this->m_nextPC + 2);
+
+    const   LpcReadBuf  ptr =
+        this->m_manMem.getMemoryAddress(this->m_nextPC);
+    prefetchAll<uint16_t>(static_cast<const uint16_t *>(ptr));
+
+    return ( InstExecResult::SUCCESS_CONTINUE );
+}
+
+
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END

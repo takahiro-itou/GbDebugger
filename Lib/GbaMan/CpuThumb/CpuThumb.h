@@ -231,6 +231,14 @@ private:
     void
     prefetchNext();
 
+    //----------------------------------------------------------------
+    /**   プログラムカウンタを変更する命令の処理。
+    **
+    **/
+    GBD_REGPARM     InstExecResult
+    modifyProgramCounter(
+            const  RegType  valNew);
+
 //========================================================================
 //
 //    Member Variables.

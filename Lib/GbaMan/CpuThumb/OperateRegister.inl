@@ -280,7 +280,7 @@ CpuThumb::execOperateHighRegister(
         this->m_cpuRegs[rd].dw  = this->m_cpuRegs[rs].dw;
         break;
     case  3:    //  BX
-        this->m_cpuRegs[RegIdx::PC].dw  = this->m_cpuRegs[rs].dw;
+        modifyProgramCounter(this->m_cpuRegs[rs].dw);
         break;
     }
 
