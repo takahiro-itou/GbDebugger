@@ -35,21 +35,21 @@ namespace  {
 CONSTEXPR_VAR   const  MnemonicMap
 thumbMnemonics[] = {
     //  Format 01 : ビットシフト。  //
-    { 0xF800, 0x0000, "LSL \t%r0, %r3, #%I{6,31}" },
-    { 0xF800, 0x0800, "LSR \t%r0, %r3, #%I{6,31}" },
-    { 0xF800, 0x1000, "ASR \t%r0, %r3, #%I{6,31}" },
+    { 0xF800, 0x0000, "LSL \t%r0, %r3, #%I{6,31,0}" },
+    { 0xF800, 0x0800, "LSR \t%r0, %r3, #%I{6,31,0}" },
+    { 0xF800, 0x1000, "ASR \t%r0, %r3, #%I{6,31,0}" },
 
     //  Format 02 : 加算減算。      //
     { 0xFE00, 0x1800, "ADD \t%r0, %r3, %r6" },
     { 0xFE00, 0x1A00, "SUB \t%r0, %r3, %r6" },
-    { 0xFE00, 0x1C00, "ADD \t%r0, %r3, #%I{6,7}" },
-    { 0xFE00, 0x1E00, "SUB \t%r0, %r3, #%I{6,7}" },
+    { 0xFE00, 0x1C00, "ADD \t%r0, %r3, #%I{6,7,0}" },
+    { 0xFE00, 0x1E00, "SUB \t%r0, %r3, #%I{6,7,0}" },
 
     //  Format 03 : 即値の演算。    //
-    { 0xF800, 0x2000, "MOV \t%r8, #%I{0,255}" },
-    { 0xF800, 0x2800, "CMP \t%r8, #%I{0,255}" },
-    { 0xF800, 0x3000, "ADD \t%r8, #%I{0,255}" },
-    { 0xF800, 0x3800, "SUB \t%r8, #%I{0,255}" },
+    { 0xF800, 0x2000, "MOV \t%r8, #%I{0,255,0}" },
+    { 0xF800, 0x2800, "CMP \t%r8, #%I{0,255,0}" },
+    { 0xF800, 0x3000, "ADD \t%r8, #%I{0,255,0}" },
+    { 0xF800, 0x3800, "SUB \t%r8, #%I{0,255,0}" },
 
     //  Format 04 : 算術演算。      //
     { 0xFFC0, 0x4000, "AND \t%r0, %r3" },
@@ -80,7 +80,7 @@ thumbMnemonics[] = {
     { 0xFF80, 0x4700, "BX  \t%m3+6" },          //  MSBd は 0。Rd は未使用  //
 
     //  Format 06 : ロードストア命令（PC-Relative）。   //
-    { 0xF800, 0x4800, "LDR \t%r8, [PC, #%S{0,255,2}]\t; %P2" },
+    { 0xF800, 0x4800, "LDR \t%r8, [PC, #%I{0,255,2}]\t; %P2" },
 
     //  Format 07 : ロードストア命令。  //
     //  Format 08: ロードストア命令。   //
@@ -95,26 +95,26 @@ thumbMnemonics[] = {
     { 0xFE00, 0x5E00, "LDSH\t%r0, [%r3, %r6]" },
 
     //  Format 09 : ロードストア命令。  //
-    { 0xF800, 0x6000, "STR \t%r0, [%r3, #%S{6,31,2}" },
-    { 0xF800, 0x6800, "LDR \t%r0, [%r3, #%S{6,31,2}" },
-    { 0xF800, 0x7000, "STRB\t%r0, [%r3, #%S{6,31,0}" },
-    { 0xF800, 0x7800, "LDRB\t%r0, [%r3, #%S{6,31,0}" },
+    { 0xF800, 0x6000, "STR \t%r0, [%r3, #%I{6,31,2}" },
+    { 0xF800, 0x6800, "LDR \t%r0, [%r3, #%I{6,31,2}" },
+    { 0xF800, 0x7000, "STRB\t%r0, [%r3, #%I{6,31,0}" },
+    { 0xF800, 0x7800, "LDRB\t%r0, [%r3, #%I{6,31,0}" },
 
     //  Format 10: ロードストア命令（ハーフワード）。   //
-    { 0xF800, 0x8000, "STRH\t%r0, [%r3, #%S{6,31,1}" },
-    { 0xF800, 0x8800, "LDRH\t%r0, [%r3, #%S{6,31,1}" },
+    { 0xF800, 0x8000, "STRH\t%r0, [%r3, #%I{6,31,1}" },
+    { 0xF800, 0x8800, "LDRH\t%r0, [%r3, #%I{6,31,1}" },
 
     //  Format 11 : ロードストア命令（SP-Relative）。   //
-    { 0xF800, 0x9000, "STR \t%r8, [SP, #%S{0,255,2}]" },
-    { 0xF800, 0x9800, "LDR \r%r8, [SP, #%S{0,255,2}]" },
+    { 0xF800, 0x9000, "STR \t%r8, [SP, #%I{0,255,2}]" },
+    { 0xF800, 0x9800, "LDR \r%r8, [SP, #%I{0,255,2}]" },
 
     //  Format 12 : アドレッシング。    //
-    { 0xF800, 0xA000, "ADD \t%r8, PC, #%S{0,255,2}" },
-    { 0xF800, 0xA800, "ADD \t%r8, SP, #%S{0,255,2}" },
+    { 0xF800, 0xA000, "ADD \t%r8, PC, #%I{0,255,2}" },
+    { 0xF800, 0xA800, "ADD \t%r8, SP, #%I{0,255,2}" },
 
     //  Format 13 : SP操作。    //
-    { 0xFF80, 0xB000, "ADD \tSP, #%S{0,127,2}" },
-    { 0xFF80, 0xB080, "ADD \tSP, #-%S{0,127,2}" },
+    { 0xFF80, 0xB000, "ADD \tSP, #%I{0,127,2}" },
+    { 0xFF80, 0xB080, "ADD \tSP, #-%I{0,127,2}" },
 
     //  Format 14 : ロードストア命令（スタック）。  //
     { 0xFFFF, 0xB500, "PUSH\t{LR}" },
@@ -225,6 +225,8 @@ writePCRelativeWithVal(
     return  sprintf(dst, "[#0x%08x] (=#0x%08x)", pos, val);
 }
 
+#if 0
+
 //----------------------------------------------------------------
 //  %I{bit,msk} - Immediate.
 //  bit : オペコードのどのビットから即値を読みだすか
@@ -252,6 +254,8 @@ writeImmediate(
 
     return  sprintf(dst, "0x%0*x", dig, val);
 }
+
+#endif
 
 //----------------------------------------------------------------
 //  %rx - Register.
@@ -447,7 +451,7 @@ DisThumb::writeMnemonic(
             ch  = *(src ++);
             switch ( ch ) {
             case  'I':
-                len = writeImmediate(opeCode, dst, src, gmAddr);
+                len = writeUnsignedScaleImmediate(opeCode, dst, src);
                 break;
             case  'L':
                 len = writeLongOffset(opeCode, op2, dst, src, gmAddr);
@@ -455,9 +459,6 @@ DisThumb::writeMnemonic(
             case  'P':
                 len = writePCRelativeWithVal(
                             opeCode, dst, src, *(this->m_pManMem), gmAddr);
-                break;
-            case  'S':
-                len = writeUnsignedScaleImmediate(opeCode, dst, src);
                 break;
             case  'l':
                 len = writeRegisterList(opeCode, dst, src);
