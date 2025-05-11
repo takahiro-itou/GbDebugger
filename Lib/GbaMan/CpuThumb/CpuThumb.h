@@ -189,6 +189,11 @@ private:
     execOperateSP(
             const  OpeCode  opeCode);
 
+    template  <int OP, int PCLR>
+    GBD_REGPARM     InstExecResult
+    execPushPop(
+            const  OpeCode  opeCode);
+
     template  <int Rs, int OP>
     GBD_REGPARM     InstExecResult
     execStoreLoadRelative(

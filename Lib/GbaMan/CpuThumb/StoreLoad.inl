@@ -117,6 +117,17 @@ CpuThumb::execMultipleStore(
 
 //----------------------------------------------------------------
 
+template  <int OP, int PCLR>
+GBD_REGPARM     InstExecResult
+CpuThumb::execPushPop(
+        const  OpeCode  opeCode)
+{
+    std::cerr   <<  "Not Implemented (Push/Pop)"  <<  std::endl;
+    return ( InstExecResult::UNDEFINED_OPECODE );
+}
+
+//----------------------------------------------------------------
+
 template  <int Rs, int OP>
 GBD_REGPARM     InstExecResult
 CpuThumb::execStoreLoadRelative(
