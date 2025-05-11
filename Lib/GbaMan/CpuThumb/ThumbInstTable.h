@@ -159,6 +159,8 @@
 #define     thumbDC     &CpuThumb::execConditionalBranch<13>
 #define     thumbDD     &CpuThumb::execConditionalBranch<14>
 
+#define     thumbE0     &CpuThumb::execUnconditionalBranch
+
 #define     thumbF0     &CpuThumb::execBranchLinkLow<0>
 #define     thumbF4     &CpuThumb::execBranchLinkLow<0xFF800000>
 #define     thumbF8     &CpuThumb::execBranchLinkHigh
@@ -225,11 +227,11 @@ CpuThumb::s_thumbInstTable[256] = {
 
     //  0xD0 -- DF  //
     thumbD0, thumbD1, thumbD2, thumbD3,   thumbD4, thumbD5, thumbD6, thumbD7,
-    thumbD8, thumbD9, thumbDA, thumbDB,   thumbDC, thumbDD, nullptr, nullptr,
+    thumbD8, thumbD9, thumbDA, thumbDB,   thumbDC, thumbDD, thumbUI, nullptr,
 
     //  0xE0 -- EF  //
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    thumbE0, thumbE0, thumbE0, thumbE0,   thumbE0, thumbE0, thumbE0, thumbE0,
+    nullptr, thumbUI, thumbUI, thumbUI,   thumbUI, thumbUI, thumbUI, thumbUI,
 
     //  0xF0 -- FF  //
     thumbF0, thumbF0, thumbF0, thumbF0,   thumbF4, thumbF4, thumbF4, thumbF4,
