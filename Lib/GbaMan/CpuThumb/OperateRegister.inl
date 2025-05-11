@@ -260,8 +260,31 @@ GBD_REGPARM     InstExecResult
 CpuThumb::execOperateHighRegister(
         const  OpeCode  opeCode)
 {
-    std::cerr   <<  "Not Implemented (OperateHighRegister)" <<  std::endl;
-    return ( InstExecResult::UNDEFINED_OPECODE );
+    const  int  rd  = ((opeCode >> 4) & 0x08) | (opeCode & 0x07);
+    const  int  rs  = ((opeCode >> 3) & 0x0F);
+
+    switch ( OP ) {
+    case  0:    //  ADD
+        this->m_cpuRegs[rd].dw  += this->m_cpuRegs[rs].dw;
+        break;
+    case  1:    //  CMP
+    {
+        RegType flg = this->m_cpuRegs[RegIdx::CPSR].dw;
+        const  RegType  lhs = this->m_cpuRegs[rd].dw;
+        const  RegType  rhs = this->m_cpuRegs[rs].dw;
+        const  RegType  res = lhs - rhs;
+        this->m_cpuRegs[RegIdx::CPSR].dw = setCondSub(res, lhs, rhs, flg);
+    }
+        break;
+    case  2:    //  MOV
+        this->m_cpuRegs[rd].dw  = this->m_cpuRegs[rs].dw;
+        break;
+    case  3:    //  BX
+        this->m_cpuRegs[RegIdx::PC].dw  = this->m_cpuRegs[rs].dw;
+        break;
+    }
+
+    return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
 //----------------------------------------------------------------
