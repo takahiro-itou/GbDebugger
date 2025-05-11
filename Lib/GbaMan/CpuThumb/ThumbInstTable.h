@@ -112,6 +112,11 @@
 #define     thumb90     &CpuThumb::execStoreLoadRelative<13, 0>
 #define     thumb98     &CpuThumb::execStoreLoadRelative<13, 1>
 
+//  ADD  Rd, PC, #nn
+#define     thumbA0     &CpuThumb::execAddressingRelative<15>
+//  ADD  Rd, SP, #nn
+#define     thumbA8     &CpuThumb::execAddressingRelative<13>
+
 #define     thumbC0     &CpuThumb::execMultipleStore<0>
 #define     thumbC1     &CpuThumb::execMultipleStore<1>
 #define     thumbC2     &CpuThumb::execMultipleStore<2>
@@ -198,8 +203,8 @@ CpuThumb::s_thumbInstTable[256] = {
     thumb98, thumb98, thumb98, thumb98,   thumb98, thumb98, thumb98, thumb98,
 
     //  0xA0 -- AF  //
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    thumbA0, thumbA0, thumbA0, thumbA0,   thumbA0, thumbA0, thumbA0, thumbA0,
+    thumbA8, thumbA8, thumbA8, thumbA8,   thumbA8, thumbA8, thumbA8, thumbA8,
 
     //  0xB0 -- BF  //
     nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
