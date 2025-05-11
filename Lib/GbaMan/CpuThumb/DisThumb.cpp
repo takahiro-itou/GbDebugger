@@ -347,6 +347,7 @@ writeOffset(
     return  sprintf(dst, "#0x%08x ; (0x%08x)", ofs, gmAddr + 4 + ofs);
 }
 
+#if 0
 //----------------------------------------------------------------
 //  %nxx - 符号なしオフセット。
 //
@@ -363,7 +364,7 @@ writeUnsignedOffset(
     return  sprintf(dst, "0x%0*x", dig, nn);
 }
 
-}   //  End of (Unnamed) namespace.
+#endif
 
 //----------------------------------------------------------------
 
@@ -378,6 +379,8 @@ writeUnsignedScaleImmediate(
 
     return  sprintf(dst, "0x%0*x", dig, val);
 }
+
+}   //  End of (Unnamed) namespace.
 
 
 //========================================================================
@@ -466,9 +469,6 @@ DisThumb::writeMnemonic(
                 break;
             case  'm':
                 len = writeRegisterHigh(opeCode, dst, src, gmAddr);
-                break;
-            case  'n':
-                len = writeUnsignedOffset(opeCode, dst, src, gmAddr);
                 break;
             case  'o':
                 len = writeOffset(opeCode, dst, src, gmAddr);
