@@ -74,7 +74,15 @@
 
 #define     thumb40     &CpuThumb::execArithmeticLogic
 
+//  Store/Load
 #define     thumb48     &CpuThumb::execStoreLoadRelative<15, 1>
+
+#define     thumb60     &CpuThumb::execStoreLoadWithImmOffset<0, BtWord>
+#define     thumb68     &CpuThumb::execStoreLoadWithImmOffset<1, BtWord>
+#define     thumb70     &CpuThumb::execStoreLoadWithImmOffset<0, BtByte>
+#define     thumb78     &CpuThumb::execStoreLoadWithImmOffset<1, BtByte>
+#define     thumb80     &CpuThumb::execStoreLoadWithImmOffset<0, uint16_t>
+#define     thumb88     &CpuThumb::execStoreLoadWithImmOffset<1, uint16_t>
 
 #define     thumbC0     &CpuThumb::execMultipleStore<0>
 #define     thumbC1     &CpuThumb::execMultipleStore<1>
@@ -141,25 +149,31 @@ CpuThumb::s_thumbInstTable[256] = {
     thumb40, thumb40, thumb40, thumb40,   nullptr, nullptr, nullptr, nullptr,
     thumb48, thumb48, thumb48, thumb48,   thumb48, thumb48, thumb48, thumb48,
 
+    //  0x50 -- 5F  //
     nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
     nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    //  0x60 -- 6F  //
+    thumb60, thumb60, thumb60, thumb60,   thumb60, thumb60, thumb60, thumb60,
+    thumb68, thumb68, thumb68, thumb68,   thumb68, thumb68, thumb68, thumb68,
 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    //  0x70 -- 7F  //
+    thumb70, thumb70, thumb70, thumb70,   thumb70, thumb70, thumb70, thumb70,
+    thumb78, thumb78, thumb78, thumb78,   thumb78, thumb78, thumb78, thumb78,
 
     //  0x80 -- 8F  //
+    thumb80, thumb80, thumb80, thumb80,   thumb80, thumb80, thumb80, thumb80,
+    thumb88, thumb88, thumb88, thumb88,   thumb88, thumb88, thumb88, thumb88,
+
+    //  0x90 -- 9F  //
     nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
     nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
 
+    //  0xA0 -- AF  //
     nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
     nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
-
+    //  0xB0 -- BF  //
     nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
     nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
 
