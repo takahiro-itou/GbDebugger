@@ -304,6 +304,17 @@ CpuThumb::execOperateImm(
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
+//----------------------------------------------------------------
+
+inline
+GBD_REGPARM     InstExecResult
+CpuThumb::execOperateSP(
+        const  OpeCode  opeCode)
+{
+    std::cerr   <<  "Not Implemented (OperateSP)"   <<  std::endl;
+    return ( InstExecResult::UNDEFINED_OPECODE );
+}
+
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
 

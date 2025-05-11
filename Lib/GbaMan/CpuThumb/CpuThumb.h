@@ -184,6 +184,11 @@ private:
     execOperateImm(
             const  OpeCode  opeCode);
 
+    inline
+    GBD_REGPARM     InstExecResult
+    execOperateSP(
+            const  OpeCode  opeCode);
+
     template  <int Rs, int OP>
     GBD_REGPARM     InstExecResult
     execStoreLoadRelative(
