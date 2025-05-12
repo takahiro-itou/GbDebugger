@@ -79,14 +79,18 @@ armStrLdrInstruction(
 
     if ( OP == 0 ) {
         //  STR 命令。  //
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
         sprintf(buf, "Write to address %08x from R%d (%08x)",
                 gmAddr, rd, cpuRegs[rd].dw);
+#endif
         *( pointer_cast<B *>(ptr) ) = static_cast<B>(cpuRegs[rd].dw);
     } else {
         //  LDR 命令。  //
         cpuRegs[rd].dw  = *( pointer_cast<B *>(ptr) );
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
         sprintf(buf, "Read from address %08x to R%d (%08x)",
                 gmAddr, rd, cpuRegs[rd].dw);
+#endif
     }
     std::cerr   <<  buf <<  std::endl;
 
@@ -161,11 +165,13 @@ CpuArm::execStrLdrInstruction(
         ((opeCode >> 18) & 0x00FC) | ((opeCode >> 5) & 0x03);
     FnStrLdrInst    pfInst  = g_armStrLdrInstTable[idx];
 
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
     char    buf[512];
     sprintf(buf,
             "opeCode = %08x, idx = %03x, pfInst = %p\n",
             opeCode, idx, pfInst);
     std::cerr   <<  buf;
+#endif
 
     if ( pfInst == nullptr ) {
         return ( InstExecResult::UNDEFINED_OPECODE );

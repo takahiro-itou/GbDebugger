@@ -47,6 +47,7 @@ armALUInstruction(
     //  結果を格納するレジスタはビット 12..15 で指定。  //
     const  int      dst = (opeCode >> 12) & 0x0F;
 
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
     char    buf[512];
 #if defined( __GNUC__ )
     std::cerr   <<  __PRETTY_FUNCTION__ <<  std::endl;
@@ -61,6 +62,7 @@ armALUInstruction(
             opeCode, dst);
     std::cerr   <<  buf;
     assert( SHIFTOP::SHIFTW_REG == BIT4 );
+#endif
 
     //  第一オペランドレジスタはビット 16..19 で指定。  //
     const  RegType  lhs = cpuRegs[(opeCode >> 16) & 0x0F].dw;
@@ -302,11 +304,13 @@ CpuArm::execALUInstruction(
         ((opeCode >> 17) & 0x01F8) | ((opeCode >> 4) & 0x07);
     FnALUInst   pfInst  = g_armALUInstTable[idx];
 
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
     char    buf[512];
     sprintf(buf,
             "opeCode = %08x, idx = %03x, pfInst = %p\n",
             opeCode, idx, pfInst);
     std::cerr   <<  buf;
+#endif
 
     return  (* pfInst)(opeCode, mog_cpuRegs, mog_cpuRegs[16].dw);
 }
