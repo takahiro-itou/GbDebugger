@@ -128,7 +128,9 @@ GBD_REGPARM     InstExecResult
 CpuThumb::execPushPop(
         const  OpeCode  opeCode)
 {
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
     char    buf[512];
+#endif
 
     int cnt = 0;
     GuestMemoryAddress  gmAddr  = (mog_cpuRegs[RegIdx::R13].dw & ~3);
@@ -139,10 +141,11 @@ CpuThumb::execPushPop(
         if ( PCLR >= 0 ) {
             gmAddr  -= 4;
 
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
             sprintf(buf, "Write to address %08x from R%d (%08x)",
                     gmAddr, PCLR, mog_cpuRegs[PCLR].dw);
             std::cerr   <<  buf <<  std::endl;
-
+#endif
             * (-- ptr)  = mog_cpuRegs[PCLR].dw;
             ++ cnt;
         }
@@ -150,10 +153,11 @@ CpuThumb::execPushPop(
             if ( (opeCode >> bit) & 1 ) {
                 gmAddr  -= 4;
 
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
                 sprintf(buf, "Write to address %08x from R%d (%08x)",
                         gmAddr, bit, mog_cpuRegs[bit].dw);
                 std::cerr   <<  buf <<  std::endl;
-
+#endif
                 * (-- ptr)  = mog_cpuRegs[bit].dw;
                 ++ cnt;
             }
@@ -163,10 +167,11 @@ CpuThumb::execPushPop(
             if ( (opeCode >> bit) & 1 ) {
                 mog_cpuRegs[bit].dw = *(ptr ++);
 
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
                 sprintf(buf, "Read from address %08x to R%d (%08x)",
                         gmAddr, bit, mog_cpuRegs[bit].dw);
                 std::cerr   <<  buf <<  std::endl;
-
+#endif
                 ++ cnt;
                 gmAddr  += 4;
             }
@@ -174,9 +179,11 @@ CpuThumb::execPushPop(
         if ( PCLR >= 0 ) {
             mog_cpuRegs[PCLR].dw    = *(ptr ++);
 
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
             sprintf(buf, "Read from address %08x to R%d (%08x)",
                     gmAddr, PCLR, mog_cpuRegs[PCLR].dw);
             std::cerr   <<  buf <<  std::endl;
+#endif
             ++ cnt;
             gmAddr  += 4;
         }
@@ -196,22 +203,30 @@ CpuThumb::execStoreLoadRelative(
     const  int      rd  = (opeCode >> 8) & 0x07;
     const  OpeCode  nn  = (opeCode & 0x00FF);
 
-    GuestMemoryAddress  gmAddr  = (mog_cpuRegs[Rs].dw & M) + (nn << 2);
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
     char    buf[512];
+#endif
+
+    GuestMemoryAddress  gmAddr  = (mog_cpuRegs[Rs].dw & M) + (nn << 2);
     LpWriteBuf  ptr = this->m_manMem.getMemoryAddress(gmAddr);
 
     if ( OP == 0 ) {
         //  STR 命令。  //
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
         sprintf(buf, "Write to address %08x from R%d (%08x)",
                 gmAddr, rd, mog_cpuRegs[rd].dw);
+        std::cerr   <<  buf <<  std::endl;
+#endif
         *( pointer_cast<RegType *>(ptr) ) = (mog_cpuRegs[rd].dw);
     } else {
         //  LDR 命令。  //
         mog_cpuRegs[rd].dw  = *( pointer_cast<const RegType *>(ptr) );
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
         sprintf(buf, "Read from address %08x to R%d (%08x)",
                 gmAddr, rd, mog_cpuRegs[rd].dw);
+        std::cerr   <<  buf <<  std::endl;
+#endif
     }
-    std::cerr   <<  buf <<  std::endl;
 
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
@@ -227,24 +242,32 @@ CpuThumb::execStoreLoadWithImmOffset(
     const  int      rb  = ((opeCode >> 3) & 0x07);
     const  RegType  nn  = ((opeCode >> 6) & 0x1F);
 
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
     char    buf[512];
+#endif
 
     GuestMemoryAddress  gmAddr  = mog_cpuRegs[rb].dw + (sizeof(B) * nn);
     LpWriteBuf  ptr = this->m_manMem.getMemoryAddress(gmAddr);
 
     switch ( 0 ) {
     case  0:        //  STR
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
         sprintf(buf, "Write to address %08x from R%d (%08x)",
                 gmAddr, rd, mog_cpuRegs[rd].dw);
+        std::cerr   <<  buf <<  std::endl;
+#endif
         *( pointer_cast<B *>(ptr) ) = static_cast<B>(mog_cpuRegs[rd].dw);
+
         break;
     case  1:        //  LDR
         mog_cpuRegs[rd].dw  = *( pointer_cast<B *>(ptr) );
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
         sprintf(buf, "Read from address %08x to R%d (%08x)",
                 gmAddr, rd, mog_cpuRegs[rd].dw);
+        std::cerr   <<  buf <<  std::endl;
+#endif
         break;
     }
-    std::cerr   <<  buf <<  std::endl;
 
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
