@@ -57,7 +57,9 @@ GBD_REGPARM     InstExecResult
 CpuThumb::execMultipleLoad(
         const  OpeCode  opeCode)
 {
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
     char    buf[512];
+#endif
 
     int cnt = 0;
     GuestMemoryAddress  gmAddr  = mog_cpuRegs[RB].dw;
@@ -68,10 +70,11 @@ CpuThumb::execMultipleLoad(
         if ( (opeCode >> bit) & 1 ) {
             mog_cpuRegs[bit].dw = * (ptr ++);
 
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
             sprintf(buf, "Read from address %08x to R%d (%08x)",
                     gmAddr, bit, mog_cpuRegs[bit].dw);
             std::cerr   <<  buf <<  std::endl;
-
+#endif
             ++ cnt;
             gmAddr  += 4;
             if ( bit == RB ) {
@@ -92,7 +95,9 @@ GBD_REGPARM     InstExecResult
 CpuThumb::execMultipleStore(
         const  OpeCode  opeCode)
 {
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
     char    buf[512];
+#endif
 
     int cnt = 0;
     GuestMemoryAddress  gmAddr  = mog_cpuRegs[RB].dw;
@@ -101,10 +106,11 @@ CpuThumb::execMultipleStore(
 
     for ( int bit = 0; bit < 8; ++ bit ) {
         if ( (opeCode >> bit) & 1 ) {
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
             sprintf(buf, "Write to address %08x from R%d (%08x)",
                     gmAddr, bit, mog_cpuRegs[bit].dw);
             std::cerr   <<  buf <<  std::endl;
-
+#endif
             * (ptr ++)  = mog_cpuRegs[bit].dw;
             ++ cnt;
             gmAddr  += 4;
