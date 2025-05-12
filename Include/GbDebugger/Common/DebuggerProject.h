@@ -41,7 +41,7 @@
 
 //  デバッグプリント
 #if defined( _DEBUG )
-#    define     GBDEBUGGER_ENABLE_TRACELOG
+#    define     GBDEBUGGER_ENABLE_TRACELOG      1
 #else
 #    undef      GBDEBUGGER_ENABLE_TRACELOG
 #endif
