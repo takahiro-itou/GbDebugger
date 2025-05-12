@@ -334,8 +334,10 @@ GBD_REGPARM     InstExecResult
 CpuThumb::execOperateSP(
         const  OpeCode  opeCode)
 {
-    std::cerr   <<  "Not Implemented (OperateSP)"   <<  std::endl;
-    return ( InstExecResult::UNDEFINED_OPECODE );
+    const   GuestMemoryAddress  nn  = (opeCode << 2) & 0x01FF;
+    mog_cpuRegs[RegIdx::SP].dw  += ((opeCode & 0x0080) ? -nn : nn);
+
+    return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
 }   //  End of namespace  GbaMan

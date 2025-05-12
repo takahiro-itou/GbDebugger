@@ -82,7 +82,8 @@ struct  RegIdx  {
         R11     = 11,
         R12     = 12,
         R13     = 13,
-        R14     = 14,
+        SP      = 13,
+        LR      = 14,
         PC      = 15,
         CPSR    = 16,
 
