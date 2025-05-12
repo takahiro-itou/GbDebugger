@@ -43,6 +43,19 @@ class   GbaManager;
 class   MemoryManager;
 
 
+#if defined( GBDEBUGGER_USE_GLOBALS )
+
+extern  RegBank     cpuRegs;
+
+extern  bool        busPrefetch;
+extern  bool        busPrefetchEnable;
+extern  uint32_t    busPrefetchCount;
+
+extern  int         clockTicks;
+extern  int         cpuTotalTicks;
+
+#endif
+
 //========================================================================
 //
 //    BaseCpuCore  class.
@@ -212,8 +225,16 @@ protected:
     /**   メモリマネージャ。    **/
     MemoryManager  &        m_manMem;
 
+#if !defined( GBDEBUGGER_USE_GLOBALS )
     /**   レジスタ。            **/
     RegBank                 m_cpuRegs;
+
+    bool                    busPrefetch;
+    bool                    busPrefetchEnable;
+    uint32_t                busPrefetchCount;
+    int                     cpuTotalTicks;
+    int                     clockTicks;
+#endif
 
     /**   次の命令のアドレス。  **/
     GuestMemoryAddress      m_nextPC;
