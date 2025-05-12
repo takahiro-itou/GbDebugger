@@ -89,12 +89,12 @@ CpuArm::executeNextInst()
     const  OpeCode  opeCode = this->m_prefOpeCodes[0];
     this->m_prefOpeCodes[0] = this->m_prefOpeCodes[1];
 
-    this->m_nextPC  = this->m_cpuRegs[15].dw;
-    this->m_cpuRegs[15].dw  += 4;
+    this->m_nextPC  = mog_cpuRegs[RegIdx::PC].dw;
+    mog_cpuRegs[RegIdx::PC].dw  += 4;
     prefetchNext();
 
     const  OpeCode  opCond  = (opeCode >> 28) & 0x0F;
-    const  RegType  flg  = (this->m_cpuRegs[16].dw >> 28) & 0x0F;
+    const  RegType  flg  = (mog_cpuRegs[RegIdx::CPSR].dw >> 28) & 0x0F;
     const  bool  condResult = g_condTable[opCond][flg];
 
     sprintf(buf,

@@ -51,19 +51,19 @@ CpuArm::execArm121_BX(
     }
 
     const  OpeCode  rn  = (opeCode & 0x0F);
-    const  RegType  dx  = (this->m_cpuRegs[rn].dw);
+    const  RegType  dx  = (mog_cpuRegs[rn].dw);
     const  RegType  cm  = (dx << 5) & CPSR::FLAG_T;
 
     if ( cm ) {
         //  THUMB モード。  //
         this->m_nextPC  = dx & ~1;
-        this->m_cpuRegs[RegIdx::PC].dw  = (this->m_nextPC + 2);
+        mog_cpuRegs[RegIdx::PC].dw  = (this->m_nextPC + 2);
     } else {
         this->m_nextPC  = dx & ~3;
-        this->m_cpuRegs[RegIdx::PC].dw  = (this->m_nextPC + 4);
+        mog_cpuRegs[RegIdx::PC].dw  = (this->m_nextPC + 4);
     }
-    this->m_cpuRegs[RegIdx::CPSR].dw  &= ~CPSR::FLAG_T;
-    this->m_cpuRegs[RegIdx::CPSR].dw  |=  cm;
+    mog_cpuRegs[RegIdx::CPSR].dw    &= ~CPSR::FLAG_T;
+    mog_cpuRegs[RegIdx::CPSR].dw    |=  cm;
     this->m_manGba.changeCpuMode(cm);
 
     return ( InstExecResult::SUCCESS_CONTINUE );
@@ -86,13 +86,13 @@ CpuArm::execArmAxx_B(
     //  ofs <<= 2;
     int32_t ofs = (static_cast<int32_t>(opeCode & 0x00FFFFFF) << 8) >> 6;
 
-    this->m_nextPC  = this->m_cpuRegs[15].dw  += ofs;
+    this->m_nextPC  = mog_cpuRegs[15].dw  += ofs;
 
     //  プリフェッチを行う。    //
     prefetchAll();
 
     //  プリフェッチによりカウンタが１命令分進む。  //
-    this->m_cpuRegs[15].dw  += 4;
+    mog_cpuRegs[RegIdx::PC].dw  += 4;
 
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
@@ -107,7 +107,7 @@ GBD_REGPARM     InstExecResult
 CpuArm::execArmBxx_BL(
         const  OpeCode  opeCode)
 {
-    this->m_cpuRegs[14].dw  = this->m_cpuRegs[15].dw - 4;
+    mog_cpuRegs[14].dw  = mog_cpuRegs[15].dw - 4;
     return  execArmAxx_B(opeCode);
 }
 

@@ -308,7 +308,7 @@ CpuArm::execALUInstruction(
             opeCode, idx, pfInst);
     std::cerr   <<  buf;
 
-    return  (* pfInst)(opeCode, this->m_cpuRegs, this->m_cpuRegs[16].dw);
+    return  (* pfInst)(opeCode, mog_cpuRegs, mog_cpuRegs[16].dw);
 }
 
 //========================================================================

@@ -69,7 +69,7 @@ CpuArm::execArm100_MsrCpsr(
     if ( UNLIKELY((opeCode & 0x0FFF0FFF) != 0x010F0FFF) ) {
         return ( InstExecResult::UNDEFINED_OPECODE );
     }
-    this->m_cpuRegs[(opeCode >> 12) & 0x0F].dw  = this->m_cpuRegs[16].dw;
+    mog_cpuRegs[(opeCode >> 12) & 0x0F].dw  = mog_cpuRegs[16].dw;
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
@@ -80,7 +80,7 @@ CpuArm::execArm140_MsrSpsr(
     if ( UNLIKELY((opeCode & 0x0FFF0FFF) != 0x014F0FFF) ) {
         return ( InstExecResult::UNDEFINED_OPECODE );
     }
-    this->m_cpuRegs[(opeCode >> 12) & 0x0F].dw  = this->m_cpuRegs[17].dw;
+    mog_cpuRegs[(opeCode >> 12) & 0x0F].dw  = mog_cpuRegs[17].dw;
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
@@ -97,8 +97,8 @@ CpuArm::execArm120_MrsCpsrReg(
         return ( InstExecResult::UNDEFINED_OPECODE );
     }
 
-    RegType rhs = this->m_cpuRegs[(opeCode & 0x0F)].dw;
-    RegType val = this->m_cpuRegs[16].dw;
+    RegType rhs = mog_cpuRegs[(opeCode & 0x0F)].dw;
+    RegType val = mog_cpuRegs[16].dw;
     RegType maskVal = generatePsrMask(opeCode);
 
     //  制御ビットを変更できるのは特権モードの時。  //
@@ -106,7 +106,7 @@ CpuArm::execArm120_MrsCpsrReg(
     val |= 0x00000010;
 
     //  @TODO   CPU モードのスイッチを実装。    //
-    this->m_cpuRegs[16].dw  = val;
+    mog_cpuRegs[16].dw  = val;
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
@@ -118,8 +118,8 @@ CpuArm::execArm160_MrsSpsrReg(
         return ( InstExecResult::UNDEFINED_OPECODE );
     }
 
-    RegType rhs = this->m_cpuRegs[(opeCode & 0x0F)].dw;
-    RegType val = this->m_cpuRegs[17].dw;
+    RegType rhs = mog_cpuRegs[(opeCode & 0x0F)].dw;
+    RegType val = mog_cpuRegs[17].dw;
     RegType maskVal = generatePsrMask(opeCode);
 
     //  制御ビットを変更できるのは特権モードの時。  //
@@ -127,7 +127,7 @@ CpuArm::execArm160_MrsSpsrReg(
     val |= 0x00000010;
 
     //  @TODO   CPU モードのスイッチを実装。    //
-    this->m_cpuRegs[17].dw  = val;
+    mog_cpuRegs[17].dw  = val;
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
@@ -141,7 +141,7 @@ CpuArm::execArm320_MrsCpsrImm(
 
     //  第二オペランドは即値指定。ビット 00..07 で指定される。  //
     RegType rhs = armImmRor((opeCode & 0xF00) >> 7, (opeCode & 0xFF));
-    RegType val = this->m_cpuRegs[16].dw;
+    RegType val = mog_cpuRegs[16].dw;
     RegType maskVal = generatePsrMask(opeCode);
 
     //  制御ビットを変更できるのは特権モードの時。  //
@@ -149,7 +149,7 @@ CpuArm::execArm320_MrsCpsrImm(
     val |= 0x00000010;
 
     //  @TODO   CPU モードのスイッチを実装。    //
-    this->m_cpuRegs[16].dw  = val;
+    mog_cpuRegs[16].dw  = val;
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
@@ -163,7 +163,7 @@ CpuArm::execArm360_MrsSpsrImm(
 
     //  第二オペランドは即値指定。ビット 00..07 で指定される。  //
     RegType rhs = armImmRor((opeCode & 0xF00) >> 7, (opeCode & 0xFF));
-    RegType val = this->m_cpuRegs[17].dw;
+    RegType val = mog_cpuRegs[17].dw;
     RegType maskVal = generatePsrMask(opeCode);
 
     //  制御ビットを変更できるのは特権モードの時。  //
@@ -171,7 +171,7 @@ CpuArm::execArm360_MrsSpsrImm(
     val |= 0x00000010;
 
     //  @TODO   CPU モードのスイッチを実装。    //
-    this->m_cpuRegs[17].dw  = val;
+    mog_cpuRegs[17].dw  = val;
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 

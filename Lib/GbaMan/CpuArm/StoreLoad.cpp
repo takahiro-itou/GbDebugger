@@ -172,7 +172,11 @@ CpuArm::execStrLdrInstruction(
     }
 
     return  (* pfInst)(
-            opeCode, this->m_cpuRegs, this->m_manMem, this->m_cpuRegs[16].dw);
+            opeCode,
+            mog_cpuRegs,
+            this->m_manMem,
+            mog_cpuRegs[RegIdx::CPSR].dw
+    );
 }
 
 }   //  End of namespace  GbaMan

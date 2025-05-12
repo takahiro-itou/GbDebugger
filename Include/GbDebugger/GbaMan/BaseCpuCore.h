@@ -179,7 +179,7 @@ public:
     const   uint64_t
     getCpuTotalTicks()  const
     {
-        return ( cpuTotalTicks );
+        return ( mog_totalClocks );
     }
 
     //----------------------------------------------------------------
