@@ -91,15 +91,16 @@ CpuThumb::executeNextInst()
 {
     char    buf[256];
 
+    {
     const  GuestMemoryAddress oldPC = this->m_nextPC;
     const  OpeCode  opeCode = this->m_prefOpeCodes[0];
     this->m_prefOpeCodes[0] = this->m_prefOpeCodes[1];
 
-    busPrefetch = false;
-    clockTicks  = 0;
+    mog_prefetchActive  = false;
+    mog_clockCounts     = 0;
 
-    this->m_nextPC  = this->m_cpuRegs[RegIdx::PC].dw;
-    this->m_cpuRegs[RegIdx::PC].dw  += 2;
+    this->m_nextPC  = mog_cpuRegs[RegIdx::PC].dw;
+    mog_cpuRegs[RegIdx::PC].dw  += 2;
     prefetchNext();
 
     const  OpeCode  idx = (opeCode >> 8) & 0x00FF;
@@ -116,10 +117,11 @@ CpuThumb::executeNextInst()
         std::cerr   <<  buf;
         return ( InstExecResult::UNDEFINED_OPECODE );
     }
-    if ( clockTicks == 0 ) {
-        clockTicks  = 1;
+        if ( mog_clockCounts == 0 ) {
+            mog_clockCounts = 1;
+        }
+        mog_totalClocks += mog_clockCounts;
     }
-    cpuTotalTicks   += clockTicks;
 
     return ( InstExecResult::SUCCESS_BREAKPOINT );
 }
@@ -181,15 +183,14 @@ CpuThumb::modifyProgramCounter(
     if ( !(valNew & 1) ) {
         //  ARM モードに切り替え。  //
         this->m_nextPC  = valNew & ~3;
-        this->m_cpuRegs[RegIdx::PC].dw  = (this->m_nextPC + 4);
-
-        this->m_cpuRegs[RegIdx::CPSR].dw  &= ~CPSR::FLAG_T;
+        mog_cpuRegs[RegIdx::CPSR].dw    &= ~CPSR::FLAG_T;
+        mog_cpuRegs[RegIdx::PC].dw      = (this->m_nextPC + 4);
         return ( InstExecResult::UNDEFINED_OPECODE );
     }
 
     //  THUMB モード。  //
     this->m_nextPC  = valNew & ~1;
-    this->m_cpuRegs[RegIdx::PC].dw  = (this->m_nextPC + 2);
+    mog_cpuRegs[RegIdx::PC].dw  = (this->m_nextPC + 2);
 
     const   LpcReadBuf  ptr =
         this->m_manMem.getMemoryAddress(this->m_nextPC);

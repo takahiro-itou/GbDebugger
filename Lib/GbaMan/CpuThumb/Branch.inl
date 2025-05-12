@@ -49,16 +49,16 @@ CpuThumb::execBranchLinkHigh(
     char    buf[512];
 
     const  int  ofs = static_cast<int>(opeCode & 0x07FF) << 1;
-    const  GuestMemoryAddress   adr = (this->m_cpuRegs[14].dw + ofs);
+    const  GuestMemoryAddress   adr = (mog_cpuRegs[14].dw + ofs);
 
     //  リターンアドレス。  //
-    this->m_cpuRegs[14].dw  = (this->m_cpuRegs[15].dw - 2) | 1;
-    this->m_cpuRegs[15].dw  = (this->m_nextPC = (adr & 0xFFFFFFFE)) + 2;
+    mog_cpuRegs[14].dw  = (mog_cpuRegs[15].dw - 2) | 1;
+    mog_cpuRegs[15].dw  = (this->m_nextPC = (adr & 0xFFFFFFFE)) + 2;
 
     sprintf(buf,
             "BL ofs=%04x, PC=%08x, LR=%08x, Next=%08x\n",
-            ofs, this->m_cpuRegs[15].dw,
-            this->m_cpuRegs[14].dw, this->m_nextPC
+            ofs, mog_cpuRegs[15].dw,
+            mog_cpuRegs[14].dw, this->m_nextPC
     );
     std::cerr   <<  buf;
 
@@ -77,7 +77,7 @@ CpuThumb::execBranchLinkLow(
         const  OpeCode  opeCode)
 {
     const  RegType  ofs = (opeCode & 0x07FF) << 12;
-    this->m_cpuRegs[14].dw  = (this->m_cpuRegs[15].dw) + (ofs | SE);
+    mog_cpuRegs[14].dw  = (mog_cpuRegs[15].dw) + (ofs | SE);
 
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
@@ -103,7 +103,7 @@ GBD_REGPARM     InstExecResult
 CpuThumb::execConditionalBranch(
         const  OpeCode  opeCode)
 {
-    const  RegType  flg = (this->m_cpuRegs[16].dw >> 28) & 0x0F;
+    const  RegType  flg = (mog_cpuRegs[16].dw >> 28) & 0x0F;
     char    buf[512];
     sprintf(buf,
             "Branch COND=%d, OpeCode=%04x, FLAGS=%d, CondCheck=%d\n",
@@ -114,11 +114,11 @@ CpuThumb::execConditionalBranch(
         const   int8_t  val = static_cast<int8_t>(opeCode & 0xFF);
         const   GuestMemoryAddress  ofs
             = static_cast<GuestMemoryAddress>(val << 1);
-        this->m_nextPC  = (this->m_cpuRegs[15].dw += ofs);
-        this->m_cpuRegs[15].dw  += 2;
+        this->m_nextPC  = (mog_cpuRegs[RegIdx::PC].dw += ofs);
+        mog_cpuRegs[RegIdx::PC].dw  += 2;
         sprintf(buf,
                 "Branch ofs=%04x, PC=%08x\n",
-                ofs, this->m_cpuRegs[15].dw
+                ofs, mog_cpuRegs[RegIdx::PC].dw
         );
         std::cerr   <<  buf;
 

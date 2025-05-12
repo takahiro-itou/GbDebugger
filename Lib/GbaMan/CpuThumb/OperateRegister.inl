@@ -172,9 +172,9 @@ CpuThumb::execArithmeticLogic(
     FnALUInst   pfInst  = g_thumbALUInstTable[idx];
 
     (* pfInst)(
-            this->m_cpuRegs[rd].dw,
-            this->m_cpuRegs[rs].dw,
-            this->m_cpuRegs[16].dw);
+            mog_cpuRegs[rd].dw,
+            mog_cpuRegs[rs].dw,
+            mog_cpuRegs[16].dw);
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
@@ -189,9 +189,9 @@ CpuThumb::execBitShift(
     const  int  rs  = ((opeCode >> 3) & 0x07);
     const  int  nn  = ((opeCode >> 6) & 0x1F);
 
-    const  RegType  lhs = this->m_cpuRegs[rs].dw;
+    const  RegType  lhs = mog_cpuRegs[rs].dw;
     RegType         res = lhs;
-    RegType         cpuFlag = (this->m_cpuRegs[RegIdx::CPSR].dw);
+    RegType         cpuFlag = (mog_cpuRegs[RegIdx::CPSR].dw);
     bool            flag_cy = (cpuFlag & CPSR::FLAG_C) ? true : false;
 
     switch ( OP ){
@@ -207,9 +207,9 @@ CpuThumb::execBitShift(
     }
 
     cpuFlag = setCondLogicalCarry(flag_cy, cpuFlag);
-    this->m_cpuRegs[RegIdx::CPSR].dw
+    mog_cpuRegs[RegIdx::CPSR].dw
             = setCondLogical(res, lhs, nn, cpuFlag);
-    this->m_cpuRegs[rd].dw  = res;
+    mog_cpuRegs[rd].dw  = res;
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
@@ -224,17 +224,17 @@ CpuThumb::execOperateAddSub(
     const  int  rs  = ((opeCode >> 3) & 0x07);
     const  int  nn  = ((opeCode >> 6) & 0x07);
 
-    const  RegType  lhs = (this->m_cpuRegs[rs].dw);
-    const  RegType  cur = (this->m_cpuRegs[16].dw);
+    const  RegType  lhs = (mog_cpuRegs[rs].dw);
+    const  RegType  cur = (mog_cpuRegs[16].dw);
     RegType         rhs, res, flg;
 
     switch ( OP ) {
     case  0:    //  ADD Rd, Rs, Rn
-        rhs = this->m_cpuRegs[nn].dw;
+        rhs = mog_cpuRegs[nn].dw;
         flg = setCondAdd((res = lhs + rhs), lhs, rhs, cur);
         break;
     case  1:    //  SUB Rd, Rs, Rn
-        rhs = this->m_cpuRegs[nn].dw;
+        rhs = mog_cpuRegs[nn].dw;
         flg = setCondSub((res = lhs - rhs), lhs, rhs, cur);
         break;
     case  2:    //  ADD Rd, Rs, #nn
@@ -247,8 +247,8 @@ CpuThumb::execOperateAddSub(
         break;
     }
 
-    this->m_cpuRegs[rd].dw  = res;
-    this->m_cpuRegs[16].dw  = flg;
+    mog_cpuRegs[rd].dw  = res;
+    mog_cpuRegs[16].dw  = flg;
 
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
@@ -265,22 +265,22 @@ CpuThumb::execOperateHighRegister(
 
     switch ( OP ) {
     case  0:    //  ADD
-        this->m_cpuRegs[rd].dw  += this->m_cpuRegs[rs].dw;
+        mog_cpuRegs[rd].dw  += mog_cpuRegs[rs].dw;
         break;
     case  1:    //  CMP
     {
-        RegType flg = this->m_cpuRegs[RegIdx::CPSR].dw;
-        const  RegType  lhs = this->m_cpuRegs[rd].dw;
-        const  RegType  rhs = this->m_cpuRegs[rs].dw;
+        RegType flg = mog_cpuRegs[RegIdx::CPSR].dw;
+        const  RegType  lhs = mog_cpuRegs[rd].dw;
+        const  RegType  rhs = mog_cpuRegs[rs].dw;
         const  RegType  res = lhs - rhs;
-        this->m_cpuRegs[RegIdx::CPSR].dw = setCondSub(res, lhs, rhs, flg);
+        mog_cpuRegs[RegIdx::CPSR].dw = setCondSub(res, lhs, rhs, flg);
     }
         break;
     case  2:    //  MOV
-        this->m_cpuRegs[rd].dw  = this->m_cpuRegs[rs].dw;
+        mog_cpuRegs[rd].dw  = mog_cpuRegs[rs].dw;
         break;
     case  3:    //  BX
-        modifyProgramCounter(this->m_cpuRegs[rs].dw);
+        modifyProgramCounter(mog_cpuRegs[rs].dw);
         break;
     }
 
@@ -294,18 +294,18 @@ GBD_REGPARM     InstExecResult
 CpuThumb::execOperateImm(
         const  OpeCode  opeCode)
 {
-    const  RegType  lhs = (this->m_cpuRegs[RD].dw);
+    const  RegType  lhs = (mog_cpuRegs[RD].dw);
     const  RegType  rhs = (opeCode & 0x00FF);
     RegType     res;
 
-    const  RegType  cur = (this->m_cpuRegs[16].dw);
+    const  RegType  cur = (mog_cpuRegs[16].dw);
     RegType         flg;
 
     switch ( OP ) {
     case  0x00:     //  MOV Rd, #nn
         res = rhs;
         flg = setCondLogical(res, lhs, rhs, cur);
-        this->m_cpuRegs[RD].dw  = res;
+        mog_cpuRegs[RD].dw  = res;
         break;
     case  0x01:     //  CMP Rd, #nn
         res = lhs - rhs;
@@ -314,16 +314,16 @@ CpuThumb::execOperateImm(
     case  0x02:     //  ADD Rd, #nn
         res = lhs + rhs;
         flg = setCondAdd(res, lhs, rhs, cur);
-        this->m_cpuRegs[RD].dw  = res;
+        mog_cpuRegs[RD].dw  = res;
         break;
     case  0x03:     //  SUB Rd, #nn
         res = lhs - rhs;
         flg = setCondSub(res, lhs, rhs, cur);
-        this->m_cpuRegs[RD].dw  = res;
+        mog_cpuRegs[RD].dw  = res;
         break;
     }
 
-    this->m_cpuRegs[16].dw  = flg;
+    mog_cpuRegs[RegIdx::CPSR].dw    = flg;
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 

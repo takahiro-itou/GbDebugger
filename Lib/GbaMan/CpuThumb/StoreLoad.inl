@@ -60,16 +60,16 @@ CpuThumb::execMultipleLoad(
     char    buf[512];
 
     int cnt = 0;
-    GuestMemoryAddress  gmAddr  = this->m_cpuRegs[RB].dw;
+    GuestMemoryAddress  gmAddr  = mog_cpuRegs[RB].dw;
     RegType  *  ptr = static_cast<RegType *>(
             this->m_manMem.getMemoryAddress(gmAddr));
 
     for ( int bit = 0; bit < 8; ++ bit ) {
         if ( (opeCode >> bit) & 1 ) {
-            this->m_cpuRegs[bit].dw = * (ptr ++);
+            mog_cpuRegs[bit].dw = * (ptr ++);
 
             sprintf(buf, "Read from address %08x to R%d (%08x)",
-                    gmAddr, bit, this->m_cpuRegs[bit].dw);
+                    gmAddr, bit, mog_cpuRegs[bit].dw);
             std::cerr   <<  buf <<  std::endl;
 
             ++ cnt;
@@ -80,7 +80,7 @@ CpuThumb::execMultipleLoad(
             }
         }
     }
-    this->m_cpuRegs[RB].dw  = gmAddr;
+    mog_cpuRegs[RB].dw  = gmAddr;
 
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
@@ -95,22 +95,22 @@ CpuThumb::execMultipleStore(
     char    buf[512];
 
     int cnt = 0;
-    GuestMemoryAddress  gmAddr  = this->m_cpuRegs[RB].dw;
+    GuestMemoryAddress  gmAddr  = mog_cpuRegs[RB].dw;
     RegType  *  ptr = static_cast<RegType *>(
             this->m_manMem.getMemoryAddress(gmAddr));
 
     for ( int bit = 0; bit < 8; ++ bit ) {
         if ( (opeCode >> bit) & 1 ) {
             sprintf(buf, "Write to address %08x from R%d (%08x)",
-                    gmAddr, bit, this->m_cpuRegs[bit].dw);
+                    gmAddr, bit, mog_cpuRegs[bit].dw);
             std::cerr   <<  buf <<  std::endl;
 
-            * (ptr ++)  = this->m_cpuRegs[bit].dw;
+            * (ptr ++)  = mog_cpuRegs[bit].dw;
             ++ cnt;
             gmAddr  += 4;
         }
     }
-    this->m_cpuRegs[RB].dw  = gmAddr;;
+    mog_cpuRegs[RB].dw  = gmAddr;;
 
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
@@ -125,7 +125,7 @@ CpuThumb::execPushPop(
     char    buf[512];
 
     int cnt = 0;
-    GuestMemoryAddress  gmAddr  = (this->m_cpuRegs[RegIdx::R13].dw & ~3);
+    GuestMemoryAddress  gmAddr  = (mog_cpuRegs[RegIdx::R13].dw & ~3);
     RegType  *  ptr = static_cast<RegType *>(
             this->m_manMem.getMemoryAddress(gmAddr));
 
@@ -134,10 +134,10 @@ CpuThumb::execPushPop(
             gmAddr  -= 4;
 
             sprintf(buf, "Write to address %08x from R%d (%08x)",
-                    gmAddr, PCLR, this->m_cpuRegs[PCLR].dw);
+                    gmAddr, PCLR, mog_cpuRegs[PCLR].dw);
             std::cerr   <<  buf <<  std::endl;
 
-            * (-- ptr)  = this->m_cpuRegs[PCLR].dw;
+            * (-- ptr)  = mog_cpuRegs[PCLR].dw;
             ++ cnt;
         }
         for ( int bit = 7; bit >= 0; -- bit ) {
@@ -145,20 +145,20 @@ CpuThumb::execPushPop(
                 gmAddr  -= 4;
 
                 sprintf(buf, "Write to address %08x from R%d (%08x)",
-                        gmAddr, bit, this->m_cpuRegs[bit].dw);
+                        gmAddr, bit, mog_cpuRegs[bit].dw);
                 std::cerr   <<  buf <<  std::endl;
 
-                * (-- ptr)  = this->m_cpuRegs[bit].dw;
+                * (-- ptr)  = mog_cpuRegs[bit].dw;
                 ++ cnt;
             }
         }
     } else {
         for ( int bit = 0; bit <= 7; ++ bit ) {
             if ( (opeCode >> bit) & 1 ) {
-                this->m_cpuRegs[bit].dw = *(ptr ++);
+                mog_cpuRegs[bit].dw = *(ptr ++);
 
                 sprintf(buf, "Read from address %08x to R%d (%08x)",
-                        gmAddr, bit, this->m_cpuRegs[bit].dw);
+                        gmAddr, bit, mog_cpuRegs[bit].dw);
                 std::cerr   <<  buf <<  std::endl;
 
                 ++ cnt;
@@ -166,16 +166,16 @@ CpuThumb::execPushPop(
             }
         }
         if ( PCLR >= 0 ) {
-            this->m_cpuRegs[PCLR].dw    = *(ptr ++);
+            mog_cpuRegs[PCLR].dw    = *(ptr ++);
 
             sprintf(buf, "Read from address %08x to R%d (%08x)",
-                    gmAddr, PCLR, this->m_cpuRegs[PCLR].dw);
+                    gmAddr, PCLR, mog_cpuRegs[PCLR].dw);
             std::cerr   <<  buf <<  std::endl;
             ++ cnt;
             gmAddr  += 4;
         }
     }
-    this->m_cpuRegs[RegIdx::R13].dw = gmAddr;
+    mog_cpuRegs[RegIdx::R13].dw = gmAddr;
 
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
@@ -190,20 +190,20 @@ CpuThumb::execStoreLoadRelative(
     const  int      rd  = (opeCode >> 8) & 0x07;
     const  OpeCode  nn  = (opeCode & 0x00FF);
 
-    GuestMemoryAddress  gmAddr  = (this->m_cpuRegs[Rs].dw & M) + (nn << 2);
+    GuestMemoryAddress  gmAddr  = (mog_cpuRegs[Rs].dw & M) + (nn << 2);
     char    buf[512];
     LpWriteBuf  ptr = this->m_manMem.getMemoryAddress(gmAddr);
 
     if ( OP == 0 ) {
         //  STR 命令。  //
         sprintf(buf, "Write to address %08x from R%d (%08x)",
-                gmAddr, rd, this->m_cpuRegs[rd].dw);
-        *( pointer_cast<RegType *>(ptr) ) = (this->m_cpuRegs[rd].dw);
+                gmAddr, rd, mog_cpuRegs[rd].dw);
+        *( pointer_cast<RegType *>(ptr) ) = (mog_cpuRegs[rd].dw);
     } else {
         //  LDR 命令。  //
-        this->m_cpuRegs[rd].dw  = *( pointer_cast<const RegType *>(ptr) );
+        mog_cpuRegs[rd].dw  = *( pointer_cast<const RegType *>(ptr) );
         sprintf(buf, "Read from address %08x to R%d (%08x)",
-                gmAddr, rd, this->m_cpuRegs[rd].dw);
+                gmAddr, rd, mog_cpuRegs[rd].dw);
     }
     std::cerr   <<  buf <<  std::endl;
 
@@ -223,19 +223,19 @@ CpuThumb::execStoreLoadWithImmOffset(
 
     char    buf[512];
 
-    GuestMemoryAddress  gmAddr  = this->m_cpuRegs[rb].dw + (sizeof(B) * nn);
+    GuestMemoryAddress  gmAddr  = mog_cpuRegs[rb].dw + (sizeof(B) * nn);
     LpWriteBuf  ptr = this->m_manMem.getMemoryAddress(gmAddr);
 
     switch ( 0 ) {
     case  0:        //  STR
         sprintf(buf, "Write to address %08x from R%d (%08x)",
-                gmAddr, rd, this->m_cpuRegs[rd].dw);
-        *( pointer_cast<B *>(ptr) ) = static_cast<B>(this->m_cpuRegs[rd].dw);
+                gmAddr, rd, mog_cpuRegs[rd].dw);
+        *( pointer_cast<B *>(ptr) ) = static_cast<B>(mog_cpuRegs[rd].dw);
         break;
     case  1:        //  LDR
-        this->m_cpuRegs[rd].dw  = *( pointer_cast<B *>(ptr) );
+        mog_cpuRegs[rd].dw  = *( pointer_cast<B *>(ptr) );
         sprintf(buf, "Read from address %08x to R%d (%08x)",
-                gmAddr, rd, this->m_cpuRegs[rd].dw);
+                gmAddr, rd, mog_cpuRegs[rd].dw);
         break;
     }
     std::cerr   <<  buf <<  std::endl;
