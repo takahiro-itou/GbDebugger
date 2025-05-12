@@ -30,6 +30,15 @@
 #    endif
 #endif
 
+
+//  メンバ変数の代わりにグローバル変数を使う。  //
+#if ( GBDEBUGGER_CNF_GLOBALS )
+#    define     GBDEBUGGER_USE_GLOBALS
+#else
+#    undef      GBDEBUGGER_USE_GLOBALS
+#endif
+
+
 GBDEBUGGER_NAMESPACE_BEGIN
 
 
