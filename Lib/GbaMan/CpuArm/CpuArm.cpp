@@ -85,41 +85,48 @@ CpuArm::executeNextInst()
 {
     char    buf[256];
 
-    const  GuestMemoryAddress oldPC = this->m_nextPC;
-    const  OpeCode  opeCode = this->m_prefOpeCodes[0];
-    this->m_prefOpeCodes[0] = this->m_prefOpeCodes[1];
+    {
+        const  GuestMemoryAddress oldPC = this->m_nextPC;
+        const  OpeCode  opeCode = this->m_prefOpeCodes[0];
+        this->m_prefOpeCodes[0] = this->m_prefOpeCodes[1];
 
-    this->m_nextPC  = mog_cpuRegs[RegIdx::PC].dw;
-    mog_cpuRegs[RegIdx::PC].dw  += 4;
-    prefetchNext();
+        this->m_nextPC  = mog_cpuRegs[RegIdx::PC].dw;
+        mog_cpuRegs[RegIdx::PC].dw  += 4;
+        prefetchNext();
 
-    const  OpeCode  opCond  = (opeCode >> 28) & 0x0F;
-    const  RegType  flg  = (mog_cpuRegs[RegIdx::CPSR].dw >> 28) & 0x0F;
-    const  bool  condResult = g_condTable[opCond][flg];
+        const  OpeCode  opCond  = (opeCode >> 28) & 0x0F;
+        const  RegType  flg  = (mog_cpuRegs[RegIdx::CPSR].dw >> 28) & 0x0F;
+        const  bool  condResult = g_condTable[opCond][flg];
 
 #if ( GBDEBUGGER_ENABLE_TRACELOG )
-    sprintf(buf,
-            "opecode = %08x, Cond = %1x, Flag = %x, CondResult = %d\n",
-            opeCode, opCond, flg, condResult);
-    std::cerr   <<  buf;
+        sprintf(buf,
+                "opecode = %08x, Cond = %1x, Flag = %x, CondResult = %d\n",
+                opeCode, opCond, flg, condResult);
+        std::cerr   <<  buf;
 #endif
 
-    if ( condResult ) {
-        //  オペコードのビット 20--27 とビット 04--07 を取り出す。  //
-        //  ビット 20--27 がビット 04--11 に来るようにするので、    //
-        //  ((opeCode >> 20) & 0x0FF) << 4  は、事前に計算して、    //
-        //  ((opeCode >> 16) & 0xFF0) となる。                      //
-        const  OpeCode  idx =
-            ((opeCode >> 16) & 0xFF0) | ((opeCode >> 4) & 0x0F);
-        FnInst  pfInst  = s_armInstTable[idx];
-        InstExecResult  ret = (this ->* pfInst)(opeCode);
-        if ( ret == InstExecResult::UNDEFINED_OPECODE ) {
-            sprintf(buf,
-                    "Undefined ARM instruction %08x (%03x) at %08x\n",
-                    opeCode, idx, oldPC);
-            std::cerr   <<  buf;
-            return ( InstExecResult::UNDEFINED_OPECODE );
+        if ( condResult ) {
+            //  オペコードのビット 20--27 とビット 04--07 を取り出す。  //
+            //  ビット 20--27 がビット 04--11 に来るようにするので、    //
+            //  ((opeCode >> 20) & 0x0FF) << 4  は、事前に計算して、    //
+            //  ((opeCode >> 16) & 0xFF0) となる。                      //
+            const  OpeCode  idx =
+                ((opeCode >> 16) & 0xFF0) | ((opeCode >> 4) & 0x0F);
+            FnInst  pfInst  = s_armInstTable[idx];
+            InstExecResult  ret = (this ->* pfInst)(opeCode);
+            if ( ret == InstExecResult::UNDEFINED_OPECODE ) {
+                sprintf(buf,
+                        "Undefined ARM instruction %08x (%03x) at %08x\n",
+                        opeCode, idx, oldPC);
+                std::cerr   <<  buf;
+                return ( InstExecResult::UNDEFINED_OPECODE );
+            }
         }
+
+        if ( mog_clockCounts == 0 ) {
+            mog_clockCounts = 1;
+        }
+        mog_totalClocks += mog_clockCounts;
     }
 
     return ( InstExecResult::SUCCESS_BREAKPOINT );
