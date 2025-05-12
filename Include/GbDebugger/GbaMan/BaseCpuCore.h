@@ -45,14 +45,14 @@ class   MemoryManager;
 
 #if defined( GBDEBUGGER_USE_GLOBALS )
 
-extern  RegBank     cpuRegs;
+extern  RegBank             mog_cpuRegs;
 
-extern  bool        busPrefetch;
-extern  bool        busPrefetchEnable;
-extern  uint32_t    busPrefetchCount;
+extern  bool                mog_prefetchEnable;
+extern  bool                mog_prefetchActive;
+extern  PrefetchCounter     mog_prefetchCounter;
 
-extern  int         clockTicks;
-extern  uint64_t    cpuTotalTicks;
+extern  ClockCount          mog_totalClocks;
+extern  ClockCount          mog_clockCounts;
 
 #endif
 
@@ -237,13 +237,15 @@ protected:
 
 #if !defined( GBDEBUGGER_USE_GLOBALS )
     /**   レジスタ。            **/
-    RegBank                 m_cpuRegs;
+    RegBank                 mog_cpuRegs;
 
-    bool                    busPrefetch;
-    bool                    busPrefetchEnable;
-    uint32_t                busPrefetchCount;
-    int                     cpuTotalTicks;
-    int                     clockTicks;
+    bool                    mog_prefetchEnable;
+    bool                    mog_prefetchActive;
+    PrefetchCounter         mog_prefetchCounter;
+
+    ClockCount              mog_totalClocks;
+    ClockCount              mog_clockCounts;
+
 #endif
 
     /**   次の命令のアドレス。  **/
