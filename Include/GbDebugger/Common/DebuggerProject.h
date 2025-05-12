@@ -39,6 +39,14 @@
 #endif
 
 
+//  デバッグプリント
+#if defined( _DEBUG )
+#    define     GBDEBUGGER_ENABLE_TRACELOG
+#else
+#    undef      GBDEBUGGER_ENABLE_TRACELOG
+#endif
+
+
 GBDEBUGGER_NAMESPACE_BEGIN
 
 
