@@ -142,6 +142,20 @@ GbaManager::executeCurrentInst()
 }
 
 //----------------------------------------------------------------
+//    現在のクロック数を取得する。
+//
+
+uint64_t
+GbaManager::getCpuTotalTicks()  const
+{
+#if defined( GBDEBUGGER_USE_GLOBALS )
+    return ( cpuTotalTicks );
+#else
+    return  this->m_cpuCur->getCpuTotalTicks();
+#endif
+}
+
+//----------------------------------------------------------------
 //    プログラムカウンタを取得する。
 //
 
