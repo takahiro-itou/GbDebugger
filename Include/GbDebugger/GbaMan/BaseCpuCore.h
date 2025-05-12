@@ -52,7 +52,7 @@ extern  bool        busPrefetchEnable;
 extern  uint32_t    busPrefetchCount;
 
 extern  int         clockTicks;
-extern  int         cpuTotalTicks;
+extern  uint64_t    cpuTotalTicks;
 
 #endif
 
@@ -176,10 +176,10 @@ public:
     /**   現在のクロック数を取得する。
     **
     **/
-    const   int
+    const   uint64_t
     getCpuTotalTicks()  const
     {
-        return ( clockTicks );
+        return ( cpuTotalTicks );
     }
 
     //----------------------------------------------------------------
