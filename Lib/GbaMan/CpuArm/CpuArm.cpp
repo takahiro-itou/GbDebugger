@@ -97,10 +97,12 @@ CpuArm::executeNextInst()
     const  RegType  flg  = (mog_cpuRegs[RegIdx::CPSR].dw >> 28) & 0x0F;
     const  bool  condResult = g_condTable[opCond][flg];
 
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
     sprintf(buf,
             "opecode = %08x, Cond = %1x, Flag = %x, CondResult = %d\n",
             opeCode, opCond, flg, condResult);
     std::cerr   <<  buf;
+#endif
 
     if ( condResult ) {
         //  オペコードのビット 20--27 とビット 04--07 を取り出す。  //

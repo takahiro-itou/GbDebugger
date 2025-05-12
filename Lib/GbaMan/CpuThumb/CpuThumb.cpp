@@ -92,31 +92,31 @@ CpuThumb::executeNextInst()
     char    buf[256];
 
     {
-    const  GuestMemoryAddress oldPC = this->m_nextPC;
-    const  OpeCode  opeCode = this->m_prefOpeCodes[0];
-    this->m_prefOpeCodes[0] = this->m_prefOpeCodes[1];
+        const  GuestMemoryAddress oldPC = this->m_nextPC;
+        const  OpeCode  opeCode = this->m_prefOpeCodes[0];
+        this->m_prefOpeCodes[0] = this->m_prefOpeCodes[1];
 
-    mog_prefetchActive  = false;
-    mog_clockCounts     = 0;
+        mog_prefetchActive  = false;
+        mog_clockCounts     = 0;
 
-    this->m_nextPC  = mog_cpuRegs[RegIdx::PC].dw;
-    mog_cpuRegs[RegIdx::PC].dw  += 2;
-    prefetchNext();
+        this->m_nextPC  = mog_cpuRegs[RegIdx::PC].dw;
+        mog_cpuRegs[RegIdx::PC].dw  += 2;
+        prefetchNext();
 
-    const  OpeCode  idx = (opeCode >> 8) & 0x00FF;
-    FnInst  pfInst  = s_thumbInstTable[idx];
-    //  InstExecResult  ret = (this ->* pfInst)(opeCode);
-    InstExecResult  ret = InstExecResult::UNDEFINED_OPECODE;
-    if ( pfInst != nullptr ) {
-        ret = (this ->* pfInst)(opeCode);
-    }
-    if ( ret == InstExecResult::UNDEFINED_OPECODE ) {
-        sprintf(buf,
-                "Undefined Thumb instruction %04x (%03x) at %08x\n",
-                opeCode, idx, oldPC);
-        std::cerr   <<  buf;
-        return ( InstExecResult::UNDEFINED_OPECODE );
-    }
+        const  OpeCode  idx = (opeCode >> 8) & 0x00FF;
+        FnInst  pfInst  = s_thumbInstTable[idx];
+        //  InstExecResult  ret = (this ->* pfInst)(opeCode);
+        InstExecResult  ret = InstExecResult::UNDEFINED_OPECODE;
+        if ( pfInst != nullptr ) {
+            ret = (this ->* pfInst)(opeCode);
+        }
+        if ( ret == InstExecResult::UNDEFINED_OPECODE ) {
+            sprintf(buf,
+                    "Undefined Thumb instruction %04x (%03x) at %08x\n",
+                    opeCode, idx, oldPC);
+            std::cerr   <<  buf;
+            return ( InstExecResult::UNDEFINED_OPECODE );
+        }
         if ( mog_clockCounts == 0 ) {
             mog_clockCounts = 1;
         }
