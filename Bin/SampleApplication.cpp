@@ -78,9 +78,9 @@ int  main(int argc, char * argv[])
         manGba.writeMnemonicCurrent(std::cout, manGba.getNextPC())
                 <<  std::endl;
 #endif
-        ++ cnt;
     }
 
+    cnt = manGba.getCpuTotalTicks();
     clock_t clkEnd  = clock();
     const double elapsed = static_cast<double>(clkEnd - clkSta)
                                 * 1000.0 / CLOCKS_PER_SEC;

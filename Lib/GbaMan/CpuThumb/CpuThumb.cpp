@@ -95,6 +95,9 @@ CpuThumb::executeNextInst()
     const  OpeCode  opeCode = this->m_prefOpeCodes[0];
     this->m_prefOpeCodes[0] = this->m_prefOpeCodes[1];
 
+    busPrefetch = false;
+    clockTicks  = 0;
+
     this->m_nextPC  = this->m_cpuRegs[RegIdx::PC].dw;
     this->m_cpuRegs[RegIdx::PC].dw  += 2;
     prefetchNext();
@@ -113,6 +116,10 @@ CpuThumb::executeNextInst()
         std::cerr   <<  buf;
         return ( InstExecResult::UNDEFINED_OPECODE );
     }
+    if ( clockTicks == 0 ) {
+        clockTicks  = 1;
+    }
+    cpuTotalTicks   += clockTicks;
 
     return ( InstExecResult::SUCCESS_BREAKPOINT );
 }
