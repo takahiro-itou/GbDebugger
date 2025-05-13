@@ -131,6 +131,20 @@ typedef     RegPair     RegBank[RegIdx::NUM_REGISTERS];
 
 //========================================================================
 //
+//
+
+struct  CounterInfo
+{
+    bool                prefetchEnable;
+    bool                prefetchActive;
+    PrefetchCounter     prefetchCounter;
+
+    ClockCount          totalClocks;
+    ClockCount          clockCounts;
+};
+
+//========================================================================
+//
 //    CPSR (Flag) Register.
 //
 
