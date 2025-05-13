@@ -74,7 +74,7 @@ int  main(int argc, char * argv[])
                 <<  std::endl;
 
         //  次の命令を逆アセンブル。    //
-        std::cout   <<  "Mnemonic:\n";
+        std::cout   <<  "Mnemonic:\t"  <<  cnt  <<  "\n";
         manGba.writeMnemonicCurrent(std::cout, manGba.getNextPC())
                 <<  std::endl;
 #endif
