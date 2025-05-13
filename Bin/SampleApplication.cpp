@@ -79,6 +79,17 @@ int  main(int argc, char * argv[])
                 <<  std::endl;
 #endif
         ++ cnt;
+        if ( !(cnt & 0x07FFFFFF) ) {
+            ClockCount  cc  = manGba.getCpuTotalTicks();
+            clock_t clkEnd  = clock();
+            const double elapsed = static_cast<double>(clkEnd - clkSta)
+                    * 1000.0 / CLOCKS_PER_SEC;
+            std::cout   <<  cnt <<  " Instructions, "
+                        <<  cc  <<  " Clocks, "
+                        <<  elapsed <<  "ms : "
+                        <<  (cc / elapsed)  <<  " kHz"
+                        <<  std::endl;
+        }
     }
 
     ClockCount  cc  = manGba.getCpuTotalTicks();
