@@ -158,8 +158,25 @@ GBD_REGPARM     InstExecResult
 CpuThumb::execUnconditionalBranch(
         const  OpeCode  opeCode)
 {
-    std::cerr   <<  "Not Implemented (Branch)"  <<  std::endl;
-    return ( InstExecResult::UNDEFINED_OPECODE );
+    const   GuestMemoryAddress  ofs = (opeCode & 0x07FF) << 1;
+
+    this->m_nextPC  = (mog_cpuRegs[RegIdx::PC].dw += ofs);
+    mog_cpuRegs[RegIdx::PC].dw  += 2;
+
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
+    char    buf[256];
+    sprintf(buf,
+            "Branch ofs=%04x, PC=%08x\n",
+            ofs, mog_cpuRegs[RegIdx::PC].dw
+    );
+    std::cerr   <<  buf;
+#endif
+
+    const   LpcReadBuf  ptr =
+        this->m_manMem.getMemoryAddress(this->m_nextPC);
+    prefetchAll<uint16_t>(static_cast<const uint16_t *>(ptr));
+
+    return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
 }   //  End of namespace  GbaMan
