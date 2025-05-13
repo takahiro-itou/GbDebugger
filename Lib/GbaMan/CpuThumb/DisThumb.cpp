@@ -340,7 +340,7 @@ writeOffset(
     const   char        ch  = (*(src ++));
     GuestMemoryAddress  ofs = getUnsignedOffset(opeCode, src);
 
-    if ( (ch == 's') && (ofs & 0x0080) ) {
+    if ( (ch == 's') && (opeCode & 0x0080) ) {
         ofs |= 0xFFFFFF00;
     }
 
