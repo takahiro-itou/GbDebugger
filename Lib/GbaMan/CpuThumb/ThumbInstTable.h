@@ -146,20 +146,20 @@
 #define     thumbCE     &CpuThumb::execMultipleLoad<6>
 #define     thumbCF     &CpuThumb::execMultipleLoad<7>
 
-#define     thumbD0     &CpuThumb::execConditionalBranch<0>
-#define     thumbD1     &CpuThumb::execConditionalBranch<1>
-#define     thumbD2     &CpuThumb::execConditionalBranch<2>
-#define     thumbD3     &CpuThumb::execConditionalBranch<3>
-#define     thumbD4     &CpuThumb::execConditionalBranch<4>
-#define     thumbD5     &CpuThumb::execConditionalBranch<5>
-#define     thumbD6     &CpuThumb::execConditionalBranch<6>
-#define     thumbD7     &CpuThumb::execConditionalBranch<8>
-#define     thumbD8     &CpuThumb::execConditionalBranch<9>
-#define     thumbD9     &CpuThumb::execConditionalBranch<10>
-#define     thumbDA     &CpuThumb::execConditionalBranch<11>
-#define     thumbDB     &CpuThumb::execConditionalBranch<12>
-#define     thumbDC     &CpuThumb::execConditionalBranch<13>
-#define     thumbDD     &CpuThumb::execConditionalBranch<14>
+#define     thumbD0     &CpuThumb::execConditionalBranch< 0>
+#define     thumbD1     &CpuThumb::execConditionalBranch< 1>
+#define     thumbD2     &CpuThumb::execConditionalBranch< 2>
+#define     thumbD3     &CpuThumb::execConditionalBranch< 3>
+#define     thumbD4     &CpuThumb::execConditionalBranch< 4>
+#define     thumbD5     &CpuThumb::execConditionalBranch< 5>
+#define     thumbD6     &CpuThumb::execConditionalBranch< 6>
+#define     thumbD7     &CpuThumb::execConditionalBranch< 7>
+#define     thumbD8     &CpuThumb::execConditionalBranch< 8>
+#define     thumbD9     &CpuThumb::execConditionalBranch< 9>
+#define     thumbDA     &CpuThumb::execConditionalBranch<10>
+#define     thumbDB     &CpuThumb::execConditionalBranch<11>
+#define     thumbDC     &CpuThumb::execConditionalBranch<12>
+#define     thumbDD     &CpuThumb::execConditionalBranch<13>
 
 #define     thumbDF     &CpuThumb::execSoftwareInterrupt
 
