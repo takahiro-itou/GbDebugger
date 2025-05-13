@@ -158,7 +158,10 @@ GBD_REGPARM     InstExecResult
 CpuThumb::execUnconditionalBranch(
         const  OpeCode  opeCode)
 {
-    const   GuestMemoryAddress  ofs = (opeCode & 0x07FF) << 1;
+    GuestMemoryAddress  ofs = (opeCode & 0x07FF) << 1;
+    if ( ofs & 0x0800 ) {
+        ofs |= 0xFFFFF800;
+    }
 
     this->m_nextPC  = (mog_cpuRegs[RegIdx::PC].dw += ofs);
     mog_cpuRegs[RegIdx::PC].dw  += 2;
