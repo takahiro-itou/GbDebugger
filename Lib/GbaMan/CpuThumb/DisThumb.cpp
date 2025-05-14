@@ -148,11 +148,11 @@ thumbMnemonics[] = {
     { 0xFF00, 0xBE00, "BKPT" },
 
     //  Format 18 : 無条件分岐命令。    //
-    { 0xF800, 0xE000, "B   \t%p{0,m2047,1}" },
+    { 0xF800, 0xE000, "B   \t%s{0,11,1}" },
 
     //  Format 19 : サブルーチンコール。    //
     { 0xF800, 0xF000, "BL  \t%L" },
-    { 0xF800, 0xF800, "BLH \t#%I{0,m2047,1}" },
+    { 0xF800, 0xF800, "BLH \t#%I{0,11,1}" },
 
     //  Unknown.    //
     { 0x0000, 0x0000, "[ ??? ]" },
@@ -347,6 +347,20 @@ writeOffset(
     return  sprintf(dst, "#0x%08x ; (0x%08x)", ofs, gmAddr + 4 + ofs);
 }
 
+//----------------------------------------------------------------
+
+inline  size_t
+writeSignedScaleImmediate(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src)
+{
+    RegType val = getSignedScaleImmediate(opeCode, src);
+    int     dig = 4;
+
+    return  sprintf(dst, "0x%0*x", dig, val);
+}
+
 #if 0
 //----------------------------------------------------------------
 //  %nxx - 符号なしオフセット。
@@ -478,6 +492,9 @@ DisThumb::writeMnemonic(
                 break;
             case  'r':
                 len = writeRegister(opeCode, dst, src, gmAddr);
+                break;
+            case  's':
+                len = writeSignedScaleImmediate(opeCode, dst, src);
                 break;
             default:
                 * (dst ++)  = '%';
