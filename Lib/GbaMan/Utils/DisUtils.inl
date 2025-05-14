@@ -56,6 +56,24 @@ readMnemonicParameter(
 }
 
 //----------------------------------------------------------------
+
+inline  OpeCode
+getOpeCodeMask(
+        const  char *  &src,
+        const  int      digMax)
+{
+    if ( (* src) == 'm' ) {
+        ++  src;
+        //  パラメータでマスクを直接指定する。  //
+        return  static_cast<OpeCode>(readMnemonicParameter(src, digMax));
+    }
+
+    //  パラメータはマスクのビット数を指定。    //
+    const  int  immMask = readMnemonicParameter(src, 2);
+    return  ( static_cast<OpeCode>(1 << immMask) - 1 );
+}
+
+//----------------------------------------------------------------
 /**   スケール付き即値。
 **
 **  src から次の情報を読みだす。{B,M,S}
@@ -70,8 +88,8 @@ readMnemonicParameter(
 
 inline  RegType
 getUnsignedScaleImmediate(
-        const   OpeCode     opeCode,
-        const  char  *    & src)
+        const  OpeCode  opeCode,
+        const  char *  &src)
 {
     RegType val = 0;
 
@@ -79,7 +97,7 @@ getUnsignedScaleImmediate(
         ++  src;
         const  int  immBit  = readMnemonicParameter(src, 2);
         ++  src;    //  カンマを読み捨て。      //
-        const  int  immMask = readMnemonicParameter(src, 8);
+        const  int  immMask = getOpeCodeMask(src, 2);
         ++  src;    //  カンマを読み捨て。
         const  int  immSft  = readMnemonicParameter(src, 2);
         ++  src;    //  末尾の }  を読み捨て。  //
