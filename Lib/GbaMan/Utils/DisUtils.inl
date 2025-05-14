@@ -97,7 +97,7 @@ getUnsignedScaleImmediate(
         ++  src;
         const  int  immBit  = readMnemonicParameter(src, 2);
         ++  src;    //  カンマを読み捨て。      //
-        const  int  immMask = getOpeCodeMask(src, 2);
+        const  int  immMask = getOpeCodeMask(src, 8);
         ++  src;    //  カンマを読み捨て。
         const  int  immSft  = readMnemonicParameter(src, 2);
         ++  src;    //  末尾の }  を読み捨て。  //
