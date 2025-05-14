@@ -19,7 +19,10 @@
 **/
 
 #include    "DisArm.h"
+
 #include    "GbDebugger/GbaMan/GbaManager.h"
+
+#include    "../Utils/DisUtils.inl"
 
 #include    <ostream>
 
