@@ -35,9 +35,9 @@ namespace  {
 CONSTEXPR_VAR   const  MnemonicMap
 thumbMnemonics[] = {
     //  Format 01 : ビットシフト。  //
-    { 0xF800, 0x0000, "LSL \t%r0, %r3, #%I{6,m31,0}" },
-    { 0xF800, 0x0800, "LSR \t%r0, %r3, #%I{6,m31,0}" },
-    { 0xF800, 0x1000, "ASR \t%r0, %r3, #%I{6,m31,0}" },
+    { 0xF800, 0x0000, "LSL \t%r0, %r3, #%I{6,5,0}" },
+    { 0xF800, 0x0800, "LSR \t%r0, %r3, #%I{6,5,0}" },
+    { 0xF800, 0x1000, "ASR \t%r0, %r3, #%I{6,5,0}" },
 
     //  Format 02 : 加算減算。      //
     { 0xFE00, 0x1800, "ADD \t%r0, %r3, %r6" },
