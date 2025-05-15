@@ -29,11 +29,11 @@
 | 0xA0 | ADD | ADD | ADD | ADD | ADD | ADD | ADD | ADD |
 | 0xA8 | ADD | ADD | ADD | ADD | ADD | ADD | ADD | ADD |
 | 0xB0 | ADD | und | und | und | PUSH| PUSH| und | und |
-| 0xB8 | und | und | und | und | POP | POP |     |     |
+| 0xB8 | und | und | und | und | POP | POP | BKPT| und |
 | 0xC0 |STMIA|STMIA|STMIA|STMIA|STMIA|STMIA|STMIA|STMIA|
 | 0xC8 |LDMIA|LDMIA|LDMIA|LDMIA|LDMIA|LDMIA|LDMIA|LDMIA|
-| 0xD0 |     |     |     |     |     |     |     |     |
-| 0xD8 |     |     |     |     |     |     |     |     |
+| 0xD0 | BEQ | BNE | BCS | BCC | BMI | BPL | BVS | BVC |
+| 0xD8 | BHI | BLS | BGE | BLT | BGT | BLE | und | SWI |
 | 0xE0 |     |     |     |     |     |     |     |     |
 | 0xE8 |     |     |     |     |     |     |     |     |
 | 0xF0 |     |     |     |     |     |     |     |     |
@@ -64,11 +64,11 @@
 | 0xA0 | 12  | 12  | 12  | 12  | 12  | 12  | 12  | 12  |
 | 0xA8 | 12  | 12  | 12  | 12  | 12  | 12  | 12  | 12  |
 | 0xB0 | 13  | und | und | und | 14  | 14  | und | und |
-| 0xB8 | und | und | und | und | 14  | 14  |     |     |
+| 0xB8 | und | und | und | und | 14  | 14  | 17  | und |
 | 0xC0 | 15  | 15  | 15  | 15  | 15  | 15  | 15  | 15  |
 | 0xC8 | 15  | 15  | 15  | 15  | 15  | 15  | 15  | 15  |
-| 0xD0 |     |     |     |     |     |     |     |     |
-| 0xD8 |     |     |     |     |     |     |     |     |
+| 0xD0 | 16  | 16  | 16  | 16  | 16  | 16  | 16  | 16  |
+| 0xD8 | 16  | 16  | 16  | 16  | 16  | 16  | und | 17  |
 | 0xE0 |     |     |     |     |     |     |     |     |
 | 0xE8 |     |     |     |     |     |     |     |     |
 | 0xF0 |     |     |     |     |     |     |     |     |
@@ -190,3 +190,26 @@
 - 1100 x??? ???? ???? (0xC000 - 0xCFFF)
     - 1100 0??? ??? ??? (0xC000 - 0xC7FF) : STMIA Rb!, {Rlist}
     - 1100 1??? ??? ??? (0xC800 - 0xCFFF) : LDMIA Rb!, {Rlist}
+
+16. 条件分岐
+
+- 1101 xxxx ???? ???? (0xD000 -0xDFFF)
+    - 1101 0000 ???? ???? (0xD000 - 0xD0FF) : BEQ
+    - 1101 0001 ???? ???? (0xD100 - 0xD1FF) : BNE
+    - 1101 0010 ???? ???? (0xD200 - 0xD2FF) : BCS
+    - 1101 0011 ???? ???? (0xD300 - 0xD3FF) : BCC
+    - 1101 0100 ???? ???? (0xD400 - 0xD4FF) : BMI
+    - 1101 0101 ???? ???? (0xD500 - 0xD5FF) : BPL
+    - 1101 0110 ???? ???? (0xD600 - 0xD6FF) : BVS
+    - 1101 0111 ???? ???? (0xD700 - 0xD7FF) : BVC
+    - 1101 1000 ???? ???? (0xD800 - 0xD8FF) : BHI
+    - 1101 1001 ???? ???? (0xD900 - 0xD9FF) : BLS
+    - 1101 1010 ???? ???? (0xDA00 - 0xDAFF) : BGE
+    - 1101 1011 ???? ???? (0xDB00 - 0xDBFF) : BLT
+    - 1101 1100 ???? ???? (0xDC00 - 0xDCFF) : BGT
+    - 1101 1101 ???? ???? (0xDD00 - 0xDDFF) : BLE
+
+17. 割り込み
+
+- 1101 1111 ???? ???? (0xDF00 - 0xDFFF) : SWI  #nn
+- 1011 1110 ???? ???? (0xBE00 - 0xBEFF) : BKPT #nn
