@@ -158,6 +158,8 @@ thumbMnemonics[] = {
     { 0x0000, 0x0000, "[ ??? ]" },
 };
 
+#if 0
+
 //----------------------------------------------------------------
 //    相対オフセット。
 //
@@ -171,6 +173,7 @@ getUnsignedOffset(
     return  static_cast<GuestMemoryAddress>((opeCode & 0x00FF) << sftBits);
 }
 
+#endif
 
 //----------------------------------------------------------------
 //  %L  - Long (22bit) offset
@@ -193,7 +196,7 @@ writeLongOffset(
 }
 
 //----------------------------------------------------------------
-//  %P  - PC-Relative.
+//  %p  - PC-Relative (Address).
 //
 
 inline  size_t
@@ -208,6 +211,10 @@ writePCRelative(
 
     return  sprintf(dst, "#0x%08x", pos);
 }
+
+//----------------------------------------------------------------
+//  %P  - PC-Relative (With Value).
+//
 
 inline  size_t
 writePCRelativeWithVal(
@@ -294,6 +301,10 @@ writeRegisterHigh(
     return  sprintf(dst, "%s", regNames[regIdx]);
 }
 
+//----------------------------------------------------------------
+//  %l - Register List.
+//
+
 inline  size_t
 writeRegisterList(
         const   OpeCode     opeCode,
@@ -326,6 +337,7 @@ writeRegisterList(
     return  sprintf(dst, "%s", ss.str().c_str());
 }
 
+#if 0
 //----------------------------------------------------------------
 //  %ou/%os - オフセット。
 //
@@ -346,6 +358,7 @@ writeOffset(
 
     return  sprintf(dst, "#0x%08x ; (0x%08x)", ofs, gmAddr + 4 + ofs);
 }
+#endif
 
 //----------------------------------------------------------------
 
@@ -483,9 +496,6 @@ DisThumb::writeMnemonic(
                 break;
             case  'm':
                 len = writeRegisterHigh(opeCode, dst, src, gmAddr);
-                break;
-            case  'o':
-                len = writeOffset(opeCode, dst, src, gmAddr);
                 break;
             case  'p':
                 len = writePCRelative(opeCode, dst, src, gmAddr);
