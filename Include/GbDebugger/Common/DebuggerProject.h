@@ -30,6 +30,23 @@
 #    endif
 #endif
 
+
+//  メンバ変数の代わりにグローバル変数を使う。  //
+#if ( GBDEBUGGER_CNF_GLOBALS )
+#    define     GBDEBUGGER_USE_GLOBALS
+#else
+#    undef      GBDEBUGGER_USE_GLOBALS
+#endif
+
+
+//  デバッグプリント
+#if defined( _DEBUG )
+#    define     GBDEBUGGER_ENABLE_TRACELOG      1
+#else
+#    undef      GBDEBUGGER_ENABLE_TRACELOG
+#endif
+
+
 GBDEBUGGER_NAMESPACE_BEGIN
 
 

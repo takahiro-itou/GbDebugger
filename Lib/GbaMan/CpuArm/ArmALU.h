@@ -89,7 +89,7 @@ armImmRor(
 //    第二オペランドを決定する。
 //
 
-template  <typename SHIFTOP, int BIT4>
+template  <typename SHIFTOP>
 inline  const   RegType
 getAluOp2Register(
         const  OpeCode  opeCode,

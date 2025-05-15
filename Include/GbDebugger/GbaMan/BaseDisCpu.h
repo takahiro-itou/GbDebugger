@@ -169,36 +169,6 @@ public:
     friend  class   BaseDisCpuTest;
 };
 
-//========================================================================
-//
-//    Inline Functions.
-//
-
-//----------------------------------------------------------------
-/**
-**
-**/
-
-inline  int
-readMnemonicParameter(
-        const  char *  &src,
-        const  int      digMax)
-{
-    int val = 0;
-
-    for ( int d = 0; d < digMax; ++ d ) {
-        const  char  ch = (*(src ++));
-        if ( ('0' <= ch) && (ch <= '9') ) {
-            val = (val * 10) + (ch - '0');
-        } else {
-            --  src;
-            break;
-        }
-    }
-
-    return ( val );
-}
-
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
 

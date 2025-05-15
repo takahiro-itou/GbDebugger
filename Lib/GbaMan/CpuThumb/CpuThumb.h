@@ -131,14 +131,97 @@ private:
     //    命令の実行を行う関数たち。
     //
 
+    template  <int Rs>
+    GBD_REGPARM     InstExecResult
+    execAddressingRelative(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
+    execArithmeticLogic(
+            const  OpeCode  opeCode);
+
     template  <int OP>
     GBD_REGPARM     InstExecResult
     execBitShift(
             const  OpeCode  opeCode);
 
-    template  <int Rs, int OP>
+    GBD_REGPARM     InstExecResult
+    execBranchLinkHigh(
+            const  OpeCode  opeCode);
+
+    template  <RegType SE>
+    GBD_REGPARM     InstExecResult
+    execBranchLinkLow(
+            const  OpeCode  opeCode);
+
+    inline
+    GBD_REGPARM     InstExecResult
+    execBreakPoint(
+            const  OpeCode  opeCode);
+
+    template  <int COND>
+    GBD_REGPARM     InstExecResult
+    execConditionalBranch(
+            const  OpeCode  opeCode);
+
+    template <int RB>
+    GBD_REGPARM     InstExecResult
+    execMultipleLoad(
+            const  OpeCode  opeCode);
+
+    template <int RB>
+    GBD_REGPARM     InstExecResult
+    execMultipleStore(
+            const  OpeCode  opeCode);
+
+    template  <int OP>
+    GBD_REGPARM     InstExecResult
+    execOperateAddSub(
+            const  OpeCode  opeCode);
+
+    template  <int OP>
+    GBD_REGPARM     InstExecResult
+    execOperateHighRegister(
+            const  OpeCode  opeCode);
+
+    template  <int OP, int RD>
+    GBD_REGPARM     InstExecResult
+    execOperateImm(
+            const  OpeCode  opeCode);
+
+    inline
+    GBD_REGPARM     InstExecResult
+    execOperateSP(
+            const  OpeCode  opeCode);
+
+    template  <int OP, int PCLR>
+    GBD_REGPARM     InstExecResult
+    execPushPop(
+            const  OpeCode  opeCode);
+
+    inline
+    GBD_REGPARM     InstExecResult
+    execSoftwareInterrupt(
+            const  OpeCode  opeCode);
+
+    template  <int Rs, int OP, RegType M>
     GBD_REGPARM     InstExecResult
     execStoreLoadRelative(
+            const  OpeCode  opeCode);
+
+    template  <int OP, typename B>
+    GBD_REGPARM     InstExecResult
+    execStoreLoadWithImmOffset(
+            const  OpeCode  opeCode);
+
+    template  <int OP, typename B>
+    GBD_REGPARM     InstExecResult
+    execStoreLoadWithRegOffset(
+            const  OpeCode  opeCode);
+
+    inline
+    GBD_REGPARM     InstExecResult
+    execUnconditionalBranch(
             const  OpeCode  opeCode);
 
     //----------------------------------------------------------------
@@ -147,6 +230,14 @@ private:
     **/
     void
     prefetchNext();
+
+    //----------------------------------------------------------------
+    /**   プログラムカウンタを変更する命令の処理。
+    **
+    **/
+    GBD_REGPARM     InstExecResult
+    modifyProgramCounter(
+            const  RegType  valNew);
 
 //========================================================================
 //

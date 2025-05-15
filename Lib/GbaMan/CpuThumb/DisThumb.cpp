@@ -22,6 +22,10 @@
 
 #include    "GbDebugger/GbaMan/MemoryManager.h"
 
+#include    "../Utils/DisUtils.inl"
+
+#include    <sstream>
+
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
@@ -31,126 +35,130 @@ namespace  {
 CONSTEXPR_VAR   const  MnemonicMap
 thumbMnemonics[] = {
     //  Format 01 : ビットシフト。  //
-    { 0xF800, 0x0000, "LSL\t%r0, %r3, #%I{6,31}" },
-    { 0xF800, 0x0800, "LSR" },
-    { 0xF800, 0x1000, "ASR" },
+    { 0xF800, 0x0000, "LSL \t%r0, %r3, #%I{6,5,0}" },
+    { 0xF800, 0x0800, "LSR \t%r0, %r3, #%I{6,5,0}" },
+    { 0xF800, 0x1000, "ASR \t%r0, %r3, #%I{6,5,0}" },
 
     //  Format 02 : 加算減算。      //
-    { 0xFE00, 0x1800, "ADD" },
-    { 0xFE00, 0x1A00, "SUB" },
-    { 0xFE00, 0x1C00, "ADD" },
-    { 0xFE00, 0x1E00, "SUB" },
+    { 0xFE00, 0x1800, "ADD \t%r0, %r3, %r6" },
+    { 0xFE00, 0x1A00, "SUB \t%r0, %r3, %r6" },
+    { 0xFE00, 0x1C00, "ADD \t%r0, %r3, #%I{6,3,0}" },
+    { 0xFE00, 0x1E00, "SUB \t%r0, %r3, #%I{6,3,0}" },
 
     //  Format 03 : 即値の演算。    //
-    { 0xF800, 0x2000, "MOV" },
-    { 0xF800, 0x2800, "CMP" },
-    { 0xF800, 0x3000, "ADD" },
-    { 0xF800, 0x3800, "SUB" },
+    { 0xF800, 0x2000, "MOV \t%r8, #%I{0,8,0}" },
+    { 0xF800, 0x2800, "CMP \t%r8, #%I{0,8,0}" },
+    { 0xF800, 0x3000, "ADD \t%r8, #%I{0,8,0}" },
+    { 0xF800, 0x3800, "SUB \t%r8, #%I{0,8,0}" },
 
     //  Format 04 : 算術演算。      //
-    { 0xFFC0, 0x4000, "AND" },
-    { 0xFFC0, 0x4040, "EOR" },
-    { 0xFFC0, 0x4080, "LSL" },
-    { 0xFFC0, 0x40C0, "LSR" },
-    { 0xFFC0, 0x4100, "ASR" },
-    { 0xFFC0, 0x4140, "ADC" },
-    { 0xFFC0, 0x4180, "SBC" },
-    { 0xFFC0, 0x41C0, "ROR" },
-    { 0xFFC0, 0x4200, "TST" },
-    { 0xFFC0, 0x4240, "NEG" },
-    { 0xFFC0, 0x4280, "CMP" },
-    { 0xFFC0, 0x42C0, "CMN" },
-    { 0xFFC0, 0x4300, "ORR" },
-    { 0xFFC0, 0x4340, "MUL" },
-    { 0xFFC0, 0x4380, "BIC" },
-    { 0xFFC0, 0x43C0, "MVN" },
+    { 0xFFC0, 0x4000, "AND \t%r0, %r3" },
+    { 0xFFC0, 0x4040, "EOR \t%r0, %r3" },
+    { 0xFFC0, 0x4080, "LSL \t%r0, %r3" },
+    { 0xFFC0, 0x40C0, "LSR \t%r0, %r3" },
+    { 0xFFC0, 0x4100, "ASR \t%r0, %r3" },
+    { 0xFFC0, 0x4140, "ADC \t%r0, %r3" },
+    { 0xFFC0, 0x4180, "SBC \t%r0, %r3" },
+    { 0xFFC0, 0x41C0, "ROR \t%r0, %r3" },
+    { 0xFFC0, 0x4200, "TST \t%r0, %r3" },
+    { 0xFFC0, 0x4240, "NEG \t%r0, %r3" },
+    { 0xFFC0, 0x4280, "CMP \t%r0, %r3" },
+    { 0xFFC0, 0x42C0, "CMN \t%r0, %r3" },
+    { 0xFFC0, 0x4300, "ORR \t%r0, %r3" },
+    { 0xFFC0, 0x4340, "MUL \t%r0, %r3" },
+    { 0xFFC0, 0x4380, "BIC \t%r0, %r3" },
+    { 0xFFC0, 0x43C0, "MVN \t%r0, %r3" },
 
     //  Format 05 : R8-15 レジスタ操作。    //
-    { 0xFCC0, 0x4400, "[ ??? ]" },      //  MSBd==0 && MSBs==0 は不正。 //
+    { 0xFFC0, 0x4400, "[ ??? (R8-15) ]" },  //  MSBd==0 && MSBs==0 は不正。 //
+    { 0xFFC0, 0x4500, "[ ??? (R8-15) ]" },  //  MSBd==0 && MSBs==0 は不正。 //
+    { 0xFFC0, 0x4600, "[ ??? (R8-15) ]" },  //  MSBd==0 && MSBs==0 は不正。 //
     { 0xFF00, 0x4400, "ADD \t%m0+7, %m3+6" },
     { 0xFF00, 0x4500, "CMP \t%m0+7, %m3+6" },
     { 0xFF00, 0x4600, "MOV \t%m0+7, %m3+6" },
-    { 0xFF80, 0x4700, "BX  \t%m0+7, %m3+6" },   //  MSBd は 0。Rd は未使用  //
+    { 0xFF80, 0x4780, "[ ??? (BX) ]" },         //  MSBd は 0。Rd は未使用  //
+    { 0xFF80, 0x4700, "BX  \t%m3+6" },          //  MSBd は 0。Rd は未使用  //
 
     //  Format 06 : ロードストア命令（PC-Relative）。   //
-    { 0xF800, 0x4800, "LDR\t%r8, [PC, #%n2]\t; %P2" },
+    { 0xF800, 0x4800, "LDR \t%r8, [PC, #%I{0,8,2}]\t; %P{0,8,2}" },
 
     //  Format 07 : ロードストア命令。  //
-    { 0xFE00, 0x5000, "STR" },
-    { 0xFE00, 0x5400, "STRB" },
-    { 0xFE00, 0x5800, "LDR" },
-    { 0xFE00, 0x5C00, "LDRB" },
-
     //  Format 08: ロードストア命令。   //
-    { 0xFE00, 0x5200, "STRH" },
-    { 0xFE00, 0x5600, "LDSB" },
-    { 0xFE00, 0x5A00, "LDRH" },
-    { 0xFE00, 0x5E00, "LDSH" },
+    { 0xFE00, 0x5000, "STR \t%r0, [%r3, %r6]" },
+    { 0xFE00, 0x5400, "STRB\t%r0, [%r3, %r6]" },
+    { 0xFE00, 0x5800, "LDR \t%r0, [%r3, %r6]" },
+    { 0xFE00, 0x5C00, "LDRB\t%r0, [%r3, %r6]" },
+
+    { 0xFE00, 0x5200, "STRH\t%r0, [%r3, %r6]" },
+    { 0xFE00, 0x5600, "LDSB\t%r0, [%r3, %r6]" },
+    { 0xFE00, 0x5A00, "LDRH\t%r0, [%r3, %r6]" },
+    { 0xFE00, 0x5E00, "LDSH\t%r0, [%r3, %r6]" },
 
     //  Format 09 : ロードストア命令。  //
-    { 0xF800, 0x6000, "STR" },
-    { 0xF800, 0x6800, "LDR" },
-    { 0xF800, 0x7000, "STRB" },
-    { 0xF800, 0x7800, "LDRB" },
+    { 0xF800, 0x6000, "STR \t%r0, [%r3, #%I{6,5,2}]" },
+    { 0xF800, 0x6800, "LDR \t%r0, [%r3, #%I{6,5,2}]" },
+    { 0xF800, 0x7000, "STRB\t%r0, [%r3, #%I{6,5,0}]" },
+    { 0xF800, 0x7800, "LDRB\t%r0, [%r3, #%I{6,5,0}]" },
 
     //  Format 10: ロードストア命令（ハーフワード）。   //
-    { 0xF800, 0x8000, "STRH" },
-    { 0xF800, 0x8800, "LDRH" },
+    { 0xF800, 0x8000, "STRH\t%r0, [%r3, #%I{6,5,1}]" },
+    { 0xF800, 0x8800, "LDRH\t%r0, [%r3, #%I{6,5,1}]" },
 
     //  Format 11 : ロードストア命令（SP-Relative）。   //
-    { 0xF800, 0x9000, "STR Rd, [SP, #nn]" },
-    { 0xF800, 0x9800, "LDR Rd, [SP, #nn]" },
+    { 0xF800, 0x9000, "STR \t%r8, [SP, #%I{0,8,2}]" },
+    { 0xF800, 0x9800, "LDR \r%r8, [SP, #%I{0,8,2}]" },
 
     //  Format 12 : アドレッシング。    //
-    { 0xF800, 0xA000, "ADD Rd, PC, #nn" },
-    { 0xF800, 0xA800, "ADD Rd, SP, #nn" },
+    { 0xF800, 0xA000, "ADD \t%r8, PC, #%I{0,8,2}\t(=%p{0,8,2})" },
+    { 0xF800, 0xA800, "ADD \t%r8, SP, #%I{0,8,2}" },
 
     //  Format 13 : SP操作。    //
-    { 0xFF80, 0xB000, "ADD SP, #nn" },
-    { 0xFF80, 0xB080, "ADD SP, #-nn" },
+    { 0xFF80, 0xB000, "ADD \tSP, #%I{0,7,2}" },
+    { 0xFF80, 0xB080, "ADD \tSP, #-%I{0,7,2}" },
 
     //  Format 14 : ロードストア命令（スタック）。  //
-    { 0xFFFF, 0xB500, "PUSH {LR}" },
-    { 0xFF00, 0xB400, "PUSH {Rlist}" },
-    { 0xFF00, 0xB500, "PUSH {Rlist,LR}" },
-    { 0xFFFF, 0xBD00, "POP {PC}" },
-    { 0xFF00, 0xBC00, "POP {Rlist}" },
-    { 0xFF00, 0xBD00, "POP {Rlist,PC}" },
+    { 0xFFFF, 0xB500, "PUSH\t{LR}" },
+    { 0xFF00, 0xB400, "PUSH\t{%l}" },
+    { 0xFF00, 0xB500, "PUSH\t{%l,LR}" },
+    { 0xFFFF, 0xBD00, "POP \t{PC}" },
+    { 0xFF00, 0xBC00, "POP \t{%l}" },
+    { 0xFF00, 0xBD00, "POP \t{%l,PC}" },
 
     //  Format 15   //
-    { 0xF800, 0xC000, "STMIA Rb!, {Rlist}" },
-    { 0xF800, 0xC800, "LDMIA Rb!, {Rlist}" },
+    { 0xF800, 0xC000, "STMIA\t%r8!, {%l}" },
+    { 0xF800, 0xC800, "LDMIA\t%r8!, {%l}" },
 
     //  Format 16 : 条件付き分岐命令。      //
     //  Format 17 : ソフトウェア割り込み。  //
-    { 0xFF00, 0xD000, "BEQ\t%os1" },
-    { 0xFF00, 0xD100, "BNE\t%os1" },
-    { 0xFF00, 0xD200, "BCS\t%os1" },
-    { 0xFF00, 0xD300, "BCC\t%os1" },
-    { 0xFF00, 0xD400, "BMI\t%os1" },
-    { 0xFF00, 0xD500, "BPL\t%os1" },
-    { 0xFF00, 0xD600, "BVS\t%os1" },
-    { 0xFF00, 0xD700, "BVC\t%os1" },
-    { 0xFF00, 0xD800, "BHI\t%os1" },
-    { 0xFF00, 0xD900, "BLS\t%os1" },
-    { 0xFF00, 0xDA00, "BGE\t%os1" },
-    { 0xFF00, 0xDB00, "BLT\t%os1" },
-    { 0xFF00, 0xDC00, "BGT\t%os1" },
-    { 0xFF00, 0xDD00, "BLE\t%os1" },
+    { 0xFF00, 0xD000, "BEQ\t%s{0,8,1}" },
+    { 0xFF00, 0xD100, "BNE\t%s{0,8,1}" },
+    { 0xFF00, 0xD200, "BCS\t%s{0,8,1}" },
+    { 0xFF00, 0xD300, "BCC\t%s{0,8,1}" },
+    { 0xFF00, 0xD400, "BMI\t%s{0,8,1}" },
+    { 0xFF00, 0xD500, "BPL\t%s{0,8,1}" },
+    { 0xFF00, 0xD600, "BVS\t%s{0,8,1}" },
+    { 0xFF00, 0xD700, "BVC\t%s{0,8,1}" },
+    { 0xFF00, 0xD800, "BHI\t%s{0,8,1}" },
+    { 0xFF00, 0xD900, "BLS\t%s{0,8,1}" },
+    { 0xFF00, 0xDA00, "BGE\t%s{0,8,1}" },
+    { 0xFF00, 0xDB00, "BLT\t%s{0,8,1}" },
+    { 0xFF00, 0xDC00, "BGT\t%s{0,8,1}" },
+    { 0xFF00, 0xDD00, "BLE\t%s{0,8,1}" },
     { 0xFF00, 0xDF00, "SWI" },
     { 0xFF00, 0xBE00, "BKPT" },
 
     //  Format 18 : 無条件分岐命令。    //
-    { 0xF800, 0xE000, "B" },
+    { 0xF800, 0xE000, "B   \t%s{0,11,1}" },
 
     //  Format 19 : サブルーチンコール。    //
-    { 0xF800, 0xF000, "BL" },
-    { 0xF800, 0xF800, "BLH" },
-    { 0xF800, 0xE800, "BLX" },
+    { 0xF800, 0xF000, "BL  \t%L" },
+    { 0xF800, 0xF800, "BLH \t#%I{0,11,1}" },
 
     //  Unknown.    //
     { 0x0000, 0x0000, "[ ??? ]" },
 };
+
+#if 0
 
 //----------------------------------------------------------------
 //    相対オフセット。
@@ -165,9 +173,30 @@ getUnsignedOffset(
     return  static_cast<GuestMemoryAddress>((opeCode & 0x00FF) << sftBits);
 }
 
+#endif
 
 //----------------------------------------------------------------
-//  %P  - PC-Relative.
+//  %L  - Long (22bit) offset
+//
+
+inline  size_t
+writeLongOffset(
+        const   OpeCode             opeCode,
+        const   OpeCode             nextOpe,
+        char  *  const              dst,
+        const   char  *           & src,
+        const   GuestMemoryAddress  gmAddr)
+{
+    int32_t ofs = (opeCode & 0x07FF);
+    if ( ofs & 0x0400 ) {
+        ofs |= 0xFFFFF800;
+    }
+    ofs = (ofs << 12) | ((nextOpe & 0x07FF) << 1);
+    return  sprintf(dst, "#0x%08x ; ($+4+0x%08x)", gmAddr + 4 + ofs, ofs);
+}
+
+//----------------------------------------------------------------
+//  %p  - PC-Relative (Address).
 //
 
 inline  size_t
@@ -175,17 +204,36 @@ writePCRelative(
         const   OpeCode             opeCode,
         char  *  const              dst,
         const   char  *           & src,
+        const   GuestMemoryAddress  gmAddr)
+{
+    const   GuestMemoryAddress  nn  = getUnsignedScaleImmediate(opeCode, src);
+    const   GuestMemoryAddress  pos = (gmAddr & ~3) + 4 + nn;
+
+    return  sprintf(dst, "#0x%08x", pos);
+}
+
+//----------------------------------------------------------------
+//  %P  - PC-Relative (With Value).
+//
+
+inline  size_t
+writePCRelativeWithVal(
+        const   OpeCode             opeCode,
+        char  *  const              dst,
+        const   char  *           & src,
         const   MemoryManager     & manMem,
         const   GuestMemoryAddress  gmAddr)
 {
-    const   GuestMemoryAddress  nn  = getUnsignedOffset(opeCode, src);
+    const   GuestMemoryAddress  nn  = getUnsignedScaleImmediate(opeCode, src);
     const   GuestMemoryAddress  pos = (gmAddr & ~3) + 4 + nn;
 
     //  読みだすアドレスが決定的、かつ大抵ロム上。  //
     //  なので値も定数だろうから読みだしておく。    //
     const  RegType  val = manMem.readMemory<RegType>(pos);
-    return  sprintf(dst, "[%08x] (=$%08x)", pos, val);
+    return  sprintf(dst, "[#0x%08x] (=#0x%08x)", pos, val);
 }
+
+#if 0
 
 //----------------------------------------------------------------
 //  %I{bit,msk} - Immediate.
@@ -201,6 +249,7 @@ writeImmediate(
         GuestMemoryAddress  gmAddr)
 {
     RegType val = 0;
+    int     dig = 4;
 
     if ( *(src) == '{' ) {
         ++  src;
@@ -211,8 +260,10 @@ writeImmediate(
         val = (opeCode >> immBit) & immMask;
     }
 
-    return  sprintf(dst, "0x%04x", val);
+    return  sprintf(dst, "0x%0*x", dig, val);
 }
+
+#endif
 
 //----------------------------------------------------------------
 //  %rx - Register.
@@ -251,6 +302,43 @@ writeRegisterHigh(
 }
 
 //----------------------------------------------------------------
+//  %l - Register List.
+//
+
+inline  size_t
+writeRegisterList(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src)
+{
+    const  int  regList = (opeCode & 0x00FF);
+    int         flgSep  = 0;
+    std::stringstream   ss;
+
+    for ( int bit = 0; bit < 8; ) {
+        if ( (regList >> bit) & 1 ) {
+            const  int  fr = bit;
+            while ( (regList >> bit) & 1 ) { ++ bit; }
+            const  int  to  = bit - 1;
+            if ( flgSep ) {
+                ss  <<  ',';
+            }
+            ss  <<  regNames[fr];
+            if ( fr != to ) {
+                ss  <<  ((fr == to - 1) ? ',' : '-');
+                ss  <<  regNames[to];
+            }
+            flgSep  = 1;
+        } else {
+            ++ bit;
+        }
+    }
+
+    return  sprintf(dst, "%s", ss.str().c_str());
+}
+
+#if 0
+//----------------------------------------------------------------
 //  %ou/%os - オフセット。
 //
 
@@ -264,13 +352,29 @@ writeOffset(
     const   char        ch  = (*(src ++));
     GuestMemoryAddress  ofs = getUnsignedOffset(opeCode, src);
 
-    if ( (ch == 's') && (ofs & 0x0080) ) {
+    if ( (ch == 's') && (opeCode & 0x0080) ) {
         ofs |= 0xFFFFFF00;
     }
 
-    return  sprintf(dst, "$%08x ; (%08x)", ofs, gmAddr + 4 + ofs);
+    return  sprintf(dst, "#0x%08x ; (0x%08x)", ofs, gmAddr + 4 + ofs);
+}
+#endif
+
+//----------------------------------------------------------------
+
+inline  size_t
+writeSignedScaleImmediate(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src)
+{
+    RegType val = getSignedScaleImmediate(opeCode, src);
+    int     dig = 4;
+
+    return  sprintf(dst, "0x%0*x", dig, val);
 }
 
+#if 0
 //----------------------------------------------------------------
 //  %nxx - 符号なしオフセット。
 //
@@ -283,7 +387,24 @@ writeUnsignedOffset(
         GuestMemoryAddress  gmAddr)
 {
     const   GuestMemoryAddress  nn  = getUnsignedOffset(opeCode, src);
-    return  sprintf(dst, "0x%04x", nn);
+    int     dig = 4;
+    return  sprintf(dst, "0x%0*x", dig, nn);
+}
+
+#endif
+
+//----------------------------------------------------------------
+
+inline  size_t
+writeUnsignedScaleImmediate(
+        const   OpeCode     opeCode,
+        char  *  const      dst,
+        const  char  *    & src)
+{
+    RegType val = getUnsignedScaleImmediate(opeCode, src);
+    int     dig = 4;
+
+    return  sprintf(dst, "0x%0*x", dig, val);
 }
 
 }   //  End of (Unnamed) namespace.
@@ -337,7 +458,15 @@ DisThumb::writeMnemonic(
     const MnemonicMap *  oc = thumbMnemonics;
     for ( ; (opeCode & oc->mask) != oc->cval; ++ oc ) ;
 
-    sprintf(buf, "%08x:   %04x\t", gmAddr, (opeCode & 0xFFFF));
+    OpeCode     op2 = 0;
+    if ( (opeCode & 0xF800) == 0xF000 ) {
+        op2 = this->m_pManMem->readMemory<OpeCode>(gmAddr + 2);
+        sprintf(buf, "%08x:   %04x %04x\t",
+                gmAddr, (opeCode & 0xFFFF), (op2 & 0xFFFF)
+        );
+    } else {
+        sprintf(buf, "%08x:   %04x\t", gmAddr, (opeCode & 0xFFFF));
+    }
     outStr  <<  buf;
 
     size_t          len = 0;
@@ -345,7 +474,7 @@ DisThumb::writeMnemonic(
     char  *         dst = buf;
     char            ch;
 
-    while ( ch = *(src ++) ) {
+    while ( (ch = *(src ++)) ) {
         len = 0;
         if ( ch != '%' ) {
             * (dst ++)  = ch;
@@ -353,23 +482,29 @@ DisThumb::writeMnemonic(
             ch  = *(src ++);
             switch ( ch ) {
             case  'I':
-                len = writeImmediate(opeCode, dst, src, gmAddr);
+                len = writeUnsignedScaleImmediate(opeCode, dst, src);
+                break;
+            case  'L':
+                len = writeLongOffset(opeCode, op2, dst, src, gmAddr);
                 break;
             case  'P':
-                len = writePCRelative(
+                len = writePCRelativeWithVal(
                             opeCode, dst, src, *(this->m_pManMem), gmAddr);
+                break;
+            case  'l':
+                len = writeRegisterList(opeCode, dst, src);
                 break;
             case  'm':
                 len = writeRegisterHigh(opeCode, dst, src, gmAddr);
                 break;
-            case  'n':
-                len = writeUnsignedOffset(opeCode, dst, src, gmAddr);
-                break;
-            case  'o':
-                len = writeOffset(opeCode, dst, src, gmAddr);
+            case  'p':
+                len = writePCRelative(opeCode, dst, src, gmAddr);
                 break;
             case  'r':
                 len = writeRegister(opeCode, dst, src, gmAddr);
+                break;
+            case  's':
+                len = writeSignedScaleImmediate(opeCode, dst, src);
                 break;
             default:
                 * (dst ++)  = '%';

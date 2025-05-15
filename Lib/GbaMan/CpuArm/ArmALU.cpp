@@ -47,6 +47,7 @@ armALUInstruction(
     //  結果を格納するレジスタはビット 12..15 で指定。  //
     const  int      dst = (opeCode >> 12) & 0x0F;
 
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
     char    buf[512];
 #if defined( __GNUC__ )
     std::cerr   <<  __PRETTY_FUNCTION__ <<  std::endl;
@@ -61,13 +62,19 @@ armALUInstruction(
             opeCode, dst);
     std::cerr   <<  buf;
     assert( SHIFTOP::SHIFTW_REG == BIT4 );
+#endif
 
     //  第一オペランドレジスタはビット 16..19 で指定。  //
     const  RegType  lhs = cpuRegs[(opeCode >> 16) & 0x0F].dw;
     const  RegType  Cy  = (cpuFlag >> CPSR::FBIT_C) & 0x01;
     RegType     rhs;
-    uint64_t    res;
+    RegType     res = cpuRegs[dst].dw;
     bool        flagCy = (Cy ? true : false);
+
+    static_assert(
+            (BIT25 == 0) || (std::is_same<SHIFTOP, ArmALUImmRor>::value),
+            "SHIFTOP must be ArmALUImmRor if BIT25 == 1"
+    );
 
     if ( BIT25 == 0 ) {
         //  第二オペランドはレジスタ。ビット 00..07 で指定される。  //
@@ -80,98 +87,77 @@ armALUInstruction(
                     opeCode, cpuRegs, flagCy);
         }
 #endif
-
-        rhs = getAluOp2Register<SHIFTOP, BIT4>(
+        rhs = getAluOp2Register<SHIFTOP>(
                 opeCode, cpuRegs, flagCy);
     } else {
-        assert((std::is_same<SHIFTOP, ArmALUImmRor>::value));
         //  第二オペランドは即値指定。ビット 00..07 で指定される。  //
         const  RegType  imm = (opeCode & 0xFF);
         const  int      ror = (opeCode & 0xF00) >> 7;
-        rhs = ArmALUImmRor()(imm, ror, flagCy);
+        rhs = SHIFTOP()(imm, ror, flagCy);
     }
 
-    const  RegType  cur = cpuFlag;
+    const  RegType  cur = setCondLogicalCarry(flagCy, cpuFlag);
     RegType         flg;
 
     switch ( CODE ) {
     case  0x00:     //  AND         Rd = Rn AND Op2
-        res = lhs & rhs;
-        flg = setCondLogical(res, lhs, rhs, flagCy, cur);
+        flg = setCondLogical((res = lhs & rhs), lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x01:     //  EOR (XOR)   Rd = Rn XOR Op2
-        res = lhs ^ rhs;
-        flg = setCondLogical(res, lhs, rhs, flagCy, cur);
+        flg = setCondLogical((res = lhs ^ rhs), lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x02:     //  SUB         Rd = Rn - OP2
-        res = static_cast<uint64_t>(lhs) - static_cast<uint64_t>(rhs);
-        flg = setCondSub(res, lhs, rhs, flagCy, cur);
+        flg = setCondSub((res = lhs - rhs), lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x03:     //  RSB         Rd = Op2 - Rn
-        res = static_cast<uint64_t>(rhs) - static_cast<uint64_t>(lhs);
-        flg = setCondSub(res, rhs, lhs, flagCy, cur);
+        flg = setCondSub((res = rhs - lhs), rhs, lhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x04:     //  ADD         Rd = Rn + Op2
-        res = static_cast<uint64_t>(lhs) + static_cast<uint64_t>(rhs);
-        flg = setCondAdd(res, lhs, rhs, flagCy, cur);
+        flg = setCondAdd((res = lhs + rhs), lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x05:     //  ADC         Rd = Rn + Op2 + Cy
-        res = static_cast<uint64_t>(lhs) + static_cast<uint64_t>(rhs)
-                    + static_cast<uint64_t>(Cy);
-        flg = setCondAdd(res, lhs, rhs, flagCy, cur);
+        flg = setCondAdd((res = lhs + rhs + Cy), lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x06:     //  SBC         Rd = Rn - Op2 + Cy - 1
-        res = static_cast<uint64_t>(lhs) - static_cast<uint64_t>(rhs)
-                    + static_cast<uint64_t>(Cy - 1);
-        flg = setCondAdd(res, lhs, rhs, flagCy, cur);
+        flg = setCondAdd((res = lhs - rhs + Cy - 1), lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x07:     //  RSC         Rd = Op2 - Rn + Cy - 1
-        res = static_cast<uint64_t>(rhs) - static_cast<uint64_t>(lhs)
-                    + static_cast<uint64_t>(Cy - 1);
-        flg = setCondAdd(res, rhs, lhs, flagCy, cur);
+        flg = setCondAdd((res = rhs - lhs + Cy - 1), rhs, lhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x08:     //  TST         (void)(Rn AND Op2)
-        res = lhs & rhs;
-        flg = setCondLogical(res, lhs, rhs, flagCy, cur);
+        flg = setCondLogical((lhs & rhs), lhs, rhs, cur);
         break;
     case  0x09:     //  TEQ         (void)(Rn XOR Op2)
-        res = lhs ^ rhs;
-        flg = setCondLogical(res, lhs, rhs, flagCy, cur);
+        flg = setCondLogical((lhs ^ rhs), lhs, rhs, cur);
         break;
     case  0x0A:     //  CMP         (void)(Rn - Op2)
-        res = static_cast<uint64_t>(lhs) - static_cast<uint64_t>(rhs);
-        flg = setCondSub(res, lhs, rhs, flagCy, cur);
+        flg = setCondSub((lhs - rhs), lhs, rhs, cur);
         break;
     case  0x0B:     //  CMN         (void)(Rn + Op2)
-        res = static_cast<uint64_t>(lhs) + static_cast<uint64_t>(rhs);
-        flg = setCondAdd(res, lhs, rhs, flagCy, cur);
+        flg = setCondAdd((lhs + rhs), lhs, rhs, cur);
         break;
     case  0x0C:     //  ORR (OR)    Rd = Rn OR Op2
-        res = lhs | rhs;
-        flg = setCondLogical(res, lhs, rhs, flagCy, cur);
+        flg = setCondLogical((res = lhs | rhs), lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x0D:     //  MOV         Rd = Op2
-        res = rhs;
-        flg = setCondLogical(res, lhs, rhs, flagCy, cur);
+        flg = setCondLogical((res = rhs), lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x0E:     //  BIC         Rd = Rnn AND NOT Op2
-        res = lhs & ~rhs;
-        flg = setCondLogical(res, lhs, rhs, flagCy, cur);
+        flg = setCondLogical((res = lhs & ~rhs), lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     case  0x0F:     //  MVN         Rd = Not Op2
-        res = ~rhs;
-        flg = setCondLogical(res, lhs, rhs, flagCy, cur);
+        flg = setCondLogical((res = ~rhs), lhs, rhs, cur);
         cpuRegs[dst].dw = res;
         break;
     }
@@ -318,13 +304,15 @@ CpuArm::execALUInstruction(
         ((opeCode >> 17) & 0x01F8) | ((opeCode >> 4) & 0x07);
     FnALUInst   pfInst  = g_armALUInstTable[idx];
 
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
     char    buf[512];
     sprintf(buf,
             "opeCode = %08x, idx = %03x, pfInst = %p\n",
             opeCode, idx, pfInst);
     std::cerr   <<  buf;
+#endif
 
-    return  (* pfInst)(opeCode, this->m_cpuRegs, this->m_cpuRegs[16].dw);
+    return  (* pfInst)(opeCode, mog_cpuRegs, mog_cpuRegs[16].dw);
 }
 
 //========================================================================

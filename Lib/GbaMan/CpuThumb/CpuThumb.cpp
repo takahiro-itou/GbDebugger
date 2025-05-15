@@ -30,6 +30,7 @@
 //    Implementation of Inlines.
 //
 
+#include    "Branch.inl"
 #include    "OperateRegister.inl"
 #include    "StoreLoad.inl"
 
@@ -90,27 +91,36 @@ CpuThumb::executeNextInst()
 {
     char    buf[256];
 
-    const  GuestMemoryAddress oldPC = this->m_nextPC;
-    const  OpeCode  opeCode = this->m_prefOpeCodes[0];
-    this->m_prefOpeCodes[0] = this->m_prefOpeCodes[1];
+    {
+        const  GuestMemoryAddress oldPC = this->m_nextPC;
+        const  OpeCode  opeCode = this->m_prefOpeCodes[0];
+        this->m_prefOpeCodes[0] = this->m_prefOpeCodes[1];
 
-    this->m_nextPC  = this->m_cpuRegs[RegIdx::PC].dw;
-    this->m_cpuRegs[RegIdx::PC].dw  += 2;
-    prefetchNext();
+        mog_prefetchActive  = false;
+        mog_clockCounts     = 0;
 
-    const  OpeCode  idx = (opeCode >> 8) & 0x00FF;
-    FnInst  pfInst  = s_thumbInstTable[idx];
-    //  InstExecResult  ret = (this ->* pfInst)(opeCode);
-    InstExecResult  ret = InstExecResult::UNDEFINED_OPECODE;
-    if ( pfInst != nullptr ) {
-        ret = (this ->* pfInst)(opeCode);
-    }
-    if ( ret == InstExecResult::UNDEFINED_OPECODE ) {
-        sprintf(buf,
-                "Undefined Thumb instruction %04x (%03x) at %08x\n",
-                opeCode, idx, oldPC);
-        std::cerr   <<  buf;
-        return ( InstExecResult::UNDEFINED_OPECODE );
+        this->m_nextPC  = mog_cpuRegs[RegIdx::PC].dw;
+        mog_cpuRegs[RegIdx::PC].dw  += 2;
+        prefetchNext();
+
+        const  OpeCode  idx = (opeCode >> 8) & 0x00FF;
+        FnInst  pfInst  = s_thumbInstTable[idx];
+        //  InstExecResult  ret = (this ->* pfInst)(opeCode);
+        InstExecResult  ret = InstExecResult::UNDEFINED_OPECODE;
+        if ( pfInst != nullptr ) {
+            ret = (this ->* pfInst)(opeCode);
+        }
+        if ( ret == InstExecResult::UNDEFINED_OPECODE ) {
+            sprintf(buf,
+                    "Undefined Thumb instruction %04x (%03x) at %08x\n",
+                    opeCode, idx, oldPC);
+            std::cerr   <<  buf;
+            return ( InstExecResult::UNDEFINED_OPECODE );
+        }
+        if ( mog_clockCounts == 0 ) {
+            mog_clockCounts = 1;
+        }
+        mog_totalClocks += mog_clockCounts;
     }
 
     return ( InstExecResult::SUCCESS_BREAKPOINT );
@@ -161,6 +171,34 @@ CpuThumb::prefetchNext()
     this->m_prefOpeCodes[1] =
             this->m_manMem.readMemory<uint16_t>(this->m_nextPC + 2);
 }
+
+//----------------------------------------------------------------
+//    プログラムカウンタを変更する命令の処理。
+//
+
+GBD_REGPARM     InstExecResult
+CpuThumb::modifyProgramCounter(
+        const  RegType  valNew)
+{
+    if ( !(valNew & 1) ) {
+        //  ARM モードに切り替え。  //
+        this->m_nextPC  = valNew & ~3;
+        mog_cpuRegs[RegIdx::CPSR].dw    &= ~CPSR::FLAG_T;
+        mog_cpuRegs[RegIdx::PC].dw      = (this->m_nextPC + 4);
+        return ( InstExecResult::UNDEFINED_OPECODE );
+    }
+
+    //  THUMB モード。  //
+    this->m_nextPC  = valNew & ~1;
+    mog_cpuRegs[RegIdx::PC].dw  = (this->m_nextPC + 2);
+
+    const   LpcReadBuf  ptr =
+        this->m_manMem.getMemoryAddress(this->m_nextPC);
+    prefetchAll<uint16_t>(static_cast<const uint16_t *>(ptr));
+
+    return ( InstExecResult::SUCCESS_CONTINUE );
+}
+
 
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
