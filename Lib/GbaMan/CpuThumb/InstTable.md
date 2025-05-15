@@ -34,7 +34,7 @@
 | 0xC8 |LDMIA|LDMIA|LDMIA|LDMIA|LDMIA|LDMIA|LDMIA|LDMIA|
 | 0xD0 | BEQ | BNE | BCS | BCC | BMI | BPL | BVS | BVC |
 | 0xD8 | BHI | BLS | BGE | BLT | BGT | BLE | und | SWI |
-| 0xE0 |     |     |     |     |     |     |     |     |
+| 0xE0 |  B  |  B  |  B  |  B  |  B  |  B  |  B  |  B  |
 | 0xE8 |     |     |     |     |     |     |     |     |
 | 0xF0 |     |     |     |     |     |     |     |     |
 | 0xF8 |     |     |     |     |     |     |     |     |
@@ -69,7 +69,7 @@
 | 0xC8 | 15  | 15  | 15  | 15  | 15  | 15  | 15  | 15  |
 | 0xD0 | 16  | 16  | 16  | 16  | 16  | 16  | 16  | 16  |
 | 0xD8 | 16  | 16  | 16  | 16  | 16  | 16  | und | 17  |
-| 0xE0 |     |     |     |     |     |     |     |     |
+| 0xE0 | 18  | 18  | 18  | 18  | 18  | 18  | 18  | 18  |
 | 0xE8 |     |     |     |     |     |     |     |     |
 | 0xF0 |     |     |     |     |     |     |     |     |
 | 0xF8 |     |     |     |     |     |     |     |     |
@@ -213,3 +213,7 @@
 
 - 1101 1111 ???? ???? (0xDF00 - 0xDFFF) : SWI  #nn
 - 1011 1110 ???? ???? (0xBE00 - 0xBEFF) : BKPT #nn
+
+18. 分岐（無条件）
+
+- 1110 0??? ???? ???? (0xE000 - 0xE7FF) : B  label
