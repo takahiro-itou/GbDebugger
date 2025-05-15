@@ -29,9 +29,9 @@
 | 0xA0 | ADD | ADD | ADD | ADD | ADD | ADD | ADD | ADD |
 | 0xA8 | ADD | ADD | ADD | ADD | ADD | ADD | ADD | ADD |
 | 0xB0 | ADD | und | und | und | PUSH| PUSH| und | und |
-| 0xB8 | und | und | und | und | POP | POP |     |    |
-| 0xC0 |     |     |     |     |     |     |     |     |
-| 0xC8 |     |     |     |     |     |     |     |     |
+| 0xB8 | und | und | und | und | POP | POP |     |     |
+| 0xC0 |STMIA|STMIA|STMIA|STMIA|STMIA|STMIA|STMIA|STMIA|
+| 0xC8 |LDMIA|LDMIA|LDMIA|LDMIA|LDMIA|LDMIA|LDMIA|LDMIA|
 | 0xD0 |     |     |     |     |     |     |     |     |
 | 0xD8 |     |     |     |     |     |     |     |     |
 | 0xE0 |     |     |     |     |     |     |     |     |
@@ -65,8 +65,8 @@
 | 0xA8 | 12  | 12  | 12  | 12  | 12  | 12  | 12  | 12  |
 | 0xB0 | 13  | und | und | und | 14  | 14  | und | und |
 | 0xB8 | und | und | und | und | 14  | 14  |     |     |
-| 0xC0 |     |     |     |     |     |     |     |     |
-| 0xC8 |     |     |     |     |     |     |     |     |
+| 0xC0 | 15  | 15  | 15  | 15  | 15  | 15  | 15  | 15  |
+| 0xC8 | 15  | 15  | 15  | 15  | 15  | 15  | 15  | 15  |
 | 0xD0 |     |     |     |     |     |     |     |     |
 | 0xD8 |     |     |     |     |     |     |     |     |
 | 0xE0 |     |     |     |     |     |     |     |     |
@@ -184,3 +184,9 @@
 - 1011 x10? ???? ???? (0xB400 - 0xB5FF)
     - 1011 010? ???? ???? (0xB400 - 0xB5FF) : PUSH
     - 1011 110? ???? ???? (0xBC00 - 0xBDFF) : POP
+
+15. ロード／ストア（レジスタリスト）
+
+- 1100 x??? ???? ???? (0xC000 - 0xCFFF)
+    - 1100 0??? ??? ??? (0xC000 - 0xC7FF) : STMIA Rb!, {Rlist}
+    - 1100 1??? ??? ??? (0xC800 - 0xCFFF) : LDMIA Rb!, {Rlist}
