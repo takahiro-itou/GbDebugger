@@ -3,10 +3,16 @@
 ##
 
 |      | + 0 | + 1 | + 2 | + 3 | + 4 | + 5 | + 6 | + 7 |
+|-----:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | 0x00 | LSL | LSL | LSL | LSL | LSL | LSL | LSL | LSL |
 | 0x08 | LSR | LSR | LSR | LSR | LSR | LSR | LSR | LSR |
 | 0x10 | ASR | ASR | ASR | ASR | ASR | ASR | ASR | ASR |
 | 0x18 | ADD | ADD | SUB | SUB | ADD | ADD | SUB | SUB |
+| 0x20 | MOV | MOV | MOV | MOV | MOV | MOV | MOV | MOV |
+| 0x28 | CMP | CMP | CMP | CMP | CMP | CMP | CMP | CMP |
+| 0x30 | ADD | ADD | ADD | ADD | ADD | ADD | ADD | ADD |
+| 0x38 | SUB | SUB | SUB | SUB | SUB | SUB | SUB | SUB |
+| 0x40 | (4) | (4) | (4) | (4) | ADD | CMP | MOV | BX  |
 
 ##  詳細
 
@@ -32,3 +38,31 @@
     - 0010 1??? ???? ???? (0x2800 - 0x2FFF) : CMP Rd, #nn
     - 0011 0??? ???? ???? (0x3000 - 0x37FF) : ADD Rd, #nn
     - 0011 1??? ???? ???? (0x3800 - 0x37FF) : SUB Rd, #nn
+
+4. 算術演算
+
+- 0100 00xx xx?? ???? (0x4000 - 0x43FF)
+    - 0100 0000 00?? ???? (0x4000 - 0x403F) : AND Rd, Rs
+    - 0100 0000 01?? ???? (0x4040 - 0x407F) : EOR Rd, Rs
+    - 0100 0000 10?? ???? (0x4080 - 0x40BF) : LSL Rd, Rs
+    - 0100 0000 11?? ???? (0x40C0 - 0x40FF) : LSR Rd, Rs
+    - 0100 0001 00?? ???? (0x4100 - 0x413F) : ASR Rd, Rs
+    - 0100 0001 01?? ???? (0x4140 - 0x417F) : ADC Rd, Rs
+    - 0100 0001 10?? ???? (0x4180 - 0x41BF) : SBC Rd, Rs
+    - 0100 0001 11?? ???? (0x41C0 - 0x41FF) : ROR Rd, Rs
+    - 0100 0010 00?? ???? (0x4200 - 0x423F) : TST Rd, Rs
+    - 0100 0010 01?? ???? (0x4240 - 0x427F) : NEG Rd, Rs
+    - 0100 0010 10?? ???? (0x4280 - 0x42BF) : CMP Rd, Rs
+    - 0100 0010 11?? ???? (0x42C0 - 0x42FF) : CMN Rd, Rs
+    - 0100 0011 00?? ???? (0x4300 - 0x433F) : ORR Rd, Rs
+    - 0100 0011 01?? ???? (0x4340 - 0x437F) : MUL Rd, Rs
+    - 0100 0011 10?? ???? (0x4380 - 0x43BF) : BIC Rd, Rs
+    - 0100 0011 11?? ???? (0x43C0 - 0x43FF) : MVN Rd, Rs
+
+5. ハイレジスタ操作
+
+- 0100 01xx ???? ???? (0x4400 - 0x47FF)
+    - 0100 0100 ???? ???? (0x4400 - 0x44FF) : ADD Rd, Rs
+    - 0100 0101 ???? ???? (0x4500 - 0x45FF) : CMP Rd, Rs
+    - 0100 0110 ???? ???? (0x4600 - 0x46FF) : MOV Rd, Rs
+    - 0100 0111 ???? ???? (0x4700 - 0x47FF) : BX  Rs
