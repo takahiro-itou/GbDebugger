@@ -28,8 +28,8 @@
 | 0x98 | LDR | LDR | LDR | LDR | LDR | LDR | LDR | LDR |
 | 0xA0 | ADD | ADD | ADD | ADD | ADD | ADD | ADD | ADD |
 | 0xA8 | ADD | ADD | ADD | ADD | ADD | ADD | ADD | ADD |
-| 0xB0 | ADD | ADD | ADD | ADD | ADD | ADD | ADD | ADD |
-| 0xB8 | ADD | ADD | ADD | ADD | ADD | ADD | ADD | ADD |
+| 0xB0 | ADD | und | und | und | PUSH| PUSH| und | und |
+| 0xB8 | und | und | und | und | POP | POP |     |    |
 | 0xC0 |     |     |     |     |     |     |     |     |
 | 0xC8 |     |     |     |     |     |     |     |     |
 | 0xD0 |     |     |     |     |     |     |     |     |
@@ -63,8 +63,8 @@
 | 0x98 | 11  | 11  | 11  | 11  | 11  | 11  | 11  | 11  |
 | 0xA0 | 12  | 12  | 12  | 12  | 12  | 12  | 12  | 12  |
 | 0xA8 | 12  | 12  | 12  | 12  | 12  | 12  | 12  | 12  |
-| 0xB0 | 13  | 13  | 13  | 13  | 13  | 13  | 13  | 13  |
-| 0xB8 | 13  | 13  | 13  | 13  | 13  | 13  | 13  | 13  |
+| 0xB0 | 13  | und | und | und | 14  | 14  | und | und |
+| 0xB8 | und | und | und | und | 14  | 14  |     |     |
 | 0xC0 |     |     |     |     |     |     |     |     |
 | 0xC8 |     |     |     |     |     |     |     |     |
 | 0xD0 |     |     |     |     |     |     |     |     |
@@ -178,3 +178,9 @@
 
 - 1011 0000 0??? ???? (0xB000 - 0xB07F) : ADD  SP, #nn
 - 1011 0000 1??? ???? (0xB080 - 0xB0FF) : ADD  SP, #-nn
+
+14. スタック
+
+- 1011 x10? ???? ???? (0xB400 - 0xB5FF)
+    - 1011 010? ???? ???? (0xB400 - 0xB5FF) : PUSH
+    - 1011 110? ???? ???? (0xBC00 - 0xBDFF) : POP
