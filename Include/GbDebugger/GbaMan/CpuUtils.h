@@ -82,7 +82,8 @@ struct  RegIdx  {
         R11     = 11,
         R12     = 12,
         R13     = 13,
-        R14     = 14,
+        SP      = 13,
+        LR      = 14,
         PC      = 15,
         CPSR    = 16,
 
@@ -127,6 +128,20 @@ struct  RegIdx  {
 
 typedef     RegPair     RegBank[RegIdx::NUM_REGISTERS];
 
+
+//========================================================================
+//
+//
+
+struct  CounterInfo
+{
+    bool                prefetchEnable;
+    bool                prefetchActive;
+    PrefetchCounter     prefetchCounter;
+
+    ClockCount          totalClocks;
+    ClockCount          clockCounts;
+};
 
 //========================================================================
 //
@@ -221,27 +236,33 @@ armRorVal(
 //----------------------------------------------------------------
 
 inline  RegType
-setCondLogical(
-        const  uint64_t res,
-        const  RegType  lhs,
-        const  RegType  rhs,
-        const  bool     fout_cy,
+setCondLogicalCarry(
+        const  bool     flagCy,
         const  RegType  cur)
+{
+    return ( (cur & ~CPSR::FLAG_C) | (flagCy ? CPSR::FLAG_C : 0) );
+}
 
+//----------------------------------------------------------------
+
+inline  RegType
+setCondLogical(
+        const  RegType  res,
+        const  RegType,
+        const  RegType,
+        const  RegType  cur)
 {
     const  RegType  flag_n  = (res & CPSR::FLAG_N);
     const  RegType  flag_z  = (res ? 0 : CPSR::FLAG_Z);
-    const  RegType  flag_c  = (fout_cy ? CPSR::FLAG_C : 0);
 
-    return ( (cur & 0x1FFFFFFF) | flag_n | flag_z | flag_c );
+    return ( (cur & 0x3FFFFFFF) | flag_n | flag_z );
 }
 
 inline  RegType
 setCondAdd(
-        const  uint64_t res,
+        const  RegType  res,
         const  RegType  lhs,
         const  RegType  rhs,
-        const  bool     fout_cy,
         const  RegType  cur)
 {
     const  RegType  flag_n  = (res & CPSR::FLAG_N);
@@ -258,10 +279,9 @@ setCondAdd(
 
 inline  RegType
 setCondSub(
-        const  uint64_t res,
+        const  RegType  res,
         const  RegType  lhs,
         const  RegType  rhs,
-        const  bool     fout_cy,
         const  RegType  cur)
 {
     const  RegType  flag_n  = (res & CPSR::FLAG_N);

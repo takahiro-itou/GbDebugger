@@ -32,9 +32,9 @@ library_source_files        +=  \
         CpuArm/ArmALU.cpp              \
         CpuArm/ArmBranch.cpp           \
         CpuArm/ArmPsr.cpp              \
-        CpuArm/ArmStrLdr.cpp           \
         CpuArm/CpuArm.cpp              \
         CpuArm/DisArm.cpp              \
+        CpuArm/StoreLoad.cpp           \
         CpuThumb/CpuThumb.cpp          \
         CpuThumb/DisThumb.cpp          \
         ${extra_library_source_files}
@@ -50,11 +50,13 @@ dist_noinst_header_files    +=  \
         CpuArm/ArmInstTable.h          \
         CpuArm/CpuArm.h                \
         CpuArm/DisArm.h                \
+        CpuThumb/Branch.inl            \
         CpuThumb/CpuThumb.h            \
         CpuThumb/DisThumb.h            \
         CpuThumb/OperateRegister.inl   \
         CpuThumb/StoreLoad.inl         \
         CpuThumb/ThumbInstTable.h      \
+        Utils/DisUtils.inl             \
         Utils/ShiftOperator.h          \
         ${extra_noinst_header_files}
 

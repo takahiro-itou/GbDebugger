@@ -32,6 +32,19 @@
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
 
+#if defined( GBDEBUGGER_USE_GLOBALS )
+
+RegBank             mog_cpuRegs;
+
+bool                mog_prefetchEnable  = false;
+bool                mog_prefetchActive  = false;
+PrefetchCounter     mog_prefetchCounter = 0;
+
+ClockCount          mog_totalClocks = 0;
+ClockCount          mog_clockCounts = 0;
+
+#endif
+
 namespace  {
 
 const char * regNames[16] = {
@@ -62,7 +75,14 @@ BaseCpuCore::BaseCpuCore(
         MemoryManager & manMem)
     : m_manGba(manGba),
       m_manMem(manMem),
-      m_cpuRegs(),
+#if !defined( GBDEBUGGER_USE_GLOBALS )
+      mog_cpuRegs(),
+      mog_prefetchEnable(false),
+      mog_prefetchActive(false),
+      mog_prefetchCounter(0),
+      mog_totalClocks(0),
+      mog_clockCounts(0),
+#endif
       m_nextPC (),
       m_prefOpeCodes(),
       m_cpuMode(0)
@@ -108,12 +128,12 @@ BaseCpuCore::doHardReset()
     this->m_cpuMode = 0;
 
     for ( int i = 0; i < RegIdx::NUM_REGISTERS; ++ i ) {
-        this->m_cpuRegs[ i].dw  = 0x00000000;
+        mog_cpuRegs[ i].dw  = 0x00000000;
     }
     this->m_nextPC  = 0x08000000;
 
     prefetchAutoAll();
-    this->m_cpuRegs[15].dw  = this->m_nextPC + 4;
+    mog_cpuRegs[RegIdx::PC].dw  = this->m_nextPC + 4;
 
     return ( ErrCode::SUCCESS );
 }
@@ -126,7 +146,7 @@ ErrCode
 BaseCpuCore::getRegisters(
         RegBank  &copyBuf)  const
 {
-    memcpy(copyBuf, this->m_cpuRegs, sizeof(copyBuf));
+    memcpy(copyBuf, mog_cpuRegs, sizeof(copyBuf));
     copyBuf[RegIdx::NEXT_PC].dw = this->m_nextPC;
     return ( ErrCode::SUCCESS );
 }
@@ -142,14 +162,14 @@ BaseCpuCore::printRegisters(
     char    buf[256];
 
     for ( int i = 0; i < 16; ++ i ) {
-        sprintf(buf, "%4s: %08x ", regNames[i], this->m_cpuRegs[i].dw);
+        sprintf(buf, "%4s: %08x ", regNames[i], mog_cpuRegs[i].dw);
         outStr  <<  buf;
         if ( (i & 3) == 3 ) {
             outStr  <<  std::endl;
         }
     }
 
-    sprintf(buf, "CPSR: %08x ", this->m_cpuRegs[16].dw);
+    sprintf(buf, "CPSR: %08x ", mog_cpuRegs[16].dw);
     outStr  <<  buf;
     sprintf(buf, "Next: %08x\n", this->m_nextPC);
     outStr  <<  buf;
@@ -165,7 +185,7 @@ ErrCode
 BaseCpuCore::setRegisters(
         const  RegBank  &cpuRegs)
 {
-    memcpy(this->m_cpuRegs, cpuRegs, sizeof(cpuRegs));
+    memcpy(mog_cpuRegs, cpuRegs, sizeof(cpuRegs));
 
     this->m_nextPC  = cpuRegs[RegIdx::NEXT_PC].dw;
     prefetchAutoAll();

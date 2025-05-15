@@ -239,4 +239,12 @@
 #    undef      GBDEBUGGER_ENABLE_MOVEOPEQ_DELETE
 #endif
 
+
+//========================================================================
+//
+//    プロジェクト固有の設定
+//
+
+#define     GBDEBUGGER_CNF_GLOBALS      0
+
 #endif

@@ -18,9 +18,12 @@
 **      @file       Bin/SampleApplication.cpp
 **/
 
+#include    "GbDebugger/GbaMan/BaseCpuCore.h"
 #include    "GbDebugger/GbaMan/GbaManager.h"
 
 #include    <iostream>
+#include    <time.h>
+
 
 using   namespace   GBDEBUGGER_NAMESPACE;
 
@@ -59,19 +62,45 @@ int  main(int argc, char * argv[])
     //  最初の命令を実行。  //
     GbaMan::InstExecResult  ret = GbaMan::InstExecResult::SUCCESS_CONTINUE;
 
+    int cnt = 0;
+    clock_t clkSta  = clock();
     while ( ret != GbaMan::InstExecResult::UNDEFINED_OPECODE ) {
         ret = manGba.executeCurrentInst();
 
+#if defined( _DEBUG )
         //  レジスタをダンプ。  //
         std::cout   <<  "REGS\n";
         manGba.printRegisters(std::cout)
                 <<  std::endl;
 
         //  次の命令を逆アセンブル。    //
-        std::cout   <<  "Mnemonic:\n";
+        std::cout   <<  "Mnemonic:\t"  <<  cnt  <<  "\n";
         manGba.writeMnemonicCurrent(std::cout, manGba.getNextPC())
                 <<  std::endl;
+#endif
+        ++ cnt;
+        if ( !(cnt & 0x07FFFFFF) ) {
+            ClockCount  cc  = manGba.getCpuTotalTicks();
+            clock_t clkEnd  = clock();
+            const double elapsed = static_cast<double>(clkEnd - clkSta)
+                    * 1000.0 / CLOCKS_PER_SEC;
+            std::cout   <<  cnt <<  " Instructions, "
+                        <<  cc  <<  " Clocks, "
+                        <<  elapsed <<  "ms : "
+                        <<  (cc / elapsed)  <<  " kHz"
+                        <<  std::endl;
+        }
     }
 
+    ClockCount  cc  = manGba.getCpuTotalTicks();
+
+    clock_t clkEnd  = clock();
+    const double elapsed = static_cast<double>(clkEnd - clkSta)
+                                * 1000.0 / CLOCKS_PER_SEC;
+    std::cout   <<  cnt <<  " Instructions, "
+                <<  cc  <<  " Clocks, "
+                <<  elapsed <<  "ms : "
+                <<  (cc / elapsed)  <<  " kHz"
+                <<  std::endl;
     return ( 0 );
 }
