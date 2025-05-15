@@ -56,6 +56,7 @@ dist_noinst_header_files    +=  \
         CpuThumb/OperateRegister.inl   \
         CpuThumb/StoreLoad.inl         \
         CpuThumb/ThumbInstTable.h      \
+        Utils/DisUtils.inl             \
         Utils/ShiftOperator.h          \
         ${extra_noinst_header_files}
 
