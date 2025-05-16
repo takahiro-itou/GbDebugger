@@ -81,20 +81,20 @@
 | 0x0F8 | RSC |     | RSC |     | RSC |     | RSC |     |
 | 0x100 |     |     |     |     |     |     |     |     |
 | 0x108 |     |     |     |     |     |     |     |     |
-| 0x110 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x118 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x110 | TST | TST | TST | TST | TST | TST | TST | TST |
+| 0x118 | TST |     | TST |     | TST |     | TST |     |
 | 0x120 |     |     |     |     |     |     |     |     |
 | 0x128 |     |     |     |     |     |     |     |     |
-| 0x130 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x138 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x130 | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ |
+| 0x138 | TEQ |     | TEQ |     | TEQ |     | TEQ |     |
 | 0x140 |     |     |     |     |     |     |     |     |
 | 0x148 |     |     |     |     |     |     |     |     |
-| 0x150 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x158 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x150 | CMP | CMP | CMP | CMP | CMP | CMP | CMP | CMP |
+| 0x158 | CMP |     | CMP |     | CMP |     | CMP |     |
 | 0x160 |     |     |     |     |     |     |     |     |
 | 0x168 |     |     |     |     |     |     |     |     |
-| 0x170 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x178 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x170 | CMN | CMN | CMN | CMN | CMN | CMN | CMN | CMN |
+| 0x178 | CMN |     | CMN |     | CMN |     | CMN |     |
 | 0x180 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
 | 0x188 | ALU |     | ALU |     | ALU |     | ALU |     |
 | 0x190 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
@@ -145,20 +145,20 @@
 | 0x2F8 | RSC | RSC | RSC | RSC | RSC | RSC | RSC | RSC |
 | 0x300 |     |     |     |     |     |     |     |     |
 | 0x308 |     |     |     |     |     |     |     |     |
-| 0x310 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x318 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x310 | TST | TST | TST | TST | TST | TST | TST | TST |
+| 0x318 | TST | TST | TST | TST | TST | TST | TST | TST |
 | 0x320 |     |     |     |     |     |     |     |     |
 | 0x328 |     |     |     |     |     |     |     |     |
-| 0x330 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x338 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x330 | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ |
+| 0x338 | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ |
 | 0x340 |     |     |     |     |     |     |     |     |
 | 0x348 |     |     |     |     |     |     |     |     |
-| 0x350 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x358 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x350 | CMP | CMP | CMP | CMP | CMP | CMP | CMP | CMP |
+| 0x358 | CMP | CMP | CMP | CMP | CMP | CMP | CMP | CMP |
 | 0x360 |     |     |     |     |     |     |     |     |
 | 0x368 |     |     |     |     |     |     |     |     |
-| 0x370 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x378 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x370 | CMN | CMN | CMN | CMN | CMN | CMN | CMN | CMN |
+| 0x378 | CMN | CMN | CMN | CMN | CMN | CMN | CMN | CMN |
 | 0x380 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
 | 0x388 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
 | 0x390 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
