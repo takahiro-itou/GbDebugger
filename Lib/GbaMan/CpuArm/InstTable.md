@@ -41,7 +41,142 @@
 - (B)   : [02. 分岐命令](#02-分岐命令)
 - (COP) : [09. コプロセッサ命令](#09-コプロセッサ命令)
 
-##  さらにビット 7..4 も必要な分類
+##  さらにビット 07..04 も必要な分類
+
+- 範囲 0x00 - 0x3F の場合
+
+|       | + 0 | + 1 | + 2 | + 3 | + 4 | + 5 | + 6 | + 7 |
+|------:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| 0x000 | AND | AND | AND | AND | AND | AND | AND | AND |
+| 0x008 | AND |     | AND |     | AND |     | AND |     |
+| 0x010 | AND | AND | AND | AND | AND | AND | AND | AND |
+| 0x018 | AND |     | AND |     | AND |     | AND |     |
+| 0x020 | EOR | EOR | EOR | EOR | EOR | EOR | EOR | EOR |
+| 0x028 | EOR |     | EOR |     | EOR |     | EOR |     |
+| 0x030 | EOR | EOR | EOR | EOR | EOR | EOR | EOR | EOR |
+| 0x038 | EOR |     | EOR |     | EOR |     | EOR |     |
+| 0x040 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x048 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x050 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x058 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x060 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x068 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x070 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x078 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x080 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x088 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x090 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x098 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x0A0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x0A8 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x0B0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x0B8 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x0C0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x0C8 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x0D0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x0D8 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x0E0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x0E8 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x0F0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x0F8 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x100 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x108 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x110 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x118 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x120 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x128 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x130 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x138 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x140 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x148 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x150 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x158 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x160 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x168 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x170 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x178 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x180 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x188 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x190 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x198 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x1A0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x1A8 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x1B0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x1B8 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x1C0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x1C8 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x1D0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x1D8 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x1E0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x1E8 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x1F0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x1F8 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x200 | AND | AND | AND | AND | AND | AND | AND | AND |
+| 0x208 | AND | AND | AND | AND | AND | AND | AND | AND |
+| 0x210 | AND | AND | AND | AND | AND | AND | AND | AND |
+| 0x218 | AND | AND | AND | AND | AND | AND | AND | AND |
+| 0x220 | EOR | EOR | EOR | EOR | EOR | EOR | EOR | EOR |
+| 0x228 | EOR | EOR | EOR | EOR | EOR | EOR | EOR | EOR |
+| 0x230 | EOR | EOR | EOR | EOR | EOR | EOR | EOR | EOR |
+| 0x238 | EOR | EOR | EOR | EOR | EOR | EOR | EOR | EOR |
+| 0x240 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x248 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x250 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x258 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x260 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x268 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x270 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x278 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x280 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x288 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x290 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x298 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x2A0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x2A8 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x2B0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x2B8 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x2C0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x2C8 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x2D0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x2D8 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x2E0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x2E8 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x2F0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x2F8 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x300 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x308 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x310 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x318 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x320 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x328 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x330 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x338 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x340 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x348 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x350 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x358 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x360 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x368 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x370 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x378 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x380 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x388 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x390 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x398 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x3A0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x3A8 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x3B0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x3B8 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x3C0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x3C8 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x3D0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x3D8 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x3E0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x3E8 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x3F0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x3F8 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+
+
 
 ##  詳細
 
@@ -49,15 +184,15 @@
 
 ###   01. ALU
 
-- 000x xxx? ????  ???? ???? ???? ???? (0x0000000 - 0x1FFFFFF)
-- 001x xxx? ????  ???? ???? ???? ???? (0x2000000 - 0x3FFFFFF)
+- 000x xxx? ????  ???? ???? ???? ???? (0x0000000 - 0x1FFFFFF) : ALU レジスタ
+- 001x xxx? ????  ???? ???? ???? ???? (0x2000000 - 0x3FFFFFF) : ALU 即値
 
 除外
-- 000x xxx? ????  ???? ???? 1001 ????
-- 0001 0000 ????  ???? ???? ???? ???? (TST 命令でフラグを更新しない時)
-- 0001 0010 ????  ???? ???? ???? ???? (TEQ 命令でフラグを更新しない時)
-- 0001 0100 ????  ???? ???? ???? ???? (CMP 命令でフラグを更新しない時)
-- 0001 0110 ????  ???? ???? ???? ???? (CMN 命令でフラグを更新しない時)
+- 000x xxx? ????  ???? ???? 1??1 ???? (R=1 の時 bit7 は必ずゼロ)
+- 00?1 0000 ????  ???? ???? ???? ???? (TST 命令でフラグを更新しない時)
+- 00?1 0010 ????  ???? ???? ???? ???? (TEQ 命令でフラグを更新しない時)
+- 00?1 0100 ????  ???? ???? ???? ???? (CMP 命令でフラグを更新しない時)
+- 00?1 0110 ????  ???? ???? ???? ???? (CMN 命令でフラグを更新しない時)
 
 ###   02. 分岐命令
 
