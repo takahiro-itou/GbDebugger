@@ -153,11 +153,11 @@ private:
             const  OpeCode  opeCode);
 
     GBD_REGPARM     InstExecResult
-    execArm100_MsrCpsr(
+    execArm100_MrsCpsr(
             const  OpeCode  opeCode);
 
     GBD_REGPARM     InstExecResult
-    execArm120_MrsCpsrReg(
+    execArm120_MsrCpsrReg(
             const  OpeCode  opeCode);
 
     GBD_REGPARM     InstExecResult
@@ -165,19 +165,19 @@ private:
             const  OpeCode  opeCode);
 
     GBD_REGPARM     InstExecResult
-    execArm140_MsrSpsr(
+    execArm140_MrsSpsr(
             const  OpeCode  opeCode);
 
     GBD_REGPARM     InstExecResult
-    execArm160_MrsSpsrReg(
+    execArm160_MsrSpsrReg(
             const  OpeCode  opeCode);
 
     GBD_REGPARM     InstExecResult
-    execArm320_MrsCpsrImm(
+    execArm320_MsrCpsrImm(
             const  OpeCode  opeCode);
 
     GBD_REGPARM     InstExecResult
-    execArm360_MrsSpsrImm(
+    execArm360_MsrSpsrImm(
             const  OpeCode  opeCode);
 
     GBD_REGPARM     InstExecResult

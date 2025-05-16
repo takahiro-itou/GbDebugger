@@ -63,10 +63,10 @@ generatePsrMask(
 //
 
 GBD_REGPARM     InstExecResult
-CpuArm::execArm100_MsrCpsr(
+CpuArm::execArm100_MrsCpsr(
         const  OpeCode  opeCode)
 {
-    if ( UNLIKELY((opeCode & 0x0FFF0FFF) != 0x010F0FFF) ) {
+    if ( UNLIKELY((opeCode & 0x0FFF0FFF) != 0x010F0000) ) {
         return ( InstExecResult::UNDEFINED_OPECODE );
     }
     mog_cpuRegs[(opeCode >> 12) & 0x0F].dw  = mog_cpuRegs[16].dw;
@@ -74,7 +74,7 @@ CpuArm::execArm100_MsrCpsr(
 }
 
 GBD_REGPARM     InstExecResult
-CpuArm::execArm140_MsrSpsr(
+CpuArm::execArm140_MrsSpsr(
         const  OpeCode  opeCode)
 {
     if ( UNLIKELY((opeCode & 0x0FFF0FFF) != 0x014F0FFF) ) {
@@ -90,7 +90,7 @@ CpuArm::execArm140_MsrSpsr(
 //
 
 GBD_REGPARM     InstExecResult
-CpuArm::execArm120_MrsCpsrReg(
+CpuArm::execArm120_MsrCpsrReg(
         const  OpeCode  opeCode)
 {
     if ( UNLIKELY((opeCode & 0x0FF0FFF0) != 0x0120F000) ) {
@@ -111,7 +111,7 @@ CpuArm::execArm120_MrsCpsrReg(
 }
 
 GBD_REGPARM     InstExecResult
-CpuArm::execArm160_MrsSpsrReg(
+CpuArm::execArm160_MsrSpsrReg(
         const  OpeCode  opeCode)
 {
     if ( UNLIKELY((opeCode & 0x0FF0FFF0) != 0x0160F000) ) {
@@ -132,7 +132,7 @@ CpuArm::execArm160_MrsSpsrReg(
 }
 
 GBD_REGPARM     InstExecResult
-CpuArm::execArm320_MrsCpsrImm(
+CpuArm::execArm320_MsrCpsrImm(
         const  OpeCode  opeCode)
 {
     if ( UNLIKELY((opeCode & 0x0FF0F000) != 0x0320F000) ) {
@@ -154,7 +154,7 @@ CpuArm::execArm320_MrsCpsrImm(
 }
 
 GBD_REGPARM     InstExecResult
-CpuArm::execArm360_MrsSpsrImm(
+CpuArm::execArm360_MsrSpsrImm(
         const  OpeCode  opeCode)
 {
     if ( UNLIKELY((opeCode & 0x0FF0F000) != 0x0360F000) ) {
