@@ -12,18 +12,18 @@
 | 0x28 |(C-1)|(C-1)|(C-1)|(C-1)|(C-1)|(C-1)|(C-1)|(C-1)|
 | 0x30 |(C-1)|(C-1)|(C-1)|(C-1)|(C-1)|(C-1)|(C-1)|(C-1)|
 | 0x38 |(C-1)|(C-1)|(C-1)|(C-1)|(C-1)|(C-1)|(C-1)|(C-1)|
-| 0x40 |
-| 0x48 |
-| 0x50 |
-| 0x58 |
-| 0x60 |
-| 0x68 |
-| 0x70 |
-| 0x78 |
-| 0x80 |
-| 0x88 |
-| 0x90 |
-| 0x98 |
+| 0x40 | STR | LDR | STR | LDR | STR | LDR | STR | LDR |
+| 0x48 | STR | LDR | STR | LDR | STR | LDR | STR | LDR |
+| 0x50 | STR | LDR | STR | LDR | STR | LDR | STR | LDR |
+| 0x58 | STR | LDR | STR | LDR | STR | LDR | STR | LDR |
+| 0x60 | STR | LDR | STR | LDR | STR | LDR | STR | LDR |
+| 0x68 | STR | LDR | STR | LDR | STR | LDR | STR | LDR |
+| 0x70 | STR | LDR | STR | LDR | STR | LDR | STR | LDR |
+| 0x78 | STR | LDR | STR | LDR | STR | LDR | STR | LDR |
+| 0x80 | STM | LDM | STM | LDM | STM | LDM | STM | LDM |
+| 0x88 | STM | LDM | STM | LDM | STM | LDM | STM | LDM |
+| 0x90 | STM | LDM | STM | LDM | STM | LDM | STM | LDM |
+| 0x98 | STM | LDM | STM | LDM | STM | LDM | STM | LDM |
 | 0xA0 | (B) | (B) | (B) | (B) | (B) | (B) | (B) | (B) |
 | 0xA8 | (B) | (B) | (B) | (B) | (B) | (B) | (B) | (B) |
 | 0xB0 | (B) | (B) | (B) | (B) | (B) | (B) | (B) | (B) |
@@ -39,8 +39,12 @@
 
 記号
 - (C-1) : [ビット 07..04 による小分類](#C-1--ビット-0704-による小分類)
-- (B)   : [02. 分岐命令](#02-分岐命令)
+-  (B)  : [02. 分岐命令](#02-分岐命令)
 - (COP) : [09. コプロセッサ命令](#09-コプロセッサ命令)
+-  STR  : [04. ロード／ストア](#04-ロードストア) のストア (STR) 命令
+-  LDR  : [04. ロード／ストア](#04-ロードストア) のロード (LDR) 命令
+-  STM  : [06. スタック](#06-スタック) の STM 命令 (PUSH)
+-  LDM  : [06. スタック](#06-スタック) の LDM 命令 (POP)
 
 ##  (C-1) : ビット 07..04 による小分類
 
