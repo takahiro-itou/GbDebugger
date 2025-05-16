@@ -79,19 +79,19 @@
 | 0x0E8 | RSC |     | RSC |     | RSC |     | RSC |     |
 | 0x0F0 | RSC | RSC | RSC | RSC | RSC | RSC | RSC | RSC |
 | 0x0F8 | RSC |     | RSC |     | RSC |     | RSC |     |
-| 0x100 |     |     |     |     |     |     |     |     |
+| 0x100 | MRS |     |     |     |     |     |     |     |
 | 0x108 |     |     |     |     |     |     |     |     |
 | 0x110 | TST | TST | TST | TST | TST | TST | TST | TST |
 | 0x118 | TST |     | TST |     | TST |     | TST |     |
-| 0x120 |     |     |     |     |     |     |     |     |
+| 0x120 | MSR |     |     |     |     |     |     |     |
 | 0x128 |     |     |     |     |     |     |     |     |
 | 0x130 | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ |
 | 0x138 | TEQ |     | TEQ |     | TEQ |     | TEQ |     |
-| 0x140 |     |     |     |     |     |     |     |     |
+| 0x140 | MRS |     |     |     |     |     |     |     |
 | 0x148 |     |     |     |     |     |     |     |     |
 | 0x150 | CMP | CMP | CMP | CMP | CMP | CMP | CMP | CMP |
 | 0x158 | CMP |     | CMP |     | CMP |     | CMP |     |
-| 0x160 |     |     |     |     |     |     |     |     |
+| 0x160 | MSR |     |     |     |     |     |     |     |
 | 0x168 |     |     |     |     |     |     |     |     |
 | 0x170 | CMN | CMN | CMN | CMN | CMN | CMN | CMN | CMN |
 | 0x178 | CMN |     | CMN |     | CMN |     | CMN |     |
@@ -147,16 +147,16 @@
 | 0x308 |     |     |     |     |     |     |     |     |
 | 0x310 | TST | TST | TST | TST | TST | TST | TST | TST |
 | 0x318 | TST | TST | TST | TST | TST | TST | TST | TST |
-| 0x320 |     |     |     |     |     |     |     |     |
-| 0x328 |     |     |     |     |     |     |     |     |
+| 0x320 | MSR | MSR | MSR | MSR | MSR | MSR | MSR | MSR |
+| 0x328 | MSR | MSR | MSR | MSR | MSR | MSR | MSR | MSR |
 | 0x330 | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ |
 | 0x338 | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ |
 | 0x340 |     |     |     |     |     |     |     |     |
 | 0x348 |     |     |     |     |     |     |     |     |
 | 0x350 | CMP | CMP | CMP | CMP | CMP | CMP | CMP | CMP |
 | 0x358 | CMP | CMP | CMP | CMP | CMP | CMP | CMP | CMP |
-| 0x360 |     |     |     |     |     |     |     |     |
-| 0x368 |     |     |     |     |     |     |     |     |
+| 0x360 | MSR | MSR | MSR | MSR | MSR | MSR | MSR | MSR |
+| 0x368 | MSR | MSR | MSR | MSR | MSR | MSR | MSR | MSR |
 | 0x370 | CMN | CMN | CMN | CMN | CMN | CMN | CMN | CMN |
 | 0x378 | CMN | CMN | CMN | CMN | CMN | CMN | CMN | CMN |
 | 0x380 | ORR | ORR | ORR | ORR | ORR | ORR | ORR | ORR |
