@@ -54,37 +54,37 @@
 |       | + 0 | + 1 | + 2 | + 3 | + 4 | + 5 | + 6 | + 7 |
 |------:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | 0x000 | AND | AND | AND | AND | AND | AND | AND | AND |
-| 0x008 | AND |     | AND |     | AND |     | AND |     |
+| 0x008 | AND | MUL | AND |     | AND |     | AND |     |
 | 0x010 | AND | AND | AND | AND | AND | AND | AND | AND |
-| 0x018 | AND |     | AND |     | AND |     | AND |     |
+| 0x018 | AND | MUL | AND |     | AND |     | AND |     |
 | 0x020 | EOR | EOR | EOR | EOR | EOR | EOR | EOR | EOR |
-| 0x028 | EOR |     | EOR |     | EOR |     | EOR |     |
+| 0x028 | EOR | MLA | EOR |     | EOR |     | EOR |     |
 | 0x030 | EOR | EOR | EOR | EOR | EOR | EOR | EOR | EOR |
-| 0x038 | EOR |     | EOR |     | EOR |     | EOR |     |
+| 0x038 | EOR | MLA | EOR |     | EOR |     | EOR |     |
 | 0x040 | SUB | SUB | SUB | SUB | SUB | SUB | SUB | SUB |
-| 0x048 | SUB |     | SUB |     | SUB |     | SUB |     |
+| 0x048 | SUB |(MUL)| SUB |     | SUB |     | SUB |     |
 | 0x050 | SUB | SUB | SUB | SUB | SUB | SUB | SUB | SUB |
-| 0x058 | SUB |     | SUB |     | SUB |     | SUB |     |
+| 0x058 | SUB |(MUL)| SUB |     | SUB |     | SUB |     |
 | 0x060 | RSB | RSB | RSB | RSB | RSB | RSB | RSB | RSB |
-| 0x068 | RSB |     | RSB |     | RSB |     | RSB |     |
+| 0x068 | RSB |(MUL)| RSB |     | RSB |     | RSB |     |
 | 0x070 | RSB | RSB | RSB | RSB | RSB | RSB | RSB | RSB |
-| 0x078 | RSB |     | RSB |     | RSB |     | RSB |     |
+| 0x078 | RSB |(MUL)| RSB |     | RSB |     | RSB |     |
 | 0x080 | ADD | ADD | ADD | ADD | ADD | ADD | ADD | ADD |
-| 0x088 | ADD |     | ADD |     | ADD |     | ADD |     |
+| 0x088 | ADD |UMULL| ADD |     | ADD |     | ADD |     |
 | 0x090 | ADD | ADD | ADD | ADD | ADD | ADD | ADD | ADD |
-| 0x098 | ADD |     | ADD |     | ADD |     | ADD |     |
+| 0x098 | ADD |UMULL| ADD |     | ADD |     | ADD |     |
 | 0x0A0 | ADC | ADC | ADC | ADC | ADC | ADC | ADC | ADC |
-| 0x0A8 | ADC |     | ADC |     | ADC |     | ADC |     |
+| 0x0A8 | ADC |UMLAL| ADC |     | ADC |     | ADC |     |
 | 0x0B0 | ADC | ADC | ADC | ADC | ADC | ADC | ADC | ADC |
-| 0x0B8 | ADC |     | ADC |     | ADC |     | ADC |     |
+| 0x0B8 | ADC |UMLAL| ADC |     | ADC |     | ADC |     |
 | 0x0C0 | SBC | SBC | SBC | SBC | SBC | SBC | SBC | SBC |
-| 0x0C8 | SBC |     | SBC |     | SBC |     | SBC |     |
+| 0x0C8 | SBC |SMULL| SBC |     | SBC |     | SBC |     |
 | 0x0D0 | SBC | SBC | SBC | SBC | SBC | SBC | SBC | SBC |
-| 0x0D8 | SBC |     | SBC |     | SBC |     | SBC |     |
+| 0x0D8 | SBC |SMULL| SBC |     | SBC |     | SBC |     |
 | 0x0E0 | RSC | RSC | RSC | RSC | RSC | RSC | RSC | RSC |
-| 0x0E8 | RSC |     | RSC |     | RSC |     | RSC |     |
+| 0x0E8 | RSC |SMLAL| RSC |     | RSC |     | RSC |     |
 | 0x0F0 | RSC | RSC | RSC | RSC | RSC | RSC | RSC | RSC |
-| 0x0F8 | RSC |     | RSC |     | RSC |     | RSC |     |
+| 0x0F8 | RSC |SMLAL| RSC |     | RSC |     | RSC |     |
 | 0x100 | MRS |     |     |     |     |     |     |     |
 | 0x108 |     | SWP |     |     |     |     |     |     |
 | 0x110 | TST | TST | TST | TST | TST | TST | TST | TST |
