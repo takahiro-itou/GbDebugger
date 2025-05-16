@@ -237,6 +237,15 @@
 | 0x608 | STR | und | STR | und | STR | und | STR | und |
 | 0x610 | LDR | und | LDR | und | LDR | und | LDR | und |
 | 0x618 | LDR | und | LDR | und | LDR | und | LDR | und |
+| 0x620 | STR | und | STR | und | STR | und | STR | und |
+| 0x628 | STR | und | STR | und | STR | und | STR | und |
+| 0x630 | LDR | und | LDR | und | LDR | und | LDR | und |
+| 0x638 | LDR | und | LDR | und | LDR | und | LDR | und |
+|  ...  | ... | ... | ... | ... | ... | ... | ... | ... |
+| 0x7E0 | STR | und | STR | und | STR | und | STR | und |
+| 0x7E8 | STR | und | STR | und | STR | und | STR | und |
+| 0x7F0 | LDR | und | LDR | und | LDR | und | LDR | und |
+| 0x7F8 | LDR | und | LDR | und | LDR | und | LDR | und |
 
 ###   05. ロード／ストア
 
