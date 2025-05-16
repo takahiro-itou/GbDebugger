@@ -95,22 +95,22 @@
 | 0x168 |     |     |     |     |     |     |     |     |
 | 0x170 | CMN | CMN | CMN | CMN | CMN | CMN | CMN | CMN |
 | 0x178 | CMN |     | CMN |     | CMN |     | CMN |     |
-| 0x180 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x188 | ALU |     | ALU |     | ALU |     | ALU |     |
-| 0x190 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x198 | ALU |     | ALU |     | ALU |     | ALU |     |
-| 0x1A0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x1A8 | ALU |     | ALU |     | ALU |     | ALU |     |
-| 0x1B0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x1B8 | ALU |     | ALU |     | ALU |     | ALU |     |
-| 0x1C0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x1C8 | ALU |     | ALU |     | ALU |     | ALU |     |
-| 0x1D0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x1D8 | ALU |     | ALU |     | ALU |     | ALU |     |
-| 0x1E0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x1E8 | ALU |     | ALU |     | ALU |     | ALU |     |
-| 0x1F0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x1F8 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x180 | ORR | ORR | ORR | ORR | ORR | ORR | ORR | ORR |
+| 0x188 | ORR |     | ORR |     | ORR |     | ORR |     |
+| 0x190 | ORR | ORR | ORR | ORR | ORR | ORR | ORR | ORR |
+| 0x198 | ORR |     | ORR |     | ORR |     | ORR |     |
+| 0x1A0 | MOV | MOV | MOV | MOV | MOV | MOV | MOV | MOV |
+| 0x1A8 | MOV |     | MOV |     | MOV |     | MOV |     |
+| 0x1B0 | MOV | MOV | MOV | MOV | MOV | MOV | MOV | MOV |
+| 0x1B8 | MOV |     | MOV |     | MOV |     | MOV |     |
+| 0x1C0 | BIC | BIC | BIC | BIC | BIC | BIC | BIC | BIC |
+| 0x1C8 | BIC |     | BIC |     | BIC |     | BIC |     |
+| 0x1D0 | BIC | BIC | BIC | BIC | BIC | BIC | BIC | BIC |
+| 0x1D8 | BIC |     | BIC |     | BIC |     | BIC |     |
+| 0x1E0 | MVN | MVN | MVN | MVN | MVN | MVN | MVN | MVN |
+| 0x1E8 | MVN |     | MVN |     | MVN |     | MVN |     |
+| 0x1F0 | MVN | MVN | MVN | MVN | MVN | MVN | MVN | MVN |
+| 0x1F8 | MVN |     | MVN |     | MVN |     | MVN |     |
 | 0x200 | AND | AND | AND | AND | AND | AND | AND | AND |
 | 0x208 | AND | AND | AND | AND | AND | AND | AND | AND |
 | 0x210 | AND | AND | AND | AND | AND | AND | AND | AND |
@@ -159,22 +159,22 @@
 | 0x368 |     |     |     |     |     |     |     |     |
 | 0x370 | CMN | CMN | CMN | CMN | CMN | CMN | CMN | CMN |
 | 0x378 | CMN | CMN | CMN | CMN | CMN | CMN | CMN | CMN |
-| 0x380 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x388 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x390 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x398 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x3A0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x3A8 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x3B0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x3B8 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x3C0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x3C8 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x3D0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x3D8 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x3E0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x3E8 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x3F0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x3F8 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x380 | ORR | ORR | ORR | ORR | ORR | ORR | ORR | ORR |
+| 0x388 | ORR | ORR | ORR | ORR | ORR | ORR | ORR | ORR |
+| 0x390 | ORR | ORR | ORR | ORR | ORR | ORR | ORR | ORR |
+| 0x398 | ORR | ORR | ORR | ORR | ORR | ORR | ORR | ORR |
+| 0x3A0 | MOV | MOV | MOV | MOV | MOV | MOV | MOV | MOV |
+| 0x3A8 | MOV | MOV | MOV | MOV | MOV | MOV | MOV | MOV |
+| 0x3B0 | MOV | MOV | MOV | MOV | MOV | MOV | MOV | MOV |
+| 0x3B8 | MOV | MOV | MOV | MOV | MOV | MOV | MOV | MOV |
+| 0x3C0 | BIC | BIC | BIC | BIC | BIC | BIC | BIC | BIC |
+| 0x3C8 | BIC | BIC | BIC | BIC | BIC | BIC | BIC | BIC |
+| 0x3D0 | BIC | BIC | BIC | BIC | BIC | BIC | BIC | BIC |
+| 0x3D8 | BIC | BIC | BIC | BIC | BIC | BIC | BIC | BIC |
+| 0x3E0 | MVN | MVN | MVN | MVN | MVN | MVN | MVN | MVN |
+| 0x3E8 | MVN | MVN | MVN | MVN | MVN | MVN | MVN | MVN |
+| 0x3F0 | MVN | MVN | MVN | MVN | MVN | MVN | MVN | MVN |
+| 0x3F8 | MVN | MVN | MVN | MVN | MVN | MVN | MVN | MVN |
 
 
 
