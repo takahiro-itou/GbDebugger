@@ -95,11 +95,11 @@
 #define     arm0FD  arm_UI
 #define     arm0FF  arm_UI
 
-#define     arm100  &CpuArm::execArm100_MsrCpsr
-#define     arm120  &CpuArm::execArm120_MrsCpsrReg
+#define     arm100  &CpuArm::execArm100_MrsCpsr
+#define     arm120  &CpuArm::execArm120_MsrCpsrReg
 #define     arm121  &CpuArm::execArm121_BX
-#define     arm140  &CpuArm::execArm140_MsrSpsr
-#define     arm160  &CpuArm::execArm160_MrsSpsrReg
+#define     arm140  &CpuArm::execArm140_MrsSpsr
+#define     arm160  &CpuArm::execArm160_MsrSpsrReg
 
 #define     arm189  arm_UI
 #define     arm18B  arm_UI
@@ -138,9 +138,9 @@
 #define     arm1FF  arm_UI
 
 #define     arm300  arm_UI
-#define     arm320  &CpuArm::execArm320_MrsCpsrImm
+#define     arm320  &CpuArm::execArm320_MsrCpsrImm
 #define     arm340  arm_UI
-#define     arm360  &CpuArm::execArm360_MrsSpsrImm
+#define     arm360  &CpuArm::execArm360_MsrSpsrImm
 #define     armALU  &CpuArm::execALUInstruction
 #define     armSTR  &CpuArm::execStrLdrInstruction
 #define     armLDR  &CpuArm::execStrLdrInstruction
