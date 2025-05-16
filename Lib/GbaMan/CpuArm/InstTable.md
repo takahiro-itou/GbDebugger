@@ -55,18 +55,18 @@
 | 0x028 | EOR |     | EOR |     | EOR |     | EOR |     |
 | 0x030 | EOR | EOR | EOR | EOR | EOR | EOR | EOR | EOR |
 | 0x038 | EOR |     | EOR |     | EOR |     | EOR |     |
-| 0x040 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x048 | ALU |     | ALU |     | ALU |     | ALU |     |
-| 0x050 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x058 | ALU |     | ALU |     | ALU |     | ALU |     |
-| 0x060 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x068 | ALU |     | ALU |     | ALU |     | ALU |     |
-| 0x070 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x078 | ALU |     | ALU |     | ALU |     | ALU |     |
-| 0x080 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x088 | ALU |     | ALU |     | ALU |     | ALU |     |
-| 0x090 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x098 | ALU |     | ALU |     | ALU |     | ALU |     |
+| 0x040 | SUB | SUB | SUB | SUB | SUB | SUB | SUB | SUB |
+| 0x048 | SUB |     | SUB |     | SUB |     | SUB |     |
+| 0x050 | SUB | SUB | SUB | SUB | SUB | SUB | SUB | SUB |
+| 0x058 | SUB |     | SUB |     | SUB |     | SUB |     |
+| 0x060 | RSB | RSB | RSB | RSB | RSB | RSB | RSB | RSB |
+| 0x068 | RSB |     | RSB |     | RSB |     | RSB |     |
+| 0x070 | RSB | RSB | RSB | RSB | RSB | RSB | RSB | RSB |
+| 0x078 | RSB |     | RSB |     | RSB |     | RSB |     |
+| 0x080 | ADD | ADD | ADD | ADD | ADD | ADD | ADD | ADD |
+| 0x088 | ADD |     | ADD |     | ADD |     | ADD |     |
+| 0x090 | ADD | ADD | ADD | ADD | ADD | ADD | ADD | ADD |
+| 0x098 | ADD |     | ADD |     | ADD |     | ADD |     |
 | 0x0A0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
 | 0x0A8 | ALU |     | ALU |     | ALU |     | ALU |     |
 | 0x0B0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
@@ -119,18 +119,18 @@
 | 0x228 | EOR | EOR | EOR | EOR | EOR | EOR | EOR | EOR |
 | 0x230 | EOR | EOR | EOR | EOR | EOR | EOR | EOR | EOR |
 | 0x238 | EOR | EOR | EOR | EOR | EOR | EOR | EOR | EOR |
-| 0x240 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x248 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x250 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x258 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x260 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x268 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x270 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x278 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x280 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x288 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x290 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
-| 0x298 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
+| 0x240 | SUB | SUB | SUB | SUB | SUB | SUB | SUB | SUB |
+| 0x248 | SUB | SUB | SUB | SUB | SUB | SUB | SUB | SUB |
+| 0x250 | SUB | SUB | SUB | SUB | SUB | SUB | SUB | SUB |
+| 0x258 | SUB | SUB | SUB | SUB | SUB | SUB | SUB | SUB |
+| 0x260 | RSB | RSB | RSB | RSB | RSB | RSB | RSB | RSB |
+| 0x268 | RSB | RSB | RSB | RSB | RSB | RSB | RSB | RSB |
+| 0x270 | RSB | RSB | RSB | RSB | RSB | RSB | RSB | RSB |
+| 0x278 | RSB | RSB | RSB | RSB | RSB | RSB | RSB | RSB |
+| 0x280 | ADD | ADD | ADD | ADD | ADD | ADD | ADD | ADD |
+| 0x288 | ADD | ADD | ADD | ADD | ADD | ADD | ADD | ADD |
+| 0x290 | ADD | ADD | ADD | ADD | ADD | ADD | ADD | ADD |
+| 0x298 | ADD | ADD | ADD | ADD | ADD | ADD | ADD | ADD |
 | 0x2A0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
 | 0x2A8 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
 | 0x2B0 | ALU | ALU | ALU | ALU | ALU | ALU | ALU | ALU |
