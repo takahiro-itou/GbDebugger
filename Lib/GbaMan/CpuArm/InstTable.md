@@ -217,6 +217,17 @@
 - 0x008, 0x00A, 0x00C, 0x00E, 0x028, 0x02A, 0x02C, 0x02E, ...,
   0x1E8, 0x1EA, 0x1EC, 0x1EE
 
+| 演算 |  命令  | オペコード                         | 12ビット分類 |    備考    |
+|:----:|:------:|:----------------------------------:|:-------------|:-----------|
+| 0000 |  MUL   | 0000 000S rrrr rrrr rrrr 1001 rrrr | 0x009, 0x019 |            |
+| 0001 |  MLA   | 0000 001S rrrr rrrr rrrr 1001 rrrr | 0x029, 0x039 |            |
+| 0010 | UMAAL  | 0000 010S rrrr rrrr rrrr 1001 rrrr | 0x049, 0x059 | 未サポート |
+| 0011 | 未定義 | 0000 011S rrrr rrrr rrrr 1001 rrrr | 0x069, 0x079 |            |
+| 0100 | UMULL  | 0000 100S rrrr rrrr rrrr 1001 rrrr | 0x089, 0x099 |            |
+| 0101 | UMLAL  | 0000 101S rrrr rrrr rrrr 1001 rrrr | 0x0A9, 0x0B9 |            |
+| 0110 | SMULL  | 0000 110S rrrr rrrr rrrr 1001 rrrr | 0x0C9, 0x0D9 |            |
+| 0111 | SMLAL  | 0000 111S rrrr rrrr rrrr 1001 rrrr | 0x0E9, 0x0F9 |            |
+
 ###   04. ロード／ストア
 
 - 010? ???0 ????  ???? ???? ???? ???? (0x4000000 - 0x5EFFFFF) STR
