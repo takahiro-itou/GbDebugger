@@ -28,10 +28,10 @@
 | 0xA8 | (B) | (B) | (B) | (B) | (B) | (B) | (B) | (B) |
 | 0xB0 | (B) | (B) | (B) | (B) | (B) | (B) | (B) | (B) |
 | 0xB8 | (B) | (B) | (B) | (B) | (B) | (B) | (B) | (B) |
-| 0xC0 |
-| 0xC8 |
-| 0xD0 |
-| 0xD8 |
+| 0xC0 |[und]|[und]|[und]|[und]|[und]|[und]|[und]|[und]|
+| 0xC8 |[und]|[und]|[und]|[und]|[und]|[und]|[und]|[und]|
+| 0xD0 |[und]|[und]|[und]|[und]|[und]|[und]|[und]|[und]|
+| 0xD8 |[und]|[und]|[und]|[und]|[und]|[und]|[und]|[und]|
 | 0xE0 |(COP)|(COP)|(COP)|(COP)|(COP)|(COP)|(COP)|(COP)|
 | 0xE8 |(COP)|(COP)|(COP)|(COP)|(COP)|(COP)|(COP)|(COP)|
 | 0xF0 | (B) | (B) | (B) | (B) | (B) | (B) | (B) | (B) |
@@ -45,6 +45,7 @@
 -  LDR  : [04. ロード／ストア](#04-ロードストア) のロード (LDR) 命令
 -  STM  : [06. スタック](#06-スタック) の STM 命令 (PUSH)
 -  LDM  : [06. スタック](#06-スタック) の LDM 命令 (POP)
+- [und] : 未定義命令
 
 ##  (C-1) : ビット 07..04 による小分類
 
