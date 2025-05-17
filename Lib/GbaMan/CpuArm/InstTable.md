@@ -54,11 +54,11 @@
 |       | + 0 | + 1 | + 2 | + 3 | + 4 | + 5 | + 6 | + 7 |
 |------:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | 0x000 | AND | AND | AND | AND | AND | AND | AND | AND |
-| 0x008 | AND | MUL | AND |     | AND |     | AND |     |
+| 0x008 | AND | MUL | AND |STRH | AND |     | AND |     |
 | 0x010 | AND | AND | AND | AND | AND | AND | AND | AND |
 | 0x018 | AND | MUL | AND |     | AND |     | AND |     |
 | 0x020 | EOR | EOR | EOR | EOR | EOR | EOR | EOR | EOR |
-| 0x028 | EOR | MLA | EOR |     | EOR |     | EOR |     |
+| 0x028 | EOR | MLA | EOR |STRH | EOR |     | EOR |     |
 | 0x030 | EOR | EOR | EOR | EOR | EOR | EOR | EOR | EOR |
 | 0x038 | EOR | MLA | EOR |     | EOR |     | EOR |     |
 | 0x040 | SUB | SUB | SUB | SUB | SUB | SUB | SUB | SUB |
@@ -70,11 +70,11 @@
 | 0x070 | RSB | RSB | RSB | RSB | RSB | RSB | RSB | RSB |
 | 0x078 | RSB |(MUL)| RSB |     | RSB |     | RSB |     |
 | 0x080 | ADD | ADD | ADD | ADD | ADD | ADD | ADD | ADD |
-| 0x088 | ADD |UMULL| ADD |     | ADD |     | ADD |     |
+| 0x088 | ADD |UMULL| ADD |STRH | ADD |     | ADD |     |
 | 0x090 | ADD | ADD | ADD | ADD | ADD | ADD | ADD | ADD |
 | 0x098 | ADD |UMULL| ADD |     | ADD |     | ADD |     |
 | 0x0A0 | ADC | ADC | ADC | ADC | ADC | ADC | ADC | ADC |
-| 0x0A8 | ADC |UMLAL| ADC |     | ADC |     | ADC |     |
+| 0x0A8 | ADC |UMLAL| ADC |STRH | ADC |     | ADC |     |
 | 0x0B0 | ADC | ADC | ADC | ADC | ADC | ADC | ADC | ADC |
 | 0x0B8 | ADC |UMLAL| ADC |     | ADC |     | ADC |     |
 | 0x0C0 | SBC | SBC | SBC | SBC | SBC | SBC | SBC | SBC |
@@ -87,11 +87,11 @@
 | 0x0F8 | RSC |SMLAL| RSC |     | RSC |     | RSC |     |
 |       | + 0 | + 1 | + 2 | + 3 | + 4 | + 5 | + 6 | + 7 |
 | 0x100 | MRS |     |     |     |     |     |     |     |
-| 0x108 |     | SWP |     |     |     |     |     |     |
+| 0x108 |     | SWP |     |STRH |     |     |     |     |
 | 0x110 | TST | TST | TST | TST | TST | TST | TST | TST |
 | 0x118 | TST |     | TST |     | TST |     | TST |     |
 | 0x120 | MSR | BX  |     |     |     |     |     |     |
-| 0x128 |     |     |     |     |     |     |     |     |
+| 0x128 |     |     |     |STRH |     |     |     |     |
 | 0x130 | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ |
 | 0x138 | TEQ |     | TEQ |     | TEQ |     | TEQ |     |
 | 0x140 | MRS |     |     |     |     |     |     |     |
@@ -103,11 +103,11 @@
 | 0x170 | CMN | CMN | CMN | CMN | CMN | CMN | CMN | CMN |
 | 0x178 | CMN |     | CMN |     | CMN |     | CMN |     |
 | 0x180 | ORR | ORR | ORR | ORR | ORR | ORR | ORR | ORR |
-| 0x188 | ORR |     | ORR |     | ORR |     | ORR |     |
+| 0x188 | ORR |     | ORR |STRH | ORR |     | ORR |     |
 | 0x190 | ORR | ORR | ORR | ORR | ORR | ORR | ORR | ORR |
 | 0x198 | ORR |     | ORR |     | ORR |     | ORR |     |
 | 0x1A0 | MOV | MOV | MOV | MOV | MOV | MOV | MOV | MOV |
-| 0x1A8 | MOV |     | MOV |     | MOV |     | MOV |     |
+| 0x1A8 | MOV |     | MOV |STRH | MOV |     | MOV |     |
 | 0x1B0 | MOV | MOV | MOV | MOV | MOV | MOV | MOV | MOV |
 | 0x1B8 | MOV |     | MOV |     | MOV |     | MOV |     |
 | 0x1C0 | BIC | BIC | BIC | BIC | BIC | BIC | BIC | BIC |
