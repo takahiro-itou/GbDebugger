@@ -98,26 +98,26 @@
 | 0x148 |(MUL)| SWP |(MUL)|STRH |(MUL)|LDRD*|(MUL)|STRD*|
 | 0x150 | CMP | CMP | CMP | CMP | CMP | CMP | CMP | CMP |
 | 0x158 | CMP |[und]| CMP |LDRH | CMP |LDRSB| CMP |LDRSH|
-| 0x160 | MSR |     |     |     |     |     |     |     |
-| 0x168 |(MUL)|     |(MUL)|STRH |(MUL)|LDRD*|(MUL)|STRD*|
+| 0x160 | MSR |[und]|[und]|[und]|[und]|[und]|[und]|[und]|
+| 0x168 |(MUL)|[und]|(MUL)|STRH |(MUL)|LDRD*|(MUL)|STRD*|
 | 0x170 | CMN | CMN | CMN | CMN | CMN | CMN | CMN | CMN |
-| 0x178 | CMN |     | CMN |LDRH | CMN |LDRSB| CMN |LDRSH|
+| 0x178 | CMN |[und]| CMN |LDRH | CMN |LDRSB| CMN |LDRSH|
 | 0x180 | ORR | ORR | ORR | ORR | ORR | ORR | ORR | ORR |
-| 0x188 | ORR |     | ORR |STRH | ORR |LDRD*| ORR |STRD*|
+| 0x188 | ORR |[und]| ORR |STRH | ORR |LDRD*| ORR |STRD*|
 | 0x190 | ORR | ORR | ORR | ORR | ORR | ORR | ORR | ORR |
-| 0x198 | ORR |     | ORR |LDRH | ORR |LDRSB| ORR |LDRSH|
+| 0x198 | ORR |[und]| ORR |LDRH | ORR |LDRSB| ORR |LDRSH|
 | 0x1A0 | MOV | MOV | MOV | MOV | MOV | MOV | MOV | MOV |
-| 0x1A8 | MOV |     | MOV |STRH | MOV |LDRD*| MOV |STRD*|
+| 0x1A8 | MOV |[und]| MOV |STRH | MOV |LDRD*| MOV |STRD*|
 | 0x1B0 | MOV | MOV | MOV | MOV | MOV | MOV | MOV | MOV |
-| 0x1B8 | MOV |     | MOV |LDRH | MOV |LDRSB| MOV |LDRSH|
+| 0x1B8 | MOV |[und]| MOV |LDRH | MOV |LDRSB| MOV |LDRSH|
 | 0x1C0 | BIC | BIC | BIC | BIC | BIC | BIC | BIC | BIC |
-| 0x1C8 | BIC |     | BIC |STRH | BIC |LDRD*| BIC |STRD*|
+| 0x1C8 | BIC |[und]| BIC |STRH | BIC |LDRD*| BIC |STRD*|
 | 0x1D0 | BIC | BIC | BIC | BIC | BIC | BIC | BIC | BIC |
-| 0x1D8 | BIC |     | BIC |LDRH | BIC |LDRSB| BIC |LDRSH|
+| 0x1D8 | BIC |[und]| BIC |LDRH | BIC |LDRSB| BIC |LDRSH|
 | 0x1E0 | MVN | MVN | MVN | MVN | MVN | MVN | MVN | MVN |
-| 0x1E8 | MVN |     | MVN |STRH | MVN |LDRD*| MVN |STRD*|
+| 0x1E8 | MVN |[und]| MVN |STRH | MVN |LDRD*| MVN |STRD*|
 | 0x1F0 | MVN | MVN | MVN | MVN | MVN | MVN | MVN | MVN |
-| 0x1F8 | MVN |     | MVN |LDRH | MVN |LDRSB| MVN |LDRSH|
+| 0x1F8 | MVN |[und]| MVN |LDRH | MVN |LDRSB| MVN |LDRSH|
 |       | + 0 | + 1 | + 2 | + 3 | + 4 | + 5 | + 6 | + 7 |
 | 0x200 | AND | AND | AND | AND | AND | AND | AND | AND |
 | 0x208 | AND | AND | AND | AND | AND | AND | AND | AND |
