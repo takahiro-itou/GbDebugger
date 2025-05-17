@@ -152,16 +152,16 @@
 | 0x2F0 | RSC | RSC | RSC | RSC | RSC | RSC | RSC | RSC |
 | 0x2F8 | RSC | RSC | RSC | RSC | RSC | RSC | RSC | RSC |
 |       | + 0 | + 1 | + 2 | + 3 | + 4 | + 5 | + 6 | + 7 |
-| 0x300 |     |     |     |     |     |     |     |     |
-| 0x308 |     |     |     |     |     |     |     |     |
+| 0x300 |[und]|[und]|[und]|[und]|[und]|[und]|[und]|[und]|
+| 0x308 |[und]|[und]|[und]|[und]|[und]|[und]|[und]|[und]|
 | 0x310 | TST | TST | TST | TST | TST | TST | TST | TST |
 | 0x318 | TST | TST | TST | TST | TST | TST | TST | TST |
 | 0x320 | MSR | MSR | MSR | MSR | MSR | MSR | MSR | MSR |
 | 0x328 | MSR | MSR | MSR | MSR | MSR | MSR | MSR | MSR |
 | 0x330 | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ |
 | 0x338 | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ |
-| 0x340 |     |     |     |     |     |     |     |     |
-| 0x348 |     |     |     |     |     |     |     |     |
+| 0x340 |[und]|[und]|[und]|[und]|[und]|[und]|[und]|[und]|
+| 0x348 |[und]|[und]|[und]|[und]|[und]|[und]|[und]|[und]|
 | 0x350 | CMP | CMP | CMP | CMP | CMP | CMP | CMP | CMP |
 | 0x358 | CMP | CMP | CMP | CMP | CMP | CMP | CMP | CMP |
 | 0x360 | MSR | MSR | MSR | MSR | MSR | MSR | MSR | MSR |
@@ -186,6 +186,7 @@
 | 0x3F8 | MVN | MVN | MVN | MVN | MVN | MVN | MVN | MVN |
 |       | + 0 | + 1 | + 2 | + 3 | + 4 | + 5 | + 6 | + 7 |
 
+- [und] は未定義命令
 - LDRD*, STRD* はサポートされていない（未定義命令）
 - (MUL) は乗算命令のグループだがサポートされていない（未定義命令）
 
