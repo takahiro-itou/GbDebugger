@@ -18,8 +18,8 @@
 **      @file       GbaMan/DisThumb.h
 **/
 
-#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_DIS_THUMB_H )
-#    define   GBDEBUGGER_GBAMAN_INCLUDED_DIS_THUMB_H
+#if !defined( GBDEBUGGER_GBAMAN_CPUTHUMB_INCLUDED_DIS_THUMB_H )
+#    define   GBDEBUGGER_GBAMAN_CPUTHUMB_INCLUDED_DIS_THUMB_H
 
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_BASE_DIS_CPU_H )
 #    include    "GbDebugger/GbaMan/BaseDisCpu.h"

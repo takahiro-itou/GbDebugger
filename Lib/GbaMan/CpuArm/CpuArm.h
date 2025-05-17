@@ -18,8 +18,8 @@
 **      @file       GbaMan/CpuArm.h
 **/
 
-#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_CPU_ARM_H )
-#    define   GBDEBUGGER_GBAMAN_INCLUDED_CPU_ARM_H
+#if !defined( GBDEBUGGER_GBAMAN_CPUARM_INCLUDED_CPU_ARM_H )
+#    define   GBDEBUGGER_GBAMAN_CPUARM_INCLUDED_CPU_ARM_H
 
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_BASE_CPU_CORE_H )
 #    include    "GbDebugger/GbaMan/BaseCpuCore.h"

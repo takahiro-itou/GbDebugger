@@ -18,8 +18,8 @@
 **      @file       GbaMan/CpuThumb.h
 **/
 
-#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_CPU_THUMB_H )
-#    define   GBDEBUGGER_GBAMAN_INCLUDED_CPU_THUMB_H
+#if !defined( GBDEBUGGER_GBAMAN_CPUTHUMB_INCLUDED_CPU_THUMB_H )
+#    define   GBDEBUGGER_GBAMAN_CPUTHUMB_INCLUDED_CPU_THUMB_H
 
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_BASE_CPU_CORE_H )
 #    include    "GbDebugger/GbaMan/BaseCpuCore.h"

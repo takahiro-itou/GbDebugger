@@ -18,8 +18,8 @@
 **      @file       GbaMan/DisArm.h
 **/
 
-#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_DIS_ARM_H )
-#    define   GBDEBUGGER_GBAMAN_INCLUDED_DIS_ARM_H
+#if !defined( GBDEBUGGER_GBAMAN_CPUARM_INCLUDED_DIS_ARM_H )
+#    define   GBDEBUGGER_GBAMAN_CPUARM_INCLUDED_DIS_ARM_H
 
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_BASE_DIS_CPU_H )
 #    include    "GbDebugger/GbaMan/BaseDisCpu.h"

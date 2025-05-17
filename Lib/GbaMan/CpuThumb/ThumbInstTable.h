@@ -18,8 +18,8 @@
 **      @file       GbaMan/ThumbInst.h
 **/
 
-#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_THUMB_INST_H )
-#    define   GBDEBUGGER_GBAMAN_INCLUDED_THUMB_INST_H
+#if !defined( GBDEBUGGER_GBAMAN_CPUTHUMB_INCLUDED_THUMB_INST_H )
+#    define   GBDEBUGGER_GBAMAN_CPUTHUMB_INCLUDED_THUMB_INST_H
 
 
 #define     thumbUI     nullptr
