@@ -62,11 +62,11 @@
 | 0x030 | EOR | EOR | EOR | EOR | EOR | EOR | EOR | EOR |
 | 0x038 | EOR | MLA | EOR |     | EOR |     | EOR |     |
 | 0x040 | SUB | SUB | SUB | SUB | SUB | SUB | SUB | SUB |
-| 0x048 | SUB |(MUL)| SUB |     | SUB |     | SUB |     |
+| 0x048 | SUB |(MUL)| SUB |STRH | SUB |     | SUB |     |
 | 0x050 | SUB | SUB | SUB | SUB | SUB | SUB | SUB | SUB |
 | 0x058 | SUB |(MUL)| SUB |     | SUB |     | SUB |     |
 | 0x060 | RSB | RSB | RSB | RSB | RSB | RSB | RSB | RSB |
-| 0x068 | RSB |(MUL)| RSB |     | RSB |     | RSB |     |
+| 0x068 | RSB |(MUL)| RSB |STRH | RSB |     | RSB |     |
 | 0x070 | RSB | RSB | RSB | RSB | RSB | RSB | RSB | RSB |
 | 0x078 | RSB |(MUL)| RSB |     | RSB |     | RSB |     |
 | 0x080 | ADD | ADD | ADD | ADD | ADD | ADD | ADD | ADD |
@@ -78,13 +78,14 @@
 | 0x0B0 | ADC | ADC | ADC | ADC | ADC | ADC | ADC | ADC |
 | 0x0B8 | ADC |UMLAL| ADC |     | ADC |     | ADC |     |
 | 0x0C0 | SBC | SBC | SBC | SBC | SBC | SBC | SBC | SBC |
-| 0x0C8 | SBC |SMULL| SBC |     | SBC |     | SBC |     |
+| 0x0C8 | SBC |SMULL| SBC |STRH | SBC |     | SBC |     |
 | 0x0D0 | SBC | SBC | SBC | SBC | SBC | SBC | SBC | SBC |
 | 0x0D8 | SBC |SMULL| SBC |     | SBC |     | SBC |     |
 | 0x0E0 | RSC | RSC | RSC | RSC | RSC | RSC | RSC | RSC |
-| 0x0E8 | RSC |SMLAL| RSC |     | RSC |     | RSC |     |
+| 0x0E8 | RSC |SMLAL| RSC |STRH | RSC |     | RSC |     |
 | 0x0F0 | RSC | RSC | RSC | RSC | RSC | RSC | RSC | RSC |
 | 0x0F8 | RSC |SMLAL| RSC |     | RSC |     | RSC |     |
+|       | + 0 | + 1 | + 2 | + 3 | + 4 | + 5 | + 6 | + 7 |
 | 0x100 | MRS |     |     |     |     |     |     |     |
 | 0x108 |     | SWP |     |     |     |     |     |     |
 | 0x110 | TST | TST | TST | TST | TST | TST | TST | TST |
@@ -94,11 +95,11 @@
 | 0x130 | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ |
 | 0x138 | TEQ |     | TEQ |     | TEQ |     | TEQ |     |
 | 0x140 | MRS |     |     |     |     |     |     |     |
-| 0x148 |     | SWP |     |     |     |     |     |     |
+| 0x148 |     | SWP |     |STRH |     |     |     |     |
 | 0x150 | CMP | CMP | CMP | CMP | CMP | CMP | CMP | CMP |
 | 0x158 | CMP |     | CMP |     | CMP |     | CMP |     |
 | 0x160 | MSR |     |     |     |     |     |     |     |
-| 0x168 |     |     |     |     |     |     |     |     |
+| 0x168 |     |     |     |STRH |     |     |     |     |
 | 0x170 | CMN | CMN | CMN | CMN | CMN | CMN | CMN | CMN |
 | 0x178 | CMN |     | CMN |     | CMN |     | CMN |     |
 | 0x180 | ORR | ORR | ORR | ORR | ORR | ORR | ORR | ORR |
@@ -110,13 +111,14 @@
 | 0x1B0 | MOV | MOV | MOV | MOV | MOV | MOV | MOV | MOV |
 | 0x1B8 | MOV |     | MOV |     | MOV |     | MOV |     |
 | 0x1C0 | BIC | BIC | BIC | BIC | BIC | BIC | BIC | BIC |
-| 0x1C8 | BIC |     | BIC |     | BIC |     | BIC |     |
+| 0x1C8 | BIC |     | BIC |STRH | BIC |     | BIC |     |
 | 0x1D0 | BIC | BIC | BIC | BIC | BIC | BIC | BIC | BIC |
 | 0x1D8 | BIC |     | BIC |     | BIC |     | BIC |     |
 | 0x1E0 | MVN | MVN | MVN | MVN | MVN | MVN | MVN | MVN |
-| 0x1E8 | MVN |     | MVN |     | MVN |     | MVN |     |
+| 0x1E8 | MVN |     | MVN |STRH | MVN |     | MVN |     |
 | 0x1F0 | MVN | MVN | MVN | MVN | MVN | MVN | MVN | MVN |
 | 0x1F8 | MVN |     | MVN |     | MVN |     | MVN |     |
+|       | + 0 | + 1 | + 2 | + 3 | + 4 | + 5 | + 6 | + 7 |
 | 0x200 | AND | AND | AND | AND | AND | AND | AND | AND |
 | 0x208 | AND | AND | AND | AND | AND | AND | AND | AND |
 | 0x210 | AND | AND | AND | AND | AND | AND | AND | AND |
@@ -149,6 +151,7 @@
 | 0x2E8 | RSC | RSC | RSC | RSC | RSC | RSC | RSC | RSC |
 | 0x2F0 | RSC | RSC | RSC | RSC | RSC | RSC | RSC | RSC |
 | 0x2F8 | RSC | RSC | RSC | RSC | RSC | RSC | RSC | RSC |
+|       | + 0 | + 1 | + 2 | + 3 | + 4 | + 5 | + 6 | + 7 |
 | 0x300 |     |     |     |     |     |     |     |     |
 | 0x308 |     |     |     |     |     |     |     |     |
 | 0x310 | TST | TST | TST | TST | TST | TST | TST | TST |
@@ -181,6 +184,7 @@
 | 0x3E8 | MVN | MVN | MVN | MVN | MVN | MVN | MVN | MVN |
 | 0x3F0 | MVN | MVN | MVN | MVN | MVN | MVN | MVN | MVN |
 | 0x3F8 | MVN | MVN | MVN | MVN | MVN | MVN | MVN | MVN |
+|       | + 0 | + 1 | + 2 | + 3 | + 4 | + 5 | + 6 | + 7 |
 
 
 ##  詳細
