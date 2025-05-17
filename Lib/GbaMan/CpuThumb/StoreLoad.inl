@@ -15,11 +15,11 @@
 /**
 **      An Implementation of Store/Load Instructions.
 **
-**      @file       GbaMan/ThumbStrLdr.inl
+**      @file       GbaMan/CpuThumb/StoreLoad.inl
 **/
 
-#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_THUMB_STRLDR_INLH )
-#    define   GBDEBUGGER_GBAMAN_INCLUDED_THUMB_STRLDR_INLH
+#if !defined( GBDEBUGGER_GBAMAN_CPUTHUMB_INCLUDED_STORE_LOAD_IML )
+#    define   GBDEBUGGER_GBAMAN_CPUTHUMB_INCLUDED_STORE_LOAD_IML
 
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_CPU_THUMB_H )
 #    include    "CpuThumb.h"
