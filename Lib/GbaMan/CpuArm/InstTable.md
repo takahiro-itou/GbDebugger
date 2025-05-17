@@ -54,68 +54,68 @@
 |       | + 0 | + 1 | + 2 | + 3 | + 4 | + 5 | + 6 | + 7 |
 |------:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | 0x000 | AND | AND | AND | AND | AND | AND | AND | AND |
-| 0x008 | AND | MUL | AND |STRH | AND |LDRD*| AND |     |
+| 0x008 | AND | MUL | AND |STRH | AND |LDRD*| AND |STRD*|
 | 0x010 | AND | AND | AND | AND | AND | AND | AND | AND |
 | 0x018 | AND | MUL | AND |LDRH | AND |LDRSB| AND |LDRSH|
 | 0x020 | EOR | EOR | EOR | EOR | EOR | EOR | EOR | EOR |
-| 0x028 | EOR | MLA | EOR |STRH | EOR |LDRD*| EOR |     |
+| 0x028 | EOR | MLA | EOR |STRH | EOR |LDRD*| EOR |STRD*|
 | 0x030 | EOR | EOR | EOR | EOR | EOR | EOR | EOR | EOR |
 | 0x038 | EOR | MLA | EOR |LDRH | EOR |LDRSB| EOR |LDRSH|
 | 0x040 | SUB | SUB | SUB | SUB | SUB | SUB | SUB | SUB |
-| 0x048 | SUB |(MUL)| SUB |STRH | SUB |LDRD*| SUB |     |
+| 0x048 | SUB |(MUL)| SUB |STRH | SUB |LDRD*| SUB |STRD*|
 | 0x050 | SUB | SUB | SUB | SUB | SUB | SUB | SUB | SUB |
 | 0x058 | SUB |(MUL)| SUB |LDRH | SUB |LDRSB| SUB |LDRSH|
 | 0x060 | RSB | RSB | RSB | RSB | RSB | RSB | RSB | RSB |
-| 0x068 | RSB |(MUL)| RSB |STRH | RSB |LDRD*| RSB |     |
+| 0x068 | RSB |(MUL)| RSB |STRH | RSB |LDRD*| RSB |STRD*|
 | 0x070 | RSB | RSB | RSB | RSB | RSB | RSB | RSB | RSB |
 | 0x078 | RSB |(MUL)| RSB |LDRH | RSB |LDRSB| RSB |LDRSH|
 | 0x080 | ADD | ADD | ADD | ADD | ADD | ADD | ADD | ADD |
-| 0x088 | ADD |UMULL| ADD |STRH | ADD |LDRD*| ADD |     |
+| 0x088 | ADD |UMULL| ADD |STRH | ADD |LDRD*| ADD |STRD*|
 | 0x090 | ADD | ADD | ADD | ADD | ADD | ADD | ADD | ADD |
 | 0x098 | ADD |UMULL| ADD |LDRH | ADD |LDRSB| ADD |LDRSH|
 | 0x0A0 | ADC | ADC | ADC | ADC | ADC | ADC | ADC | ADC |
-| 0x0A8 | ADC |UMLAL| ADC |STRH | ADC |LDRD*| ADC |     |
+| 0x0A8 | ADC |UMLAL| ADC |STRH | ADC |LDRD*| ADC |STRD*|
 | 0x0B0 | ADC | ADC | ADC | ADC | ADC | ADC | ADC | ADC |
 | 0x0B8 | ADC |UMLAL| ADC |LDRH | ADC |LDRSB| ADC |LDRSH|
 | 0x0C0 | SBC | SBC | SBC | SBC | SBC | SBC | SBC | SBC |
-| 0x0C8 | SBC |SMULL| SBC |STRH | SBC |LDRD*| SBC |     |
+| 0x0C8 | SBC |SMULL| SBC |STRH | SBC |LDRD*| SBC |STRD*|
 | 0x0D0 | SBC | SBC | SBC | SBC | SBC | SBC | SBC | SBC |
 | 0x0D8 | SBC |SMULL| SBC |LDRH | SBC |LDRSB| SBC |LDRSH|
 | 0x0E0 | RSC | RSC | RSC | RSC | RSC | RSC | RSC | RSC |
-| 0x0E8 | RSC |SMLAL| RSC |STRH | RSC |LDRD*| RSC |     |
+| 0x0E8 | RSC |SMLAL| RSC |STRH | RSC |LDRD*| RSC |STRD*|
 | 0x0F0 | RSC | RSC | RSC | RSC | RSC | RSC | RSC | RSC |
 | 0x0F8 | RSC |SMLAL| RSC |LDRH | RSC |LDRSB| RSC |LDRSH|
 |       | + 0 | + 1 | + 2 | + 3 | + 4 | + 5 | + 6 | + 7 |
 | 0x100 | MRS |     |     |     |     |     |     |     |
-| 0x108 |     | SWP |     |STRH |     |LDRD*|     |     |
+| 0x108 |     | SWP |     |STRH |     |LDRD*|     |STRD*|
 | 0x110 | TST | TST | TST | TST | TST | TST | TST | TST |
 | 0x118 | TST |     | TST |LDRH | TST |LDRSB| TST |LDRSH|
 | 0x120 | MSR | BX  |     |     |     |     |     |     |
-| 0x128 |     |     |     |STRH |     |LDRD*|     |     |
+| 0x128 |     |     |     |STRH |     |LDRD*|     |STRD*|
 | 0x130 | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ |
 | 0x138 | TEQ |     | TEQ |LDRH | TEQ |LDRSB| TEQ |LDRSH|
 | 0x140 | MRS |     |     |     |     |     |     |     |
-| 0x148 |     | SWP |     |STRH |     |LDRD*|     |     |
+| 0x148 |     | SWP |     |STRH |     |LDRD*|     |STRD*|
 | 0x150 | CMP | CMP | CMP | CMP | CMP | CMP | CMP | CMP |
 | 0x158 | CMP |     | CMP |LDRH | CMP |LDRSB| CMP |LDRSH|
 | 0x160 | MSR |     |     |     |     |     |     |     |
-| 0x168 |     |     |     |STRH |     |LDRD*|     |     |
+| 0x168 |     |     |     |STRH |     |LDRD*|     |STRD*|
 | 0x170 | CMN | CMN | CMN | CMN | CMN | CMN | CMN | CMN |
 | 0x178 | CMN |     | CMN |LDRH | CMN |LDRSB| CMN |LDRSH|
 | 0x180 | ORR | ORR | ORR | ORR | ORR | ORR | ORR | ORR |
-| 0x188 | ORR |     | ORR |STRH | ORR |LDRD*| ORR |     |
+| 0x188 | ORR |     | ORR |STRH | ORR |LDRD*| ORR |STRD*|
 | 0x190 | ORR | ORR | ORR | ORR | ORR | ORR | ORR | ORR |
 | 0x198 | ORR |     | ORR |LDRH | ORR |LDRSB| ORR |LDRSH|
 | 0x1A0 | MOV | MOV | MOV | MOV | MOV | MOV | MOV | MOV |
-| 0x1A8 | MOV |     | MOV |STRH | MOV |LDRD*| MOV |     |
+| 0x1A8 | MOV |     | MOV |STRH | MOV |LDRD*| MOV |STRD*|
 | 0x1B0 | MOV | MOV | MOV | MOV | MOV | MOV | MOV | MOV |
 | 0x1B8 | MOV |     | MOV |LDRH | MOV |LDRSB| MOV |LDRSH|
 | 0x1C0 | BIC | BIC | BIC | BIC | BIC | BIC | BIC | BIC |
-| 0x1C8 | BIC |     | BIC |STRH | BIC |LDRD*| BIC |     |
+| 0x1C8 | BIC |     | BIC |STRH | BIC |LDRD*| BIC |STRD*|
 | 0x1D0 | BIC | BIC | BIC | BIC | BIC | BIC | BIC | BIC |
 | 0x1D8 | BIC |     | BIC |LDRH | BIC |LDRSB| BIC |LDRSH|
 | 0x1E0 | MVN | MVN | MVN | MVN | MVN | MVN | MVN | MVN |
-| 0x1E8 | MVN |     | MVN |STRH | MVN |LDRD*| MVN |     |
+| 0x1E8 | MVN |     | MVN |STRH | MVN |LDRD*| MVN |STRD*|
 | 0x1F0 | MVN | MVN | MVN | MVN | MVN | MVN | MVN | MVN |
 | 0x1F8 | MVN |     | MVN |LDRH | MVN |LDRSB| MVN |LDRSH|
 |       | + 0 | + 1 | + 2 | + 3 | + 4 | + 5 | + 6 | + 7 |
@@ -186,6 +186,7 @@
 | 0x3F8 | MVN | MVN | MVN | MVN | MVN | MVN | MVN | MVN |
 |       | + 0 | + 1 | + 2 | + 3 | + 4 | + 5 | + 6 | + 7 |
 
+- LDRD*, STRD* はサポートされていない（未定義命令）
 
 ##  詳細
 
