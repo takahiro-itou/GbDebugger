@@ -43,7 +43,7 @@ namespace  {
 //    CpuArm  class.
 //
 
-#include    "ArmInstTable.h"
+#include    "InstTable.h"
 
 //========================================================================
 //
