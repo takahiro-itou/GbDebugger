@@ -86,20 +86,20 @@
 | 0x0F0 | RSC | RSC | RSC | RSC | RSC | RSC | RSC | RSC |
 | 0x0F8 | RSC |SMLAL| RSC |LDRH | RSC |LDRSB| RSC |LDRSH|
 |       | + 0 | + 1 | + 2 | + 3 | + 4 | + 5 | + 6 | + 7 |
-| 0x100 | MRS |     |     |     |     |     |     |     |
-| 0x108 |     | SWP |     |STRH |     |LDRD*|     |STRD*|
+| 0x100 | MRS |[und]|[und]|[und]|[und]|[und]|[und]|[und]|
+| 0x108 |(MUL)| SWP |(MUL)|STRH |(MUL)|LDRD*|(MUL)|STRD*|
 | 0x110 | TST | TST | TST | TST | TST | TST | TST | TST |
-| 0x118 | TST |     | TST |LDRH | TST |LDRSB| TST |LDRSH|
-| 0x120 | MSR | BX  |     |     |     |     |     |     |
-| 0x128 |     |     |     |STRH |     |LDRD*|     |STRD*|
+| 0x118 | TST |[und]| TST |LDRH | TST |LDRSB| TST |LDRSH|
+| 0x120 | MSR | BX  |[und]|[und]|[und]|[und]|[und]|     |
+| 0x128 |(MUL)|[und]|(MUL)|STRH |(MUL)|LDRD*|(MUL)|STRD*|
 | 0x130 | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ | TEQ |
-| 0x138 | TEQ |     | TEQ |LDRH | TEQ |LDRSB| TEQ |LDRSH|
-| 0x140 | MRS |     |     |     |     |     |     |     |
-| 0x148 |     | SWP |     |STRH |     |LDRD*|     |STRD*|
+| 0x138 | TEQ |[und]| TEQ |LDRH | TEQ |LDRSB| TEQ |LDRSH|
+| 0x140 | MRS |[und]|[und]|[und]|[und]|[und]|[und]|[und]|
+| 0x148 |(MUL)| SWP |(MUL)|STRH |(MUL)|LDRD*|(MUL)|STRD*|
 | 0x150 | CMP | CMP | CMP | CMP | CMP | CMP | CMP | CMP |
-| 0x158 | CMP |     | CMP |LDRH | CMP |LDRSB| CMP |LDRSH|
+| 0x158 | CMP |[und]| CMP |LDRH | CMP |LDRSB| CMP |LDRSH|
 | 0x160 | MSR |     |     |     |     |     |     |     |
-| 0x168 |     |     |     |STRH |     |LDRD*|     |STRD*|
+| 0x168 |(MUL)|     |(MUL)|STRH |(MUL)|LDRD*|(MUL)|STRD*|
 | 0x170 | CMN | CMN | CMN | CMN | CMN | CMN | CMN | CMN |
 | 0x178 | CMN |     | CMN |LDRH | CMN |LDRSB| CMN |LDRSH|
 | 0x180 | ORR | ORR | ORR | ORR | ORR | ORR | ORR | ORR |
@@ -187,6 +187,7 @@
 |       | + 0 | + 1 | + 2 | + 3 | + 4 | + 5 | + 6 | + 7 |
 
 - LDRD*, STRD* はサポートされていない（未定義命令）
+- (MUL) は乗算命令のグループだがサポートされていない（未定義命令）
 
 ##  詳細
 
