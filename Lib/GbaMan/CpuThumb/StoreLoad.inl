@@ -249,7 +249,7 @@ CpuThumb::execStoreLoadWithImmOffset(
     GuestMemoryAddress  gmAddr  = mog_cpuRegs[rb].dw + (sizeof(B) * nn);
     LpWriteBuf  ptr = this->m_manMem.getMemoryAddress(gmAddr);
 
-    switch ( 0 ) {
+    switch ( OP ) {
     case  0:        //  STR
 #if ( GBDEBUGGER_ENABLE_TRACELOG )
         sprintf(buf, "Write to address %08x from R%d (%08x)",
