@@ -123,10 +123,10 @@ CpuArm::executeNextInst()
             }
         }
 
-        if ( mog_clockCounts == 0 ) {
-            mog_clockCounts = 1;
+        if ( mog_cpuInfo.clockCounts == 0 ) {
+            mog_cpuInfo.clockCounts = 1;
         }
-        mog_totalClocks += mog_clockCounts;
+        mog_cpuInfo.totalClocks += mog_cpuInfo.clockCounts;
     }
 
     return ( InstExecResult::SUCCESS_BREAKPOINT );
