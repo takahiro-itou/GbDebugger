@@ -39,6 +39,17 @@ namespace  {
 //    Store/Load  Instructions.
 //
 
+//----------------------------------------------------------------
+
+template  <int I, int P, int U, typename B,
+           int BIT32, int OP, typename SHIFTOP>
+GBD_REGPARM     InstExecResult
+CpuArm::execStoreLoad(
+        const  OpeCode  opeCode)
+{
+    std::cerr   <<  "Not Implemented (StoreLoad With RegOffs)"  <<  std::endl;
+    return ( InstExecResult::UNDEFINED_OPECODE );
+}
 
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
