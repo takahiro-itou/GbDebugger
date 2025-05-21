@@ -26,6 +26,14 @@
 #include    <iostream>
 
 
+//========================================================================
+//
+//    Implementation of Inlines.
+//
+
+#include    "StoreLoad.inl"
+
+
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
 
