@@ -18,8 +18,8 @@
 **      @file       GbaMan/ArmALU.h
 **/
 
-#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_ARM_ALU_H )
-#    define   GBDEBUGGER_GBAMAN_INCLUDED_ARM_ALU_H
+#if !defined( GBDEBUGGER_GBAMAN_CPUARM_INCLUDED_ARM_ALU_H )
+#    define   GBDEBUGGER_GBAMAN_CPUARM_INCLUDED_ARM_ALU_H
 
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_CPU_UTILS_H )
 #    include    "GbDebugger/GbaMan/CpuUtils.h"

@@ -96,8 +96,8 @@ CpuThumb::executeNextInst()
         const  OpeCode  opeCode = this->m_prefOpeCodes[0];
         this->m_prefOpeCodes[0] = this->m_prefOpeCodes[1];
 
-        mog_prefetchActive  = false;
-        mog_clockCounts     = 0;
+        mog_cpuInfo.prefetchActive  = false;
+        mog_cpuInfo.clockCounts     = 0;
 
         this->m_nextPC  = mog_cpuRegs[RegIdx::PC].dw;
         mog_cpuRegs[RegIdx::PC].dw  += 2;
@@ -117,10 +117,10 @@ CpuThumb::executeNextInst()
             std::cerr   <<  buf;
             return ( InstExecResult::UNDEFINED_OPECODE );
         }
-        if ( mog_clockCounts == 0 ) {
-            mog_clockCounts = 1;
+        if ( mog_cpuInfo.clockCounts == 0 ) {
+            mog_cpuInfo.clockCounts = 1;
         }
-        mog_totalClocks += mog_clockCounts;
+        mog_cpuInfo.totalClocks += mog_cpuInfo.clockCounts;
     }
 
     return ( InstExecResult::SUCCESS_BREAKPOINT );

@@ -36,12 +36,14 @@ namespace  GbaMan  {
 
 RegBank             mog_cpuRegs;
 
-bool                mog_prefetchEnable  = false;
-bool                mog_prefetchActive  = false;
-PrefetchCounter     mog_prefetchCounter = 0;
+// bool                mog_prefetchEnable  = false;
+// bool                mog_prefetchActive  = false;
+// PrefetchCounter     mog_prefetchCounter = 0;
 
-ClockCount          mog_totalClocks = 0;
-ClockCount          mog_clockCounts = 0;
+// ClockCount          mog_totalClocks = 0;
+// ClockCount          mog_clockCounts = 0;
+
+CounterInfo         mog_cpuInfo;
 
 #endif
 
@@ -77,11 +79,12 @@ BaseCpuCore::BaseCpuCore(
       m_manMem(manMem),
 #if !defined( GBDEBUGGER_USE_GLOBALS )
       mog_cpuRegs(),
-      mog_prefetchEnable(false),
-      mog_prefetchActive(false),
-      mog_prefetchCounter(0),
-      mog_totalClocks(0),
-      mog_clockCounts(0),
+      // mog_prefetchEnable(false),
+      // mog_prefetchActive(false),
+      // mog_prefetchCounter(0),
+      // mog_totalClocks(0),
+      // mog_clockCounts(0),
+      mog_cpuInfo(),
 #endif
       m_nextPC (),
       m_prefOpeCodes(),
