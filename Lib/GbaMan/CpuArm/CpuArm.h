@@ -188,6 +188,12 @@ private:
     execArmBxx_BL(
             const  OpeCode  opeCode);
 
+    template  <int I, int P, int U, typename B,
+               int BIT32, int OP, typename SHIFTOP>
+    GBD_REGPARM     InstExecResult
+    execStoreLoad(
+            const  OpeCode  opeCode);
+
     GBD_REGPARM     InstExecResult
     execStrLdrInstruction(
             const  OpeCode  opeCode);
