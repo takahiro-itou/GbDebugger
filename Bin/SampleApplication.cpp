@@ -87,9 +87,8 @@ int  main(int argc, char * argv[])
             std::cout   <<  "Instructions: "
                         <<  cnt <<  ", "
                         <<  elapsed <<  "ms : "
-                        <<  (cnt / elapsed)  <<  " kHz"
-                        <<  std::endl;
-            std::cout   <<  "Clock Counts: "
+                        <<  (cnt / elapsed) <<  " kHz\n"
+                        <<  "Clock Counts: "
                         <<  cc  <<  ", "
                         <<  elapsed <<  "ms : "
                         <<  (cc / elapsed)  <<  " kHz"
@@ -105,9 +104,8 @@ int  main(int argc, char * argv[])
     std::cout   <<  "Instructions: "
                 <<  cnt <<  ", "
                 <<  elapsed <<  "ms : "
-                <<  (cnt / elapsed)  <<  " kHz"
-                <<  std::endl;
-    std::cout   <<  "Clock Counts: "
+                <<  (cnt / elapsed) <<  " kHz\n"
+                <<  "Clock Counts: "
                 <<  cc  <<  ", "
                 <<  elapsed <<  "ms : "
                 <<  (cc / elapsed)  <<  " kHz"
