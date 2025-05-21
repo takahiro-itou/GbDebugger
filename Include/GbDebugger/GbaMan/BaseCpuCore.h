@@ -47,12 +47,7 @@ class   MemoryManager;
 
 extern  RegBank             mog_cpuRegs;
 
-extern  bool                mog_prefetchEnable;
-extern  bool                mog_prefetchActive;
-extern  PrefetchCounter     mog_prefetchCounter;
-
-extern  ClockCount          mog_totalClocks;
-extern  ClockCount          mog_clockCounts;
+extern  CounterInfo         mog_cpuInfo;
 
 #endif
 
@@ -179,7 +174,7 @@ public:
     const   uint64_t
     getCpuTotalTicks()  const
     {
-        return ( mog_totalClocks );
+        return ( mog_cpuInfo.totalClocks );
     }
 
     //----------------------------------------------------------------
@@ -239,13 +234,8 @@ protected:
     /**   レジスタ。            **/
     RegBank                 mog_cpuRegs;
 
-    bool                    mog_prefetchEnable;
-    bool                    mog_prefetchActive;
-    PrefetchCounter         mog_prefetchCounter;
-
-    ClockCount              mog_totalClocks;
-    ClockCount              mog_clockCounts;
-
+    /**   カウンタ関連。        **/
+    CounterInfo             mog_cpuInfo;
 #endif
 
     /**   次の命令のアドレス。  **/
