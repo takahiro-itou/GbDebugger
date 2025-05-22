@@ -84,8 +84,12 @@ int  main(int argc, char * argv[])
             clock_t clkEnd  = clock();
             const double elapsed = static_cast<double>(clkEnd - clkSta)
                     * 1000.0 / CLOCKS_PER_SEC;
-            std::cout   <<  cnt <<  " Instructions, "
-                        <<  cc  <<  " Clocks, "
+            std::cout   <<  "Instructions: "
+                        <<  cnt <<  ", "
+                        <<  elapsed <<  "ms : "
+                        <<  (cnt / elapsed) <<  " kHz\n"
+                        <<  "Clock Counts: "
+                        <<  cc  <<  ", "
                         <<  elapsed <<  "ms : "
                         <<  (cc / elapsed)  <<  " kHz"
                         <<  std::endl;
@@ -97,8 +101,12 @@ int  main(int argc, char * argv[])
     clock_t clkEnd  = clock();
     const double elapsed = static_cast<double>(clkEnd - clkSta)
                                 * 1000.0 / CLOCKS_PER_SEC;
-    std::cout   <<  cnt <<  " Instructions, "
-                <<  cc  <<  " Clocks, "
+    std::cout   <<  "Instructions: "
+                <<  cnt <<  ", "
+                <<  elapsed <<  "ms : "
+                <<  (cnt / elapsed) <<  " kHz\n"
+                <<  "Clock Counts: "
+                <<  cc  <<  ", "
                 <<  elapsed <<  "ms : "
                 <<  (cc / elapsed)  <<  " kHz"
                 <<  std::endl;

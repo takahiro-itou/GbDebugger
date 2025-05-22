@@ -18,8 +18,8 @@
 **      @file       GbaMan/CpuArm.h
 **/
 
-#if !defined( GBDEBUGGER_GBAMAN_INCLUDED_CPU_ARM_H )
-#    define   GBDEBUGGER_GBAMAN_INCLUDED_CPU_ARM_H
+#if !defined( GBDEBUGGER_GBAMAN_CPUARM_INCLUDED_CPU_ARM_H )
+#    define   GBDEBUGGER_GBAMAN_CPUARM_INCLUDED_CPU_ARM_H
 
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_BASE_CPU_CORE_H )
 #    include    "GbDebugger/GbaMan/BaseCpuCore.h"
@@ -186,6 +186,12 @@ private:
 
     GBD_REGPARM     InstExecResult
     execArmBxx_BL(
+            const  OpeCode  opeCode);
+
+    template  <int I, int P, int U, typename B,
+               int BIT32, int OP, typename SHIFTOP>
+    GBD_REGPARM     InstExecResult
+    execStoreLoad(
             const  OpeCode  opeCode);
 
     GBD_REGPARM     InstExecResult
