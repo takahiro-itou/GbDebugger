@@ -33,6 +33,30 @@
     REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
     REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst)
 
+#define     ARMSTRLDR_INST_TABLE_IMM(P, U, B)                       \
+    REPEAT_16(&CpuArm::execStoreLoad<0, P, U, B, 0, 0, void),       \
+    REPEAT_16(&CpuArm::execStoreLoad<0, P, U, B, 0, 1, void),       \
+    REPEAT_16(&CpuArm::execStoreLoad<0, P, U, B, 1, 0, void),       \
+    REPEAT_16(&CpuArm::execStoreLoad<0, P, U, B, 1, 1, void)
+
+#define     ARMSTRLDR_INST_TABLE_REG(P, U, B)                           \
+    &CpuArm::execStoreLoad<1, P, U, B, 0, 0, ShiftOpLslImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, 0, 0, ShiftOpLsrImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, 0, 0, ShiftOpAsrImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, 0, 0, ShiftOpRorImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, 0, 1, ShiftOpLslImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, 0, 1, ShiftOpLsrImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, 0, 1, ShiftOpAsrImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, 0, 1, ShiftOpRorImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, 1, 0, ShiftOpLslImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, 1, 0, ShiftOpLsrImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, 1, 0, ShiftOpAsrImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, 1, 0, ShiftOpRorImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, 1, 1, ShiftOpLslImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, 1, 1, ShiftOpLsrImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, 1, 1, ShiftOpAsrImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, 1, 1, ShiftOpRorImm>, arm_UI,    \
+
 #define     arm009  arm_UI
 #define     arm00B  arm_UI
 #define     arm00D  arm_UI
