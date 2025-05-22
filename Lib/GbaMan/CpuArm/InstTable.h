@@ -33,13 +33,13 @@
     REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
     REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst)
 
-#define     ARMSTRLDR_INST_TABLE_IMM(P, U, B)                       \
-    REPEAT_16(&CpuArm::execStoreLoad<0, P, U, B, 0, 0, void),       \
-    REPEAT_16(&CpuArm::execStoreLoad<0, P, U, B, 0, 1, void),       \
-    REPEAT_16(&CpuArm::execStoreLoad<0, P, U, B, 1, 0, void),       \
-    REPEAT_16(&CpuArm::execStoreLoad<0, P, U, B, 1, 1, void)
+#define     STRLDR_INST_TABLE_IMM(P, U, B)                                  \
+    REPEAT_16((&CpuArm::execStoreLoad<0, P, U, B, 0, 0, ShiftOpVoidImm>)),  \
+    REPEAT_16((&CpuArm::execStoreLoad<0, P, U, B, 0, 1, ShiftOpVoidImm>)),  \
+    REPEAT_16((&CpuArm::execStoreLoad<0, P, U, B, 1, 0, ShiftOpVoidImm>)),  \
+    REPEAT_16((&CpuArm::execStoreLoad<0, P, U, B, 1, 1, ShiftOpVoidImm>))
 
-#define     ARMSTRLDR_INST_TABLE_REG(P, U, B)                           \
+#define     STRLDR_INST_TABLE_REG(P, U, B)                              \
     &CpuArm::execStoreLoad<1, P, U, B, 0, 0, ShiftOpLslImm>, arm_UI,    \
     &CpuArm::execStoreLoad<1, P, U, B, 0, 0, ShiftOpLsrImm>, arm_UI,    \
     &CpuArm::execStoreLoad<1, P, U, B, 0, 0, ShiftOpAsrImm>, arm_UI,    \
@@ -274,8 +274,7 @@ CpuArm::s_armInstTable[4096] = {
     INST_TABLE_200_3FF(3E, 3F, MVN),        //  3E.0 -- 3F.F
 
     //  STR/LDR 命令。  //
-    INST_TABLE_400_7FF_STR_LDR(40, 41),     //  40.0 -- 41.F
-    INST_TABLE_400_7FF_STR_LDR(42, 43),     //  42.0 -- 43.F
+    STRLDR_INST_TABLE_IMM(0, -1, BtWord),   //  40.0 -- 43.F
     INST_TABLE_400_7FF_STR_LDR(44, 45),     //  44.0 -- 45.F
     INST_TABLE_400_7FF_STR_LDR(46, 47),     //  46.0 -- 47.F
     INST_TABLE_400_7FF_STR_LDR(48, 49),     //  48.0 -- 49.F

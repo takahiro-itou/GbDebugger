@@ -401,6 +401,29 @@ struct  ShiftOpRorImm
     static  CONSTEXPR_VAR   int     SHIFTW_REG  = 0;
 };
 
+//========================================================================
+/**
+**    ダミー
+**/
+
+struct  ShiftOpVoidImm
+{
+    RegType
+    operator()(
+            const  RegType  value,
+            const  int      shift,
+            bool          & flagCy)  const
+    {
+        return ( value );
+    }
+
+    /**   シフトタイプ  **/
+    static  CONSTEXPR_VAR   int     SHIFT_TYPE  = 0;
+
+    /**   シフト量は即値指定。  **/
+    static  CONSTEXPR_VAR   int     SHIFTW_REG  = 0;
+};
+
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
 
