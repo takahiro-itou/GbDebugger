@@ -23,6 +23,16 @@
 
 #define     arm_UI  &CpuArm::execUnknownInstruction
 
+#define     REPEAT_16(inst)     \
+    inst, inst, inst, inst, inst, inst, inst, inst,     \
+    inst, inst, inst, inst, inst, inst, inst, inst
+
+#define     REPEAT256(inst)     \
+    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
+    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
+    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
+    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst)
+
 #define     arm009  arm_UI
 #define     arm00B  arm_UI
 #define     arm00D  arm_UI
@@ -146,16 +156,6 @@
 #define     armLDR  &CpuArm::execStrLdrInstruction
 #define     armAxx  &CpuArm::execArmAxx_B
 #define     armBxx  &CpuArm::execArmBxx_BL
-
-#define     REPEAT_16(inst)     \
-    inst, inst, inst, inst, inst, inst, inst, inst,     \
-    inst, inst, inst, inst, inst, inst, inst, inst
-
-#define     REPEAT256(inst)     \
-    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
-    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
-    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
-    REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst)
 
 
 //  ALU 命令のうち bit7-4 が 1xx1 であるものは注意する。    //
