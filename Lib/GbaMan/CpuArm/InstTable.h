@@ -275,24 +275,25 @@ CpuArm::s_armInstTable[4096] = {
 
     //  STR/LDR 命令。  //
     STRLDR_INST_TABLE_IMM(0, -1, BtWord),   //  40.0 -- 43.F
-    INST_TABLE_400_7FF_STR_LDR(44, 45),     //  44.0 -- 45.F
-    INST_TABLE_400_7FF_STR_LDR(46, 47),     //  46.0 -- 47.F
-    INST_TABLE_400_7FF_STR_LDR(48, 49),     //  48.0 -- 49.F
-    INST_TABLE_400_7FF_STR_LDR(4A, 4B),     //  4A.0 -- 4B.F
-    INST_TABLE_400_7FF_STR_LDR(4C, 4D),     //  4C.0 -- 4D.F
-    INST_TABLE_400_7FF_STR_LDR(4E, 4F),     //  4E.0 -- 4F.F
+    STRLDR_INST_TABLE_IMM(0, -1, BtByte),   //  44.0 -- 47.F
+    STRLDR_INST_TABLE_IMM(0,  1, BtWord),   //  48.0 -- 4B.F
+    STRLDR_INST_TABLE_IMM(0,  1, BtByte),   //  4C.0 -- 4F.F
 
-    INST_TABLE_400_7FF_STR_LDR(50, 51),     //  50.0 -- 51.F
-    INST_TABLE_400_7FF_STR_LDR(52, 53),     //  52.0 -- 53.F
-    INST_TABLE_400_7FF_STR_LDR(54, 55),     //  54.0 -- 55.F
-    INST_TABLE_400_7FF_STR_LDR(56, 57),     //  56.0 -- 57.F
-    INST_TABLE_400_7FF_STR_LDR(58, 59),     //  58.0 -- 59.F
-    INST_TABLE_400_7FF_STR_LDR(5A, 5B),     //  5A.0 -- 5B.F
-    INST_TABLE_400_7FF_STR_LDR(5C, 5D),     //  5C.0 -- 5D.F
-    INST_TABLE_400_7FF_STR_LDR(5E, 5F),     //  5E.0 -- 5F.F
+    STRLDR_INST_TABLE_IMM(1, -1, BtWord),   //  50.0 -- 53.F
+    STRLDR_INST_TABLE_IMM(1, -1, BtByte),   //  54.0 -- 57.F
+    STRLDR_INST_TABLE_IMM(1,  1, BtWord),   //  58.0 -- 5B.F
+    STRLDR_INST_TABLE_IMM(1,  1, BtByte),   //  5C.0 -- 5F.F
 
-    REPEAT256(arm_UI),      //  60.0 -- 6F.F
-    REPEAT256(arm_UI),      //  70.0 -- 7F.F
+    STRLDR_INST_TABLE_REG(0, -1, BtWord),   //  60.0 -- 63.F
+    STRLDR_INST_TABLE_REG(0, -1, BtByte),   //  64.0 -- 67.F
+    STRLDR_INST_TABLE_REG(0,  1, BtWord),   //  68.0 -- 6B.F
+    STRLDR_INST_TABLE_REG(0,  1, BtByte),   //  6C.0 -- 6F.F
+
+    STRLDR_INST_TABLE_REG(1, -1, BtWord),   //  70.0 -- 73.F
+    STRLDR_INST_TABLE_REG(1, -1, BtByte),   //  74.0 -- 77.F
+    STRLDR_INST_TABLE_REG(1,  1, BtWord),   //  78.0 -- 7B.F
+    STRLDR_INST_TABLE_REG(1,  1, BtByte),   //  7C.0 -- 7F.F
+
     REPEAT256(arm_UI),      //  80.0 -- 8F.F
     REPEAT256(arm_UI),      //  90.0 -- 9F.F
     REPEAT256(armAxx),      //  A0.0 -- AF.F
