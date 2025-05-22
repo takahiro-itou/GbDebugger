@@ -25,6 +25,10 @@
 #    include    "CpuArm.h"
 #endif
 
+#if !defined( GBDEBUGGER_GBAMAN_CPUARM_INCLUDED_ARM_ALU_H )
+#    include    "ArmALU.h"
+#endif
+
 
 GBDEBUGGER_NAMESPACE_BEGIN
 namespace  GbaMan  {
