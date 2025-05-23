@@ -207,7 +207,7 @@
 //  そこで bit7 が  1 になっている上記のビットパターンは    //
 //  あり得ないので、別の命令に割り当てられている。          //
 
-#define     INST_TABLE_ALU_IMM(CODE1, OP, S)                            \
+#define     INST_TABLE_ALU_REG(CODE1, OP, S)                            \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpLslImm, 0>,    \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpLslReg, 1>,    \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpLsrImm, 0>,    \
@@ -244,52 +244,51 @@
 
 const   CpuArm::FnInst
 CpuArm::s_armInstTable[4096] = {
-    INST_TABLE_ALU_IMM(00, AND, 0),     //  00.0 -- 00.F
-    INST_TABLE_ALU_IMM(01, AND, 1),     //  01.0 -- 01.F
-    INST_TABLE_ALU_IMM(02, EOR, 0),     //  02.0 -- 02.F
-    INST_TABLE_ALU_IMM(03, EOR, 1),     //  03.0 -- 03.F
-    INST_TABLE_ALU_IMM(04, SUB, 0),     //  04.0 -- 04.F
-    INST_TABLE_ALU_IMM(05, SUB, 1),     //  05.0 -- 05.F
-    INST_TABLE_ALU_IMM(06, RSB, 0),     //  06.0 -- 06.F
-    INST_TABLE_ALU_IMM(07, RSB, 1),     //  07.0 -- 07.F
-
-    INST_TABLE_ALU_IMM(08, ADD, 0),     //  08.0 -- 08.F
-    INST_TABLE_ALU_IMM(09, ADD, 1),     //  09.0 -- 09.F
-    INST_TABLE_ALU_IMM(0A, ADC, 0),     //  0A.0 -- 0A.F
-    INST_TABLE_ALU_IMM(0B, ADC, 1),     //  0B.0 -- 0B.F
-    INST_TABLE_ALU_IMM(0C, SBC, 0),     //  0C.0 -- 0C.F
-    INST_TABLE_ALU_IMM(0D, SBC, 1),     //  0D.0 -- 0D.F
-    INST_TABLE_ALU_IMM(0E, RSC, 0),     //  0E.0 -- 0E.F
-    INST_TABLE_ALU_IMM(0F, RSC, 1),     //  0F.0 -- 0F.F
+    INST_TABLE_ALU_REG(00, AND, 0),         //  00.0 -- 00.F
+    INST_TABLE_ALU_REG(01, AND, 1),         //  01.0 -- 01.F
+    INST_TABLE_ALU_REG(02, EOR, 0),         //  02.0 -- 02.F
+    INST_TABLE_ALU_REG(03, EOR, 1),         //  03.0 -- 03.F
+    INST_TABLE_ALU_REG(04, SUB, 0),         //  04.0 -- 04.F
+    INST_TABLE_ALU_REG(05, SUB, 1),         //  05.0 -- 05.F
+    INST_TABLE_ALU_REG(06, RSB, 0),         //  06.0 -- 06.F
+    INST_TABLE_ALU_REG(07, RSB, 1),         //  07.0 -- 07.F
+    INST_TABLE_ALU_REG(08, ADD, 0),         //  08.0 -- 08.F
+    INST_TABLE_ALU_REG(09, ADD, 1),         //  09.0 -- 09.F
+    INST_TABLE_ALU_REG(0A, ADC, 0),         //  0A.0 -- 0A.F
+    INST_TABLE_ALU_REG(0B, ADC, 1),         //  0B.0 -- 0B.F
+    INST_TABLE_ALU_REG(0C, SBC, 0),         //  0C.0 -- 0C.F
+    INST_TABLE_ALU_REG(0D, SBC, 1),         //  0D.0 -- 0D.F
+    INST_TABLE_ALU_REG(0E, RSC, 0),         //  0E.0 -- 0E.F
+    INST_TABLE_ALU_REG(0F, RSC, 1),         //  0F.0 -- 0F.F
 
     //  10.0 -- 10.F
     arm100, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
     arm_NI, arm_NI, arm_NI, arm_NI,     arm_NI, arm_NI, arm_NI, arm_NI,
-    INST_TABLE_ALU_IMM(11, TST, 1),     //  11.0 -- 11.F
+    INST_TABLE_ALU_REG(11, TST, 1),         //  11.0 -- 11.F
 
     //  12.0 -- 12.F
     arm120, arm121, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_NI,
     arm_NI, arm_UI, arm_NI, arm_NI,     arm_NI, arm_NI, arm_NI, arm_NI,
-    INST_TABLE_ALU_IMM(13, TEQ, 1),     //  13.0 -- 13.F
+    INST_TABLE_ALU_REG(13, TEQ, 1),         //  13.0 -- 13.F
 
     //  14.0 -- 14.F
     arm140, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
     arm_NI, arm_NI, arm_NI, arm_NI,     arm_NI, arm_NI, arm_NI, arm_NI,
-    INST_TABLE_ALU_IMM(15, CMP, 1),     //  15.0 -- 15.F
+    INST_TABLE_ALU_REG(15, CMP, 1),         //  15.0 -- 15.F
 
     //  16.0 -- 16.F
     arm160, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI,arm_UI, arm_UI,
     arm_NI, arm_UI, arm_NI, arm_NI,     arm_NI, arm_NI, arm_NI, arm_NI,
-    INST_TABLE_ALU_IMM(17, CMN, 1),     //  17.0 -- 17.F
+    INST_TABLE_ALU_REG(17, CMN, 1),         //  17.0 -- 17.F
 
-    INST_TABLE_ALU_IMM(18, ORR, 0),     //  18.0 -- 18.F
-    INST_TABLE_ALU_IMM(19, ORR, 1),     //  19.0 -- 19.F
-    INST_TABLE_ALU_IMM(1A, MOV, 0),     //  1A.0 -- 1A.F
-    INST_TABLE_ALU_IMM(1B, MOV, 1),     //  1B.0 -- 1B.F
-    INST_TABLE_ALU_IMM(1C, BIC, 0),     //  1C.0 -- 1C.F
-    INST_TABLE_ALU_IMM(1D, BIC, 1),     //  1D.0 -- 1D.F
-    INST_TABLE_ALU_IMM(1E, MVN, 0),     //  1E.0 -- 1E.F
-    INST_TABLE_ALU_IMM(1F, MVN, 1),     //  1F.0 -- 1F.F
+    INST_TABLE_ALU_REG(18, ORR, 0),         //  18.0 -- 18.F
+    INST_TABLE_ALU_REG(19, ORR, 1),         //  19.0 -- 19.F
+    INST_TABLE_ALU_REG(1A, MOV, 0),         //  1A.0 -- 1A.F
+    INST_TABLE_ALU_REG(1B, MOV, 1),         //  1B.0 -- 1B.F
+    INST_TABLE_ALU_REG(1C, BIC, 0),         //  1C.0 -- 1C.F
+    INST_TABLE_ALU_REG(1D, BIC, 1),         //  1D.0 -- 1D.F
+    INST_TABLE_ALU_REG(1E, MVN, 0),         //  1E.0 -- 1E.F
+    INST_TABLE_ALU_REG(1F, MVN, 1),         //  1F.0 -- 1F.F
 
     INST_TABLE_200_3FF(20, 21, AND),        //  20.0 -- 21.F
     INST_TABLE_200_3FF(22, 23, EOR),        //  22.0 -- 23.F
