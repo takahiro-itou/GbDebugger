@@ -115,7 +115,7 @@ getAluOp2Register(
 
 //----------------------------------------------------------------
 
-template  <int BIT25, int CODE, int BIT20, typename SHIFTOP, int BIT4>
+template  <int BIT25, AluOp CODE, int BIT20, typename SHIFTOP, int BIT4>
 GBD_REGPARM     InstExecResult
 CpuArm::execArithmeticLogic(
         const  OpeCode  opeCode)
