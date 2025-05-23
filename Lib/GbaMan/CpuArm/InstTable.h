@@ -310,10 +310,14 @@ CpuArm::s_armInstTable[4096] = {
     INST_TABLE_ALU_IMM(2E, RSC, 0),         //  2E.0 -- 2E.F
     INST_TABLE_ALU_IMM(2F, RSC, 1),         //  2F.0 -- 2F.F
 
-    INST_TABLE_ALU_TEST_IMM(30, 31, TST),       //  30.0 -- 31.F
-    INST_TABLE_ALU_TEST_IMM(32, 33, TEQ),       //  32.0 -- 33.F
-    INST_TABLE_ALU_TEST_IMM(34, 35, CMP),       //  34.0 -- 35.F
-    INST_TABLE_ALU_TEST_IMM(36, 37, CMN),       //  36.0 -- 37.F
+    REPEAT_16(arm300),                      //  30.0 -- 30.F
+    INST_TABLE_ALU_IMM(31, TST, 1),         //  31.0 -- 31.F
+    REPEAT_16(arm320),                      //  32.0 -- 32.F
+    INST_TABLE_ALU_IMM(33, TEQ, 1),         //  33.0 -- 33.F
+    REPEAT_16(arm340),                      //  34.0 -- 34.F
+    INST_TABLE_ALU_IMM(35, CMP, 1),         //  35.0 -- 35.F
+    REPEAT_16(arm360),                      //  36.0 -- 36.F
+    INST_TABLE_ALU_IMM(37, CMN, 1),         //  37.0 -- 37.F
 
     INST_TABLE_ALU_IMM(38, ORR, 0),         //  38.0 -- 38.F
     INST_TABLE_ALU_IMM(39, ORR, 1),         //  39.0 -- 39.F
