@@ -193,6 +193,16 @@ private:
     execArmBxx_BL(
             const  OpeCode  opeCode);
 
+    template  <int OP, int S>
+    GBD_REGPARM     InstExecResult
+    execMultiplyHalf(
+            const  OpeCode  opeCode);
+
+    template  <int OP, int S>
+    GBD_REGPARM     InstExecResult
+    execMultiplyWord(
+            const  OpeCode  opeCode);
+
     GBD_REGPARM     InstExecResult
     execNotImplemented(
             const  OpeCode  opeCode);

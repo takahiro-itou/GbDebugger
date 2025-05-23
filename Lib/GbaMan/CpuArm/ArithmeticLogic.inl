@@ -260,6 +260,26 @@ CpuArm::execArithmeticLogic(
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
+//----------------------------------------------------------------
+
+template  <int OP, int S>
+GBD_REGPARM     InstExecResult
+CpuArm::execMultiplyHalf(
+        const  OpeCode  opeCode)
+{
+    std::cerr   <<  "Unsupported (Multiply Half)"   <<  std::endl;
+    return ( InstExecResult::UNDEFINED_OPECODE );
+}
+
+template  <int OP, int S>
+GBD_REGPARM     InstExecResult
+CpuArm::execMultiplyWord(
+        const  OpeCode  opeCode)
+{
+    std::cerr   <<  "Not Implemented (Multiply Word)"   <<  std::endl;
+    return ( InstExecResult::UNDEFINED_OPECODE );
+}
+
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
 
