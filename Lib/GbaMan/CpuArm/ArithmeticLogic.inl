@@ -120,8 +120,136 @@ GBD_REGPARM     InstExecResult
 CpuArm::execArithmeticLogic(
         const  OpeCode  opeCode)
 {
-    std::cerr   <<  "Not Implemented (ALU)" <<  std::endl;
-    return ( InstExecResult::UNDEFINED_OPECODE );
+    RegType   & cpuFlag = mog_cpuRegs[RegIdx::CPSR].dw;
+
+    //  結果を格納するレジスタはビット 12..15 で指定。  //
+    const  int      dst = (opeCode >> 12) & 0x0F;
+
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
+    char    buf[512];
+#if defined( __GNUC__ )
+    std::cerr   <<  __PRETTY_FUNCTION__ <<  std::endl;
+#endif
+    sprintf(buf,
+            "Op2(I/R) = %d, CODE = %x, S = %d, SHIFT = %d/%d, BIT4(R) = %d\n",
+            BIT25, CODE, BIT20,
+            SHIFTOP::SHIFT_TYPE, SHIFTOP::SHIFTW_REG, BIT4);
+    std::cerr   <<  buf;
+    sprintf(buf,
+            "OpeCode = %08x, dst = %d\n",
+            opeCode, dst);
+    std::cerr   <<  buf;
+    assert( SHIFTOP::SHIFTW_REG == BIT4 );
+#endif
+
+    //  第一オペランドレジスタはビット 16..19 で指定。  //
+    const  RegType  lhs = mog_cpuRegs[(opeCode >> 16) & 0x0F].dw;
+    const  RegType  Cy  = (cpuFlag >> CPSR::FBIT_C) & 0x01;
+    RegType     rhs;
+    RegType     res     = mog_cpuRegs[dst].dw;
+    bool        flagCy  = (Cy ? true : false);
+
+    static_assert(
+            (BIT25 == 0) || (std::is_same<SHIFTOP, ArmALUImmRor>::value),
+            "SHIFTOP must be ArmALUImmRor if BIT25 == 1"
+    );
+
+    if ( BIT25 == 0 ) {
+        //  第二オペランドはレジスタ。ビット 00..07 で指定される。  //
+#if 0
+        if ( BIT4 == 0 ) {
+            rhs = getAluOp2Register<SHIFTOP, BIT4>(
+                    opeCode, cpuRegs, flagCy);
+        } else{
+            rhs = getAluOp2Register<SHIFTOP, BIT4>(
+                    opeCode, cpuRegs, flagCy);
+        }
+#endif
+        rhs = getAluOp2Register<SHIFTOP>(
+                    opeCode, mog_cpuRegs, flagCy);
+    } else {
+        //  第二オペランドは即値指定。ビット 00..07 で指定される。  //
+        const  RegType  imm = (opeCode & 0xFF);
+        const  int      ror = (opeCode & 0xF00) >> 7;
+        rhs = SHIFTOP()(imm, ror, flagCy);
+    }
+
+    const  RegType  cur = setCondLogicalCarry(flagCy, cpuFlag);
+    RegType         flg;
+
+    switch ( CODE ) {
+    case  0x00:     //  AND         Rd = Rn AND Op2
+        flg = setCondLogical((res = lhs & rhs), lhs, rhs, cur);
+        mog_cpuRegs[dst].dw = res;
+        break;
+    case  0x01:     //  EOR (XOR)   Rd = Rn XOR Op2
+        flg = setCondLogical((res = lhs ^ rhs), lhs, rhs, cur);
+        mog_cpuRegs[dst].dw = res;
+        break;
+    case  0x02:     //  SUB         Rd = Rn - OP2
+        flg = setCondSub((res = lhs - rhs), lhs, rhs, cur);
+        mog_cpuRegs[dst].dw = res;
+        break;
+    case  0x03:     //  RSB         Rd = Op2 - Rn
+        flg = setCondSub((res = rhs - lhs), rhs, lhs, cur);
+        mog_cpuRegs[dst].dw = res;
+        break;
+    case  0x04:     //  ADD         Rd = Rn + Op2
+        flg = setCondAdd((res = lhs + rhs), lhs, rhs, cur);
+        mog_cpuRegs[dst].dw = res;
+        break;
+    case  0x05:     //  ADC         Rd = Rn + Op2 + Cy
+        flg = setCondAdd((res = lhs + rhs + Cy), lhs, rhs, cur);
+        mog_cpuRegs[dst].dw = res;
+        break;
+    case  0x06:     //  SBC         Rd = Rn - Op2 + Cy - 1
+        flg = setCondAdd((res = lhs - rhs + Cy - 1), lhs, rhs, cur);
+        mog_cpuRegs[dst].dw = res;
+        break;
+    case  0x07:     //  RSC         Rd = Op2 - Rn + Cy - 1
+        flg = setCondAdd((res = rhs - lhs + Cy - 1), rhs, lhs, cur);
+        mog_cpuRegs[dst].dw = res;
+        break;
+    case  0x08:     //  TST         (void)(Rn AND Op2)
+        flg = setCondLogical((lhs & rhs), lhs, rhs, cur);
+        break;
+    case  0x09:     //  TEQ         (void)(Rn XOR Op2)
+        flg = setCondLogical((lhs ^ rhs), lhs, rhs, cur);
+        break;
+    case  0x0A:     //  CMP         (void)(Rn - Op2)
+        flg = setCondSub((lhs - rhs), lhs, rhs, cur);
+        break;
+    case  0x0B:     //  CMN         (void)(Rn + Op2)
+        flg = setCondAdd((lhs + rhs), lhs, rhs, cur);
+        break;
+    case  0x0C:     //  ORR (OR)    Rd = Rn OR Op2
+        flg = setCondLogical((res = lhs | rhs), lhs, rhs, cur);
+        mog_cpuRegs[dst].dw = res;
+        break;
+    case  0x0D:     //  MOV         Rd = Op2
+        flg = setCondLogical((res = rhs), lhs, rhs, cur);
+        mog_cpuRegs[dst].dw = res;
+        break;
+    case  0x0E:     //  BIC         Rd = Rnn AND NOT Op2
+        flg = setCondLogical((res = lhs & ~rhs), lhs, rhs, cur);
+        mog_cpuRegs[dst].dw = res;
+        break;
+    case  0x0F:     //  MVN         Rd = Not Op2
+        flg = setCondLogical((res = ~rhs), lhs, rhs, cur);
+        mog_cpuRegs[dst].dw = res;
+        break;
+    }
+
+    if ( LIKELY(dst) == 0x0F ) {
+        if ( BIT20 == 1 ) {
+            //  フラグレジスタを更新する。  //
+            cpuFlag = flg;
+        }
+    } else {
+        //  モードの変更処理。  //
+    }
+
+    return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
 }   //  End of namespace  GbaMan
