@@ -186,7 +186,7 @@
 //  そこで bit7 が  1 になっている上記のビットパターンは    //
 //  あり得ないので、別の命令に割り当てられている。          //
 
-#define     INST_TABLE_000_1FF_ALU(CODE1, CODE2, ALU_OP)                    \
+#define     INST_TABLE_ALU_IMM(CODE1, CODE2, OP)                            \
     armALU, armALU, armALU, armALU,     armALU, armALU, armALU, armALU,     \
     armALU, arm##CODE1##9, armALU, arm##CODE1##B,                           \
     armALU, arm##CODE1##D, armALU, arm##CODE1##F,                           \
@@ -194,7 +194,7 @@
     armALU, arm##CODE2##9, armALU, arm##CODE2##B,                           \
     armALU, arm##CODE2##D, armALU, arm##CODE2##F
 
-#define     INST_TABLE_ALU_TEST(CODE1, CODE2, ALU_OP)                       \
+#define     INST_TABLE_ALU_TEST_IMM(CODE1, CODE2, ALU_OP)                       \
     REPEAT_16(arm##CODE1##0),                                               \
     armALU, armALU, armALU, armALU,     armALU, armALU, armALU, armALU,     \
     armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI
@@ -212,30 +212,30 @@
 
 const   CpuArm::FnInst
 CpuArm::s_armInstTable[4096] = {
-    INST_TABLE_000_1FF_ALU(00, 01, AND),    //  00.0 -- 01.F
-    INST_TABLE_000_1FF_ALU(02, 03, EOR),    //  02.0 -- 03.F
-    INST_TABLE_000_1FF_ALU(04, 05, SUB),    //  04.0 -- 05.F
-    INST_TABLE_000_1FF_ALU(06, 07, RSB),    //  06.0 -- 07.F
-    INST_TABLE_000_1FF_ALU(08, 09, ADD),    //  08.0 -- 09.F
-    INST_TABLE_000_1FF_ALU(0A, 0B, ADC),    //  0A.0 -- 0B.F
-    INST_TABLE_000_1FF_ALU(0C, 0D, SBC),    //  0C.0 -- 0D.F
-    INST_TABLE_000_1FF_ALU(0E, 0F, RSC),    //  0E.0 -- 0F.F
+    INST_TABLE_ALU_IMM(00, 01, AND),    //  00.0 -- 01.F
+    INST_TABLE_ALU_IMM(02, 03, EOR),    //  02.0 -- 03.F
+    INST_TABLE_ALU_IMM(04, 05, SUB),    //  04.0 -- 05.F
+    INST_TABLE_ALU_IMM(06, 07, RSB),    //  06.0 -- 07.F
+    INST_TABLE_ALU_IMM(08, 09, ADD),    //  08.0 -- 09.F
+    INST_TABLE_ALU_IMM(0A, 0B, ADC),    //  0A.0 -- 0B.F
+    INST_TABLE_ALU_IMM(0C, 0D, SBC),    //  0C.0 -- 0D.F
+    INST_TABLE_ALU_IMM(0E, 0F, RSC),    //  0E.0 -- 0F.F
 
     //  10.0 -- 11.F
-    INST_TABLE_ALU_TEST(10, 11, TST),       //  10.0 -- 11.F
+    INST_TABLE_ALU_TEST_IMM(10, 11, TST),       //  10.0 -- 11.F
 
-//    INST_TABLE_ALU_TEST(12, 13, TEQ),       //  12.0 -- 13.F
+//    INST_TABLE_ALU_TEST_IMM(12, 13, TEQ),       //  12.0 -- 13.F
     arm120, arm121, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
     arm_UI, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
     armALU, armALU, armALU, armALU,     armALU, armALU, armALU, armALU,
     armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
 
-    INST_TABLE_ALU_TEST(14, 15, CMP),       //  14.0 -- 15.F
-    INST_TABLE_ALU_TEST(16, 17, CMN),       //  16.0 -- 17.F
-    INST_TABLE_000_1FF_ALU(18, 19, ORR),    //  18.0 -- 19.F
-    INST_TABLE_000_1FF_ALU(1A, 1B, MOV),    //  1A.0 -- 1B.F
-    INST_TABLE_000_1FF_ALU(1C, 1D, BIC),    //  1C.0 -- 1D.F
-    INST_TABLE_000_1FF_ALU(1E, 1F, MVN),    //  1E.0 -- 1F.F
+    INST_TABLE_ALU_TEST_IMM(14, 15, CMP),       //  14.0 -- 15.F
+    INST_TABLE_ALU_TEST_IMM(16, 17, CMN),       //  16.0 -- 17.F
+    INST_TABLE_ALU_IMM(18, 19, ORR),    //  18.0 -- 19.F
+    INST_TABLE_ALU_IMM(1A, 1B, MOV),    //  1A.0 -- 1B.F
+    INST_TABLE_ALU_IMM(1C, 1D, BIC),    //  1C.0 -- 1D.F
+    INST_TABLE_ALU_IMM(1E, 1F, MVN),    //  1E.0 -- 1F.F
 
     INST_TABLE_200_3FF(20, 21, AND),        //  20.0 -- 21.F
     INST_TABLE_200_3FF(22, 23, EOR),        //  22.0 -- 23.F
@@ -246,10 +246,10 @@ CpuArm::s_armInstTable[4096] = {
     INST_TABLE_200_3FF(2C, 2D, SBC),        //  2C.0 -- 2D.F
     INST_TABLE_200_3FF(2E, 2F, RSC),        //  2E.0 -- 2F.F
 
-    INST_TABLE_ALU_TEST(30, 31, TST),       //  30.0 -- 31.F
-    INST_TABLE_ALU_TEST(32, 33, TEQ),       //  32.0 -- 33.F
-    INST_TABLE_ALU_TEST(34, 35, CMP),       //  34.0 -- 35.F
-    INST_TABLE_ALU_TEST(36, 37, CMN),       //  36.0 -- 37.F
+    INST_TABLE_ALU_TEST_IMM(30, 31, TST),       //  30.0 -- 31.F
+    INST_TABLE_ALU_TEST_IMM(32, 33, TEQ),       //  32.0 -- 33.F
+    INST_TABLE_ALU_TEST_IMM(34, 35, CMP),       //  34.0 -- 35.F
+    INST_TABLE_ALU_TEST_IMM(36, 37, CMN),       //  36.0 -- 37.F
     INST_TABLE_200_3FF(38, 39, ORR),        //  38.0 -- 39.F
     INST_TABLE_200_3FF(3A, 3B, MOV),        //  3A.0 -- 3B.F
     INST_TABLE_200_3FF(3C, 3D, BIC),        //  3C.0 -- 3D.F
