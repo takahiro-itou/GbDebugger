@@ -220,6 +220,7 @@
 #define     armLDR  &CpuArm::execStrLdrInstruction
 #define     armAxx  &CpuArm::execArmAxx_B
 #define     armBxx  &CpuArm::execArmBxx_BL
+#define     armFxx  &CpuArm::execSoftwareInterrupt
 
 
 //  ALU 命令のうち bit7-4 が 1xx1 であるものは注意する。    //
@@ -396,7 +397,7 @@ CpuArm::s_armInstTable[4096] = {
     REPEAT256(arm_UI),      //  D0.0 -- DF.F
 
     REPEAT256(arm_NI),      //  E0.0 -- EF.F
-    REPEAT256(arm_NI),      //  F0.0 -- FF.F
+    REPEAT256(armFxx),      //  F0.0 -- FF.F
 };
 
 #endif
