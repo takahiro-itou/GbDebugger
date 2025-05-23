@@ -37,39 +37,23 @@
     REPEAT_16((&CpuArm::execStoreLoad<0, P, U, B, F, 0, ShiftOpVoidImm>)),  \
     REPEAT_16((&CpuArm::execStoreLoad<0, P, U, B, F, 1, ShiftOpVoidImm>))
 
-#define     STRLDR_INST_TABLE_REG(P, U, B)                              \
-    &CpuArm::execStoreLoad<1, P, U, B, 0, 0, ShiftOpLslImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 0, 0, ShiftOpLsrImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 0, 0, ShiftOpAsrImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 0, 0, ShiftOpRorImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 0, 0, ShiftOpLslImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 0, 0, ShiftOpLsrImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 0, 0, ShiftOpAsrImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 0, 0, ShiftOpRorImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 0, 1, ShiftOpLslImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 0, 1, ShiftOpLsrImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 0, 1, ShiftOpAsrImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 0, 1, ShiftOpRorImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 0, 1, ShiftOpLslImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 0, 1, ShiftOpLsrImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 0, 1, ShiftOpAsrImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 0, 1, ShiftOpRorImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 1, 0, ShiftOpLslImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 1, 0, ShiftOpLsrImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 1, 0, ShiftOpAsrImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 1, 0, ShiftOpRorImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 1, 0, ShiftOpLslImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 1, 0, ShiftOpLsrImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 1, 0, ShiftOpAsrImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 1, 0, ShiftOpRorImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 1, 1, ShiftOpLslImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 1, 1, ShiftOpLsrImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 1, 1, ShiftOpAsrImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 1, 1, ShiftOpRorImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 1, 1, ShiftOpLslImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 1, 1, ShiftOpLsrImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 1, 1, ShiftOpAsrImm>, arm_UI,    \
-    &CpuArm::execStoreLoad<1, P, U, B, 1, 1, ShiftOpRorImm>, arm_UI
+#define     STRLDR_INST_TABLE_REG(P, U, B, F)                           \
+    &CpuArm::execStoreLoad<1, P, U, B, F, 0, ShiftOpLslImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, F, 0, ShiftOpLsrImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, F, 0, ShiftOpAsrImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, F, 0, ShiftOpRorImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, F, 0, ShiftOpLslImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, F, 0, ShiftOpLsrImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, F, 0, ShiftOpAsrImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, F, 0, ShiftOpRorImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, F, 1, ShiftOpLslImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, F, 1, ShiftOpLsrImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, F, 1, ShiftOpAsrImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, F, 1, ShiftOpRorImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, F, 1, ShiftOpLslImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, F, 1, ShiftOpLsrImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, F, 1, ShiftOpAsrImm>, arm_UI,    \
+    &CpuArm::execStoreLoad<1, P, U, B, F, 1, ShiftOpRorImm>, arm_UI
 
 #define     arm009  arm_UI
 #define     arm00B  arm_UI
@@ -290,15 +274,23 @@ CpuArm::s_armInstTable[4096] = {
     STRLDR_INST_TABLE_IMM(1,  1, BtByte, 0),    //  5C.0 -- 5D.F
     STRLDR_INST_TABLE_IMM(1,  1, BtByte, 1),    //  5E.0 -- 5F.F
 
-    STRLDR_INST_TABLE_REG(0, -1, BtWord),   //  60.0 -- 63.F
-    STRLDR_INST_TABLE_REG(0, -1, BtByte),   //  64.0 -- 67.F
-    STRLDR_INST_TABLE_REG(0,  1, BtWord),   //  68.0 -- 6B.F
-    STRLDR_INST_TABLE_REG(0,  1, BtByte),   //  6C.0 -- 6F.F
+    STRLDR_INST_TABLE_REG(0, -1, BtWord, 0),    //  60.0 -- 61.F
+    STRLDR_INST_TABLE_REG(0, -1, BtWord, 1),    //  62.0 -- 63.F
+    STRLDR_INST_TABLE_REG(0, -1, BtByte, 0),    //  64.0 -- 65.F
+    STRLDR_INST_TABLE_REG(0, -1, BtByte, 1),    //  66.0 -- 67.F
+    STRLDR_INST_TABLE_REG(0,  1, BtWord, 0),    //  68.0 -- 69.F
+    STRLDR_INST_TABLE_REG(0,  1, BtWord, 1),    //  6A.0 -- 6B.F
+    STRLDR_INST_TABLE_REG(0,  1, BtByte, 0),    //  6C.0 -- 6D.F
+    STRLDR_INST_TABLE_REG(0,  1, BtByte, 1),    //  6E.0 -- 6F.F
 
-    STRLDR_INST_TABLE_REG(1, -1, BtWord),   //  70.0 -- 73.F
-    STRLDR_INST_TABLE_REG(1, -1, BtByte),   //  74.0 -- 77.F
-    STRLDR_INST_TABLE_REG(1,  1, BtWord),   //  78.0 -- 7B.F
-    STRLDR_INST_TABLE_REG(1,  1, BtByte),   //  7C.0 -- 7F.F
+    STRLDR_INST_TABLE_REG(1, -1, BtWord, 0),    //  70.0 -- 71.F
+    STRLDR_INST_TABLE_REG(1, -1, BtWord, 1),    //  72.0 -- 73.F
+    STRLDR_INST_TABLE_REG(1, -1, BtByte, 0),    //  74.0 -- 75.F
+    STRLDR_INST_TABLE_REG(1, -1, BtByte, 1),    //  76.0 -- 77.F
+    STRLDR_INST_TABLE_REG(1,  1, BtWord, 0),    //  78.0 -- 79.F
+    STRLDR_INST_TABLE_REG(1,  1, BtWord, 1),    //  7A.0 -- 7B.F
+    STRLDR_INST_TABLE_REG(1,  1, BtByte, 0),    //  7C.0 -- 7D.F
+    STRLDR_INST_TABLE_REG(1,  1, BtByte, 1),    //  7E.0 -- 7F.F
 
     REPEAT256(arm_UI),      //  80.0 -- 8F.F
     REPEAT256(arm_UI),      //  90.0 -- 9F.F
