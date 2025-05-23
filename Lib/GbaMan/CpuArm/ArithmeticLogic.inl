@@ -45,6 +45,15 @@ namespace  {
 
 //----------------------------------------------------------------
 
+template  <int BIT25, int CODE, int BIT20, typename SHIFTOP, int BIT4>
+GBD_REGPARM     InstExecResult
+CpuArm::execArithmeticLogic(
+        const  OpeCode  opeCode)
+{
+    std::cerr   <<  "Not Implemented (ALU)" <<  std::endl;
+    return ( InstExecResult::UNDEFINED_OPECODE );
+}
+
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
 

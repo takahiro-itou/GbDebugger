@@ -152,6 +152,11 @@ private:
     execALUInstruction(
             const  OpeCode  opeCode);
 
+    template  <int BIT25, int CODE, int BIT20, typename SHIFTOP, int BIT4>
+    GBD_REGPARM     InstExecResult
+    execArithmeticLogic(
+            const  OpeCode  opeCode);
+
     GBD_REGPARM     InstExecResult
     execArm100_MrsCpsr(
             const  OpeCode  opeCode);
