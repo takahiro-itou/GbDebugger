@@ -33,11 +33,9 @@
     REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
     REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst)
 
-#define     STRLDR_INST_TABLE_IMM(P, U, B)                                  \
-    REPEAT_16((&CpuArm::execStoreLoad<0, P, U, B, 0, 0, ShiftOpVoidImm>)),  \
-    REPEAT_16((&CpuArm::execStoreLoad<0, P, U, B, 0, 1, ShiftOpVoidImm>)),  \
-    REPEAT_16((&CpuArm::execStoreLoad<0, P, U, B, 1, 0, ShiftOpVoidImm>)),  \
-    REPEAT_16((&CpuArm::execStoreLoad<0, P, U, B, 1, 1, ShiftOpVoidImm>))
+#define     STRLDR_INST_TABLE_IMM(P, U, B, F)                               \
+    REPEAT_16((&CpuArm::execStoreLoad<0, P, U, B, F, 0, ShiftOpVoidImm>)),  \
+    REPEAT_16((&CpuArm::execStoreLoad<0, P, U, B, F, 1, ShiftOpVoidImm>))
 
 #define     STRLDR_INST_TABLE_REG(P, U, B)                              \
     &CpuArm::execStoreLoad<1, P, U, B, 0, 0, ShiftOpLslImm>, arm_UI,    \
@@ -274,15 +272,23 @@ CpuArm::s_armInstTable[4096] = {
     INST_TABLE_200_3FF(3E, 3F, MVN),        //  3E.0 -- 3F.F
 
     //  STR/LDR 命令。  //
-    STRLDR_INST_TABLE_IMM(0, -1, BtWord),   //  40.0 -- 43.F
-    STRLDR_INST_TABLE_IMM(0, -1, BtByte),   //  44.0 -- 47.F
-    STRLDR_INST_TABLE_IMM(0,  1, BtWord),   //  48.0 -- 4B.F
-    STRLDR_INST_TABLE_IMM(0,  1, BtByte),   //  4C.0 -- 4F.F
+    STRLDR_INST_TABLE_IMM(0, -1, BtWord, 0),    //  40.0 -- 41.F
+    STRLDR_INST_TABLE_IMM(0, -1, BtWord, 1),    //  42.0 -- 43.F
+    STRLDR_INST_TABLE_IMM(0, -1, BtByte, 0),    //  44.0 -- 45.F
+    STRLDR_INST_TABLE_IMM(0, -1, BtByte, 1),    //  46.0 -- 47.F
+    STRLDR_INST_TABLE_IMM(0,  1, BtWord, 0),    //  48.0 -- 49.F
+    STRLDR_INST_TABLE_IMM(0,  1, BtWord, 1),    //  4A.0 -- 4B.F
+    STRLDR_INST_TABLE_IMM(0,  1, BtByte, 0),    //  4C.0 -- 4D.F
+    STRLDR_INST_TABLE_IMM(0,  1, BtByte, 1),    //  4E.0 -- 4F.F
 
-    STRLDR_INST_TABLE_IMM(1, -1, BtWord),   //  50.0 -- 53.F
-    STRLDR_INST_TABLE_IMM(1, -1, BtByte),   //  54.0 -- 57.F
-    STRLDR_INST_TABLE_IMM(1,  1, BtWord),   //  58.0 -- 5B.F
-    STRLDR_INST_TABLE_IMM(1,  1, BtByte),   //  5C.0 -- 5F.F
+    STRLDR_INST_TABLE_IMM(1, -1, BtWord, 0),    //  50.0 -- 51.F
+    STRLDR_INST_TABLE_IMM(1, -1, BtWord, 1),    //  52.0 -- 53.F
+    STRLDR_INST_TABLE_IMM(1, -1, BtByte, 0),    //  54.0 -- 55.F
+    STRLDR_INST_TABLE_IMM(1, -1, BtByte, 1),    //  56.0 -- 57.F
+    STRLDR_INST_TABLE_IMM(1,  1, BtWord, 0),    //  58.0 -- 59.F
+    STRLDR_INST_TABLE_IMM(1,  1, BtWord, 1),    //  5A.0 -- 5B.F
+    STRLDR_INST_TABLE_IMM(1,  1, BtByte, 0),    //  5C.0 -- 5D.F
+    STRLDR_INST_TABLE_IMM(1,  1, BtByte, 1),    //  5E.0 -- 5F.F
 
     STRLDR_INST_TABLE_REG(0, -1, BtWord),   //  60.0 -- 63.F
     STRLDR_INST_TABLE_REG(0, -1, BtByte),   //  64.0 -- 67.F
