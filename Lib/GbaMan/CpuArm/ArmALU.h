@@ -29,6 +29,10 @@
 #    include    "GbDebugger/Common/DebuggerUtils.h"
 #endif
 
+#if !defined( GBDEBUGGER_GBAMAN_CPUARM_INCLUDED_ARITHMETIC_LOGIC_INL )
+#    include    "ArithmeticLogic.inl"
+#endif
+
 #include    "../Utils/ShiftOperator.h"
 
 
@@ -44,35 +48,6 @@ class   MemoryManager;
 //    ArmALU  Instructions.
 //
 
-//========================================================================
-//
-//    第二オペランドの指定に使うファンクタ。
-//
-
-
-struct  ArmALUImmRor
-{
-    RegType
-    operator()(
-            const  RegType  vImm,
-            const  int      shift,
-            bool          & fout_cy)  const
-    {
-        RegType rhs = vImm;
-        if ( UNLIKELY(shift) ) {
-            fout_cy = armRorFlg(vImm, shift);
-            rhs     = armRorVal(vImm, shift);
-        }
-        return ( rhs );
-    }
-
-    /**   シフトタイプ  **/
-    static  CONSTEXPR_VAR   int     SHIFT_TYPE  = 4;
-
-    /**   シフト量は即値指定。  **/
-    static  CONSTEXPR_VAR   int     SHIFTW_REG  = 0;
-};
-
 inline  const   RegType
 armImmRor(
         const  int      shift,
@@ -82,42 +57,6 @@ armImmRor(
         return  armRorVal(vImm, shift);
     }
     return ( vImm );
-}
-
-//========================================================================
-//
-//    第二オペランドを決定する。
-//
-
-template  <typename SHIFTOP>
-inline  const   RegType
-getAluOp2Register(
-        const  OpeCode  opeCode,
-        const  RegPair  cpuRegs[],
-        bool          & flagCy)
-{
-    RegType rhs;
-
-    //  第二オペランドはレジスタ。ビット 00..07 で指定される。  //
-    OpeCode iRm = (opeCode & 0x0F);
-    RegType vRm = cpuRegs[iRm].dw;
-
-    if ( SHIFTOP::SHIFTW_REG == 0 ) {
-        //  シフト量の指定は即値。ビット 07..11 で指定。    //
-        const int shift = (opeCode >> 7) & 0x1F;
-        //  ビット 05..06 はシフトの種類。  //
-        rhs = SHIFTOP()(vRm, shift, flagCy);
-    } else {
-        //  シフト量指定はレジスタ。ビット 08..11 で指定。  //
-        const int shift = cpuRegs[(opeCode >> 8) & 0x0F].dw;
-        if ( iRm == 15 ) {
-            vRm += 4;       //  オペランド Rm が R15 (PC) の時  //
-        }
-        //  ビット 05..06 はシフトの種類。  //
-        rhs = SHIFTOP()(vRm, shift, flagCy);
-    }
-
-    return ( rhs );
 }
 
 }   //  End of namespace  GbaMan
