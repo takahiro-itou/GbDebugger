@@ -202,6 +202,10 @@ private:
     execOperateStack(
             const  OpeCode  opeCode);
 
+    GBD_REGPARM     InstExecResult
+    execSoftwareInterrupt(
+            const  OpeCode  opeCode);
+
     template  <int I, int P, int U, typename B,
                int BIT21, int OP, typename SHIFTOP>
     GBD_REGPARM     InstExecResult
