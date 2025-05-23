@@ -183,6 +183,17 @@ CpuArm::executeNextInst()
 //
 
 GBD_REGPARM     InstExecResult
+CpuArm::execNotImplemented(
+        const  OpeCode  opeCode)
+{
+    char    buf[256];
+
+    sprintf(buf, "Not Implement Arm OpeCode : %08x\n", opeCode);
+    std::cerr   <<  buf;
+    return ( InstExecResult::UNDEFINED_OPECODE );
+}
+
+GBD_REGPARM     InstExecResult
 CpuArm::execUnknownInstruction(
         const  OpeCode  opeCode)
 {
