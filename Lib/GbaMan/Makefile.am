@@ -46,6 +46,7 @@ dist_noinst_data_files      +=  \
         ${extra_noinst_data_files}
 
 dist_noinst_header_files    +=  \
+        CpuArm/ArithmeticLogic.inl     \
         CpuArm/ArmALU.h                \
         CpuArm/InstTable.h             \
         CpuArm/CpuArm.h                \

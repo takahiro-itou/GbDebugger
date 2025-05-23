@@ -33,6 +33,7 @@
 //    Implementation of Inlines.
 //
 
+#include    "ArithmeticLogic.inl"
 #include    "StoreLoad.inl"
 
 //========================================================================
