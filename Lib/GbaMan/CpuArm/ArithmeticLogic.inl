@@ -178,63 +178,63 @@ CpuArm::execArithmeticLogic(
     RegType         flg;
 
     switch ( CODE ) {
-    case  0x00:     //  AND         Rd = Rn AND Op2
+    case  AluOp::AND:       //  AND         Rd = Rn AND Op2
         flg = setCondLogical((res = lhs & rhs), lhs, rhs, cur);
         mog_cpuRegs[dst].dw = res;
         break;
-    case  0x01:     //  EOR (XOR)   Rd = Rn XOR Op2
+    case  AluOp::EOR:       //  EOR (XOR)   Rd = Rn XOR Op2
         flg = setCondLogical((res = lhs ^ rhs), lhs, rhs, cur);
         mog_cpuRegs[dst].dw = res;
         break;
-    case  0x02:     //  SUB         Rd = Rn - OP2
+    case  AluOp::SUB:       //  SUB         Rd = Rn - OP2
         flg = setCondSub((res = lhs - rhs), lhs, rhs, cur);
         mog_cpuRegs[dst].dw = res;
         break;
-    case  0x03:     //  RSB         Rd = Op2 - Rn
+    case  AluOp::RSB:       //  RSB         Rd = Op2 - Rn
         flg = setCondSub((res = rhs - lhs), rhs, lhs, cur);
         mog_cpuRegs[dst].dw = res;
         break;
-    case  0x04:     //  ADD         Rd = Rn + Op2
+    case  AluOp::ADD:       //  ADD         Rd = Rn + Op2
         flg = setCondAdd((res = lhs + rhs), lhs, rhs, cur);
         mog_cpuRegs[dst].dw = res;
         break;
-    case  0x05:     //  ADC         Rd = Rn + Op2 + Cy
+    case  AluOp::ADC:       //  ADC         Rd = Rn + Op2 + Cy
         flg = setCondAdd((res = lhs + rhs + Cy), lhs, rhs, cur);
         mog_cpuRegs[dst].dw = res;
         break;
-    case  0x06:     //  SBC         Rd = Rn - Op2 + Cy - 1
+    case  AluOp::SBC:       //  SBC         Rd = Rn - Op2 + Cy - 1
         flg = setCondAdd((res = lhs - rhs + Cy - 1), lhs, rhs, cur);
         mog_cpuRegs[dst].dw = res;
         break;
-    case  0x07:     //  RSC         Rd = Op2 - Rn + Cy - 1
+    case  AluOp::RSC:       //  RSC         Rd = Op2 - Rn + Cy - 1
         flg = setCondAdd((res = rhs - lhs + Cy - 1), rhs, lhs, cur);
         mog_cpuRegs[dst].dw = res;
         break;
-    case  0x08:     //  TST         (void)(Rn AND Op2)
+    case  AluOp::TST:       //  TST         (void)(Rn AND Op2)
         flg = setCondLogical((lhs & rhs), lhs, rhs, cur);
         break;
-    case  0x09:     //  TEQ         (void)(Rn XOR Op2)
+    case  AluOp::TEQ:       //  TEQ         (void)(Rn XOR Op2)
         flg = setCondLogical((lhs ^ rhs), lhs, rhs, cur);
         break;
-    case  0x0A:     //  CMP         (void)(Rn - Op2)
+    case  AluOp::CMP:       //  CMP         (void)(Rn - Op2)
         flg = setCondSub((lhs - rhs), lhs, rhs, cur);
         break;
-    case  0x0B:     //  CMN         (void)(Rn + Op2)
+    case  AluOp::CMN:       //  CMN         (void)(Rn + Op2)
         flg = setCondAdd((lhs + rhs), lhs, rhs, cur);
         break;
-    case  0x0C:     //  ORR (OR)    Rd = Rn OR Op2
+    case  AluOp::ORR:       //  ORR (OR)    Rd = Rn OR Op2
         flg = setCondLogical((res = lhs | rhs), lhs, rhs, cur);
         mog_cpuRegs[dst].dw = res;
         break;
-    case  0x0D:     //  MOV         Rd = Op2
+    case  AluOp::MOV:       //  MOV         Rd = Op2
         flg = setCondLogical((res = rhs), lhs, rhs, cur);
         mog_cpuRegs[dst].dw = res;
         break;
-    case  0x0E:     //  BIC         Rd = Rnn AND NOT Op2
+    case  AluOp::BIC:       //  BIC         Rd = Rnn AND NOT Op2
         flg = setCondLogical((res = lhs & ~rhs), lhs, rhs, cur);
         mog_cpuRegs[dst].dw = res;
         break;
-    case  0x0F:     //  MVN         Rd = Not Op2
+    case  AluOp::MVN:       //  MVN         Rd = Not Op2
         flg = setCondLogical((res = ~rhs), lhs, rhs, cur);
         mog_cpuRegs[dst].dw = res;
         break;
