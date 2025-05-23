@@ -222,6 +222,11 @@ private:
     execStoreLoad(
             const  OpeCode  opeCode);
 
+    template  <int P, int U, int I, int OP, typename B>
+    GBD_REGPARM     InstExecResult
+    execStoreLoadHalf(
+            const  OpeCode  opeCode);
+
     GBD_REGPARM     InstExecResult
     execUnknownInstruction(
             const  OpeCode  opeCode);

@@ -118,6 +118,17 @@ CpuArm::execStoreLoad(
     return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
+//----------------------------------------------------------------
+
+template  <int P, int U, int I, int OP, typename B>
+GBD_REGPARM     InstExecResult
+CpuArm::execStoreLoadHalf(
+        const  OpeCode  opeCode)
+{
+    std::cerr   <<  "Not Implemented (StoreLoad Half)"  <<  std::endl;
+    return ( InstExecResult::UNDEFINED_OPECODE );
+}
+
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
 
