@@ -33,7 +33,15 @@
 #    include    "../Utils/ShiftOperator.h"
 #endif
 
-#include    <iostream>
+#if !defined( GBDEBUGGER_SYS_INCLUDED_CASSERT )
+#    include    <cassert>
+#    define   GBDEBUGGER_SYS_INCLUDED_CASSERT
+#endif
+
+#if !defined( GBDEBUGGER_SYS_INCLUDED_IOSTREAM )
+#    include    <iostream>
+#    define   GBDEBUGGER_SYS_INCLUDED_IOSTREAM
+#endif
 
 
 GBDEBUGGER_NAMESPACE_BEGIN
@@ -132,7 +140,7 @@ CpuArm::execArithmeticLogic(
 #endif
     sprintf(buf,
             "Op2(I/R) = %d, CODE = %x, S = %d, SHIFT = %d/%d, BIT4(R) = %d\n",
-            BIT25, CODE, BIT20,
+            BIT25, static_cast<int>(CODE), BIT20,
             SHIFTOP::SHIFT_TYPE, SHIFTOP::SHIFTW_REG, BIT4);
     std::cerr   <<  buf;
     sprintf(buf,
