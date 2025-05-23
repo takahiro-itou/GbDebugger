@@ -139,6 +139,21 @@
 #define     arm11D  arm_NI
 #define     arm11F  arm_NI
 
+#define     arm139  arm_UI
+#define     arm13B  arm_NI
+#define     arm13D  arm_NI
+#define     arm13F  arm_NI
+
+#define     arm159  arm_UI
+#define     arm15B  arm_NI
+#define     arm15D  arm_NI
+#define     arm15F  arm_NI
+
+#define     arm179  arm_UI
+#define     arm17B  arm_NI
+#define     arm17D  arm_NI
+#define     arm17F  arm_NI
+
 #define     arm189  arm_UI
 #define     arm18B  arm_UI
 #define     arm18D  arm_UI
@@ -249,19 +264,23 @@ CpuArm::s_armInstTable[4096] = {
 
     //  10.0 -- 10.F
     arm100, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    arm_NI, arm_NI, arm_NI, arm_NI,     arm_NI, arm_NI, arm_NI, arm_NI,
     INST_TABLE_ALU_IMM(11, TST, 1),     //  11.0 -- 11.F
 
     //  12.0 -- 12.F
-    arm120, arm121, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, nullptr,
-    nullptr, arm_UI, nullptr, nullptr,  nullptr, nullptr, nullptr, nullptr,
+    arm120, arm121, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_NI,
+    arm_NI, arm_UI, arm_NI, arm_NI,     arm_NI, arm_NI, arm_NI, arm_NI,
+    INST_TABLE_ALU_IMM(13, TEQ, 1),     //  13.0 -- 13.F
 
-//    INST_TABLE_ALU_TEST_IMM(12, 13, TEQ),       //  12.0 -- 13.F
-    armALU, armALU, armALU, armALU,     armALU, armALU, armALU, armALU,
-    armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
+    //  14.0 -- 14.F
+    arm140, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
+    arm_NI, arm_NI, arm_NI, arm_NI,     arm_NI, arm_NI, arm_NI, arm_NI,
+    INST_TABLE_ALU_IMM(15, CMP, 1),     //  15.0 -- 15.F
 
-    INST_TABLE_ALU_TEST_IMM(14, 15, CMP),       //  14.0 -- 15.F
-    INST_TABLE_ALU_TEST_IMM(16, 17, CMN),       //  16.0 -- 17.F
+    //  16.0 -- 16.F
+    arm160, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI,arm_UI, arm_UI,
+    arm_NI, arm_UI, arm_NI, arm_NI,     arm_NI, arm_NI, arm_NI, arm_NI,
+    INST_TABLE_ALU_IMM(17, CMN, 1),     //  17.0 -- 17.F
 
     INST_TABLE_ALU_IMM(18, ORR, 0),     //  18.0 -- 18.F
     INST_TABLE_ALU_IMM(19, ORR, 1),     //  19.0 -- 19.F
