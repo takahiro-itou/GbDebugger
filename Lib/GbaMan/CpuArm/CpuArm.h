@@ -195,10 +195,6 @@ private:
             const  OpeCode  opeCode);
 
     GBD_REGPARM     InstExecResult
-    execStrLdrInstruction(
-            const  OpeCode  opeCode);
-
-    GBD_REGPARM     InstExecResult
     execUnknownInstruction(
             const  OpeCode  opeCode);
 
