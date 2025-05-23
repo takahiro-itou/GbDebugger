@@ -20,7 +20,7 @@ set(library_source_files
        GbaManager.cpp
        MemoryManager.cpp
        CpuArm/ArmALU.cpp
-       CpuArm/ArmBranch.cpp
+       CpuArm/Branch.cpp
        CpuArm/ArmPsr.cpp
        CpuArm/CpuArm.cpp
        CpuArm/DisArm.cpp
