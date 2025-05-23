@@ -45,6 +45,17 @@ namespace  {
 
 //----------------------------------------------------------------
 
+template  <int P, int U, int S, int W, int L>
+GBD_REGPARM     InstExecResult
+CpuArm::execOperateStack(
+        const  OpeCode  opeCode)
+{
+    std::cerr   <<  "Not Implemented (Operate Stack)"   <<  std::endl;
+    return ( InstExecResult::UNDEFINED_OPECODE );
+}
+
+//----------------------------------------------------------------
+
 template  <int I, int P, int U, typename B,
            int BIT21, int OP, typename SHIFTOP>
 GBD_REGPARM     InstExecResult

@@ -197,6 +197,11 @@ private:
     execNotImplemented(
             const  OpeCode  opeCode);
 
+    template  <int P, int U, int S, int W, int L>
+    GBD_REGPARM     InstExecResult
+    execOperateStack(
+            const  OpeCode  opeCode);
+
     template  <int I, int P, int U, typename B,
                int BIT21, int OP, typename SHIFTOP>
     GBD_REGPARM     InstExecResult
