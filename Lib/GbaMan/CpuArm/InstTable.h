@@ -21,6 +21,7 @@
 #if !defined( GBDEBUGGER_GBAMAN_CPUARM_INCLUDED_INST_TABLE_H )
 #    define   GBDEBUGGER_GBAMAN_CPUARM_INCLUDED_INST_TABLE_H
 
+#define     arm_NI  &CpuArm::execNotImplemented
 #define     arm_UI  &CpuArm::execUnknownInstruction
 
 #define     REPEAT_16(inst)     \
@@ -55,83 +56,88 @@
     &CpuArm::execStoreLoad<1, P, U, B, F, 1, ShiftOpAsrImm>, arm_UI,    \
     &CpuArm::execStoreLoad<1, P, U, B, F, 1, ShiftOpRorImm>, arm_UI
 
-#define     arm009  arm_UI
-#define     arm00B  arm_UI
-#define     arm00D  arm_UI
-#define     arm00F  arm_UI
-#define     arm019  arm_UI
-#define     arm01B  arm_UI
-#define     arm01D  arm_UI
-#define     arm01F  arm_UI
+#define     arm009  arm_NI
+#define     arm00B  arm_NI
+#define     arm00D  arm_NI
+#define     arm00F  arm_NI
+#define     arm019  arm_NI
+#define     arm01B  arm_NI
+#define     arm01D  arm_NI
+#define     arm01F  arm_NI
 
-#define     arm029  arm_UI
-#define     arm02B  arm_UI
+#define     arm029  arm_NI
+#define     arm02B  arm_NI
 #define     arm02D  arm_UI
 #define     arm02F  arm_UI
-#define     arm039  arm_UI
-#define     arm03B  arm_UI
-#define     arm03D  arm_UI
-#define     arm03F  arm_UI
+#define     arm039  arm_NI
+#define     arm03B  arm_NI
+#define     arm03D  arm_NI
+#define     arm03F  arm_NI
 
 #define     arm049  arm_UI
-#define     arm04B  arm_UI
+#define     arm04B  arm_NI
 #define     arm04D  arm_UI
 #define     arm04F  arm_UI
 #define     arm059  arm_UI
-#define     arm05B  arm_UI
-#define     arm05D  arm_UI
-#define     arm05F  arm_UI
+#define     arm05B  arm_NI
+#define     arm05D  arm_NI
+#define     arm05F  arm_NI
 
 #define     arm069  arm_UI
-#define     arm06B  arm_UI
+#define     arm06B  arm_NI
 #define     arm06D  arm_UI
 #define     arm06F  arm_UI
 #define     arm079  arm_UI
-#define     arm07B  arm_UI
-#define     arm07D  arm_UI
-#define     arm07F  arm_UI
+#define     arm07B  arm_NI
+#define     arm07D  arm_NI
+#define     arm07F  arm_NI
 
-#define     arm089  arm_UI
-#define     arm08B  arm_UI
+#define     arm089  arm_NI
+#define     arm08B  arm_NI
 #define     arm08D  arm_UI
 #define     arm08F  arm_UI
-#define     arm099  arm_UI
-#define     arm09B  arm_UI
-#define     arm09D  arm_UI
-#define     arm09F  arm_UI
+#define     arm099  arm_NI
+#define     arm09B  arm_NI
+#define     arm09D  arm_NI
+#define     arm09F  arm_NI
 
-#define     arm0A9  arm_UI
-#define     arm0AB  arm_UI
+#define     arm0A9  arm_NI
+#define     arm0AB  arm_NI
 #define     arm0AD  arm_UI
 #define     arm0AF  arm_UI
-#define     arm0B9  arm_UI
-#define     arm0BB  arm_UI
-#define     arm0BD  arm_UI
-#define     arm0BF  arm_UI
+#define     arm0B9  arm_NI
+#define     arm0BB  arm_NI
+#define     arm0BD  arm_NI
+#define     arm0BF  arm_NI
 
-#define     arm0C9  arm_UI
-#define     arm0CB  arm_UI
+#define     arm0C9  arm_NI
+#define     arm0CB  arm_NI
 #define     arm0CD  arm_UI
 #define     arm0CF  arm_UI
-#define     arm0D9  arm_UI
-#define     arm0DB  arm_UI
-#define     arm0DD  arm_UI
-#define     arm0DF  arm_UI
+#define     arm0D9  arm_NI
+#define     arm0DB  arm_NI
+#define     arm0DD  arm_NI
+#define     arm0DF  arm_NI
 
-#define     arm0E9  arm_UI
-#define     arm0EB  arm_UI
+#define     arm0E9  arm_NI
+#define     arm0EB  arm_NI
 #define     arm0ED  arm_UI
 #define     arm0EF  arm_UI
-#define     arm0F9  arm_UI
-#define     arm0FB  arm_UI
-#define     arm0FD  arm_UI
-#define     arm0FF  arm_UI
+#define     arm0F9  arm_NI
+#define     arm0FB  arm_NI
+#define     arm0FD  arm_NI
+#define     arm0FF  arm_NI
 
 #define     arm100  &CpuArm::execArm100_MrsCpsr
 #define     arm120  &CpuArm::execArm120_MsrCpsrReg
 #define     arm121  &CpuArm::execArm121_BX
 #define     arm140  &CpuArm::execArm140_MrsSpsr
 #define     arm160  &CpuArm::execArm160_MsrSpsrReg
+
+#define     arm119  arm_UI
+#define     arm11B  arm_NI
+#define     arm11D  arm_NI
+#define     arm11F  arm_NI
 
 #define     arm189  arm_UI
 #define     arm18B  arm_UI
@@ -241,12 +247,16 @@ CpuArm::s_armInstTable[4096] = {
     INST_TABLE_ALU_IMM(0E, RSC, 0),     //  0E.0 -- 0E.F
     INST_TABLE_ALU_IMM(0F, RSC, 1),     //  0F.0 -- 0F.F
 
-    //  10.0 -- 11.F
-    INST_TABLE_ALU_TEST_IMM(10, 11, TST),       //  10.0 -- 11.F
+    //  10.0 -- 10.F
+    arm100, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    INST_TABLE_ALU_IMM(11, TST, 1),     //  11.0 -- 11.F
+
+    //  12.0 -- 12.F
+    arm120, arm121, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, nullptr,
+    nullptr, arm_UI, nullptr, nullptr,  nullptr, nullptr, nullptr, nullptr,
 
 //    INST_TABLE_ALU_TEST_IMM(12, 13, TEQ),       //  12.0 -- 13.F
-    arm120, arm121, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
-    arm_UI, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
     armALU, armALU, armALU, armALU,     armALU, armALU, armALU, armALU,
     armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI,
 
