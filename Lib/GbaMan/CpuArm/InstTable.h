@@ -56,6 +56,27 @@
     &CpuArm::execStoreLoad<1, P, U, B, F, 1, ShiftOpAsrImm>, arm_UI,    \
     &CpuArm::execStoreLoad<1, P, U, B, F, 1, ShiftOpRorImm>, arm_UI
 
+#define     OPERATE_STACK_PUSWL(P, U, S, W, L)                  \
+    &CpuArm::execOperateStack<P, U, S, W, L>
+
+#define     STACK_INST_TABLE(P)                         \
+    REPEAT_16(OPERATE_STACK_PUSWL(P, -1, 0, 0, 0)),     \
+    REPEAT_16(OPERATE_STACK_PUSWL(P, -1, 0, 0, 1)),     \
+    REPEAT_16(OPERATE_STACK_PUSWL(P, -1, 0, 1, 0)),     \
+    REPEAT_16(OPERATE_STACK_PUSWL(P, -1, 0, 1, 1)),     \
+    REPEAT_16(OPERATE_STACK_PUSWL(P, -1, 1, 0, 0)),     \
+    REPEAT_16(OPERATE_STACK_PUSWL(P, -1, 1, 0, 1)),     \
+    REPEAT_16(OPERATE_STACK_PUSWL(P, -1, 1, 1, 0)),     \
+    REPEAT_16(OPERATE_STACK_PUSWL(P, -1, 1, 1, 1)),     \
+    REPEAT_16(OPERATE_STACK_PUSWL(P,  1, 0, 0, 0)),     \
+    REPEAT_16(OPERATE_STACK_PUSWL(P,  1, 0, 0, 1)),     \
+    REPEAT_16(OPERATE_STACK_PUSWL(P,  1, 0, 1, 0)),     \
+    REPEAT_16(OPERATE_STACK_PUSWL(P,  1, 0, 1, 1)),     \
+    REPEAT_16(OPERATE_STACK_PUSWL(P,  1, 1, 0, 0)),     \
+    REPEAT_16(OPERATE_STACK_PUSWL(P,  1, 1, 0, 1)),     \
+    REPEAT_16(OPERATE_STACK_PUSWL(P,  1, 1, 1, 0)),     \
+    REPEAT_16(OPERATE_STACK_PUSWL(P,  1, 1, 1, 1))
+
 #define     arm009  arm_NI
 #define     arm00B  arm_NI
 #define     arm00D  arm_NI
@@ -365,8 +386,8 @@ CpuArm::s_armInstTable[4096] = {
     STRLDR_INST_TABLE_REG(1,  1, BtByte, 0),    //  7C.0 -- 7D.F
     STRLDR_INST_TABLE_REG(1,  1, BtByte, 1),    //  7E.0 -- 7F.F
 
-    REPEAT256(arm_UI),      //  80.0 -- 8F.F
-    REPEAT256(arm_UI),      //  90.0 -- 9F.F
+    STACK_INST_TABLE(0),    //  80.0 -- 8F.F
+    STACK_INST_TABLE(1),    //  90.0 -- 9F.F
 
     REPEAT256(armAxx),      //  A0.0 -- AF.F
     REPEAT256(armBxx),      //  B0.0 -- BF.F
