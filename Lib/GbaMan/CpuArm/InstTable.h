@@ -93,13 +93,12 @@
 #define     arm029  &CpuArm::execMultiplyWord<MulOp::MLA, 0>
 #define     arm039  &CpuArm::execMultiplyWord<MulOp::MLA, 1>
 
-//  P=0 の時は W=0 に限る。もし W=1 の場合は未定義。    //
-#define     arm02B  STORE_LOAD_HALF(0, -1, 0, 1, UND, uint16_t)
-#define     arm02D  STORE_LOAD_HALF(0, -1, 0, 1, UND, uint64_t)
-#define     arm02F  STORE_LOAD_HALF(0, -1, 0, 1, UND, uint64_t)
-#define     arm03B  STORE_LOAD_HALF(0, -1, 0, 1, UND, uint16_t)
-#define     arm03D  STORE_LOAD_HALF(0, -1, 0, 1, UND, int8_t)
-#define     arm03F  STORE_LOAD_HALF(0, -1, 0, 1, UND, int16_t)
+#define     arm02B  STORE_LOAD_HALF(0, -1, 0, 1, STR, uint16_t)
+#define     arm02D  STORE_LOAD_HALF(0, -1, 0, 1, UNS, uint64_t)
+#define     arm02F  STORE_LOAD_HALF(0, -1, 0, 1, UNS, uint64_t)
+#define     arm03B  STORE_LOAD_HALF(0, -1, 0, 1, LDR, uint16_t)
+#define     arm03D  STORE_LOAD_HALF(0, -1, 0, 1, LDR, int8_t)
+#define     arm03F  STORE_LOAD_HALF(0, -1, 0, 1, LDR, int16_t)
 
 #define     arm049  &CpuArm::execMultiplyWord<MulOp::UMAAL, 0>
 #define     arm059  &CpuArm::execMultiplyWord<MulOp::UMAAL, 1>
@@ -112,13 +111,14 @@
 #define     arm05F  STORE_LOAD_HALF(0, -1, 1, 0, LDR, int16_t)
 
 #define     arm069  &CpuArm::execMultiplyWord<MulOp::UNDEF_3, 0>
-#define     arm06B  arm_NI
-#define     arm06D  arm_UI
-#define     arm06F  arm_UI
 #define     arm079  &CpuArm::execMultiplyWord<MulOp::UNDEF_3, 1>
-#define     arm07B  arm_NI
-#define     arm07D  arm_NI
-#define     arm07F  arm_NI
+
+#define     arm06B  STORE_LOAD_HALF(0, -1, 1, 1, STR, uint16_t)
+#define     arm06D  STORE_LOAD_HALF(0, -1, 1, 1, UNS, uint64_t)
+#define     arm06F  STORE_LOAD_HALF(0, -1, 1, 1, UNS, uint64_t)
+#define     arm07B  STORE_LOAD_HALF(0, -1, 1, 1, LDR, uint16_t)
+#define     arm07D  STORE_LOAD_HALF(0, -1, 1, 1, LDR, int8_t)
+#define     arm07F  STORE_LOAD_HALF(0, -1, 1, 1, LDR, int16_t)
 
 #define     arm089  &CpuArm::execMultiplyWord<MulOp::UMULL, 0>
 #define     arm08B  arm_NI
