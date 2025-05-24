@@ -193,7 +193,7 @@ private:
     execArmBxx_BL(
             const  OpeCode  opeCode);
 
-    template  <MulOp OP, int S>
+    template  <MulOp OP>
     GBD_REGPARM     InstExecResult
     execMultiplyHalf(
             const  OpeCode  opeCode);

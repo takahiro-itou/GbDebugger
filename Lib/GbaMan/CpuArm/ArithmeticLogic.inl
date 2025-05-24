@@ -262,7 +262,7 @@ CpuArm::execArithmeticLogic(
 
 //----------------------------------------------------------------
 
-template  <MulOp OP, int S>
+template  <MulOp OP>
 GBD_REGPARM     InstExecResult
 CpuArm::execMultiplyHalf(
         const  OpeCode  opeCode)
