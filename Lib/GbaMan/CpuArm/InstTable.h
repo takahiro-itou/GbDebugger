@@ -155,6 +155,11 @@
 #define     arm140  &CpuArm::execArm140_MrsSpsr
 #define     arm160  &CpuArm::execArm160_MsrSpsrReg
 
+#define     arm108  &CpuArm::execMultiplyHalf<MulOp::SMLAxy>
+#define     arm128  &CpuArm::execMultiplyHalf<MulOp::SMLAWy>
+#define     arm148  &CpuArm::execMultiplyHalf<MulOp::SMLALxy>
+#define     arm168  &CpuArm::execMultiplyHalf<MulOp::SMULxy>
+
 #define     arm119  arm_UI
 #define     arm11B  arm_NI
 #define     arm11D  arm_NI
@@ -288,22 +293,22 @@ CpuArm::s_armInstTable[4096] = {
 
     //  10.0 -- 10.F
     arm100, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
-    arm_NI, arm_NI, arm_NI, arm_NI,     arm_NI, arm_NI, arm_NI, arm_NI,
+    arm108, arm_NI, arm108, arm_NI,     arm108, arm_NI, arm108, arm_NI,
     INST_TABLE_ALU_REG(11, TST, 1),         //  11.0 -- 11.F
 
     //  12.0 -- 12.F
     arm120, arm121, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_NI,
-    arm_NI, arm_UI, arm_NI, arm_NI,     arm_NI, arm_NI, arm_NI, arm_NI,
+    arm128, arm_UI, arm128, arm_NI,     arm128, arm_NI, arm128, arm_NI,
     INST_TABLE_ALU_REG(13, TEQ, 1),         //  13.0 -- 13.F
 
     //  14.0 -- 14.F
     arm140, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
-    arm_NI, arm_NI, arm_NI, arm_NI,     arm_NI, arm_NI, arm_NI, arm_NI,
+    arm148, arm_NI, arm148, arm_NI,     arm148, arm_NI, arm148, arm_NI,
     INST_TABLE_ALU_REG(15, CMP, 1),         //  15.0 -- 15.F
 
     //  16.0 -- 16.F
-    arm160, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI,arm_UI, arm_UI,
-    arm_NI, arm_UI, arm_NI, arm_NI,     arm_NI, arm_NI, arm_NI, arm_NI,
+    arm160, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
+    arm168, arm_UI, arm168, arm_NI,     arm168, arm_NI, arm168, arm_NI,
     INST_TABLE_ALU_REG(17, CMN, 1),         //  17.0 -- 17.F
 
     INST_TABLE_ALU_REG(18, ORR, 0),         //  18.0 -- 18.F
