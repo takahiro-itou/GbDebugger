@@ -283,6 +283,26 @@
     &CpuArm::execArithmeticLogic<0, AluOp::OP, 1, ShiftOpRorImm, 0>,    \
     STORE_LOAD_HALF(P, U, I, W, LDR, int16_t)
 
+#define     ALU_INST_REG_08_0F_S0(CODE1, OP, P, U, I, W)                \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 0, ShiftOpLslImm, 0>,    \
+    arm ## CODE1 ## 9,                                                  \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 0, ShiftOpLsrImm, 0>,    \
+    STORE_LOAD_HALF(P, U, I, W, STR, uint16_t),                         \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 0, ShiftOpAsrImm, 0>,    \
+    STORE_LOAD_HALF(P, U, I, W, UNS, uint64_t),                         \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 0, ShiftOpRorImm, 0>,    \
+    STORE_LOAD_HALF(P, U, I, W, UNS, uint64_t)
+
+#define     ALU_INST_REG_08_0F_S1(CODE1, OP, P, U, I, W)                \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 1, ShiftOpLslImm, 0>,    \
+    arm ## CODE1 ## 9,                                                  \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 1, ShiftOpLsrImm, 0>,    \
+    STORE_LOAD_HALF(P, U, I, W, LDR, uint16_t),                         \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 1, ShiftOpAsrImm, 0>,    \
+    STORE_LOAD_HALF(P, U, I, W, LDR, int8_t),                           \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 1, ShiftOpRorImm, 0>,    \
+    STORE_LOAD_HALF(P, U, I, W, LDR, int16_t)
+
 #define     INST_TABLE_ALU_REG(CODE1, OP, S)                            \
     ALU_INST_REG_00_07(OP, S),                                          \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpLslImm, 0>,    \
