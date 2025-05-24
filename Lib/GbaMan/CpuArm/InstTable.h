@@ -77,74 +77,74 @@
     REPEAT_16(OPERATE_STACK_PUSWL(P,  1, 1, 1, 0)),     \
     REPEAT_16(OPERATE_STACK_PUSWL(P,  1, 1, 1, 1))
 
-#define     arm009  &CpuArm::execMultiplyWord<0x00, 0>
+#define     arm009  &CpuArm::execMultiplyWord<MulOp::MUL, 0>
 #define     arm00B  &CpuArm::execStoreLoadHalf<0, -1, 0, 0, uint16_t>
 #define     arm00D  &CpuArm::execStoreLoadHalf<0, -1, 0, 2, uint64_t>
 #define     arm00F  &CpuArm::execStoreLoadHalf<0, -1, 0, 2, uint64_t>
-#define     arm019  &CpuArm::execMultiplyWord<0x00, 1>
+#define     arm019  &CpuArm::execMultiplyWord<MulOp::MUL, 1>
 #define     arm01B  &CpuArm::execStoreLoadHalf<0, -1, 0, 1, uint16_t>
 #define     arm01D  &CpuArm::execStoreLoadHalf<0, -1, 0, 1, int8_t>
 #define     arm01F  &CpuArm::execStoreLoadHalf<0, -1, 0, 1, int16_t>
 
-#define     arm029  &CpuArm::execMultiplyWord<0x01, 0>
+#define     arm029  &CpuArm::execMultiplyWord<MulOp::MLA, 0>
 #define     arm02B  arm_NI
 #define     arm02D  arm_UI
 #define     arm02F  arm_UI
-#define     arm039  &CpuArm::execMultiplyWord<0x01, 0>
+#define     arm039  &CpuArm::execMultiplyWord<MulOp::MLA, 1>
 #define     arm03B  arm_NI
 #define     arm03D  arm_NI
 #define     arm03F  arm_NI
 
-#define     arm049  &CpuArm::execMultiplyWord<0x02, 0>
+#define     arm049  &CpuArm::execMultiplyWord<MulOp::UMAAL, 0>
 #define     arm04B  arm_NI
 #define     arm04D  arm_UI
 #define     arm04F  arm_UI
-#define     arm059  &CpuArm::execMultiplyWord<0x02, 0>
+#define     arm059  &CpuArm::execMultiplyWord<MulOp::UMAAL, 1>
 #define     arm05B  arm_NI
 #define     arm05D  arm_NI
 #define     arm05F  arm_NI
 
-#define     arm069  &CpuArm::execMultiplyWord<0x03, 0>
+#define     arm069  &CpuArm::execMultiplyWord<MulOp::UNDEF_3, 0>
 #define     arm06B  arm_NI
 #define     arm06D  arm_UI
 #define     arm06F  arm_UI
-#define     arm079  &CpuArm::execMultiplyWord<0x03, 0>
+#define     arm079  &CpuArm::execMultiplyWord<MulOp::UNDEF_3, 1>
 #define     arm07B  arm_NI
 #define     arm07D  arm_NI
 #define     arm07F  arm_NI
 
-#define     arm089  &CpuArm::execMultiplyWord<0x04, 0>
+#define     arm089  &CpuArm::execMultiplyWord<MulOp::UMULL, 0>
 #define     arm08B  arm_NI
 #define     arm08D  arm_UI
 #define     arm08F  arm_UI
-#define     arm099  &CpuArm::execMultiplyWord<0x04, 0>
+#define     arm099  &CpuArm::execMultiplyWord<MulOp::UMULL, 1>
 #define     arm09B  arm_NI
 #define     arm09D  arm_NI
 #define     arm09F  arm_NI
 
-#define     arm0A9  &CpuArm::execMultiplyWord<0x05, 0>
+#define     arm0A9  &CpuArm::execMultiplyWord<MulOp::UMLAL, 0>
 #define     arm0AB  arm_NI
 #define     arm0AD  arm_UI
 #define     arm0AF  arm_UI
-#define     arm0B9  &CpuArm::execMultiplyWord<0x05, 0>
+#define     arm0B9  &CpuArm::execMultiplyWord<MulOp::UMLAL, 1>
 #define     arm0BB  arm_NI
 #define     arm0BD  arm_NI
 #define     arm0BF  arm_NI
 
-#define     arm0C9  &CpuArm::execMultiplyWord<0x06, 0>
+#define     arm0C9  &CpuArm::execMultiplyWord<MulOp::SMULL, 0>
 #define     arm0CB  arm_NI
 #define     arm0CD  arm_UI
 #define     arm0CF  arm_UI
-#define     arm0D9  &CpuArm::execMultiplyWord<0x06, 0>
+#define     arm0D9  &CpuArm::execMultiplyWord<MulOp::SMULL, 1>
 #define     arm0DB  arm_NI
 #define     arm0DD  arm_NI
 #define     arm0DF  arm_NI
 
-#define     arm0E9  &CpuArm::execMultiplyWord<0x07, 0>
+#define     arm0E9  &CpuArm::execMultiplyWord<MulOp::SMLAL, 0>
 #define     arm0EB  arm_NI
 #define     arm0ED  arm_UI
 #define     arm0EF  arm_UI
-#define     arm0F9  &CpuArm::execMultiplyWord<0x07, 0>
+#define     arm0F9  &CpuArm::execMultiplyWord<MulOp::SMLAL, 1>
 #define     arm0FB  arm_NI
 #define     arm0FD  arm_NI
 #define     arm0FF  arm_NI
