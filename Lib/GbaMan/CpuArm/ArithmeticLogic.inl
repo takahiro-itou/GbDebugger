@@ -262,7 +262,7 @@ CpuArm::execArithmeticLogic(
 
 //----------------------------------------------------------------
 
-template  <int OP, int S>
+template  <MulOp OP, int S>
 GBD_REGPARM     InstExecResult
 CpuArm::execMultiplyHalf(
         const  OpeCode  opeCode)
@@ -271,7 +271,7 @@ CpuArm::execMultiplyHalf(
     return ( InstExecResult::UNDEFINED_OPECODE );
 }
 
-template  <int OP, int S>
+template  <MulOp OP, int S>
 GBD_REGPARM     InstExecResult
 CpuArm::execMultiplyWord(
         const  OpeCode  opeCode)
