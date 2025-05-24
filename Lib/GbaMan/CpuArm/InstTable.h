@@ -34,6 +34,9 @@
     REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
     REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst)
 
+#define     STORE_LOAD_HALF(P, U, I, W, OP, B)      \
+    &CpuArm::execStoreLoadHalf<P, U, I, MemOp::OP, B>
+
 #define     STRLDR_INST_TABLE_IMM(P, U, B, F)                               \
     REPEAT_16((&CpuArm::execStoreLoad<0, P, U, B, F, 0, ShiftOpVoidImm>)),  \
     REPEAT_16((&CpuArm::execStoreLoad<0, P, U, B, F, 1, ShiftOpVoidImm>))
