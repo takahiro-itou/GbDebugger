@@ -78,13 +78,13 @@
     REPEAT_16(OPERATE_STACK_PUSWL(P,  1, 1, 1, 1))
 
 #define     arm009  &CpuArm::execMultiplyWord<0x00, 0>
-#define     arm00B  arm_NI
-#define     arm00D  arm_NI
-#define     arm00F  arm_NI
+#define     arm00B  &CpuArm::execStoreLoadHalf<0, -1, 0, 0, uint16_t>
+#define     arm00D  &CpuArm::execStoreLoadHalf<0, -1, 0, 2, uint64_t>
+#define     arm00F  &CpuArm::execStoreLoadHalf<0, -1, 0, 2, uint64_t>
 #define     arm019  &CpuArm::execMultiplyWord<0x00, 1>
-#define     arm01B  arm_NI
-#define     arm01D  arm_NI
-#define     arm01F  arm_NI
+#define     arm01B  &CpuArm::execStoreLoadHalf<0, -1, 0, 1, uint16_t>
+#define     arm01D  &CpuArm::execStoreLoadHalf<0, -1, 0, 1, int8_t>
+#define     arm01F  &CpuArm::execStoreLoadHalf<0, -1, 0, 1, int16_t>
 
 #define     arm029  &CpuArm::execMultiplyWord<0x01, 0>
 #define     arm02B  arm_NI
