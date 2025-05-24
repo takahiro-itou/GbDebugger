@@ -30,7 +30,7 @@ library_source_files        +=  \
         GbaManager.cpp                 \
         MemoryManager.cpp              \
         CpuArm/ArmALU.cpp              \
-        CpuArm/ArmBranch.cpp           \
+        CpuArm/Branch.cpp              \
         CpuArm/ArmPsr.cpp              \
         CpuArm/CpuArm.cpp              \
         CpuArm/DisArm.cpp              \
@@ -46,10 +46,12 @@ dist_noinst_data_files      +=  \
         ${extra_noinst_data_files}
 
 dist_noinst_header_files    +=  \
+        CpuArm/ArithmeticLogic.inl     \
         CpuArm/ArmALU.h                \
         CpuArm/InstTable.h             \
         CpuArm/CpuArm.h                \
         CpuArm/DisArm.h                \
+        CpuArm/OperatorConst.h         \
         CpuArm/StoreLoad.inl           \
         CpuThumb/Branch.inl            \
         CpuThumb/CpuThumb.h            \

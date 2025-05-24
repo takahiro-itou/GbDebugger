@@ -59,7 +59,6 @@ enum class  InstExecResult
     SUCCESS_BREAKPOINT  = 2,
 };
 
-
 //========================================================================
 //
 //    Register Banks.
@@ -127,7 +126,6 @@ struct  RegIdx  {
 };
 
 typedef     RegPair     RegBank[RegIdx::NUM_REGISTERS];
-
 
 //========================================================================
 //
