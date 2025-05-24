@@ -29,6 +29,10 @@
 #    include    "GbDebugger/Common/DebuggerUtils.h"
 #endif
 
+#if !defined( GBDEBUGGER_GBAMAN_CPUARM_INCLUDED_OPERATOR_CONST_H )
+#    include    "OperatorConst.h"
+#endif
+
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_CPU_UTILS_H )
 #    include    "GbDebugger/GbaMan/CpuUtils.h"
 #endif
@@ -222,7 +226,7 @@ private:
     execStoreLoad(
             const  OpeCode  opeCode);
 
-    template  <int P, int U, int I, int OP, typename B>
+    template  <int P, int U, int I, int W, MemOp OP, typename B>
     GBD_REGPARM     InstExecResult
     execStoreLoadHalf(
             const  OpeCode  opeCode);

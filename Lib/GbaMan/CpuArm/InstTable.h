@@ -34,6 +34,9 @@
     REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst),     \
     REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst)
 
+#define     STORE_LOAD_HALF(P, U, I, W, OP, B)      \
+    &CpuArm::execStoreLoadHalf<P, U, I, W, MemOp::OP, B>
+
 #define     STRLDR_INST_TABLE_IMM(P, U, B, F)                               \
     REPEAT_16((&CpuArm::execStoreLoad<0, P, U, B, F, 0, ShiftOpVoidImm>)),  \
     REPEAT_16((&CpuArm::execStoreLoad<0, P, U, B, F, 1, ShiftOpVoidImm>))
@@ -78,76 +81,78 @@
     REPEAT_16(OPERATE_STACK_PUSWL(P,  1, 1, 1, 1))
 
 #define     arm009  &CpuArm::execMultiplyWord<MulOp::MUL, 0>
-#define     arm00B  &CpuArm::execStoreLoadHalf<0, -1, 0, 0, uint16_t>
-#define     arm00D  &CpuArm::execStoreLoadHalf<0, -1, 0, 2, uint64_t>
-#define     arm00F  &CpuArm::execStoreLoadHalf<0, -1, 0, 2, uint64_t>
 #define     arm019  &CpuArm::execMultiplyWord<MulOp::MUL, 1>
-#define     arm01B  &CpuArm::execStoreLoadHalf<0, -1, 0, 1, uint16_t>
-#define     arm01D  &CpuArm::execStoreLoadHalf<0, -1, 0, 1, int8_t>
-#define     arm01F  &CpuArm::execStoreLoadHalf<0, -1, 0, 1, int16_t>
-
 #define     arm029  &CpuArm::execMultiplyWord<MulOp::MLA, 0>
-#define     arm02B  arm_NI
-#define     arm02D  arm_UI
-#define     arm02F  arm_UI
 #define     arm039  &CpuArm::execMultiplyWord<MulOp::MLA, 1>
-#define     arm03B  arm_NI
-#define     arm03D  arm_NI
-#define     arm03F  arm_NI
-
 #define     arm049  &CpuArm::execMultiplyWord<MulOp::UMAAL, 0>
-#define     arm04B  arm_NI
-#define     arm04D  arm_UI
-#define     arm04F  arm_UI
 #define     arm059  &CpuArm::execMultiplyWord<MulOp::UMAAL, 1>
-#define     arm05B  arm_NI
-#define     arm05D  arm_NI
-#define     arm05F  arm_NI
-
 #define     arm069  &CpuArm::execMultiplyWord<MulOp::UNDEF_3, 0>
-#define     arm06B  arm_NI
-#define     arm06D  arm_UI
-#define     arm06F  arm_UI
 #define     arm079  &CpuArm::execMultiplyWord<MulOp::UNDEF_3, 1>
-#define     arm07B  arm_NI
-#define     arm07D  arm_NI
-#define     arm07F  arm_NI
 
 #define     arm089  &CpuArm::execMultiplyWord<MulOp::UMULL, 0>
-#define     arm08B  arm_NI
-#define     arm08D  arm_UI
-#define     arm08F  arm_UI
 #define     arm099  &CpuArm::execMultiplyWord<MulOp::UMULL, 1>
-#define     arm09B  arm_NI
-#define     arm09D  arm_NI
-#define     arm09F  arm_NI
-
 #define     arm0A9  &CpuArm::execMultiplyWord<MulOp::UMLAL, 0>
-#define     arm0AB  arm_NI
-#define     arm0AD  arm_UI
-#define     arm0AF  arm_UI
 #define     arm0B9  &CpuArm::execMultiplyWord<MulOp::UMLAL, 1>
-#define     arm0BB  arm_NI
-#define     arm0BD  arm_NI
-#define     arm0BF  arm_NI
-
 #define     arm0C9  &CpuArm::execMultiplyWord<MulOp::SMULL, 0>
-#define     arm0CB  arm_NI
-#define     arm0CD  arm_UI
-#define     arm0CF  arm_UI
 #define     arm0D9  &CpuArm::execMultiplyWord<MulOp::SMULL, 1>
-#define     arm0DB  arm_NI
-#define     arm0DD  arm_NI
-#define     arm0DF  arm_NI
-
 #define     arm0E9  &CpuArm::execMultiplyWord<MulOp::SMLAL, 0>
-#define     arm0EB  arm_NI
-#define     arm0ED  arm_UI
-#define     arm0EF  arm_UI
 #define     arm0F9  &CpuArm::execMultiplyWord<MulOp::SMLAL, 1>
-#define     arm0FB  arm_NI
-#define     arm0FD  arm_NI
-#define     arm0FF  arm_NI
+
+#define     arm00B  STORE_LOAD_HALF(0, -1, 0, 0, STR, uint16_t)
+#define     arm00D  STORE_LOAD_HALF(0, -1, 0, 0, UNS, uint64_t)
+#define     arm00F  STORE_LOAD_HALF(0, -1, 0, 0, UNS, uint64_t)
+#define     arm01B  STORE_LOAD_HALF(0, -1, 0, 0, LDR, uint16_t)
+#define     arm01D  STORE_LOAD_HALF(0, -1, 0, 0, LDR, int8_t)
+#define     arm01F  STORE_LOAD_HALF(0, -1, 0, 0, LDR, int16_t)
+
+#define     arm02B  STORE_LOAD_HALF(0, -1, 0, 1, STR, uint16_t)
+#define     arm02D  STORE_LOAD_HALF(0, -1, 0, 1, UNS, uint64_t)
+#define     arm02F  STORE_LOAD_HALF(0, -1, 0, 1, UNS, uint64_t)
+#define     arm03B  STORE_LOAD_HALF(0, -1, 0, 1, LDR, uint16_t)
+#define     arm03D  STORE_LOAD_HALF(0, -1, 0, 1, LDR, int8_t)
+#define     arm03F  STORE_LOAD_HALF(0, -1, 0, 1, LDR, int16_t)
+
+#define     arm04B  STORE_LOAD_HALF(0, -1, 1, 0, STR, uint16_t)
+#define     arm04D  STORE_LOAD_HALF(0, -1, 1, 0, UNS, uint64_t)
+#define     arm04F  STORE_LOAD_HALF(0, -1, 1, 0, UNS, uint64_t)
+#define     arm05B  STORE_LOAD_HALF(0, -1, 1, 0, LDR, uint16_t)
+#define     arm05D  STORE_LOAD_HALF(0, -1, 1, 0, LDR, int8_t)
+#define     arm05F  STORE_LOAD_HALF(0, -1, 1, 0, LDR, int16_t)
+
+#define     arm06B  STORE_LOAD_HALF(0, -1, 1, 1, STR, uint16_t)
+#define     arm06D  STORE_LOAD_HALF(0, -1, 1, 1, UNS, uint64_t)
+#define     arm06F  STORE_LOAD_HALF(0, -1, 1, 1, UNS, uint64_t)
+#define     arm07B  STORE_LOAD_HALF(0, -1, 1, 1, LDR, uint16_t)
+#define     arm07D  STORE_LOAD_HALF(0, -1, 1, 1, LDR, int8_t)
+#define     arm07F  STORE_LOAD_HALF(0, -1, 1, 1, LDR, int16_t)
+
+#define     arm08B  STORE_LOAD_HALF(0,  1, 0, 0, STR, uint16_t)
+#define     arm08D  STORE_LOAD_HALF(0,  1, 0, 0, UNS, uint64_t)
+#define     arm08F  STORE_LOAD_HALF(0,  1, 0, 0, UNS, uint64_t)
+#define     arm09B  STORE_LOAD_HALF(0,  1, 0, 0, LDR, uint16_t)
+#define     arm09D  STORE_LOAD_HALF(0,  1, 0, 0, LDR, int8_t)
+#define     arm09F  STORE_LOAD_HALF(0,  1, 0, 0, LDR, int16_t)
+
+#define     arm0AB  STORE_LOAD_HALF(0,  1, 0, 1, STR, uint16_t)
+#define     arm0AD  STORE_LOAD_HALF(0,  1, 0, 1, UNS, uint64_t)
+#define     arm0AF  STORE_LOAD_HALF(0,  1, 0, 1, UNS, uint64_t)
+#define     arm0BB  STORE_LOAD_HALF(0,  1, 0, 1, LDR, uint16_t)
+#define     arm0BD  STORE_LOAD_HALF(0,  1, 0, 1, LDR, int8_t)
+#define     arm0BF  STORE_LOAD_HALF(0,  1, 0, 1, LDR, int16_t)
+
+#define     arm0CB  STORE_LOAD_HALF(0,  1, 1, 0, STR, uint16_t)
+#define     arm0CD  STORE_LOAD_HALF(0,  1, 1, 0, UNS, uint64_t)
+#define     arm0CF  STORE_LOAD_HALF(0,  1, 1, 0, UNS, uint64_t)
+#define     arm0DB  STORE_LOAD_HALF(0,  1, 1, 0, LDR, uint16_t)
+#define     arm0DD  STORE_LOAD_HALF(0,  1, 1, 0, LDR, int8_t)
+#define     arm0DF  STORE_LOAD_HALF(0,  1, 1, 0, LDR, int16_t)
+
+#define     arm0EB  STORE_LOAD_HALF(0,  1, 1, 1, STR, uint16_t)
+#define     arm0ED  STORE_LOAD_HALF(0,  1, 1, 1, UNS, uint64_t)
+#define     arm0EF  STORE_LOAD_HALF(0,  1, 1, 1, UNS, uint64_t)
+#define     arm0FB  STORE_LOAD_HALF(0,  1, 1, 1, LDR, uint16_t)
+#define     arm0FD  STORE_LOAD_HALF(0,  1, 1, 1, LDR, int8_t)
+#define     arm0FF  STORE_LOAD_HALF(0,  1, 1, 1, LDR, int16_t)
 
 #define     arm100  &CpuArm::execArm100_MrsCpsr
 #define     arm120  &CpuArm::execArm120_MsrCpsrReg
@@ -160,61 +165,75 @@
 #define     arm148  &CpuArm::execMultiplyHalf<MulOp::SMLALxy>
 #define     arm168  &CpuArm::execMultiplyHalf<MulOp::SMULxy>
 
+#define     arm10B  STORE_LOAD_HALF(1, -1, 0, 0, STR, uint16_t)
+#define     arm10D  STORE_LOAD_HALF(1, -1, 0, 0, UNS, uint64_t)
+#define     arm10F  STORE_LOAD_HALF(1, -1, 0, 0, UNS, uint64_t)
+#define     arm11B  STORE_LOAD_HALF(1, -1, 0, 0, LDR, uint16_t)
+#define     arm11D  STORE_LOAD_HALF(1, -1, 0, 0, LDR, int8_t)
+#define     arm11F  STORE_LOAD_HALF(1, -1, 0, 0, LDR, int16_t)
+
+#define     arm12B  STORE_LOAD_HALF(1, -1, 0, 1, STR, uint16_t)
+#define     arm12D  STORE_LOAD_HALF(1, -1, 0, 1, UNS, uint64_t)
+#define     arm12F  STORE_LOAD_HALF(1, -1, 0, 1, UNS, uint64_t)
+#define     arm13B  STORE_LOAD_HALF(1, -1, 0, 1, LDR, uint16_t)
+#define     arm13D  STORE_LOAD_HALF(1, -1, 0, 1, LDR, int8_t)
+#define     arm13F  STORE_LOAD_HALF(1, -1, 0, 1, LDR, int16_t)
+
+#define     arm14B  STORE_LOAD_HALF(1, -1, 1, 0, STR, uint16_t)
+#define     arm14D  STORE_LOAD_HALF(1, -1, 1, 0, UNS, uint64_t)
+#define     arm14F  STORE_LOAD_HALF(1, -1, 1, 0, UNS, uint64_t)
+#define     arm15B  STORE_LOAD_HALF(1, -1, 1, 0, LDR, uint16_t)
+#define     arm15D  STORE_LOAD_HALF(1, -1, 1, 0, LDR, int8_t)
+#define     arm15F  STORE_LOAD_HALF(1, -1, 1, 0, LDR, int16_t)
+
+#define     arm16B  STORE_LOAD_HALF(1, -1, 1, 1, STR, uint16_t)
+#define     arm16D  STORE_LOAD_HALF(1, -1, 1, 1, UNS, uint64_t)
+#define     arm16F  STORE_LOAD_HALF(1, -1, 1, 1, UNS, uint64_t)
+#define     arm17B  STORE_LOAD_HALF(1, -1, 1, 1, LDR, uint16_t)
+#define     arm17D  STORE_LOAD_HALF(1, -1, 1, 1, LDR, int8_t)
+#define     arm17F  STORE_LOAD_HALF(1, -1, 1, 1, LDR, int16_t)
+
+#define     arm18B  STORE_LOAD_HALF(1,  1, 0, 0, STR, uint16_t)
+#define     arm18D  STORE_LOAD_HALF(1,  1, 0, 0, UNS, uint64_t)
+#define     arm18F  STORE_LOAD_HALF(1,  1, 0, 0, UNS, uint64_t)
+#define     arm19B  STORE_LOAD_HALF(1,  1, 0, 0, LDR, uint16_t)
+#define     arm19D  STORE_LOAD_HALF(1,  1, 0, 0, LDR, int8_t)
+#define     arm19F  STORE_LOAD_HALF(1,  1, 0, 0, LDR, int16_t)
+
+#define     arm1AB  STORE_LOAD_HALF(1,  1, 0, 1, STR, uint16_t)
+#define     arm1AD  STORE_LOAD_HALF(1,  1, 0, 1, UNS, uint64_t)
+#define     arm1AF  STORE_LOAD_HALF(1,  1, 0, 1, UNS, uint64_t)
+#define     arm1BB  STORE_LOAD_HALF(1,  1, 0, 1, LDR, uint16_t)
+#define     arm1BD  STORE_LOAD_HALF(1,  1, 0, 1, LDR, int8_t)
+#define     arm1BF  STORE_LOAD_HALF(1,  1, 0, 1, LDR, int16_t)
+
+#define     arm1CB  STORE_LOAD_HALF(1,  1, 1, 0, STR, uint16_t)
+#define     arm1CD  STORE_LOAD_HALF(1,  1, 1, 0, UNS, uint64_t)
+#define     arm1CF  STORE_LOAD_HALF(1,  1, 1, 0, UNS, uint64_t)
+#define     arm1DB  STORE_LOAD_HALF(1,  1, 1, 0, LDR, uint16_t)
+#define     arm1DD  STORE_LOAD_HALF(1,  1, 1, 0, LDR, int8_t)
+#define     arm1DF  STORE_LOAD_HALF(1,  1, 1, 0, LDR, int16_t)
+
+#define     arm1EB  STORE_LOAD_HALF(1,  1, 1, 1, STR, uint16_t)
+#define     arm1ED  STORE_LOAD_HALF(1,  1, 1, 1, UNS, uint64_t)
+#define     arm1EF  STORE_LOAD_HALF(1,  1, 1, 1, UNS, uint64_t)
+#define     arm1FB  STORE_LOAD_HALF(1,  1, 1, 1, LDR, uint16_t)
+#define     arm1FD  STORE_LOAD_HALF(1,  1, 1, 1, LDR, int8_t)
+#define     arm1FF  STORE_LOAD_HALF(1,  1, 1, 1, LDR, int16_t)
+
 #define     arm119  arm_UI
-#define     arm11B  arm_NI
-#define     arm11D  arm_NI
-#define     arm11F  arm_NI
-
 #define     arm139  arm_UI
-#define     arm13B  arm_NI
-#define     arm13D  arm_NI
-#define     arm13F  arm_NI
-
 #define     arm159  arm_UI
-#define     arm15B  arm_NI
-#define     arm15D  arm_NI
-#define     arm15F  arm_NI
-
 #define     arm179  arm_UI
-#define     arm17B  arm_NI
-#define     arm17D  arm_NI
-#define     arm17F  arm_NI
 
 #define     arm189  arm_UI
-#define     arm18B  arm_UI
-#define     arm18D  arm_UI
-#define     arm18F  arm_UI
 #define     arm199  arm_UI
-#define     arm19B  arm_UI
-#define     arm19D  arm_UI
-#define     arm19F  arm_UI
-
 #define     arm1A9  arm_UI
-#define     arm1AB  arm_UI
-#define     arm1AD  arm_UI
-#define     arm1AF  arm_UI
 #define     arm1B9  arm_UI
-#define     arm1BB  arm_UI
-#define     arm1BD  arm_UI
-#define     arm1BF  arm_UI
-
 #define     arm1C9  arm_UI
-#define     arm1CB  arm_UI
-#define     arm1CD  arm_UI
-#define     arm1CF  arm_UI
 #define     arm1D9  arm_UI
-#define     arm1DB  arm_UI
-#define     arm1DD  arm_UI
-#define     arm1DF  arm_UI
-
 #define     arm1E9  arm_UI
-#define     arm1EB  arm_UI
-#define     arm1ED  arm_UI
-#define     arm1EF  arm_UI
 #define     arm1F9  arm_UI
-#define     arm1FB  arm_UI
-#define     arm1FD  arm_UI
-#define     arm1FF  arm_UI
 
 #define     arm300  arm_UI
 #define     arm320  &CpuArm::execArm320_MsrCpsrImm
@@ -234,7 +253,7 @@
 //  そこで bit7 が  1 になっている上記のビットパターンは    //
 //  あり得ないので、別の命令に割り当てられている。          //
 
-#define     INST_TABLE_ALU_REG(CODE1, OP, S)                            \
+#define     ALU_INST_REG_00_07(OP, S)                                   \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpLslImm, 0>,    \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpLslReg, 1>,    \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpLsrImm, 0>,    \
@@ -242,8 +261,30 @@
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpAsrImm, 0>,    \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpAsrReg, 1>,    \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpRorImm, 0>,    \
-    &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpRorReg, 1>,    \
-                                                                        \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpRorReg, 1>
+
+#define     ALU_INST_REG_08_0F_MULW_S0(OP, MULOP, P, U, I, W)           \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 0, ShiftOpLslImm, 0>,    \
+    &CpuArm::execMultiplyWord<MulOp::MULOP, 0>,                         \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 0, ShiftOpLsrImm, 0>,    \
+    STORE_LOAD_HALF(P, U, I, W, STR, uint16_t),                         \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 0, ShiftOpAsrImm, 0>,    \
+    STORE_LOAD_HALF(P, U, I, W, UNS, uint64_t),                         \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 0, ShiftOpRorImm, 0>,    \
+    STORE_LOAD_HALF(P, U, I, W, UNS, uint64_t)
+
+#define     ALU_INST_REG_08_0F_MULW_S1(OP, MULOP, P, U, I, W)           \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 1, ShiftOpLslImm, 0>,    \
+    &CpuArm::execMultiplyWord<MulOp::MULOP, 1>,                         \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 1, ShiftOpLsrImm, 0>,    \
+    STORE_LOAD_HALF(P, U, I, W, LDR, uint16_t),                         \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 1, ShiftOpAsrImm, 0>,    \
+    STORE_LOAD_HALF(P, U, I, W, LDR, int8_t),                           \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 1, ShiftOpRorImm, 0>,    \
+    STORE_LOAD_HALF(P, U, I, W, LDR, int16_t)
+
+#define     INST_TABLE_ALU_REG(CODE1, OP, S)                            \
+    ALU_INST_REG_00_07(OP, S),                                          \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpLslImm, 0>,    \
     arm##CODE1##9,                                                      \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpLsrImm, 0>,    \
@@ -252,6 +293,10 @@
     arm##CODE1##D,                                                      \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpRorImm, 0>,    \
     arm##CODE1##F
+
+#define     INST_TABLE_ALU_REG_MULW(CODE, OP, MULOP,  P, U, I, W, S)    \
+    ALU_INST_REG_00_07(OP, S),                                          \
+    ALU_INST_REG_08_0F_MULW_S##S(OP, MULOP, P, U, I, W)
 
 #define     INST_TABLE_ALU_TEST_IMM(CODE1, CODE2, ALU_OP)                   \
     REPEAT_16(arm##CODE1##0),                                               \
@@ -274,41 +319,65 @@
 
 const   CpuArm::FnInst
 CpuArm::s_armInstTable[4096] = {
-    INST_TABLE_ALU_REG(00, AND, 0),         //  00.0 -- 00.F
-    INST_TABLE_ALU_REG(01, AND, 1),         //  01.0 -- 01.F
-    INST_TABLE_ALU_REG(02, EOR, 0),         //  02.0 -- 02.F
-    INST_TABLE_ALU_REG(03, EOR, 1),         //  03.0 -- 03.F
-    INST_TABLE_ALU_REG(04, SUB, 0),         //  04.0 -- 04.F
-    INST_TABLE_ALU_REG(05, SUB, 1),         //  05.0 -- 05.F
-    INST_TABLE_ALU_REG(06, RSB, 0),         //  06.0 -- 06.F
-    INST_TABLE_ALU_REG(07, RSB, 1),         //  07.0 -- 07.F
-    INST_TABLE_ALU_REG(08, ADD, 0),         //  08.0 -- 08.F
-    INST_TABLE_ALU_REG(09, ADD, 1),         //  09.0 -- 09.F
-    INST_TABLE_ALU_REG(0A, ADC, 0),         //  0A.0 -- 0A.F
-    INST_TABLE_ALU_REG(0B, ADC, 1),         //  0B.0 -- 0B.F
-    INST_TABLE_ALU_REG(0C, SBC, 0),         //  0C.0 -- 0C.F
-    INST_TABLE_ALU_REG(0D, SBC, 1),         //  0D.0 -- 0D.F
-    INST_TABLE_ALU_REG(0E, RSC, 0),         //  0E.0 -- 0E.F
-    INST_TABLE_ALU_REG(0F, RSC, 1),         //  0F.0 -- 0F.F
+
+    //  00.0 -- 00.F,
+    INST_TABLE_ALU_REG_MULW(00, AND, MUL    , 0, -1, 0, 0, 0),
+    //  01.0 -- 01.F,
+    INST_TABLE_ALU_REG_MULW(01, AND, MUL    , 0, -1, 0, 0, 1),
+
+    //  02.0 -- 02.F
+    INST_TABLE_ALU_REG_MULW(02, EOR, MLA    , 0, -1, 0, 1, 0),
+    //  03.0 -- 03.F
+    INST_TABLE_ALU_REG_MULW(03, EOR, MLA    , 0, -1, 0, 1, 1),
+
+    //  04.0 -- 04.F
+    INST_TABLE_ALU_REG_MULW(04, SUB, UMAAL  , 0, -1, 1, 0, 0),
+    //  05.0 -- 05.F
+    INST_TABLE_ALU_REG_MULW(05, SUB, UMAAL  , 0, -1, 1, 0, 1),
+
+    //  06.0 -- 06.F
+    INST_TABLE_ALU_REG_MULW(06, RSB, UNDEF_3, 0, -1, 1, 1, 0),
+    //  07.0 -- 07.F
+    INST_TABLE_ALU_REG_MULW(07, RSB, UNDEF_3, 0, -1, 1, 1, 1),
+
+    //  08.0 -- 08.F
+    INST_TABLE_ALU_REG_MULW(08, ADD, UMULL  , 0,  1, 0, 0, 0),
+    //  09.0 -- 09.F
+    INST_TABLE_ALU_REG_MULW(09, ADD, UMULL  , 0,  1, 0, 0, 1),
+
+    //  0A.0 -- 0A.F
+    INST_TABLE_ALU_REG_MULW(0A, ADC, UMLAL  , 0,  1, 0, 1, 0),
+    //  0B.0 -- 0B.F
+    INST_TABLE_ALU_REG_MULW(0B, ADC, UMLAL  , 0,  1, 0, 1, 1),
+
+    //  0C.0 -- 0C.F
+    INST_TABLE_ALU_REG_MULW(0C, SBC, SMULL  , 0,  1, 1, 0, 0),
+    //  0D.0 -- 0D.F
+    INST_TABLE_ALU_REG_MULW(0D, SBC, SMULL  , 0,  1, 1, 0, 1),
+
+    //  0E.0 -- 0E.F
+    INST_TABLE_ALU_REG_MULW(0E, RSC, SMLAL  , 0,  1, 1, 1, 0),
+    //  0F.0 -- 0F.F
+    INST_TABLE_ALU_REG_MULW(0F, RSC, SMLAL  , 0,  1, 1, 1, 1),
 
     //  10.0 -- 10.F
     arm100, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
-    arm108, arm_NI, arm108, arm_NI,     arm108, arm_NI, arm108, arm_NI,
+    arm108, arm_NI, arm108, arm10B,     arm108, arm10D, arm108, arm10F,
     INST_TABLE_ALU_REG(11, TST, 1),         //  11.0 -- 11.F
 
     //  12.0 -- 12.F
     arm120, arm121, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_NI,
-    arm128, arm_UI, arm128, arm_NI,     arm128, arm_NI, arm128, arm_NI,
+    arm128, arm_UI, arm128, arm12B,     arm128, arm12D, arm128, arm10F,
     INST_TABLE_ALU_REG(13, TEQ, 1),         //  13.0 -- 13.F
 
     //  14.0 -- 14.F
     arm140, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
-    arm148, arm_NI, arm148, arm_NI,     arm148, arm_NI, arm148, arm_NI,
+    arm148, arm_NI, arm148, arm14B,     arm148, arm14D, arm148, arm14F,
     INST_TABLE_ALU_REG(15, CMP, 1),         //  15.0 -- 15.F
 
     //  16.0 -- 16.F
     arm160, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
-    arm168, arm_UI, arm168, arm_NI,     arm168, arm_NI, arm168, arm_NI,
+    arm168, arm_UI, arm168, arm16B,     arm168, arm16D, arm168, arm16F,
     INST_TABLE_ALU_REG(17, CMN, 1),         //  17.0 -- 17.F
 
     INST_TABLE_ALU_REG(18, ORR, 0),         //  18.0 -- 18.F

@@ -51,6 +51,7 @@ dist_noinst_header_files    +=  \
         CpuArm/InstTable.h             \
         CpuArm/CpuArm.h                \
         CpuArm/DisArm.h                \
+        CpuArm/OperatorConst.h         \
         CpuArm/StoreLoad.inl           \
         CpuThumb/Branch.inl            \
         CpuThumb/CpuThumb.h            \
