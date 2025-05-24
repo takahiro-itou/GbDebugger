@@ -82,6 +82,21 @@
 
 #define     arm009  &CpuArm::execMultiplyWord<MulOp::MUL, 0>
 #define     arm019  &CpuArm::execMultiplyWord<MulOp::MUL, 1>
+#define     arm029  &CpuArm::execMultiplyWord<MulOp::MLA, 0>
+#define     arm039  &CpuArm::execMultiplyWord<MulOp::MLA, 1>
+#define     arm049  &CpuArm::execMultiplyWord<MulOp::UMAAL, 0>
+#define     arm059  &CpuArm::execMultiplyWord<MulOp::UMAAL, 1>
+#define     arm069  &CpuArm::execMultiplyWord<MulOp::UNDEF_3, 0>
+#define     arm079  &CpuArm::execMultiplyWord<MulOp::UNDEF_3, 1>
+
+#define     arm089  &CpuArm::execMultiplyWord<MulOp::UMULL, 0>
+#define     arm099  &CpuArm::execMultiplyWord<MulOp::UMULL, 1>
+#define     arm0A9  &CpuArm::execMultiplyWord<MulOp::UMLAL, 0>
+#define     arm0B9  &CpuArm::execMultiplyWord<MulOp::UMLAL, 1>
+#define     arm0C9  &CpuArm::execMultiplyWord<MulOp::SMULL, 0>
+#define     arm0D9  &CpuArm::execMultiplyWord<MulOp::SMULL, 1>
+#define     arm0E9  &CpuArm::execMultiplyWord<MulOp::SMLAL, 0>
+#define     arm0F9  &CpuArm::execMultiplyWord<MulOp::SMLAL, 1>
 
 #define     arm00B  STORE_LOAD_HALF(0, -1, 0, 0, STR, uint16_t)
 #define     arm00D  STORE_LOAD_HALF(0, -1, 0, 0, UNS, uint64_t)
@@ -90,18 +105,12 @@
 #define     arm01D  STORE_LOAD_HALF(0, -1, 0, 0, LDR, int8_t)
 #define     arm01F  STORE_LOAD_HALF(0, -1, 0, 0, LDR, int16_t)
 
-#define     arm029  &CpuArm::execMultiplyWord<MulOp::MLA, 0>
-#define     arm039  &CpuArm::execMultiplyWord<MulOp::MLA, 1>
-
 #define     arm02B  STORE_LOAD_HALF(0, -1, 0, 1, STR, uint16_t)
 #define     arm02D  STORE_LOAD_HALF(0, -1, 0, 1, UNS, uint64_t)
 #define     arm02F  STORE_LOAD_HALF(0, -1, 0, 1, UNS, uint64_t)
 #define     arm03B  STORE_LOAD_HALF(0, -1, 0, 1, LDR, uint16_t)
 #define     arm03D  STORE_LOAD_HALF(0, -1, 0, 1, LDR, int8_t)
 #define     arm03F  STORE_LOAD_HALF(0, -1, 0, 1, LDR, int16_t)
-
-#define     arm049  &CpuArm::execMultiplyWord<MulOp::UMAAL, 0>
-#define     arm059  &CpuArm::execMultiplyWord<MulOp::UMAAL, 1>
 
 #define     arm04B  STORE_LOAD_HALF(0, -1, 1, 0, STR, uint16_t)
 #define     arm04D  STORE_LOAD_HALF(0, -1, 1, 0, UNS, uint64_t)
@@ -110,18 +119,12 @@
 #define     arm05D  STORE_LOAD_HALF(0, -1, 1, 0, LDR, int8_t)
 #define     arm05F  STORE_LOAD_HALF(0, -1, 1, 0, LDR, int16_t)
 
-#define     arm069  &CpuArm::execMultiplyWord<MulOp::UNDEF_3, 0>
-#define     arm079  &CpuArm::execMultiplyWord<MulOp::UNDEF_3, 1>
-
 #define     arm06B  STORE_LOAD_HALF(0, -1, 1, 1, STR, uint16_t)
 #define     arm06D  STORE_LOAD_HALF(0, -1, 1, 1, UNS, uint64_t)
 #define     arm06F  STORE_LOAD_HALF(0, -1, 1, 1, UNS, uint64_t)
 #define     arm07B  STORE_LOAD_HALF(0, -1, 1, 1, LDR, uint16_t)
 #define     arm07D  STORE_LOAD_HALF(0, -1, 1, 1, LDR, int8_t)
 #define     arm07F  STORE_LOAD_HALF(0, -1, 1, 1, LDR, int16_t)
-
-#define     arm089  &CpuArm::execMultiplyWord<MulOp::UMULL, 0>
-#define     arm099  &CpuArm::execMultiplyWord<MulOp::UMULL, 1>
 
 #define     arm08B  STORE_LOAD_HALF(0,  1, 0, 0, STR, uint16_t)
 #define     arm08D  STORE_LOAD_HALF(0,  1, 0, 0, UNS, uint64_t)
@@ -130,9 +133,6 @@
 #define     arm09D  STORE_LOAD_HALF(0,  1, 0, 0, LDR, int8_t)
 #define     arm09F  STORE_LOAD_HALF(0,  1, 0, 0, LDR, int16_t)
 
-#define     arm0A9  &CpuArm::execMultiplyWord<MulOp::UMLAL, 0>
-#define     arm0B9  &CpuArm::execMultiplyWord<MulOp::UMLAL, 1>
-
 #define     arm0AB  STORE_LOAD_HALF(0,  1, 0, 1, STR, uint16_t)
 #define     arm0AD  STORE_LOAD_HALF(0,  1, 0, 1, UNS, uint64_t)
 #define     arm0AF  STORE_LOAD_HALF(0,  1, 0, 1, UNS, uint64_t)
@@ -140,18 +140,12 @@
 #define     arm0BD  STORE_LOAD_HALF(0,  1, 0, 1, LDR, int8_t)
 #define     arm0BF  STORE_LOAD_HALF(0,  1, 0, 1, LDR, int16_t)
 
-#define     arm0C9  &CpuArm::execMultiplyWord<MulOp::SMULL, 0>
-#define     arm0D9  &CpuArm::execMultiplyWord<MulOp::SMULL, 1>
-
 #define     arm0CB  STORE_LOAD_HALF(0,  1, 1, 0, STR, uint16_t)
 #define     arm0CD  STORE_LOAD_HALF(0,  1, 1, 0, UNS, uint64_t)
 #define     arm0CF  STORE_LOAD_HALF(0,  1, 1, 0, UNS, uint64_t)
 #define     arm0DB  STORE_LOAD_HALF(0,  1, 1, 0, LDR, uint16_t)
 #define     arm0DD  STORE_LOAD_HALF(0,  1, 1, 0, LDR, int8_t)
 #define     arm0DF  STORE_LOAD_HALF(0,  1, 1, 0, LDR, int16_t)
-
-#define     arm0E9  &CpuArm::execMultiplyWord<MulOp::SMLAL, 0>
-#define     arm0F9  &CpuArm::execMultiplyWord<MulOp::SMLAL, 1>
 
 #define     arm0EB  STORE_LOAD_HALF(0,  1, 1, 1, STR, uint16_t)
 #define     arm0ED  STORE_LOAD_HALF(0,  1, 1, 1, UNS, uint64_t)
