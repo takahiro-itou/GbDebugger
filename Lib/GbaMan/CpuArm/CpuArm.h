@@ -29,6 +29,10 @@
 #    include    "GbDebugger/Common/DebuggerUtils.h"
 #endif
 
+#if !defined( GBDEBUGGER_GBAMAN_CPUARM_INCLUDED_OPERATOR_CONST_H )
+#    include    "OperatorConst.h"
+#endif
+
 #if !defined( GBDEBUGGER_GBAMAN_INCLUDED_CPU_UTILS_H )
 #    include    "GbDebugger/GbaMan/CpuUtils.h"
 #endif
