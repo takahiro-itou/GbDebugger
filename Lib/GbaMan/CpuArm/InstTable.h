@@ -321,19 +321,25 @@ const   CpuArm::FnInst
 CpuArm::s_armInstTable[4096] = {
 
     //  00.0 -- 00.F,
-    INST_TABLE_ALU_REG_MULW(00, AND, MUL    , 0, 0, 0, 0, 0),
+    INST_TABLE_ALU_REG_MULW(00, AND, MUL    , 0, -1, 0, 0, 0),
     //  01.0 -- 01.F,
-    INST_TABLE_ALU_REG_MULW(01, AND, MUL    , 0, 0, 0, 0, 1),
+    INST_TABLE_ALU_REG_MULW(01, AND, MUL    , 0, -1, 0, 0, 1),
 
     //  02.0 -- 02.F
-    INST_TABLE_ALU_REG_MULW(02, EOR, MLA    , 0, 0, 0, 0, 0),
+    INST_TABLE_ALU_REG_MULW(02, EOR, MLA    , 0, -1, 0, 1, 0),
     //  03.0 -- 03.F
-    INST_TABLE_ALU_REG_MULW(03, EOR, MLA    , 0, 0, 0, 0, 1),
+    INST_TABLE_ALU_REG_MULW(03, EOR, MLA    , 0, -1, 0, 1, 1),
 
-    INST_TABLE_ALU_REG(04, SUB, 0),         //  04.0 -- 04.F
-    INST_TABLE_ALU_REG(05, SUB, 1),         //  05.0 -- 05.F
-    INST_TABLE_ALU_REG(06, RSB, 0),         //  06.0 -- 06.F
-    INST_TABLE_ALU_REG(07, RSB, 1),         //  07.0 -- 07.F
+    //  04.0 -- 04.F
+    INST_TABLE_ALU_REG_MULW(04, SUB, UMAAL  , 0, -1, 1, 0, 0),
+    //  05.0 -- 05.F
+    INST_TABLE_ALU_REG_MULW(05, SUB, UMAAL  , 0, -1, 1, 0, 1),
+
+    //  06.0 -- 06.F
+    INST_TABLE_ALU_REG_MULW(06, RSB, UNDEF_3, 0, -1, 1, 1, 0),
+    //  07.0 -- 07.F
+    INST_TABLE_ALU_REG_MULW(07, RSB, UNDEF_3, 0, -1, 1, 1, 1),
+
     INST_TABLE_ALU_REG(08, ADD, 0),         //  08.0 -- 08.F
     INST_TABLE_ALU_REG(09, ADD, 1),         //  09.0 -- 09.F
     INST_TABLE_ALU_REG(0A, ADC, 0),         //  0A.0 -- 0A.F
