@@ -165,61 +165,75 @@
 #define     arm148  &CpuArm::execMultiplyHalf<MulOp::SMLALxy>
 #define     arm168  &CpuArm::execMultiplyHalf<MulOp::SMULxy>
 
+#define     arm10B  STORE_LOAD_HALF(1, -1, 0, 0, STR, uint16_t)
+#define     arm10D  STORE_LOAD_HALF(1, -1, 0, 0, UNS, uint64_t)
+#define     arm10F  STORE_LOAD_HALF(1, -1, 0, 0, UNS, uint64_t)
+#define     arm11B  STORE_LOAD_HALF(1, -1, 0, 0, LDR, uint16_t)
+#define     arm11D  STORE_LOAD_HALF(1, -1, 0, 0, LDR, int8_t)
+#define     arm11F  STORE_LOAD_HALF(1, -1, 0, 0, LDR, int16_t)
+
+#define     arm12B  STORE_LOAD_HALF(1, -1, 0, 1, STR, uint16_t)
+#define     arm12D  STORE_LOAD_HALF(1, -1, 0, 1, UNS, uint64_t)
+#define     arm12F  STORE_LOAD_HALF(1, -1, 0, 1, UNS, uint64_t)
+#define     arm13B  STORE_LOAD_HALF(1, -1, 0, 1, LDR, uint16_t)
+#define     arm13D  STORE_LOAD_HALF(1, -1, 0, 1, LDR, int8_t)
+#define     arm13F  STORE_LOAD_HALF(1, -1, 0, 1, LDR, int16_t)
+
+#define     arm14B  STORE_LOAD_HALF(1, -1, 1, 0, STR, uint16_t)
+#define     arm14D  STORE_LOAD_HALF(1, -1, 1, 0, UNS, uint64_t)
+#define     arm14F  STORE_LOAD_HALF(1, -1, 1, 0, UNS, uint64_t)
+#define     arm15B  STORE_LOAD_HALF(1, -1, 1, 0, LDR, uint16_t)
+#define     arm15D  STORE_LOAD_HALF(1, -1, 1, 0, LDR, int8_t)
+#define     arm15F  STORE_LOAD_HALF(1, -1, 1, 0, LDR, int16_t)
+
+#define     arm16B  STORE_LOAD_HALF(1, -1, 1, 1, STR, uint16_t)
+#define     arm16D  STORE_LOAD_HALF(1, -1, 1, 1, UNS, uint64_t)
+#define     arm16F  STORE_LOAD_HALF(1, -1, 1, 1, UNS, uint64_t)
+#define     arm17B  STORE_LOAD_HALF(1, -1, 1, 1, LDR, uint16_t)
+#define     arm17D  STORE_LOAD_HALF(1, -1, 1, 1, LDR, int8_t)
+#define     arm17F  STORE_LOAD_HALF(1, -1, 1, 1, LDR, int16_t)
+
+#define     arm18B  STORE_LOAD_HALF(1,  1, 0, 0, STR, uint16_t)
+#define     arm18D  STORE_LOAD_HALF(1,  1, 0, 0, UNS, uint64_t)
+#define     arm18F  STORE_LOAD_HALF(1,  1, 0, 0, UNS, uint64_t)
+#define     arm19B  STORE_LOAD_HALF(1,  1, 0, 0, LDR, uint16_t)
+#define     arm19D  STORE_LOAD_HALF(1,  1, 0, 0, LDR, int8_t)
+#define     arm19F  STORE_LOAD_HALF(1,  1, 0, 0, LDR, int16_t)
+
+#define     arm1AB  STORE_LOAD_HALF(1,  1, 0, 1, STR, uint16_t)
+#define     arm1AD  STORE_LOAD_HALF(1,  1, 0, 1, UNS, uint64_t)
+#define     arm1AF  STORE_LOAD_HALF(1,  1, 0, 1, UNS, uint64_t)
+#define     arm1BB  STORE_LOAD_HALF(1,  1, 0, 1, LDR, uint16_t)
+#define     arm1BD  STORE_LOAD_HALF(1,  1, 0, 1, LDR, int8_t)
+#define     arm1BF  STORE_LOAD_HALF(1,  1, 0, 1, LDR, int16_t)
+
+#define     arm1CB  STORE_LOAD_HALF(1,  1, 1, 0, STR, uint16_t)
+#define     arm1CD  STORE_LOAD_HALF(1,  1, 1, 0, UNS, uint64_t)
+#define     arm1CF  STORE_LOAD_HALF(1,  1, 1, 0, UNS, uint64_t)
+#define     arm1DB  STORE_LOAD_HALF(1,  1, 1, 0, LDR, uint16_t)
+#define     arm1DD  STORE_LOAD_HALF(1,  1, 1, 0, LDR, int8_t)
+#define     arm1DF  STORE_LOAD_HALF(1,  1, 1, 0, LDR, int16_t)
+
+#define     arm1EB  STORE_LOAD_HALF(1,  1, 1, 1, STR, uint16_t)
+#define     arm1ED  STORE_LOAD_HALF(1,  1, 1, 1, UNS, uint64_t)
+#define     arm1EF  STORE_LOAD_HALF(1,  1, 1, 1, UNS, uint64_t)
+#define     arm1FB  STORE_LOAD_HALF(1,  1, 1, 1, LDR, uint16_t)
+#define     arm1FD  STORE_LOAD_HALF(1,  1, 1, 1, LDR, int8_t)
+#define     arm1FF  STORE_LOAD_HALF(1,  1, 1, 1, LDR, int16_t)
+
 #define     arm119  arm_UI
-#define     arm11B  arm_NI
-#define     arm11D  arm_NI
-#define     arm11F  arm_NI
-
 #define     arm139  arm_UI
-#define     arm13B  arm_NI
-#define     arm13D  arm_NI
-#define     arm13F  arm_NI
-
 #define     arm159  arm_UI
-#define     arm15B  arm_NI
-#define     arm15D  arm_NI
-#define     arm15F  arm_NI
-
 #define     arm179  arm_UI
-#define     arm17B  arm_NI
-#define     arm17D  arm_NI
-#define     arm17F  arm_NI
 
 #define     arm189  arm_UI
-#define     arm18B  arm_UI
-#define     arm18D  arm_UI
-#define     arm18F  arm_UI
 #define     arm199  arm_UI
-#define     arm19B  arm_UI
-#define     arm19D  arm_UI
-#define     arm19F  arm_UI
-
 #define     arm1A9  arm_UI
-#define     arm1AB  arm_UI
-#define     arm1AD  arm_UI
-#define     arm1AF  arm_UI
 #define     arm1B9  arm_UI
-#define     arm1BB  arm_UI
-#define     arm1BD  arm_UI
-#define     arm1BF  arm_UI
-
 #define     arm1C9  arm_UI
-#define     arm1CB  arm_UI
-#define     arm1CD  arm_UI
-#define     arm1CF  arm_UI
 #define     arm1D9  arm_UI
-#define     arm1DB  arm_UI
-#define     arm1DD  arm_UI
-#define     arm1DF  arm_UI
-
 #define     arm1E9  arm_UI
-#define     arm1EB  arm_UI
-#define     arm1ED  arm_UI
-#define     arm1EF  arm_UI
 #define     arm1F9  arm_UI
-#define     arm1FB  arm_UI
-#define     arm1FD  arm_UI
-#define     arm1FF  arm_UI
 
 #define     arm300  arm_UI
 #define     arm320  &CpuArm::execArm320_MsrCpsrImm
@@ -298,7 +312,7 @@ CpuArm::s_armInstTable[4096] = {
 
     //  10.0 -- 10.F
     arm100, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
-    arm108, arm_NI, arm108, arm_NI,     arm108, arm_NI, arm108, arm_NI,
+    arm108, arm_NI, arm108, arm10B,     arm108, arm10D, arm108, arm10F,
     INST_TABLE_ALU_REG(11, TST, 1),         //  11.0 -- 11.F
 
     //  12.0 -- 12.F
