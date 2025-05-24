@@ -35,7 +35,7 @@
     REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst), REPEAT_16(inst)
 
 #define     STORE_LOAD_HALF(P, U, I, W, OP, B)      \
-    &CpuArm::execStoreLoadHalf<P, U, I, MemOp::OP, B>
+    &CpuArm::execStoreLoadHalf<P, U, I, W, MemOp::OP, B>
 
 #define     STRLDR_INST_TABLE_IMM(P, U, B, F)                               \
     REPEAT_16((&CpuArm::execStoreLoad<0, P, U, B, F, 0, ShiftOpVoidImm>)),  \
@@ -81,13 +81,13 @@
     REPEAT_16(OPERATE_STACK_PUSWL(P,  1, 1, 1, 1))
 
 #define     arm009  &CpuArm::execMultiplyWord<MulOp::MUL, 0>
-#define     arm00B  &CpuArm::execStoreLoadHalf<0, -1, 0, 0, uint16_t>
-#define     arm00D  &CpuArm::execStoreLoadHalf<0, -1, 0, 2, uint64_t>
-#define     arm00F  &CpuArm::execStoreLoadHalf<0, -1, 0, 2, uint64_t>
+#define     arm00B  STORE_LOAD_HALF(0, -1, 0, 0, STR, uint16_t)
+#define     arm00D  STORE_LOAD_HALF(0, -1, 0, 0, UNS, uint64_t)
+#define     arm00F  STORE_LOAD_HALF(0, -1, 0, 0, UNS, uint64_t)
 #define     arm019  &CpuArm::execMultiplyWord<MulOp::MUL, 1>
-#define     arm01B  &CpuArm::execStoreLoadHalf<0, -1, 0, 1, uint16_t>
-#define     arm01D  &CpuArm::execStoreLoadHalf<0, -1, 0, 1, int8_t>
-#define     arm01F  &CpuArm::execStoreLoadHalf<0, -1, 0, 1, int16_t>
+#define     arm01B  STORE_LOAD_HALF(0, -1, 0, 0, LDR, uint16_t)
+#define     arm01D  STORE_LOAD_HALF(0, -1, 0, 0, LDR, int8_t)
+#define     arm01F  STORE_LOAD_HALF(0, -1, 0, 0, LDR, int16_t)
 
 #define     arm029  &CpuArm::execMultiplyWord<MulOp::MLA, 0>
 #define     arm02B  arm_NI

@@ -120,7 +120,7 @@ CpuArm::execStoreLoad(
 
 //----------------------------------------------------------------
 
-template  <int P, int U, int I, int OP, typename B>
+template  <int P, int U, int I, int W, MemOp OP, typename B>
 GBD_REGPARM     InstExecResult
 CpuArm::execStoreLoadHalf(
         const  OpeCode  opeCode)
