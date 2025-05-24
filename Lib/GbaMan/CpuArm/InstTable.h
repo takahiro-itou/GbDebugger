@@ -81,31 +81,35 @@
     REPEAT_16(OPERATE_STACK_PUSWL(P,  1, 1, 1, 1))
 
 #define     arm009  &CpuArm::execMultiplyWord<MulOp::MUL, 0>
+#define     arm019  &CpuArm::execMultiplyWord<MulOp::MUL, 1>
+
 #define     arm00B  STORE_LOAD_HALF(0, -1, 0, 0, STR, uint16_t)
 #define     arm00D  STORE_LOAD_HALF(0, -1, 0, 0, UNS, uint64_t)
 #define     arm00F  STORE_LOAD_HALF(0, -1, 0, 0, UNS, uint64_t)
-#define     arm019  &CpuArm::execMultiplyWord<MulOp::MUL, 1>
 #define     arm01B  STORE_LOAD_HALF(0, -1, 0, 0, LDR, uint16_t)
 #define     arm01D  STORE_LOAD_HALF(0, -1, 0, 0, LDR, int8_t)
 #define     arm01F  STORE_LOAD_HALF(0, -1, 0, 0, LDR, int16_t)
 
 #define     arm029  &CpuArm::execMultiplyWord<MulOp::MLA, 0>
-#define     arm02B  arm_NI
-#define     arm02D  arm_UI
-#define     arm02F  arm_UI
 #define     arm039  &CpuArm::execMultiplyWord<MulOp::MLA, 1>
-#define     arm03B  arm_NI
-#define     arm03D  arm_NI
-#define     arm03F  arm_NI
+
+//  P=0 の時は W=0 に限る。もし W=1 の場合は未定義。    //
+#define     arm02B  STORE_LOAD_HALF(0, -1, 0, 1, UND, uint16_t)
+#define     arm02D  STORE_LOAD_HALF(0, -1, 0, 1, UND, uint64_t)
+#define     arm02F  STORE_LOAD_HALF(0, -1, 0, 1, UND, uint64_t)
+#define     arm03B  STORE_LOAD_HALF(0, -1, 0, 1, UND, uint16_t)
+#define     arm03D  STORE_LOAD_HALF(0, -1, 0, 1, UND, int8_t)
+#define     arm03F  STORE_LOAD_HALF(0, -1, 0, 1, UND, int16_t)
 
 #define     arm049  &CpuArm::execMultiplyWord<MulOp::UMAAL, 0>
-#define     arm04B  arm_NI
-#define     arm04D  arm_UI
-#define     arm04F  arm_UI
 #define     arm059  &CpuArm::execMultiplyWord<MulOp::UMAAL, 1>
-#define     arm05B  arm_NI
-#define     arm05D  arm_NI
-#define     arm05F  arm_NI
+
+#define     arm04B  STORE_LOAD_HALF(0, -1, 1, 0, STR, uint16_t)
+#define     arm04D  STORE_LOAD_HALF(0, -1, 1, 0, UNS, uint64_t)
+#define     arm04F  STORE_LOAD_HALF(0, -1, 1, 0, UNS, uint64_t)
+#define     arm05B  STORE_LOAD_HALF(0, -1, 1, 0, LDR, uint16_t)
+#define     arm05D  STORE_LOAD_HALF(0, -1, 1, 0, LDR, int8_t)
+#define     arm05F  STORE_LOAD_HALF(0, -1, 1, 0, LDR, int16_t)
 
 #define     arm069  &CpuArm::execMultiplyWord<MulOp::UNDEF_3, 0>
 #define     arm06B  arm_NI
