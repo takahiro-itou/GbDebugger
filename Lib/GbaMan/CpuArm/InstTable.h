@@ -253,7 +253,7 @@
 //  そこで bit7 が  1 になっている上記のビットパターンは    //
 //  あり得ないので、別の命令に割り当てられている。          //
 
-#define     INST_TABLE_ALU_REG(CODE1, OP, S)                            \
+#define     ALU_INST_REG_00_07(OP, S)                                   \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpLslImm, 0>,    \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpLslReg, 1>,    \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpLsrImm, 0>,    \
@@ -261,8 +261,10 @@
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpAsrImm, 0>,    \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpAsrReg, 1>,    \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpRorImm, 0>,    \
-    &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpRorReg, 1>,    \
-                                                                        \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpRorReg, 1>
+
+#define     INST_TABLE_ALU_REG(CODE1, OP, S)                            \
+    ALU_INST_REG_00_07(OP, S),                                          \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpLslImm, 0>,    \
     arm##CODE1##9,                                                      \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpLsrImm, 0>,    \
