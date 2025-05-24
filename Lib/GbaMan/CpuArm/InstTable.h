@@ -274,6 +274,17 @@
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpRorImm, 0>,    \
     arm##CODE1##F
 
+#define     INST_TABLE_ALU_REG_MULW_SL0(OP, S,  MULOP,  P, U, I, W)     \
+    ALU_INST_REG_00_07(OP, S),                                          \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpLslImm, 0>,    \
+    arm##CODE1##9,                                                      \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpLsrImm, 0>,    \
+    STORE_LOAD_HALF(P, U, I, W, STR, uint16_t),                         \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpAsrImm, 0>,    \
+    STORE_LOAD_HALF(P, U, I, W, UNS, uint64_t),                         \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpRorImm, 0>,    \
+    STORE_LOAD_HALF(P, U, I, W, UNS, uint64_t)
+
 #define     INST_TABLE_ALU_TEST_IMM(CODE1, CODE2, ALU_OP)                   \
     REPEAT_16(arm##CODE1##0),                                               \
     armALU, armALU, armALU, armALU,     armALU, armALU, armALU, armALU,     \
