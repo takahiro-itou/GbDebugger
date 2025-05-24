@@ -74,6 +74,18 @@ enum class  MulOp  {
     UNDEF_F = 0x0F,     /**<  未定義命令。  **/
 };
 
+//----------------------------------------------------------------
+/**
+**    ストアロード命令の種類
+**/
+
+enum class  MemOp  {
+    STR = 0,        /**<  ストア命令。  **/
+    LDR = 1,        /**<  ロード命令。  **/
+    UNS = 2,        /**<  未サポート。  **/
+    UND = 3,        /**<  未定義命令。  **/
+};
+
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
 
