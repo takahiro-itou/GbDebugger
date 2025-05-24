@@ -320,10 +320,16 @@
 const   CpuArm::FnInst
 CpuArm::s_armInstTable[4096] = {
 
-    INST_TABLE_ALU_REG_MULW(00, AND, MUL, 0,0,0,0,0),   //  00.0 -- 00.F
-    INST_TABLE_ALU_REG_MULW(01, AND, MUL, 0,0,0,0,1),   //  00.0 -- 00.F
-    INST_TABLE_ALU_REG(02, EOR, 0),         //  02.0 -- 02.F
-    INST_TABLE_ALU_REG(03, EOR, 1),         //  03.0 -- 03.F
+    //  00.0 -- 00.F,
+    INST_TABLE_ALU_REG_MULW(00, AND, MUL    , 0, 0, 0, 0, 0),
+    //  01.0 -- 01.F,
+    INST_TABLE_ALU_REG_MULW(01, AND, MUL    , 0, 0, 0, 0, 1),
+
+    //  02.0 -- 02.F
+    INST_TABLE_ALU_REG_MULW(02, EOR, MLA    , 0, 0, 0, 0, 0),
+    //  03.0 -- 03.F
+    INST_TABLE_ALU_REG_MULW(03, EOR, MLA    , 0, 0, 0, 0, 1),
+
     INST_TABLE_ALU_REG(04, SUB, 0),         //  04.0 -- 04.F
     INST_TABLE_ALU_REG(05, SUB, 1),         //  05.0 -- 05.F
     INST_TABLE_ALU_REG(06, RSB, 0),         //  06.0 -- 06.F
