@@ -152,6 +152,11 @@ private:
     execALUInstruction(
             const  OpeCode  opeCode);
 
+    template  <int BIT25, AluOp CODE, int BIT20, typename SHIFTOP, int BIT4>
+    GBD_REGPARM     InstExecResult
+    execArithmeticLogic(
+            const  OpeCode  opeCode);
+
     GBD_REGPARM     InstExecResult
     execArm100_MrsCpsr(
             const  OpeCode  opeCode);
@@ -188,14 +193,38 @@ private:
     execArmBxx_BL(
             const  OpeCode  opeCode);
 
+    template  <MulOp OP>
+    GBD_REGPARM     InstExecResult
+    execMultiplyHalf(
+            const  OpeCode  opeCode);
+
+    template  <MulOp OP, int S>
+    GBD_REGPARM     InstExecResult
+    execMultiplyWord(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
+    execNotImplemented(
+            const  OpeCode  opeCode);
+
+    template  <int P, int U, int S, int W, int L>
+    GBD_REGPARM     InstExecResult
+    execOperateStack(
+            const  OpeCode  opeCode);
+
+    GBD_REGPARM     InstExecResult
+    execSoftwareInterrupt(
+            const  OpeCode  opeCode);
+
     template  <int I, int P, int U, typename B,
-               int BIT32, int OP, typename SHIFTOP>
+               int BIT21, int OP, typename SHIFTOP>
     GBD_REGPARM     InstExecResult
     execStoreLoad(
             const  OpeCode  opeCode);
 
+    template  <int P, int U, int I, int OP, typename B>
     GBD_REGPARM     InstExecResult
-    execStrLdrInstruction(
+    execStoreLoadHalf(
             const  OpeCode  opeCode);
 
     GBD_REGPARM     InstExecResult

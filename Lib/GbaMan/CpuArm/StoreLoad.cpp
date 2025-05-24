@@ -151,47 +151,10 @@ g_armStrLdrInstTable[256] = {
 
 }   //  End of (Unnamed) namespace.
 
-
 //========================================================================
 //
 //    ArmStrLdr  Instructions.
 //
-
-GBD_REGPARM     InstExecResult
-CpuArm::execStrLdrInstruction(
-        const  OpeCode  opeCode)
-{
-    //  オペコードから下記のビットを取り出す。          //
-    //  bit     25  オフセットがレジスタか即値か。      //
-    //  bit     24  Post/Pre  フラグ。                  //
-    //  bit     23  オフセットがプラスかマイナスか。    //
-    //  bit     22  アクセスがバイト単位か。            //
-    //  bit     21                                      //
-    //  bit     20  ストアかロードか。                  //
-    //  bit  6-- 5  シフトの種類 (LSL, LSR, ASR, ROR)   //
-    const  OpeCode  idx =
-        ((opeCode >> 18) & 0x00FC) | ((opeCode >> 5) & 0x03);
-    FnStrLdrInst    pfInst  = g_armStrLdrInstTable[idx];
-
-#if ( GBDEBUGGER_ENABLE_TRACELOG )
-    char    buf[512];
-    sprintf(buf,
-            "opeCode = %08x, idx = %03x, pfInst = %p\n",
-            opeCode, idx, pfInst);
-    std::cerr   <<  buf;
-#endif
-
-    if ( pfInst == nullptr ) {
-        return ( InstExecResult::UNDEFINED_OPECODE );
-    }
-
-    return  (* pfInst)(
-            opeCode,
-            mog_cpuRegs,
-            this->m_manMem,
-            mog_cpuRegs[RegIdx::CPSR].dw
-    );
-}
 
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END

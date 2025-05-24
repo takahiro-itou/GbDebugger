@@ -15,7 +15,7 @@
 /**
 **      An Implementation of Operate Register Instructions.
 **
-**      @file       GbaMan/ThumbOperateRegister.inl
+**      @file       GbaMan/CpuThumb/OperateRegister.inl
 **/
 
 #if !defined( GBDEBUGGER_GBAMAN_CPUTHUMB_INCLUDED_OPERATE_REGISTER_INL )

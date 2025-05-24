@@ -20,6 +20,7 @@
 
 #include    "CpuArm.h"
 
+#include    <iostream>
 #include    "GbDebugger/GbaMan/GbaManager.h"
 
 
@@ -109,6 +110,16 @@ CpuArm::execArmBxx_BL(
 {
     mog_cpuRegs[14].dw  = mog_cpuRegs[15].dw - 4;
     return  execArmAxx_B(opeCode);
+}
+
+//----------------------------------------------------------------
+
+GBD_REGPARM     InstExecResult
+CpuArm::execSoftwareInterrupt(
+        const  OpeCode  opeCode)
+{
+    std::cerr   <<  "Not Implemented (SWI)" <<  std::endl;
+    return ( InstExecResult::UNDEFINED_OPECODE );
 }
 
 }   //  End of namespace  GbaMan
