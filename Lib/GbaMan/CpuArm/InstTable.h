@@ -404,17 +404,15 @@ CpuArm::s_armInstTable[4096] = {
     arm168, arm_UI, arm168, arm16B,     arm168, arm16D, arm168, arm16F,
     INST_TABLE_ALU_REG(17, CMN, 1),         //  17.0 -- 17.F
 
-    //  18.0 -- 18.F
-    INST_TABLE_ALU_REG_1xx(18, ORR, 1, -1, 0, 0, 0),
-    //  19.0 -- 19.F
-    INST_TABLE_ALU_REG_1xx(19, ORR, 1, -1, 0, 0, 1),
 
-    INST_TABLE_ALU_REG(1A, MOV, 0),         //  1A.0 -- 1A.F
-    INST_TABLE_ALU_REG(1B, MOV, 1),         //  1B.0 -- 1B.F
-    INST_TABLE_ALU_REG(1C, BIC, 0),         //  1C.0 -- 1C.F
-    INST_TABLE_ALU_REG(1D, BIC, 1),         //  1D.0 -- 1D.F
-    INST_TABLE_ALU_REG(1E, MVN, 0),         //  1E.0 -- 1E.F
-    INST_TABLE_ALU_REG(1F, MVN, 1),         //  1F.0 -- 1F.F
+    INST_TABLE_ALU_REG_1xx(18, ORR, 1, +1, 0, 0, 0),        //  18.0 -- 18.F
+    INST_TABLE_ALU_REG_1xx(19, ORR, 1, +1, 0, 0, 1),        //  19.0 -- 19.F
+    INST_TABLE_ALU_REG_1xx(1A, MOV, 1, +1, 0, 1, 0),        //  1A.0 -- 1A.F
+    INST_TABLE_ALU_REG_1xx(1B, MOV, 1, +1, 0, 1, 1),        //  1B.0 -- 1B.F
+    INST_TABLE_ALU_REG_1xx(1C, BIC, 1, +1, 1, 0, 0),        //  1C.0 -- 1C.F
+    INST_TABLE_ALU_REG_1xx(1D, BIC, 1, +1, 1, 0, 1),        //  1D.0 -- 1D.F
+    INST_TABLE_ALU_REG_1xx(1E, MVN, 1, +1, 1, 1, 0),        //  1E.0 -- 1E.F
+    INST_TABLE_ALU_REG_1xx(1F, MVN, 1, +1, 1, 1, 1),        //  1F.0 -- 1F.F
 
     INST_TABLE_ALU_IMM(20, AND, 0),         //  20.0 -- 20.F
     INST_TABLE_ALU_IMM(21, AND, 1),         //  21.0 -- 21.F
