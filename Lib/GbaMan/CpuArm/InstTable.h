@@ -404,8 +404,11 @@ CpuArm::s_armInstTable[4096] = {
     arm168, arm_UI, arm168, arm16B,     arm168, arm16D, arm168, arm16F,
     INST_TABLE_ALU_REG(17, CMN, 1),         //  17.0 -- 17.F
 
-    INST_TABLE_ALU_REG(18, ORR, 0),         //  18.0 -- 18.F
-    INST_TABLE_ALU_REG(19, ORR, 1),         //  19.0 -- 19.F
+    //  18.0 -- 18.F
+    INST_TABLE_ALU_REG_1xx(18, ORR, 1, -1, 0, 0, 0),
+    //  19.0 -- 19.F
+    INST_TABLE_ALU_REG_1xx(19, ORR, 1, -1, 0, 0, 1),
+
     INST_TABLE_ALU_REG(1A, MOV, 0),         //  1A.0 -- 1A.F
     INST_TABLE_ALU_REG(1B, MOV, 1),         //  1B.0 -- 1B.F
     INST_TABLE_ALU_REG(1C, BIC, 0),         //  1C.0 -- 1C.F
