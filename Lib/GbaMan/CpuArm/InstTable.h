@@ -387,22 +387,22 @@ CpuArm::s_armInstTable[4096] = {
     //  10.0 -- 10.F
     arm100, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
     arm108, arm_NI, arm108, arm10B,     arm108, arm10D, arm108, arm10F,
-    INST_TABLE_ALU_REG(11, TST, 1),         //  11.0 -- 11.F
+    INST_TABLE_ALU_REG_1xx(11, TST, 1, -1, 0, 0, 1),        //  11.0 -- 11.F
 
     //  12.0 -- 12.F
     arm120, arm121, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_NI,
     arm128, arm_UI, arm128, arm12B,     arm128, arm12D, arm128, arm10F,
-    INST_TABLE_ALU_REG(13, TEQ, 1),         //  13.0 -- 13.F
+    INST_TABLE_ALU_REG_1xx(13, TEQ, 1, -1, 0, 1, 1),        //  13.0 -- 13.F
 
     //  14.0 -- 14.F
     arm140, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
     arm148, arm_NI, arm148, arm14B,     arm148, arm14D, arm148, arm14F,
-    INST_TABLE_ALU_REG(15, CMP, 1),         //  15.0 -- 15.F
+    INST_TABLE_ALU_REG_1xx(15, CMP, 1, -1, 1, 0, 1),        //  15.0 -- 15.F
 
     //  16.0 -- 16.F
     arm160, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
     arm168, arm_UI, arm168, arm16B,     arm168, arm16D, arm168, arm16F,
-    INST_TABLE_ALU_REG(17, CMN, 1),         //  17.0 -- 17.F
+    INST_TABLE_ALU_REG_1xx(17, CMN, 1, -1, 1, 1, 1),        //  17.0 -- 17.F
 
 
     INST_TABLE_ALU_REG_1xx(18, ORR, 1, +1, 0, 0, 0),        //  18.0 -- 18.F
