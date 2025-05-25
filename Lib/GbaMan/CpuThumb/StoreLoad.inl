@@ -279,8 +279,37 @@ GBD_REGPARM     InstExecResult
 CpuThumb::execStoreLoadWithRegOffset(
         const  OpeCode  opeCode)
 {
-    std::cerr   <<  "Not Implemented (StoreLoad With RegOffs)"  <<  std::endl;
-    return ( InstExecResult::UNDEFINED_OPECODE );
+    const  int  rd  = ((opeCode     ) & 0x07);
+    const  int  rb  = ((opeCode >> 3) & 0x07);
+    const  int  ro  = ((opeCode >> 6) & 0x07);
+
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
+    char    buf[512];
+#endif
+
+    GuestMemoryAddress  gmAddr  = mog_cpuRegs[rb].dw + mog_cpuRegs[ro].dw;
+    LpWriteBuf  ptr = this->m_manMem.getMemoryAddress(gmAddr);
+
+    switch ( OP & 1 ) {
+    case  0:        //  STR
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
+        sprintf(buf, "Write to address %08x from R%d (%08x)",
+                gmAddr, rd, mog_cpuRegs[rd].dw);
+        std::cerr   <<  buf <<  std::endl;
+#endif
+        *( pointer_cast<B *>(ptr) ) = static_cast<B>(mog_cpuRegs[rd].dw);
+        break;
+    case  1:        //  LDR
+        mog_cpuRegs[rd].dw  = *( pointer_cast<B *>(ptr) );
+#if ( GBDEBUGGER_ENABLE_TRACELOG )
+        sprintf(buf, "Read from address %08x to R%d (%08x)",
+                gmAddr, rd, mog_cpuRegs[rd].dw);
+        std::cerr   <<  buf <<  std::endl;
+#endif
+        break;
+    }
+
+    return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
 }   //  End of namespace  GbaMan
