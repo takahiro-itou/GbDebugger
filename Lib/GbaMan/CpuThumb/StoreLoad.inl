@@ -47,10 +47,10 @@ CpuThumb::execAddressingRelative(
         const  OpeCode  opeCode)
 {
     const  int      rd  = ((opeCode >> 8) & 0x07);
-    const  RegType  nn  = ((opeCode     ) & 0xFF);
+    const  RegType  nn  = ((opeCode & 0xFF) << 2);
 
     if ( Rs == 15 ) {
-        mog_cpuRegs[rd].dw  = (mog_cpuRegs[Rs].dw & ~2) + nn;
+        mog_cpuRegs[rd].dw  = (mog_cpuRegs[Rs].dw & 0xFFFFFFFC) + nn;
     } else {
         mog_cpuRegs[rd].dw  = mog_cpuRegs[Rs].dw + nn;
     }
