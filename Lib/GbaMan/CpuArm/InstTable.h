@@ -318,6 +318,10 @@
     ALU_INST_REG_00_07(OP, S),                                          \
     ALU_INST_REG_08_0F_MULW_S##S(OP, MULOP, P, U, I, W)
 
+#define     INST_TABLE_ALU_REG_1xx(CODE, OP,  P, U, I, W, S)            \
+    ALU_INST_REG_00_07(OP, S),                                          \
+    ALU_INST_REG_08_0F_S ## S(CODE, OP,  P, U, I, W)
+
 #define     INST_TABLE_ALU_TEST_IMM(CODE1, CODE2, ALU_OP)                   \
     REPEAT_16(arm##CODE1##0),                                               \
     armALU, armALU, armALU, armALU,     armALU, armALU, armALU, armALU,     \
