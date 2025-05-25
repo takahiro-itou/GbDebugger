@@ -46,8 +46,16 @@ GBD_REGPARM     InstExecResult
 CpuThumb::execAddressingRelative(
         const  OpeCode  opeCode)
 {
-    std::cerr   <<  "Not Implemented (AddressingRelative)"  <<  std::endl;
-    return ( InstExecResult::UNDEFINED_OPECODE );
+    const  int      rd  = ((opeCode >> 8) & 0x07);
+    const  RegType  nn  = ((opeCode     ) & 0xFF);
+
+    if ( Rs == 15 ) {
+        mog_cpuRegs[rd].dw  = (mog_cpuRegs[Rs].dw & ~2) + nn;
+    } else {
+        mog_cpuRegs[rd].dw  = mog_cpuRegs[Rs].dw + nn;
+    }
+
+    return ( InstExecResult::SUCCESS_CONTINUE );
 }
 
 //----------------------------------------------------------------
