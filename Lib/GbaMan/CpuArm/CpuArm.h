@@ -152,9 +152,11 @@ private:
     //    命令の実行を行う関数たち。
     //
 
+#if 0
     GBD_REGPARM     InstExecResult
     execALUInstruction(
             const  OpeCode  opeCode);
+#endif
 
     template  <int BIT25, AluOp CODE, int BIT20, typename SHIFTOP, int BIT4>
     GBD_REGPARM     InstExecResult

@@ -15,7 +15,7 @@
 /**
 **      An Implementation of Arm Instruction Table.
 **
-**      @file       GbaMan/ArmInst.h
+**      @file       GbaMan/CpuArm/InstTable.h
 **/
 
 #if !defined( GBDEBUGGER_GBAMAN_CPUARM_INCLUDED_INST_TABLE_H )
@@ -283,23 +283,47 @@
     &CpuArm::execArithmeticLogic<0, AluOp::OP, 1, ShiftOpRorImm, 0>,    \
     STORE_LOAD_HALF(P, U, I, W, LDR, int16_t)
 
+#define     ALU_INST_REG_08_0F_S0(CODE1, OP, P, U, I, W)                \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 0, ShiftOpLslImm, 0>,    \
+    arm ## CODE1 ## 9,                                                  \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 0, ShiftOpLsrImm, 0>,    \
+    STORE_LOAD_HALF(P, U, I, W, STR, uint16_t),                         \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 0, ShiftOpAsrImm, 0>,    \
+    STORE_LOAD_HALF(P, U, I, W, UNS, uint64_t),                         \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 0, ShiftOpRorImm, 0>,    \
+    STORE_LOAD_HALF(P, U, I, W, UNS, uint64_t)
+
+#define     ALU_INST_REG_08_0F_S1(CODE1, OP, P, U, I, W)                \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 1, ShiftOpLslImm, 0>,    \
+    arm ## CODE1 ## 9,                                                  \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 1, ShiftOpLsrImm, 0>,    \
+    STORE_LOAD_HALF(P, U, I, W, LDR, uint16_t),                         \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 1, ShiftOpAsrImm, 0>,    \
+    STORE_LOAD_HALF(P, U, I, W, LDR, int8_t),                           \
+    &CpuArm::execArithmeticLogic<0, AluOp::OP, 1, ShiftOpRorImm, 0>,    \
+    STORE_LOAD_HALF(P, U, I, W, LDR, int16_t)
+
 #define     INST_TABLE_ALU_REG(CODE1, OP, S)                            \
     ALU_INST_REG_00_07(OP, S),                                          \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpLslImm, 0>,    \
-    arm##CODE1##9,                                                      \
+    arm ## CODE1 ## 9,                                                  \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpLsrImm, 0>,    \
-    arm##CODE1##B,                                                      \
+    arm ## CODE1 ## B,                                                  \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpAsrImm, 0>,    \
-    arm##CODE1##D,                                                      \
+    arm ## CODE1 ## D,                                                  \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpRorImm, 0>,    \
-    arm##CODE1##F
+    arm ## CODE1 ## F
 
 #define     INST_TABLE_ALU_REG_MULW(CODE, OP, MULOP,  P, U, I, W, S)    \
     ALU_INST_REG_00_07(OP, S),                                          \
-    ALU_INST_REG_08_0F_MULW_S##S(OP, MULOP, P, U, I, W)
+    ALU_INST_REG_08_0F_MULW_S ## S(OP, MULOP, P, U, I, W)
+
+#define     INST_TABLE_ALU_REG_1xx(CODE, OP,  P, U, I, W, S)            \
+    ALU_INST_REG_00_07(OP, S),                                          \
+    ALU_INST_REG_08_0F_S ## S(CODE, OP,  P, U, I, W)
 
 #define     INST_TABLE_ALU_TEST_IMM(CODE1, CODE2, ALU_OP)                   \
-    REPEAT_16(arm##CODE1##0),                                               \
+    REPEAT_16(arm ## CODE 1 ##0),                                           \
     armALU, armALU, armALU, armALU,     armALU, armALU, armALU, armALU,     \
     armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI
 
@@ -363,31 +387,32 @@ CpuArm::s_armInstTable[4096] = {
     //  10.0 -- 10.F
     arm100, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
     arm108, arm_NI, arm108, arm10B,     arm108, arm10D, arm108, arm10F,
-    INST_TABLE_ALU_REG(11, TST, 1),         //  11.0 -- 11.F
+    INST_TABLE_ALU_REG_1xx(11, TST, 1, -1, 0, 0, 1),        //  11.0 -- 11.F
 
     //  12.0 -- 12.F
     arm120, arm121, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_NI,
     arm128, arm_UI, arm128, arm12B,     arm128, arm12D, arm128, arm10F,
-    INST_TABLE_ALU_REG(13, TEQ, 1),         //  13.0 -- 13.F
+    INST_TABLE_ALU_REG_1xx(13, TEQ, 1, -1, 0, 1, 1),        //  13.0 -- 13.F
 
     //  14.0 -- 14.F
     arm140, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
     arm148, arm_NI, arm148, arm14B,     arm148, arm14D, arm148, arm14F,
-    INST_TABLE_ALU_REG(15, CMP, 1),         //  15.0 -- 15.F
+    INST_TABLE_ALU_REG_1xx(15, CMP, 1, -1, 1, 0, 1),        //  15.0 -- 15.F
 
     //  16.0 -- 16.F
     arm160, arm_UI, arm_UI, arm_UI,     arm_UI, arm_UI, arm_UI, arm_UI,
     arm168, arm_UI, arm168, arm16B,     arm168, arm16D, arm168, arm16F,
-    INST_TABLE_ALU_REG(17, CMN, 1),         //  17.0 -- 17.F
+    INST_TABLE_ALU_REG_1xx(17, CMN, 1, -1, 1, 1, 1),        //  17.0 -- 17.F
 
-    INST_TABLE_ALU_REG(18, ORR, 0),         //  18.0 -- 18.F
-    INST_TABLE_ALU_REG(19, ORR, 1),         //  19.0 -- 19.F
-    INST_TABLE_ALU_REG(1A, MOV, 0),         //  1A.0 -- 1A.F
-    INST_TABLE_ALU_REG(1B, MOV, 1),         //  1B.0 -- 1B.F
-    INST_TABLE_ALU_REG(1C, BIC, 0),         //  1C.0 -- 1C.F
-    INST_TABLE_ALU_REG(1D, BIC, 1),         //  1D.0 -- 1D.F
-    INST_TABLE_ALU_REG(1E, MVN, 0),         //  1E.0 -- 1E.F
-    INST_TABLE_ALU_REG(1F, MVN, 1),         //  1F.0 -- 1F.F
+
+    INST_TABLE_ALU_REG_1xx(18, ORR, 1, +1, 0, 0, 0),        //  18.0 -- 18.F
+    INST_TABLE_ALU_REG_1xx(19, ORR, 1, +1, 0, 0, 1),        //  19.0 -- 19.F
+    INST_TABLE_ALU_REG_1xx(1A, MOV, 1, +1, 0, 1, 0),        //  1A.0 -- 1A.F
+    INST_TABLE_ALU_REG_1xx(1B, MOV, 1, +1, 0, 1, 1),        //  1B.0 -- 1B.F
+    INST_TABLE_ALU_REG_1xx(1C, BIC, 1, +1, 1, 0, 0),        //  1C.0 -- 1C.F
+    INST_TABLE_ALU_REG_1xx(1D, BIC, 1, +1, 1, 0, 1),        //  1D.0 -- 1D.F
+    INST_TABLE_ALU_REG_1xx(1E, MVN, 1, +1, 1, 1, 0),        //  1E.0 -- 1E.F
+    INST_TABLE_ALU_REG_1xx(1F, MVN, 1, +1, 1, 1, 1),        //  1F.0 -- 1F.F
 
     INST_TABLE_ALU_IMM(20, AND, 0),         //  20.0 -- 20.F
     INST_TABLE_ALU_IMM(21, AND, 1),         //  21.0 -- 21.F
