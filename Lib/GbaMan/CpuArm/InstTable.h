@@ -306,24 +306,24 @@
 #define     INST_TABLE_ALU_REG(CODE1, OP, S)                            \
     ALU_INST_REG_00_07(OP, S),                                          \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpLslImm, 0>,    \
-    arm##CODE1##9,                                                      \
+    arm ## CODE1 ## 9,                                                  \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpLsrImm, 0>,    \
-    arm##CODE1##B,                                                      \
+    arm ## CODE1 ## B,                                                  \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpAsrImm, 0>,    \
-    arm##CODE1##D,                                                      \
+    arm ## CODE1 ## D,                                                  \
     &CpuArm::execArithmeticLogic<0, AluOp::OP, S, ShiftOpRorImm, 0>,    \
-    arm##CODE1##F
+    arm ## CODE1 ## F
 
 #define     INST_TABLE_ALU_REG_MULW(CODE, OP, MULOP,  P, U, I, W, S)    \
     ALU_INST_REG_00_07(OP, S),                                          \
-    ALU_INST_REG_08_0F_MULW_S##S(OP, MULOP, P, U, I, W)
+    ALU_INST_REG_08_0F_MULW_S ## S(OP, MULOP, P, U, I, W)
 
 #define     INST_TABLE_ALU_REG_1xx(CODE, OP,  P, U, I, W, S)            \
     ALU_INST_REG_00_07(OP, S),                                          \
     ALU_INST_REG_08_0F_S ## S(CODE, OP,  P, U, I, W)
 
 #define     INST_TABLE_ALU_TEST_IMM(CODE1, CODE2, ALU_OP)                   \
-    REPEAT_16(arm##CODE1##0),                                               \
+    REPEAT_16(arm ## CODE 1 ##0),                                           \
     armALU, armALU, armALU, armALU,     armALU, armALU, armALU, armALU,     \
     armALU, arm_UI, armALU, arm_UI,     armALU, arm_UI, armALU, arm_UI
 
