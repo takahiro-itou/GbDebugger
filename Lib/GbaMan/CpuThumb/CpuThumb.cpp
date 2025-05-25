@@ -50,7 +50,7 @@ namespace  {
 //    CpuThumb  class.
 //
 
-#include    "ThumbInstTable.h"
+#include    "InstTable.h"
 
 //========================================================================
 //

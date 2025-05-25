@@ -29,7 +29,6 @@ library_source_files        +=  \
         BaseDisCpu.cpp                 \
         GbaManager.cpp                 \
         MemoryManager.cpp              \
-        CpuArm/ArmALU.cpp              \
         CpuArm/Branch.cpp              \
         CpuArm/ArmPsr.cpp              \
         CpuArm/CpuArm.cpp              \
@@ -58,7 +57,7 @@ dist_noinst_header_files    +=  \
         CpuThumb/DisThumb.h            \
         CpuThumb/OperateRegister.inl   \
         CpuThumb/StoreLoad.inl         \
-        CpuThumb/ThumbInstTable.h      \
+        CpuThumb/InstTable.h           \
         Utils/DisUtils.inl             \
         Utils/ShiftOperator.h          \
         ${extra_noinst_header_files}

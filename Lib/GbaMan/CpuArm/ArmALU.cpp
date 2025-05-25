@@ -290,6 +290,8 @@ g_armALUInstTable[512] = {
 //    ArmALU  Instructions.
 //
 
+#if 0
+
 GBD_REGPARM     InstExecResult
 CpuArm::execALUInstruction(
         const  OpeCode  opeCode)
@@ -314,6 +316,7 @@ CpuArm::execALUInstruction(
 
     return  (* pfInst)(opeCode, mog_cpuRegs, mog_cpuRegs[16].dw);
 }
+#endif
 
 }   //  End of namespace  GbaMan
 GBDEBUGGER_NAMESPACE_END
