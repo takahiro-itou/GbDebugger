@@ -19,7 +19,6 @@ set(library_source_files
        BaseDisCpu.cpp
        GbaManager.cpp
        MemoryManager.cpp
-       CpuArm/ArmALU.cpp
        CpuArm/Branch.cpp
        CpuArm/ArmPsr.cpp
        CpuArm/CpuArm.cpp
