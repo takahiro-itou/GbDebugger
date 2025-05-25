@@ -15,11 +15,11 @@
 /**
 **      An Implementation of Thumb Instruction Table.
 **
-**      @file       GbaMan/ThumbInst.h
+**      @file       GbaMan/CpuThumb/InsTablet.h
 **/
 
-#if !defined( GBDEBUGGER_GBAMAN_CPUTHUMB_INCLUDED_THUMB_INST_H )
-#    define   GBDEBUGGER_GBAMAN_CPUTHUMB_INCLUDED_THUMB_INST_H
+#if !defined( GBDEBUGGER_GBAMAN_CPUTHUMB_INCLUDED_INST_TABLE_H )
+#    define   GBDEBUGGER_GBAMAN_CPUTHUMB_INCLUDED_INST_TABLE_H
 
 
 #define     thumbUI     nullptr

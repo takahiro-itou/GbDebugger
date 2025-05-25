@@ -15,7 +15,7 @@
 /**
 **      An Implementation of Arm Instruction Table.
 **
-**      @file       GbaMan/ArmInst.h
+**      @file       GbaMan/CpuArm/InstTable.h
 **/
 
 #if !defined( GBDEBUGGER_GBAMAN_CPUARM_INCLUDED_INST_TABLE_H )
