@@ -51,6 +51,13 @@ Include (${common_cmake_dir}/DefaultBuildOptions.cmake)
 
 set(GBDEBUGGER_CNF_NAMESPACE    GbDebugger)
 
+##
+##    Output Name
+##
+
+set(libraries_target_prefix     gbd)
+set(libraries_name_prefix       gbd)
+
 
 ##----------------------------------------------------------------
 ##
