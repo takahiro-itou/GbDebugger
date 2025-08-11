@@ -15,3 +15,5 @@ add_subdirectory(.Config)
 
 add_subdirectory(Common)
 add_subdirectory(GbaMan)
+add_subdirectory(Images)
+
