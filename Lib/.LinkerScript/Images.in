@@ -1,0 +1,6 @@
+
+/*  Linker Script.  */
+INPUT( AS_NEEDED(GbaMan/libgbdImages.static.a) )
+
+INPUT( AS_NEEDED(-lgbdCommon) )
+
