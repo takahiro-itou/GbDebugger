@@ -1,11 +1,5 @@
 
-name: CI for CMake
-
-on:
-  push:
-    branches: [ "master", "develop" ]
-  pull_request:
-    branches: [ "master", "develop" ]
+name : CI for CMake
 
 jobs:
   build:
@@ -56,3 +50,9 @@ jobs:
           ctest --build-config "${{ matrix.build-type }}"  \
             --test-dir $"${{ github.workspace }}/build"
         shell : bash
+
+on :
+  push :
+    branches : [ "master", "develop" ]
+  pull_request :
+    branches : [ "master", "develop" ]
