@@ -16,7 +16,7 @@ jobs :
       - name : Checkout
         uses : actions/checkout@v4
         with :
-          submodules : 'true'
+          submodules : recursive
 
       - name : Install CppUnit
         id   : install-cppunit
@@ -64,3 +64,4 @@ on :
     branches : [ "master", "develop" ]
   pull_request :
     branches : [ "master", "develop" ]
+  workflow_dispatch :
