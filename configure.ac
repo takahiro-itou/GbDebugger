@@ -160,6 +160,7 @@ AC_CONFIG_FILES([
     Lib/.Config/Makefile
     Lib/Common/Makefile
     Lib/GbaMan/Makefile
+    Lib/Images/Makefile
 ])
 
 AC_CONFIG_FILES([
@@ -174,6 +175,7 @@ AC_CONFIG_FILES([
     Lib/Common/Tests/Makefile
     Lib/GbaMan/Tests/Makefile
     Lib/GbaMan/Tests/TestConf.h
+    Lib/Images/Tests/Makefile
 ])
 
 dnl
@@ -181,3 +183,4 @@ dnl   指定したファイルを生成する。
 dnl
 
 AC_OUTPUT
+

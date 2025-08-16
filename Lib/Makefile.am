@@ -3,7 +3,7 @@
 ##    List of Directories.
 ##
 
-SUBLIBS                 =  Common  GbaMan
+SUBLIBS                 =  Common  GbaMan  Images
 
 SUBDIRS                 =  Tests  .Config  $(SUBLIBS)  .
 
