@@ -21,6 +21,7 @@
 #if !defined( GBDEBUGGER_CONFIG_INCLUDED_CONFIGURED_DEBUGGER_H )
 #    define   GBDEBUGGER_CONFIG_INCLUDED_CONFIGURED_DEBUGGER_H
 
+
 //========================================================================
 //
 //    Name Space.
@@ -238,5 +239,13 @@
 #else
 #    undef      GBDEBUGGER_ENABLE_MOVEOPEQ_DELETE
 #endif
+
+
+//========================================================================
+//
+//    MS  固有の警告対応
+//
+
+#define     _CRT_SECURE_NO_WARNINGS     1
 
 #endif

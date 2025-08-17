@@ -68,7 +68,7 @@ if [ -d  Lib/${testcommondir}/Tests ] ; then
       &&  ${LN_S}  ../../Tests/.TestsCommon/TestConf.h.in)
 fi
 
-for  dir  in  Common  GbaMan  ; do
+for  dir  in  Common  GbaMan  Images  ; do
     if [ -d Lib/${dir}/Tests ] ; then
         (cd  Lib/${dir}/Tests          \
           &&  ${RM_F}  Makefile.am     \
