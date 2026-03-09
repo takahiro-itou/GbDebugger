@@ -57,19 +57,14 @@
   <PropertyGroup Label="UserMacros">
   </PropertyGroup>
 
-  <!--
-    Import in Directory.Build.props
   <Import Project="..\Props\OutputLibs.props" />
   <Import Project="..\Props\OutputCommon.props" />
 
+  <!--
+    Import in Directory.Build.props
   <Import Project="..\Props\Definitions.props" />
   <Import Project="..\Props\BuildOptions.props" />
   -->
-
-  <PropertyGroup>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-  </PropertyGroup>
 
   <ItemDefinitionGroup>
     <ClCompile>
