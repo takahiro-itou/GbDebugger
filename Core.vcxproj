@@ -120,30 +120,30 @@
   </ItemDefinitionGroup>
 
   <ItemGroup>
-    <ClCompile Include="..\..\Core\Lib\Common\SampleDocument.cpp" />
-    <ClCompile Include="..\..\Core\Lib\GbaMan\BaseCpuCore.cpp" />
-    <ClCompile Include="..\..\Core\Lib\GbaMan\BaseDisCpu.cpp" />
-    <ClCompile Include="..\..\Core\Lib\GbaMan\GbaManager.cpp" />
-    <ClCompile Include="..\..\Core\Lib\GbaMan\MemoryManager.cpp" />
-    <ClCompile Include="..\..\Core\Lib\GbaMan\CpuArm\Branch.cpp" />
-    <ClCompile Include="..\..\Core\Lib\GbaMan\CpuArm\ArmPsr.cpp" />
-    <ClCompile Include="..\..\Core\Lib\GbaMan\CpuArm\CpuArm.cpp" />
-    <ClCompile Include="..\..\Core\Lib\GbaMan\CpuArm\DisArm.cpp" />
-    <ClCompile Include="..\..\Core\Lib\GbaMan\CpuArm\StoreLoad.cpp" />
-    <ClCompile Include="..\..\Core\Lib\GbaMan\CpuThumb\CpuThumb.cpp" />
-    <ClCompile Include="..\..\Core\Lib\GbaMan\CpuThumb\DisThumb.cpp" />
+    <ClCompile Include="Lib\Common\SampleDocument.cpp" />
+    <ClCompile Include="Lib\GbaMan\BaseCpuCore.cpp" />
+    <ClCompile Include="Lib\GbaMan\BaseDisCpu.cpp" />
+    <ClCompile Include="Lib\GbaMan\GbaManager.cpp" />
+    <ClCompile Include="Lib\GbaMan\MemoryManager.cpp" />
+    <ClCompile Include="Lib\GbaMan\CpuArm\Branch.cpp" />
+    <ClCompile Include="Lib\GbaMan\CpuArm\ArmPsr.cpp" />
+    <ClCompile Include="Lib\GbaMan\CpuArm\CpuArm.cpp" />
+    <ClCompile Include="Lib\GbaMan\CpuArm\DisArm.cpp" />
+    <ClCompile Include="Lib\GbaMan\CpuArm\StoreLoad.cpp" />
+    <ClCompile Include="Lib\GbaMan\CpuThumb\CpuThumb.cpp" />
+    <ClCompile Include="Lib\GbaMan\CpuThumb\DisThumb.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Core\Include\GbDebugger\Common\DebuggerProject.h" />
-    <ClInclude Include="..\..\Core\Include\GbDebugger\Common\DebuggerTypes.h" />
-    <ClInclude Include="..\..\Core\Include\GbDebugger\Common\DebuggerUtils.h" />
-    <ClInclude Include="..\..\Core\Include\GbDebugger\Common\SampleDocument.h" />
-    <ClInclude Include="..\..\Core\Include\GbDebugger\GbaMan\BaseCpuCore.h" />
-    <ClInclude Include="..\..\Core\Include\GbDebugger\GbaMan\BaseDisCpu.h" />
-    <ClInclude Include="..\..\Core\Include\GbDebugger\GbaMan\CpuUtils.h" />
-    <ClInclude Include="..\..\Core\Include\GbDebugger\GbaMan\GbaManager.h" />
-    <ClInclude Include="..\..\Core\Include\GbDebugger\GbaMan\MemoryManager.h" />
-    <ClInclude Include="..\..\Core\Include\GbDebugger\GbaMan\MemoryTable.h" />
+    <ClInclude Include="Include\GbDebugger\Common\DebuggerProject.h" />
+    <ClInclude Include="Include\GbDebugger\Common\DebuggerTypes.h" />
+    <ClInclude Include="Include\GbDebugger\Common\DebuggerUtils.h" />
+    <ClInclude Include="Include\GbDebugger\Common\SampleDocument.h" />
+    <ClInclude Include="Include\GbDebugger\GbaMan\BaseCpuCore.h" />
+    <ClInclude Include="Include\GbDebugger\GbaMan\BaseDisCpu.h" />
+    <ClInclude Include="Include\GbDebugger\GbaMan\CpuUtils.h" />
+    <ClInclude Include="Include\GbDebugger\GbaMan\GbaManager.h" />
+    <ClInclude Include="Include\GbDebugger\GbaMan\MemoryManager.h" />
+    <ClInclude Include="Include\GbDebugger\GbaMan\MemoryTable.h" />
   </ItemGroup>
 
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
